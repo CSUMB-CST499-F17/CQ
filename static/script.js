@@ -58,11 +58,15 @@
 
 	var _explore = __webpack_require__(186);
 
+	var _existingTeam = __webpack_require__(187);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	ReactDOM.render(React.createElement(_content.Content, null), document.getElementById('content'));
 	ReactDOM.render(React.createElement(_explore.Explore, null), document.getElementById('explore'));
 	document.getElementById('explore').style.display = "none";
+	ReactDOM.render(React.createElement(_existingTeam.ExistingTeam, null), document.getElementById('existingTeam'));
+	document.getElementById('existingTeam').style.display = "none";
 
 /***/ },
 /* 1 */
@@ -21966,6 +21970,8 @@
 	        var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
 
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.explore = _this.explore.bind(_this);
+	        _this.existingTeam = _this.existingTeam.bind(_this);
 	        return _this;
 	    }
 
@@ -21979,8 +21985,24 @@
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
 	            // Socket.emit('explore');
+	            // document.getElementById('content').style.display = "none";
+	            // document.getElementById('explore').style.display = "block";
+	        }
+	    }, {
+	        key: 'explore',
+	        value: function explore(event) {
+	            event.preventDefault();
+	            // Socket.emit('explore');
 	            document.getElementById('content').style.display = "none";
 	            document.getElementById('explore').style.display = "block";
+	        }
+	    }, {
+	        key: 'existingTeam',
+	        value: function existingTeam(event) {
+	            event.preventDefault();
+	            // Socket.emit('explore');
+	            document.getElementById('content').style.display = "none";
+	            document.getElementById('existingTeam').style.display = "block";
 	        }
 	    }, {
 	        key: 'render',
@@ -22000,17 +22022,17 @@
 	                ),
 	                React.createElement(
 	                    'form',
-	                    { onSubmit: this.handleSubmit },
+	                    null,
 	                    React.createElement(
 	                        'button',
-	                        null,
+	                        { onClick: this.explore },
 	                        'Let\'s Explore!'
+	                    ),
+	                    React.createElement(
+	                        'button',
+	                        { onClick: this.existingTeam },
+	                        'Log into Existing Team'
 	                    )
-	                ),
-	                React.createElement(
-	                    'button',
-	                    null,
-	                    'Log into Existing Team'
 	                )
 	            );
 	        }
@@ -22076,6 +22098,74 @@
 	    }]);
 
 	    return Explore;
+	}(React.Component);
+
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.ExistingTeam = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ExistingTeam = exports.ExistingTeam = function (_React$Component) {
+	    _inherits(ExistingTeam, _React$Component);
+
+	    function ExistingTeam() {
+	        _classCallCheck(this, ExistingTeam);
+
+	        return _possibleConstructorReturn(this, (ExistingTeam.__proto__ || Object.getPrototypeOf(ExistingTeam)).apply(this, arguments));
+	    }
+
+	    _createClass(ExistingTeam, [{
+	        key: 'render',
+	        value: function render() {
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'header',
+	                    null,
+	                    'EXISTING TEAMS'
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Full_Spectrum_Team_Waving.jpg/1024px-Full_Spectrum_Team_Waving.jpg', width: '50%' })
+	                ),
+	                React.createElement(
+	                    'form',
+	                    null,
+	                    React.createElement('input', { type: 'text', placeholder: 'Enter email' }),
+	                    React.createElement('input', { type: 'text', placeholder: 'Enter access code' }),
+	                    React.createElement(
+	                        'button',
+	                        { id: 'chatSubmit' },
+	                        'Enter!'
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return ExistingTeam;
 	}(React.Component);
 
 /***/ }
