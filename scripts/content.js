@@ -1,14 +1,13 @@
-import * as React from '../../node_modules/react';
+import * as React from 'react';
+import { Home } from './home';
 
 export class Content extends React.Component{
-    
-    
-    
+
     render(){
         
         return (
             <div>
-                Coastal Quest
+                <Home/>
             </div>
            
         );
