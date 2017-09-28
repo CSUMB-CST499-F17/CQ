@@ -5,37 +5,18 @@ import * as React from 'react';
 export class Home extends React.Component {
     constructor(props) {
         super(props);
-        // this.state = {
-        //     key: ''
-        // };
-        // this.handleChange = this.handleChange.bind(this);
+
+        this.changePage = this.changePage.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.explore = this.explore.bind(this);
-        this.existingTeam = this.existingTeam.bind(this);
     }
-    
-    // handleChange(event) {
-    //     event.preventDefault();
-    //     this.setState({key: event.target.value});
-    // }
     
     handleSubmit(event) {
         event.preventDefault();
-        // Socket.emit('explore');
-        // document.getElementById('content').style.display = "none";
-        // document.getElementById('explore').style.display = "block";
     }
-    explore(event) {
-        event.preventDefault();
-        // Socket.emit('explore');
+    //changes the display of the pages when button is pressed
+    changePage(page){
         document.getElementById('content').style.display = "none";
-        document.getElementById('explore').style.display = "block";
-    }
-    existingTeam(event) {
-        event.preventDefault();
-        // Socket.emit('explore');
-        document.getElementById('content').style.display = "none";
-        document.getElementById('existingTeam').style.display = "block";
+        document.getElementById(page).style.display = "block";
     }
     render() {
         return (
@@ -44,9 +25,10 @@ export class Home extends React.Component {
                 <div id='intro'>
                     <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG/1200px-Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG' width='50%'></img>
                 </div>
-                <form >
-                    <button onClick={this.explore}>Let's Explore!</button>
-                    <button onClick={this.existingTeam}>Log into Existing Team</button>
+                <form onSubmit = {this.handleSubmit}>
+                    <button onClick={() => this.changePage('explore')}>Let's Explore!</button>
+                    <button onClick={() => this.changePage('existingTeam')}>Log into Existing Team</button>
+                    <button onClick={() => this.changePage('adminHome')}>Temp Button to Admin Homepage</button>
                 </form>
             </div>
          
