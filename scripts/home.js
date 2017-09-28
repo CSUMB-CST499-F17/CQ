@@ -15,7 +15,7 @@ export class Home extends React.Component {
     }
     //changes the display of the pages when button is pressed
     changePage(page){
-        document.getElementById('content').style.display = "none";
+        document.getElementById('home').style.display = "none";
         document.getElementById(page).style.display = "block";
     }
     render() {

@@ -32,11 +32,11 @@ export class Register extends React.Component {
                             <option>Hunt Two</option>
                             <option>Hunt Three</option>
                         </select><br/>
-                        <button id='register-item' class='register-submit'>Enter!</button>
+                        <button id='register-item'>Enter!</button>
                     </form>
                 </div>
                 <form onSubmit = {this.handleSubmit}>
-                    <button onClick={() => this.changePage('content')}>Home</button>
+                    <button onClick={() => this.changePage('home')}>Home</button>
                 </form>
             </div>
          

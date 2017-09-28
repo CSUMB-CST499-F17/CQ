@@ -56,29 +56,9 @@
 
 	var _content = __webpack_require__(184);
 
-	var _explore = __webpack_require__(186);
-
-	var _existingTeam = __webpack_require__(187);
-
-	var _register = __webpack_require__(189);
-
-	var _adminHome = __webpack_require__(188);
-
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	ReactDOM.render(React.createElement(_content.Content, null), document.getElementById('content'));
-
-	ReactDOM.render(React.createElement(_explore.Explore, null), document.getElementById('explore'));
-	document.getElementById('explore').style.display = "none";
-
-	ReactDOM.render(React.createElement(_existingTeam.ExistingTeam, null), document.getElementById('existingTeam'));
-	document.getElementById('existingTeam').style.display = "none";
-
-	ReactDOM.render(React.createElement(_register.Register, null), document.getElementById('register'));
-	document.getElementById('register').style.display = "none";
-
-	ReactDOM.render(React.createElement(_adminHome.AdminHome, null), document.getElementById('adminHome'));
-	document.getElementById('adminHome').style.display = "none";
 
 /***/ },
 /* 1 */
@@ -21908,7 +21888,15 @@
 
 	var React = _interopRequireWildcard(_react);
 
-	var _home = __webpack_require__(185);
+	var _home = __webpack_require__(189);
+
+	var _explore = __webpack_require__(185);
+
+	var _existingTeam = __webpack_require__(186);
+
+	var _register = __webpack_require__(187);
+
+	var _adminHome = __webpack_require__(188);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -21917,6 +21905,9 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	//pages
+
 
 	var Content = exports.Content = function (_React$Component) {
 	    _inherits(Content, _React$Component);
@@ -21930,11 +21921,34 @@
 	    _createClass(Content, [{
 	        key: 'render',
 	        value: function render() {
-
 	            return React.createElement(
 	                'div',
 	                null,
-	                React.createElement(_home.Home, null)
+	                React.createElement(
+	                    'div',
+	                    { id: 'home' },
+	                    React.createElement(_home.Home, null)
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'explore', style: { display: 'none' } },
+	                    React.createElement(_explore.Explore, null)
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'existingTeam', style: { display: 'none' } },
+	                    React.createElement(_existingTeam.ExistingTeam, null)
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'register', style: { display: 'none' } },
+	                    React.createElement(_register.Register, null)
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'adminHome', style: { display: 'none' } },
+	                    React.createElement(_adminHome.AdminHome, null)
+	                )
 	            );
 	        }
 	    }]);
@@ -21944,109 +21958,6 @@
 
 /***/ },
 /* 185 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Home = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	// import { Socket } from './Socket';
-
-	var Home = exports.Home = function (_React$Component) {
-	    _inherits(Home, _React$Component);
-
-	    function Home(props) {
-	        _classCallCheck(this, Home);
-
-	        var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
-
-	        _this.changePage = _this.changePage.bind(_this);
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(Home, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('content').style.display = "none";
-	            document.getElementById(page).style.display = "block";
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
-
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'header',
-	                    null,
-	                    'Coastal Quest'
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'intro' },
-	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG/1200px-Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG', width: '50%' })
-	                ),
-	                React.createElement(
-	                    'form',
-	                    { onSubmit: this.handleSubmit },
-	                    React.createElement(
-	                        'button',
-	                        { onClick: function onClick() {
-	                                return _this2.changePage('explore');
-	                            } },
-	                        'Let\'s Explore!'
-	                    ),
-	                    React.createElement(
-	                        'button',
-	                        { onClick: function onClick() {
-	                                return _this2.changePage('existingTeam');
-	                            } },
-	                        'Log into Existing Team'
-	                    ),
-	                    React.createElement(
-	                        'button',
-	                        { onClick: function onClick() {
-	                                return _this2.changePage('adminHome');
-	                            } },
-	                        'Temp Button to Admin Homepage'
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return Home;
-	}(React.Component);
-
-/***/ },
-/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22140,7 +22051,7 @@
 	                    React.createElement(
 	                        'button',
 	                        { onClick: function onClick() {
-	                                return _this2.changePage('content');
+	                                return _this2.changePage('home');
 	                            } },
 	                        'Home'
 	                    )
@@ -22153,7 +22064,7 @@
 	}(React.Component);
 
 /***/ },
-/* 187 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22238,7 +22149,7 @@
 	                    React.createElement(
 	                        'button',
 	                        { onClick: function onClick() {
-	                                return _this2.changePage('content');
+	                                return _this2.changePage('home');
 	                            } },
 	                        'Home'
 	                    )
@@ -22251,66 +22162,7 @@
 	}(React.Component);
 
 /***/ },
-/* 188 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.AdminHome = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	// import { Socket } from './Socket';
-
-	var AdminHome = exports.AdminHome = function (_React$Component) {
-	    _inherits(AdminHome, _React$Component);
-
-	    function AdminHome() {
-	        _classCallCheck(this, AdminHome);
-
-	        return _possibleConstructorReturn(this, (AdminHome.__proto__ || Object.getPrototypeOf(AdminHome)).apply(this, arguments));
-	    }
-
-	    _createClass(AdminHome, [{
-	        key: 'render',
-	        value: function render() {
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'header',
-	                    null,
-	                    'Welcome, Admin!'
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'intro' },
-	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Warning_notice_-_EVIL_ADMIN.svg/2000px-Warning_notice_-_EVIL_ADMIN.svg.png', width: '50%' })
-	                )
-	            );
-	        }
-	    }]);
-
-	    return AdminHome;
-	}(React.Component);
-
-/***/ },
-/* 189 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22407,7 +22259,7 @@
 	                        React.createElement('br', null),
 	                        React.createElement(
 	                            'button',
-	                            { id: 'register-item', 'class': 'register-submit' },
+	                            { id: 'register-item' },
 	                            'Enter!'
 	                        )
 	                    )
@@ -22418,7 +22270,7 @@
 	                    React.createElement(
 	                        'button',
 	                        { onClick: function onClick() {
-	                                return _this2.changePage('content');
+	                                return _this2.changePage('home');
 	                            } },
 	                        'Home'
 	                    )
@@ -22428,6 +22280,168 @@
 	    }]);
 
 	    return Register;
+	}(React.Component);
+
+/***/ },
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.AdminHome = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	// import { Socket } from './Socket';
+
+	var AdminHome = exports.AdminHome = function (_React$Component) {
+	    _inherits(AdminHome, _React$Component);
+
+	    function AdminHome() {
+	        _classCallCheck(this, AdminHome);
+
+	        return _possibleConstructorReturn(this, (AdminHome.__proto__ || Object.getPrototypeOf(AdminHome)).apply(this, arguments));
+	    }
+
+	    _createClass(AdminHome, [{
+	        key: 'render',
+	        value: function render() {
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'header',
+	                    null,
+	                    'Welcome, Admin!'
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Warning_notice_-_EVIL_ADMIN.svg/2000px-Warning_notice_-_EVIL_ADMIN.svg.png', width: '50%' })
+	                )
+	            );
+	        }
+	    }]);
+
+	    return AdminHome;
+	}(React.Component);
+
+/***/ },
+/* 189 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.Home = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	// import { Socket } from './Socket';
+
+	var Home = exports.Home = function (_React$Component) {
+	    _inherits(Home, _React$Component);
+
+	    function Home(props) {
+	        _classCallCheck(this, Home);
+
+	        var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
+
+	        _this.changePage = _this.changePage.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Home, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            document.getElementById('home').style.display = "none";
+	            document.getElementById(page).style.display = "block";
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'header',
+	                    null,
+	                    'Coastal Quest'
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG/1200px-Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG', width: '50%' })
+	                ),
+	                React.createElement(
+	                    'form',
+	                    { onSubmit: this.handleSubmit },
+	                    React.createElement(
+	                        'button',
+	                        { onClick: function onClick() {
+	                                return _this2.changePage('explore');
+	                            } },
+	                        'Let\'s Explore!'
+	                    ),
+	                    React.createElement(
+	                        'button',
+	                        { onClick: function onClick() {
+	                                return _this2.changePage('existingTeam');
+	                            } },
+	                        'Log into Existing Team'
+	                    ),
+	                    React.createElement(
+	                        'button',
+	                        { onClick: function onClick() {
+	                                return _this2.changePage('adminHome');
+	                            } },
+	                        'Temp Button to Admin Homepage'
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Home;
 	}(React.Component);
 
 /***/ }

@@ -31,7 +31,7 @@ export class Explore extends React.Component {
                     <button onClick={() => this.changePage('register')}>Participate</button>
                 </form>
                 <form onSubmit = {this.handleSubmit}>
-                    <button onClick={() => this.changePage('content')}>Home</button>
+                    <button onClick={() => this.changePage('home')}>Home</button>
                 </form>
             </div>
          

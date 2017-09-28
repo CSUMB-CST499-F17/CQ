@@ -29,7 +29,7 @@ export class ExistingTeam extends React.Component {
                     <button id= "chatSubmit">Enter!</button>
                  </form>
                  <form onSubmit = {this.handleSubmit}>
-                    <button onClick={() => this.changePage('content')}>Home</button>
+                    <button onClick={() => this.changePage('home')}>Home</button>
                 </form>
             </div>
          
