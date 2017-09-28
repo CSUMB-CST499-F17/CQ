@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-// import { Socket } from './Socket';
-
 export class AdminHome extends React.Component {
         
     render() {

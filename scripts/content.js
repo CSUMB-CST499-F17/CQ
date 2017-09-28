@@ -3,6 +3,7 @@ import * as React from 'react';
 //pages
 import { Home } from './home';
 import { Explore } from './explore';
+import { Leaderboard } from './leaderboard';
 import { ExistingTeam } from './existingTeam';
 import { Register } from './register';
 import { AdminHome } from './admin/adminHome';
@@ -17,6 +18,9 @@ export class Content extends React.Component{
                 </div>
                 <div id = 'explore' style={{display:'none'}}>
                     <Explore/>
+                </div>
+                <div id = 'leaderboard' style={{display:'none'}}>
+                    <Leaderboard/>
                 </div>
                 <div id = 'existingTeam' style={{display:'none'}}>
                     <ExistingTeam/>
