@@ -1,6 +1,21 @@
 import * as React from 'react';
 
 export class ExistingTeam extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.changePage = this.changePage.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    
+    handleSubmit(event) {
+        event.preventDefault();
+    }
+    //changes the display of the pages when button is pressed
+    changePage(page){
+        document.getElementById('existingTeam').style.display = "none";
+        document.getElementById(page).style.display = "block";
+    }
     render() {
         return (
             <div>
@@ -13,6 +28,9 @@ export class ExistingTeam extends React.Component {
                     <input type="text" placeholder="Enter access code" />
                     <button id= "chatSubmit">Enter!</button>
                  </form>
+                 <form onSubmit = {this.handleSubmit}>
+                    <button onClick={() => this.changePage('content')}>Home</button>
+                </form>
             </div>
          
         );

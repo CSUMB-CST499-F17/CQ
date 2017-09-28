@@ -22180,15 +22180,34 @@
 	var ExistingTeam = exports.ExistingTeam = function (_React$Component) {
 	    _inherits(ExistingTeam, _React$Component);
 
-	    function ExistingTeam() {
+	    function ExistingTeam(props) {
 	        _classCallCheck(this, ExistingTeam);
 
-	        return _possibleConstructorReturn(this, (ExistingTeam.__proto__ || Object.getPrototypeOf(ExistingTeam)).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, (ExistingTeam.__proto__ || Object.getPrototypeOf(ExistingTeam)).call(this, props));
+
+	        _this.changePage = _this.changePage.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
 	    }
 
 	    _createClass(ExistingTeam, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            document.getElementById('existingTeam').style.display = "none";
+	            document.getElementById(page).style.display = "block";
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var _this2 = this;
+
 	            return React.createElement(
 	                'div',
 	                null,
@@ -22211,6 +22230,17 @@
 	                        'button',
 	                        { id: 'chatSubmit' },
 	                        'Enter!'
+	                    )
+	                ),
+	                React.createElement(
+	                    'form',
+	                    { onSubmit: this.handleSubmit },
+	                    React.createElement(
+	                        'button',
+	                        { onClick: function onClick() {
+	                                return _this2.changePage('content');
+	                            } },
+	                        'Home'
 	                    )
 	                )
 	            );
