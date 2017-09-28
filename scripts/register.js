@@ -2,7 +2,7 @@ import * as React from 'react';
 
 // import { Socket } from './Socket';
 
-export class Explore extends React.Component {
+export class Register extends React.Component {
     constructor(props) {
         super(props);
 
@@ -15,21 +15,26 @@ export class Explore extends React.Component {
     }
     //changes the display of the pages when button is pressed
     changePage(page){
-        document.getElementById('explore').style.display = "none";
+        document.getElementById('register').style.display = "none";
         document.getElementById(page).style.display = "block";
     }
         
     render() {
         return (
             <div>
-                <header>EXPLORE THIS</header>
+                <header>REGISTER</header>
                 <div id='intro'>
-                    <img src='https://upload.wikimedia.org/wikipedia/commons/8/8c/FZ_%28Explore%21%29_%288584496885%29.jpg' width='50%'></img>
+                    <form id='register'>
+                        <input id='register-item' type="text" placeholder="Enter email" /><br/>
+                        <input id='register-item' type="text" placeholder="Enter access code" /><br/>
+                        <select id='register-item'>
+                            <option>Hunt One</option>
+                            <option>Hunt Two</option>
+                            <option>Hunt Three</option>
+                        </select><br/>
+                        <button id='register-item' class='register-submit'>Enter!</button>
+                    </form>
                 </div>
-                <form onSubmit = {this.handleSubmit}>
-                    <button onClick={() => this.changePage()}>Leaderboard</button>
-                    <button onClick={() => this.changePage('register')}>Participate</button>
-                </form>
                 <form onSubmit = {this.handleSubmit}>
                     <button onClick={() => this.changePage('content')}>Home</button>
                 </form>

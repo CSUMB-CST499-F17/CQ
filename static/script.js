@@ -60,15 +60,23 @@
 
 	var _existingTeam = __webpack_require__(187);
 
+	var _register = __webpack_require__(189);
+
 	var _adminHome = __webpack_require__(188);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	ReactDOM.render(React.createElement(_content.Content, null), document.getElementById('content'));
+
 	ReactDOM.render(React.createElement(_explore.Explore, null), document.getElementById('explore'));
 	document.getElementById('explore').style.display = "none";
+
 	ReactDOM.render(React.createElement(_existingTeam.ExistingTeam, null), document.getElementById('existingTeam'));
 	document.getElementById('existingTeam').style.display = "none";
+
+	ReactDOM.render(React.createElement(_register.Register, null), document.getElementById('register'));
+	document.getElementById('register').style.display = "none";
+
 	ReactDOM.render(React.createElement(_adminHome.AdminHome, null), document.getElementById('adminHome'));
 	document.getElementById('adminHome').style.display = "none";
 
@@ -22067,15 +22075,34 @@
 	var Explore = exports.Explore = function (_React$Component) {
 	    _inherits(Explore, _React$Component);
 
-	    function Explore() {
+	    function Explore(props) {
 	        _classCallCheck(this, Explore);
 
-	        return _possibleConstructorReturn(this, (Explore.__proto__ || Object.getPrototypeOf(Explore)).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, (Explore.__proto__ || Object.getPrototypeOf(Explore)).call(this, props));
+
+	        _this.changePage = _this.changePage.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
 	    }
 
 	    _createClass(Explore, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            document.getElementById('explore').style.display = "none";
+	            document.getElementById(page).style.display = "block";
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var _this2 = this;
+
 	            return React.createElement(
 	                'div',
 	                null,
@@ -22088,6 +22115,35 @@
 	                    'div',
 	                    { id: 'intro' },
 	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/8/8c/FZ_%28Explore%21%29_%288584496885%29.jpg', width: '50%' })
+	                ),
+	                React.createElement(
+	                    'form',
+	                    { onSubmit: this.handleSubmit },
+	                    React.createElement(
+	                        'button',
+	                        { onClick: function onClick() {
+	                                return _this2.changePage();
+	                            } },
+	                        'Leaderboard'
+	                    ),
+	                    React.createElement(
+	                        'button',
+	                        { onClick: function onClick() {
+	                                return _this2.changePage('register');
+	                            } },
+	                        'Participate'
+	                    )
+	                ),
+	                React.createElement(
+	                    'form',
+	                    { onSubmit: this.handleSubmit },
+	                    React.createElement(
+	                        'button',
+	                        { onClick: function onClick() {
+	                                return _this2.changePage('content');
+	                            } },
+	                        'Home'
+	                    )
 	                )
 	            );
 	        }
@@ -22221,6 +22277,127 @@
 	    }]);
 
 	    return AdminHome;
+	}(React.Component);
+
+/***/ },
+/* 189 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.Register = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	// import { Socket } from './Socket';
+
+	var Register = exports.Register = function (_React$Component) {
+	    _inherits(Register, _React$Component);
+
+	    function Register(props) {
+	        _classCallCheck(this, Register);
+
+	        var _this = _possibleConstructorReturn(this, (Register.__proto__ || Object.getPrototypeOf(Register)).call(this, props));
+
+	        _this.changePage = _this.changePage.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Register, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            document.getElementById('register').style.display = "none";
+	            document.getElementById(page).style.display = "block";
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'header',
+	                    null,
+	                    'REGISTER'
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement(
+	                        'form',
+	                        { id: 'register' },
+	                        React.createElement('input', { id: 'register-item', type: 'text', placeholder: 'Enter email' }),
+	                        React.createElement('br', null),
+	                        React.createElement('input', { id: 'register-item', type: 'text', placeholder: 'Enter access code' }),
+	                        React.createElement('br', null),
+	                        React.createElement(
+	                            'select',
+	                            { id: 'register-item' },
+	                            React.createElement(
+	                                'option',
+	                                null,
+	                                'Hunt One'
+	                            ),
+	                            React.createElement(
+	                                'option',
+	                                null,
+	                                'Hunt Two'
+	                            ),
+	                            React.createElement(
+	                                'option',
+	                                null,
+	                                'Hunt Three'
+	                            )
+	                        ),
+	                        React.createElement('br', null),
+	                        React.createElement(
+	                            'button',
+	                            { id: 'register-item', 'class': 'register-submit' },
+	                            'Enter!'
+	                        )
+	                    )
+	                ),
+	                React.createElement(
+	                    'form',
+	                    { onSubmit: this.handleSubmit },
+	                    React.createElement(
+	                        'button',
+	                        { onClick: function onClick() {
+	                                return _this2.changePage('content');
+	                            } },
+	                        'Home'
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Register;
 	}(React.Component);
 
 /***/ }
