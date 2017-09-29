@@ -15,3 +15,39 @@ body {
     flex-direction: column;
     height: 83.5%;
 }
+
+
+#buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 15px;
+    
+}
+#button{
+    display: flex;
+    background: grey;
+    margin: 15px;
+}
+
+#header {
+    color: white;
+    font-family: 'Trocchi',serif;
+    font-size: 60px;
+    margin: 10px;
+    flex-direction: row;
+    text-align:center;
+    justify-content: center;
+}
+#intro{
+    text-align:center;
+    justify-content: center;
+    margin: 15px;
+}
+
+#search{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 15px;
+}

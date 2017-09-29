@@ -1,3 +1,5 @@
 Flask
 Flask-SocketIO
 requests
+pyscopg2
+Flask-SQLAlchemy
