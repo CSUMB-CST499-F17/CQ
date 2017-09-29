@@ -31,10 +31,10 @@ export class Leaderboard extends React.Component {
         return (
             <div>
                 <div id = 'header'>
-                    <header>REGISTER</header>
+                    <header>Leaderboard</header>
                 </div>
                 <div id='search'>
-                    <form id='register'>
+                    <form id='leaderboard-form'>
                         <FormGroup>
                             <InputGroup>
                                 <ButtonToolbar>
