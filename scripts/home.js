@@ -1,7 +1,12 @@
 import * as React from 'react';
-
+import * as ReactBootstrap from 'react-bootstrap';
 // import { Socket } from './Socket';
-
+import { Button } from 'react-bootstrap';
+import { InputGroup } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
+import { FormGroup } from 'react-bootstrap';
+import { ButtonToolbar } from 'react-bootstrap';
+import { ButtonGroup } from 'react-bootstrap';
 export class Home extends React.Component {
     constructor(props) {
         super(props);
@@ -9,7 +14,7 @@ export class Home extends React.Component {
         this.changePage = this.changePage.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    
+
     handleSubmit(event) {
         event.preventDefault();
     }
@@ -19,19 +24,30 @@ export class Home extends React.Component {
         document.getElementById(page).style.display = "block";
     }
     render() {
+
         return (
             <div>
-                <header>Coastal Quest</header>
+                <div id='header'>
+                    <header>Coastal Quest</header>
+                </div>
                 <div id='intro'>
                     <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG/1200px-Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG' width='50%'></img>
                 </div>
-                <form onSubmit = {this.handleSubmit}>
-                    <button onClick={() => this.changePage('explore')}>Let's Explore!</button>
-                    <button onClick={() => this.changePage('existingTeam')}>Log into Existing Team</button>
-                    <button onClick={() => this.changePage('adminHome')}>Temp Button to Admin Homepage</button>
-                </form>
+                <div id='buttons'>
+                    <form onSubmit = {this.handleSubmit}>
+                        <FormGroup>
+                            <InputGroup>
+                                <ButtonToolbar>
+                                    <Button onClick={() => this.changePage('explore')}>Let's Explore!</Button>
+                                    <Button onClick={() => this.changePage('existingTeam')}>Log into Existing Team</Button>
+                                    <Button onClick={() => this.changePage('adminHome')}>Temp Button to Admin Homepage</Button>
+                                </ButtonToolbar>
+                            </InputGroup>
+                        </FormGroup>
+                    </form>
+                </div>
             </div>
-         
+
         );
     }
 }
