@@ -24,7 +24,7 @@ export class Register extends React.Component {
             <div>
                 <header>REGISTER</header>
                 <div id='intro'>
-                    <form id='register'>
+                    <form id='register-form'>
                         <input id='register-item' type="text" placeholder="Enter email" /><br/>
                         <input id='register-item' type="text" placeholder="Enter access code" /><br/>
                         <select id='register-item'>

@@ -5,7 +5,7 @@ import { Home } from './home';
 import { Explore } from './explore';
 import { Leaderboard } from './leaderboard';
 import { ExistingTeam } from './existingTeam';
-import { Register } from './register';
+import { Register } from './register.js';
 import { AdminHome } from './admin/adminHome';
 
 export class Content extends React.Component{

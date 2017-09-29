@@ -24,7 +24,7 @@ export class Leaderboard extends React.Component {
             <div>
                 <header>REGISTER</header>
                 <div id='intro'>
-                    <form id='register'>
+                    <form id='leaderboard-form'>
                         <input id='leaderboard-item' type="text" placeholder="Search Hunts" />
                         <button id='leaderboard-item'>Search</button>
                     </form>

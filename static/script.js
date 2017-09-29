@@ -21888,17 +21888,17 @@
 
 	var React = _interopRequireWildcard(_react);
 
-	var _home = __webpack_require__(189);
+	var _home = __webpack_require__(185);
 
-	var _explore = __webpack_require__(185);
+	var _explore = __webpack_require__(186);
 
-	var _leaderboard = __webpack_require__(190);
+	var _leaderboard = __webpack_require__(187);
 
-	var _existingTeam = __webpack_require__(186);
+	var _existingTeam = __webpack_require__(188);
 
-	var _register = __webpack_require__(187);
+	var _register = __webpack_require__(189);
 
-	var _adminHome = __webpack_require__(188);
+	var _adminHome = __webpack_require__(190);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -21965,6 +21965,109 @@
 
 /***/ },
 /* 185 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.Home = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	// import { Socket } from './Socket';
+
+	var Home = exports.Home = function (_React$Component) {
+	    _inherits(Home, _React$Component);
+
+	    function Home(props) {
+	        _classCallCheck(this, Home);
+
+	        var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
+
+	        _this.changePage = _this.changePage.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Home, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            document.getElementById('home').style.display = "none";
+	            document.getElementById(page).style.display = "block";
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'header',
+	                    null,
+	                    'Coastal Quest'
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG/1200px-Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG', width: '50%' })
+	                ),
+	                React.createElement(
+	                    'form',
+	                    { onSubmit: this.handleSubmit },
+	                    React.createElement(
+	                        'button',
+	                        { onClick: function onClick() {
+	                                return _this2.changePage('explore');
+	                            } },
+	                        'Let\'s Explore!'
+	                    ),
+	                    React.createElement(
+	                        'button',
+	                        { onClick: function onClick() {
+	                                return _this2.changePage('existingTeam');
+	                            } },
+	                        'Log into Existing Team'
+	                    ),
+	                    React.createElement(
+	                        'button',
+	                        { onClick: function onClick() {
+	                                return _this2.changePage('adminHome');
+	                            } },
+	                        'Temp Button to Admin Homepage'
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Home;
+	}(React.Component);
+
+/***/ },
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22071,7 +22174,106 @@
 	}(React.Component);
 
 /***/ },
-/* 186 */
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.Leaderboard = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	// import { Socket } from './Socket';
+
+	var Leaderboard = exports.Leaderboard = function (_React$Component) {
+	    _inherits(Leaderboard, _React$Component);
+
+	    function Leaderboard(props) {
+	        _classCallCheck(this, Leaderboard);
+
+	        var _this = _possibleConstructorReturn(this, (Leaderboard.__proto__ || Object.getPrototypeOf(Leaderboard)).call(this, props));
+
+	        _this.changePage = _this.changePage.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Leaderboard, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            document.getElementById('leaderboard').style.display = "none";
+	            document.getElementById(page).style.display = "block";
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'header',
+	                    null,
+	                    'REGISTER'
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement(
+	                        'form',
+	                        { id: 'leaderboard-form' },
+	                        React.createElement('input', { id: 'leaderboard-item', type: 'text', placeholder: 'Search Hunts' }),
+	                        React.createElement(
+	                            'button',
+	                            { id: 'leaderboard-item' },
+	                            'Search'
+	                        )
+	                    ),
+	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/8/87/Maplestory_Leaderboard_2015-10.PNG', width: '30%' })
+	                ),
+	                React.createElement(
+	                    'form',
+	                    { onSubmit: this.handleSubmit },
+	                    React.createElement(
+	                        'button',
+	                        { onClick: function onClick() {
+	                                return _this2.changePage('home');
+	                            } },
+	                        'Home'
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Leaderboard;
+	}(React.Component);
+
+/***/ },
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22169,7 +22371,7 @@
 	}(React.Component);
 
 /***/ },
-/* 187 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22239,7 +22441,7 @@
 	                    { id: 'intro' },
 	                    React.createElement(
 	                        'form',
-	                        { id: 'register' },
+	                        { id: 'register-form' },
 	                        React.createElement('input', { id: 'register-item', type: 'text', placeholder: 'Enter email' }),
 	                        React.createElement('br', null),
 	                        React.createElement('input', { id: 'register-item', type: 'text', placeholder: 'Enter access code' }),
@@ -22290,7 +22492,7 @@
 	}(React.Component);
 
 /***/ },
-/* 188 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22344,208 +22546,6 @@
 	    }]);
 
 	    return AdminHome;
-	}(React.Component);
-
-/***/ },
-/* 189 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Home = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	// import { Socket } from './Socket';
-
-	var Home = exports.Home = function (_React$Component) {
-	    _inherits(Home, _React$Component);
-
-	    function Home(props) {
-	        _classCallCheck(this, Home);
-
-	        var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
-
-	        _this.changePage = _this.changePage.bind(_this);
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(Home, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('home').style.display = "none";
-	            document.getElementById(page).style.display = "block";
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
-
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'header',
-	                    null,
-	                    'Coastal Quest'
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'intro' },
-	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG/1200px-Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG', width: '50%' })
-	                ),
-	                React.createElement(
-	                    'form',
-	                    { onSubmit: this.handleSubmit },
-	                    React.createElement(
-	                        'button',
-	                        { onClick: function onClick() {
-	                                return _this2.changePage('explore');
-	                            } },
-	                        'Let\'s Explore!'
-	                    ),
-	                    React.createElement(
-	                        'button',
-	                        { onClick: function onClick() {
-	                                return _this2.changePage('existingTeam');
-	                            } },
-	                        'Log into Existing Team'
-	                    ),
-	                    React.createElement(
-	                        'button',
-	                        { onClick: function onClick() {
-	                                return _this2.changePage('adminHome');
-	                            } },
-	                        'Temp Button to Admin Homepage'
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return Home;
-	}(React.Component);
-
-/***/ },
-/* 190 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Leaderboard = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	// import { Socket } from './Socket';
-
-	var Leaderboard = exports.Leaderboard = function (_React$Component) {
-	    _inherits(Leaderboard, _React$Component);
-
-	    function Leaderboard(props) {
-	        _classCallCheck(this, Leaderboard);
-
-	        var _this = _possibleConstructorReturn(this, (Leaderboard.__proto__ || Object.getPrototypeOf(Leaderboard)).call(this, props));
-
-	        _this.changePage = _this.changePage.bind(_this);
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(Leaderboard, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('leaderboard').style.display = "none";
-	            document.getElementById(page).style.display = "block";
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
-
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'header',
-	                    null,
-	                    'REGISTER'
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'intro' },
-	                    React.createElement(
-	                        'form',
-	                        { id: 'register' },
-	                        React.createElement('input', { id: 'leaderboard-item', type: 'text', placeholder: 'Search Hunts' }),
-	                        React.createElement(
-	                            'button',
-	                            { id: 'leaderboard-item' },
-	                            'Search'
-	                        )
-	                    ),
-	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/8/87/Maplestory_Leaderboard_2015-10.PNG', width: '30%' })
-	                ),
-	                React.createElement(
-	                    'form',
-	                    { onSubmit: this.handleSubmit },
-	                    React.createElement(
-	                        'button',
-	                        { onClick: function onClick() {
-	                                return _this2.changePage('home');
-	                            } },
-	                        'Home'
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return Leaderboard;
 	}(React.Component);
 
 /***/ }
