@@ -40,7 +40,7 @@ export class AdminHunts extends React.Component {
                             <InputGroup>
                                 <ButtonToolbar>
                                     <Button onClick={() => this.changePage('adminLeaderboard')}>Edit</Button>
-                                    <Button onClick={() => this.changePage('adminHome')}>Create</Button>
+                                    <Button onClick={() => this.changePage('adminCreateHunt')}>Create</Button>
                                     <Button onClick={() => this.changePage('adminLeaderboard')}>Temp Button to Admin Leaderboard</Button>
                                     <Button onClick={() => this.changePage('adminHome')}>Temp Button to Admin Homepage</Button>
                                 </ButtonToolbar>
