@@ -42252,9 +42252,13 @@
 	                'div',
 	                null,
 	                React.createElement(
-	                    'header',
-	                    null,
-	                    'REGISTER'
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        'Register'
+	                    )
 	                ),
 	                React.createElement(
 	                    'div',
@@ -42377,9 +42381,13 @@
 	                'div',
 	                null,
 	                React.createElement(
-	                    'header',
-	                    null,
-	                    'Welcome, Admin!'
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        'Welcome, Admin!'
+	                    )
 	                ),
 	                React.createElement(
 	                    'div',
@@ -42474,9 +42482,13 @@
 	                'div',
 	                null,
 	                React.createElement(
-	                    'header',
-	                    null,
-	                    'Game Name'
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        'Game Name'
+	                    )
 	                ),
 	                React.createElement(
 	                    'div',

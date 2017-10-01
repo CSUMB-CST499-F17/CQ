@@ -22,7 +22,9 @@ export class Register extends React.Component {
     render() {
         return (
             <div>
-                <header>REGISTER</header>
+                <div id = 'header'>
+                    <header>Register</header>
+                </div>
                 <div id='intro'>
                     <form id='register-form'>
                         <input id='register-item' type="text" placeholder="Enter email" /><br/>

@@ -28,7 +28,9 @@ export class AdminHome extends React.Component {
     render() {
         return (
             <div>
-                <header>Welcome, Admin!</header>
+                <div id = 'header'>
+                    <header>Welcome, Admin!</header>
+                </div>
                 <div id='intro'>
                     <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Warning_notice_-_EVIL_ADMIN.svg/2000px-Warning_notice_-_EVIL_ADMIN.svg.png' width='30%'></img>
                 </div>

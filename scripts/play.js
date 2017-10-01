@@ -20,7 +20,9 @@ export class Play extends React.Component {
     render() {
         return (
             <div>
-                <header>Game Name</header>
+                <div id = 'header'>
+                    <header>Game Name</header>
+                </div>
                 <div id='intro'>
                     <form>
                         <FormGroup>
