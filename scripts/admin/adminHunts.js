@@ -8,7 +8,7 @@ import { FormGroup } from 'react-bootstrap';
 import { ButtonToolbar } from 'react-bootstrap';
 import { ButtonGroup } from 'react-bootstrap';
 
-export class AdminHome extends React.Component {
+export class AdminHunts extends React.Component {
         constructor(props) {
         super(props);
 
@@ -21,7 +21,7 @@ export class AdminHome extends React.Component {
     }
     //changes the display of the pages when button is pressed
     changePage(page){
-        document.getElementById('adminHome').style.display = "none";
+        document.getElementById('adminHunts').style.display = "none";
         document.getElementById(page).style.display = "block";
     }
 
@@ -29,18 +29,20 @@ export class AdminHome extends React.Component {
         return (
             <div>
                 <div id = 'header'>
-                    <header>Welcome, Admin!</header>
+                    <header>Hunts</header>
                 </div>
                 <div id='intro'>
-                    <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Warning_notice_-_EVIL_ADMIN.svg/2000px-Warning_notice_-_EVIL_ADMIN.svg.png' width='30%'></img>
+                    <img src='https://upload.wikimedia.org/wikipedia/commons/8/87/Maplestory_Leaderboard_2015-10.PNG' width='30%'></img>
                 </div>
                 <div id='buttons'>
                     <form onSubmit = {this.handleSubmit}>
                         <FormGroup>
                             <InputGroup>
                                 <ButtonToolbar>
+                                    <Button onClick={() => this.changePage('adminLeaderboard')}>Edit</Button>
+                                    <Button onClick={() => this.changePage('adminHome')}>Create</Button>
                                     <Button onClick={() => this.changePage('adminLeaderboard')}>Temp Button to Admin Leaderboard</Button>
-                                    <Button onClick={() => this.changePage('adminHunts')}>Temp Button to Admin Hunts Page</Button>
+                                    <Button onClick={() => this.changePage('adminHome')}>Temp Button to Admin Homepage</Button>
                                 </ButtonToolbar>
                             </InputGroup>
                         </FormGroup>
