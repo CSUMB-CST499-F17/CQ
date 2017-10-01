@@ -25,7 +25,7 @@ export class Play extends React.Component {
                     <form>
                         <FormGroup>
                             <div>
-                                <p><header>Current Objective Intro.</header> 
+                                <p>Current Objective Intro.
                                     This is Where Database will produce the Scavenger Hunt Question
                                 </p>
                             </div>

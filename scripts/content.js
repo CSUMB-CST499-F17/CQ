@@ -8,6 +8,7 @@ import { ExistingTeam } from './existingTeam';
 import { Register } from './register';
 import { Play } from './play';
 import { AdminHome } from './admin/adminHome';
+import { AdminLeaderboard } from './admin/adminLeaderboard';
 
 export class Content extends React.Component{
 
@@ -34,6 +35,9 @@ export class Content extends React.Component{
                 </div>
                 <div id = 'adminHome' style={{display:'none'}}>
                     <AdminHome/>
+                </div>
+                <div id = 'adminLeaderboard' style={{display:'none'}}>
+                    <AdminLeaderboard/>
                 </div>
                 
             </div>

@@ -21902,6 +21902,8 @@
 
 	var _adminHome = __webpack_require__(444);
 
+	var _adminLeaderboard = __webpack_require__(446);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21962,6 +21964,11 @@
 	                    'div',
 	                    { id: 'adminHome', style: { display: 'none' } },
 	                    React.createElement(_adminHome.AdminHome, null)
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'adminLeaderboard', style: { display: 'none' } },
+	                    React.createElement(_adminLeaderboard.AdminLeaderboard, null)
 	                )
 	            );
 	        }
@@ -42321,6 +42328,10 @@
 
 	var React = _interopRequireWildcard(_react);
 
+	var _reactBootstrap = __webpack_require__(186);
+
+	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -42328,19 +42339,40 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	// import { Socket } from './Socket';
+
 
 	var AdminHome = exports.AdminHome = function (_React$Component) {
 	    _inherits(AdminHome, _React$Component);
 
-	    function AdminHome() {
+	    function AdminHome(props) {
 	        _classCallCheck(this, AdminHome);
 
-	        return _possibleConstructorReturn(this, (AdminHome.__proto__ || Object.getPrototypeOf(AdminHome)).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, (AdminHome.__proto__ || Object.getPrototypeOf(AdminHome)).call(this, props));
+
+	        _this.changePage = _this.changePage.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
 	    }
 
 	    _createClass(AdminHome, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            document.getElementById('adminHome').style.display = "none";
+	            document.getElementById(page).style.display = "block";
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var _this2 = this;
+
 	            return React.createElement(
 	                'div',
 	                null,
@@ -42352,7 +42384,34 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'intro' },
-	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Warning_notice_-_EVIL_ADMIN.svg/2000px-Warning_notice_-_EVIL_ADMIN.svg.png', width: '50%' })
+	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Warning_notice_-_EVIL_ADMIN.svg/2000px-Warning_notice_-_EVIL_ADMIN.svg.png', width: '30%' })
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'buttons' },
+	                    React.createElement(
+	                        'form',
+	                        { onSubmit: this.handleSubmit },
+	                        React.createElement(
+	                            _reactBootstrap.FormGroup,
+	                            null,
+	                            React.createElement(
+	                                _reactBootstrap.InputGroup,
+	                                null,
+	                                React.createElement(
+	                                    _reactBootstrap.ButtonToolbar,
+	                                    null,
+	                                    React.createElement(
+	                                        _reactBootstrap.Button,
+	                                        { onClick: function onClick() {
+	                                                return _this2.changePage('adminLeaderboard');
+	                                            } },
+	                                        'Temp Button to Admin Leaderboard'
+	                                    )
+	                                )
+	                            )
+	                        )
+	                    )
 	                )
 	            );
 	        }
@@ -42434,12 +42493,7 @@
 	                                React.createElement(
 	                                    'p',
 	                                    null,
-	                                    React.createElement(
-	                                        'header',
-	                                        null,
-	                                        'Current Objective Intro.'
-	                                    ),
-	                                    'This is Where Database will produce the Scavenger Hunt Question'
+	                                    'Current Objective Intro. This is Where Database will produce the Scavenger Hunt Question'
 	                                )
 	                            ),
 	                            React.createElement(
@@ -42465,6 +42519,143 @@
 	    }]);
 
 	    return Play;
+	}(React.Component);
+
+/***/ },
+/* 446 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.AdminLeaderboard = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _reactBootstrap = __webpack_require__(186);
+
+	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	// import { Socket } from './Socket';
+
+
+	// import { Socket } from './Socket';
+
+	var AdminLeaderboard = exports.AdminLeaderboard = function (_React$Component) {
+	    _inherits(AdminLeaderboard, _React$Component);
+
+	    function AdminLeaderboard(props) {
+	        _classCallCheck(this, AdminLeaderboard);
+
+	        var _this = _possibleConstructorReturn(this, (AdminLeaderboard.__proto__ || Object.getPrototypeOf(AdminLeaderboard)).call(this, props));
+
+	        _this.changePage = _this.changePage.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(AdminLeaderboard, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            document.getElementById('adminLeaderboard').style.display = "none";
+	            document.getElementById(page).style.display = "block";
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        'Admin Leaderboard Page'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'search' },
+	                    React.createElement(
+	                        'form',
+	                        { id: 'adminLeaderboard-form' },
+	                        React.createElement(
+	                            _reactBootstrap.FormGroup,
+	                            null,
+	                            React.createElement(
+	                                _reactBootstrap.InputGroup,
+	                                null,
+	                                React.createElement('input', { id: 'adminLeaderboard-item', type: 'text', placeholder: 'Search Hunts' }),
+	                                React.createElement(
+	                                    _reactBootstrap.ButtonToolbar,
+	                                    null,
+	                                    React.createElement(
+	                                        _reactBootstrap.Button,
+	                                        { id: 'adminLeaderboard-item' },
+	                                        'Search'
+	                                    )
+	                                )
+	                            )
+	                        )
+	                    )
+	                ),
+	                React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/8/87/Maplestory_Leaderboard_2015-10.PNG', width: '30%' }),
+	                React.createElement(
+	                    'div',
+	                    { id: 'buttons' },
+	                    React.createElement(
+	                        'form',
+	                        { onSubmit: this.handleSubmit },
+	                        React.createElement(
+	                            _reactBootstrap.FormGroup,
+	                            null,
+	                            React.createElement(
+	                                _reactBootstrap.InputGroup,
+	                                null,
+	                                React.createElement(
+	                                    _reactBootstrap.ButtonToolbar,
+	                                    null,
+	                                    React.createElement(
+	                                        _reactBootstrap.Button,
+	                                        { onClick: function onClick() {
+	                                                return _this2.changePage('adminHome');
+	                                            } },
+	                                        'Temp Button to Admin Homepage'
+	                                    )
+	                                )
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return AdminLeaderboard;
 	}(React.Component);
 
 /***/ }
