@@ -41,6 +41,7 @@ export class Home extends React.Component {
                                     <Button onClick={() => this.changePage('explore')}>Let's Explore!</Button>
                                     <Button onClick={() => this.changePage('existingTeam')}>Log into Existing Team</Button>
                                     <Button onClick={() => this.changePage('adminHome')}>Temp Button to Admin Homepage</Button>
+                                    <Button onClick={() => this.changePage('play')}>Temp Button to Play Page</Button>
                                 </ButtonToolbar>
                             </InputGroup>
                         </FormGroup>

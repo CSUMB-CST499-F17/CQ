@@ -21898,6 +21898,8 @@
 
 	var _register = __webpack_require__(443);
 
+	var _play = __webpack_require__(445);
+
 	var _adminHome = __webpack_require__(444);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -21950,6 +21952,11 @@
 	                    'div',
 	                    { id: 'register', style: { display: 'none' } },
 	                    React.createElement(_register.Register, null)
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'play', style: { display: 'none' } },
+	                    React.createElement(_play.Play, null)
 	                ),
 	                React.createElement(
 	                    'div',
@@ -22077,6 +22084,13 @@
 	                                                return _this2.changePage('adminHome');
 	                                            } },
 	                                        'Temp Button to Admin Homepage'
+	                                    ),
+	                                    React.createElement(
+	                                        _reactBootstrap.Button,
+	                                        { onClick: function onClick() {
+	                                                return _this2.changePage('play');
+	                                            } },
+	                                        'Temp Button to Play Page'
 	                                    )
 	                                )
 	                            )
@@ -42345,6 +42359,112 @@
 	    }]);
 
 	    return AdminHome;
+	}(React.Component);
+
+/***/ },
+/* 445 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.Play = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _reactBootstrap = __webpack_require__(186);
+
+	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Needs:
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               To be connected to Database
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Hint options
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               */
+
+	// import { Socket } from './Socket';
+
+
+	// import { Socket } from './Socket';
+
+	var Play = exports.Play = function (_React$Component) {
+	    _inherits(Play, _React$Component);
+
+	    function Play() {
+	        _classCallCheck(this, Play);
+
+	        return _possibleConstructorReturn(this, (Play.__proto__ || Object.getPrototypeOf(Play)).apply(this, arguments));
+	    }
+
+	    _createClass(Play, [{
+	        key: 'render',
+	        value: function render() {
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'header',
+	                    null,
+	                    'Game Name'
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement(
+	                        'form',
+	                        null,
+	                        React.createElement(
+	                            _reactBootstrap.FormGroup,
+	                            null,
+	                            React.createElement(
+	                                'div',
+	                                null,
+	                                React.createElement(
+	                                    'p',
+	                                    null,
+	                                    React.createElement(
+	                                        'header',
+	                                        null,
+	                                        'Current Objective Intro.'
+	                                    ),
+	                                    'This is Where Database will produce the Scavenger Hunt Question'
+	                                )
+	                            ),
+	                            React.createElement(
+	                                _reactBootstrap.InputGroup,
+	                                null,
+	                                React.createElement(
+	                                    _reactBootstrap.ButtonToolbar,
+	                                    null,
+	                                    React.createElement('input', { id: 'play-item', type: 'text', placeholder: 'Enter Answer' }),
+	                                    React.createElement('br', null),
+	                                    React.createElement(
+	                                        _reactBootstrap.Button,
+	                                        null,
+	                                        'Submit'
+	                                    )
+	                                )
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Play;
 	}(React.Component);
 
 /***/ }
