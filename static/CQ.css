@@ -51,3 +51,10 @@ body {
     justify-content: center;
     margin: 15px;
 }
+#question {
+    text-align:center;
+    justify-content: center;
+    width: 600px;
+    height: 400px;
+    overflow: scroll;
+}
