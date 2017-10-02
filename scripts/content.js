@@ -12,6 +12,7 @@ import { AdminLeaderboard } from './admin/adminLeaderboard';
 import { AdminHunts } from './admin/adminHunts';
 import { AdminCreateHunt } from './admin/adminCreateHunt';
 import { AdminEditHunt } from './admin/adminEditHunt';
+import { Admins } from './admin/admins';
 
 export class Content extends React.Component{
 
@@ -50,6 +51,9 @@ export class Content extends React.Component{
                 </div>
                 <div id = 'adminEditHunt' style={{display:'none'}}>
                     <AdminEditHunt/>
+                </div>
+                <div id = 'admins' style={{display:'none'}}>
+                    <Admins/>
                 </div>
                 
             </div>
