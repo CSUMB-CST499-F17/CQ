@@ -8,10 +8,8 @@ import { FormGroup } from 'react-bootstrap';
 import { ButtonToolbar } from 'react-bootstrap';
 import { ButtonGroup } from 'react-bootstrap';
 
-// import { Socket } from './Socket';
-
-export class Admins extends React.Component {
-    constructor(props) {
+export class AdminCreate extends React.Component {
+        constructor(props) {
         super(props);
 
         this.changePage = this.changePage.bind(this);
@@ -23,7 +21,7 @@ export class Admins extends React.Component {
     }
     //changes the display of the pages when button is pressed
     changePage(page){
-        document.getElementById('admins').style.display = "none";
+        document.getElementById('adminCreate').style.display = "none";
         document.getElementById(page).style.display = "block";
     }
 
@@ -31,18 +29,30 @@ export class Admins extends React.Component {
         return (
             <div>
                 <div id = 'header'>
-                    <header>Administrators</header>
+                    <header>Create Admin</header>
                 </div>
                 <div id='intro'>
-                    List of Admins and option to edit admins goes here<br/>
-                    <Button onClick={() => this.changePage('adminCreate')}>Create New Admin</Button>
+                    <div id='create'>
+                        <form id='create-form'>
+                            <FormGroup>
+                                <InputGroup>
+                                    <input id='create-item' type="text" placeholder="Email" /><br/>
+                                    <input id='create-item' type="text" placeholder="Team Name" /><br/>
+                                    <input id='create-item' type="text" placeholder="Access Code" /><br/>
+                                    <input id='create-item' type="text" placeholder="Image URL" />
+                                    <ButtonToolbar>
+                                        <Button id='add-admin'>Add Admin</Button>
+                                    </ButtonToolbar>
+                                </InputGroup>
+                            </FormGroup>
+                        </form>
+                    </div>
                 </div>
                 <div id='buttons'>
                     <form onSubmit = {this.handleSubmit}>
                         <FormGroup>
                             <InputGroup>
                                 <ButtonToolbar>
-                                    <Button onClick={() => this.changePage('adminHunts')}>Hunts</Button>
                                     <Button onClick={() => this.changePage('adminLeaderboard')}>Temp Button to Admin Leaderboard</Button>
                                     <Button onClick={() => this.changePage('adminHome')}>Temp Button to Admin Homepage</Button>
                                 </ButtonToolbar>
@@ -51,7 +61,7 @@ export class Admins extends React.Component {
                     </form>
                 </div>
             </div>
-
+         
         );
     }
 }
