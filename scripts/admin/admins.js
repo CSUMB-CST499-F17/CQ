@@ -42,19 +42,6 @@ export class Admins extends React.Component {
                     List of Admins and option to edit admins goes here<br/>
                     <Button onClick={() => this.changePage('adminCreate')}>Create New Admin</Button>
                 </div>
-                <div id='buttons'>
-                    <form onSubmit = {this.handleSubmit}>
-                        <FormGroup>
-                            <InputGroup>
-                                <ButtonToolbar>
-                                    <Button onClick={() => this.changePage('adminHunts')}>Hunts</Button>
-                                    <Button onClick={() => this.changePage('adminLeaderboard')}>Temp Button to Admin Leaderboard</Button>
-                                    <Button onClick={() => this.changePage('adminHome')}>Temp Button to Admin Homepage</Button>
-                                </ButtonToolbar>
-                            </InputGroup>
-                        </FormGroup>
-                    </form>
-                </div>
             </div>
 
         );

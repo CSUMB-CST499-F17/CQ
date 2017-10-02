@@ -39,17 +39,6 @@ export class AdminHome extends React.Component {
                 <div id='intro'>
                     <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Warning_notice_-_EVIL_ADMIN.svg/2000px-Warning_notice_-_EVIL_ADMIN.svg.png' width='30%'></img>
                 </div>
-                <div id='buttons'>
-                    <form onSubmit = {this.handleSubmit}>
-                        <FormGroup>
-                            <InputGroup>
-                                <ButtonToolbar>
-                                    <Button onClick={() => this.changePage('admins')}>Settings</Button>
-                                </ButtonToolbar>
-                            </InputGroup>
-                        </FormGroup>
-                    </form>
-                </div>
             </div>
          
         );

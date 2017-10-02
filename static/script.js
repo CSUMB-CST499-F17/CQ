@@ -21896,23 +21896,23 @@
 
 	var _existingTeam = __webpack_require__(442);
 
-	var _register = __webpack_require__(443);
+	var _register = __webpack_require__(497);
 
-	var _play = __webpack_require__(444);
+	var _play = __webpack_require__(498);
 
-	var _adminHome = __webpack_require__(445);
+	var _adminHome = __webpack_require__(499);
 
-	var _adminLeaderboard = __webpack_require__(447);
+	var _adminLeaderboard = __webpack_require__(501);
 
-	var _adminHunts = __webpack_require__(448);
+	var _adminHunts = __webpack_require__(502);
 
-	var _adminCreateHunt = __webpack_require__(449);
+	var _adminCreateHunt = __webpack_require__(503);
 
-	var _adminEditHunt = __webpack_require__(450);
+	var _adminEditHunt = __webpack_require__(504);
 
-	var _admins = __webpack_require__(451);
+	var _admins = __webpack_require__(505);
 
-	var _adminCreate = __webpack_require__(452);
+	var _adminCreate = __webpack_require__(506);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -42118,7 +42118,7 @@
 
 	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
 
-	var _Socket = __webpack_require__(453);
+	var _Socket = __webpack_require__(443);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -42240,1438 +42240,11 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Register = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	// import { Socket } from './Socket';
-
-	var Register = exports.Register = function (_React$Component) {
-	    _inherits(Register, _React$Component);
-
-	    function Register(props) {
-	        _classCallCheck(this, Register);
-
-	        var _this = _possibleConstructorReturn(this, (Register.__proto__ || Object.getPrototypeOf(Register)).call(this, props));
-
-	        _this.changePage = _this.changePage.bind(_this);
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(Register, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('register').style.display = "none";
-	            document.getElementById(page).style.display = "block";
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
-
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'header' },
-	                    React.createElement(
-	                        'header',
-	                        null,
-	                        'Register'
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'intro' },
-	                    React.createElement(
-	                        'form',
-	                        { id: 'register-form' },
-	                        React.createElement('input', { id: 'register-item', type: 'text', placeholder: 'Enter email' }),
-	                        React.createElement('br', null),
-	                        React.createElement('input', { id: 'register-item', type: 'text', placeholder: 'Enter access code' }),
-	                        React.createElement('br', null),
-	                        React.createElement(
-	                            'select',
-	                            { id: 'register-item' },
-	                            React.createElement(
-	                                'option',
-	                                null,
-	                                'Hunt One'
-	                            ),
-	                            React.createElement(
-	                                'option',
-	                                null,
-	                                'Hunt Two'
-	                            ),
-	                            React.createElement(
-	                                'option',
-	                                null,
-	                                'Hunt Three'
-	                            )
-	                        ),
-	                        React.createElement('br', null),
-	                        React.createElement(
-	                            'button',
-	                            { id: 'register-item' },
-	                            'Enter!'
-	                        )
-	                    )
-	                ),
-	                React.createElement(
-	                    'form',
-	                    { onSubmit: this.handleSubmit },
-	                    React.createElement(
-	                        'button',
-	                        { onClick: function onClick() {
-	                                return _this2.changePage('home');
-	                            } },
-	                        'Home'
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return Register;
-	}(React.Component);
-
-/***/ },
-/* 444 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Play = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _reactBootstrap = __webpack_require__(186);
-
-	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Needs:
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               To be connected to Database
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Hint options
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               */
-
-	// import { Socket } from './Socket';
-
-
-	// import { Socket } from './Socket';
-
-	var Play = exports.Play = function (_React$Component) {
-	    _inherits(Play, _React$Component);
-
-	    function Play() {
-	        _classCallCheck(this, Play);
-
-	        return _possibleConstructorReturn(this, (Play.__proto__ || Object.getPrototypeOf(Play)).apply(this, arguments));
-	    }
-
-	    _createClass(Play, [{
-	        key: 'render',
-	        value: function render() {
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'header' },
-	                    React.createElement(
-	                        'header',
-	                        null,
-	                        'Game Name'
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'intro' },
-	                    React.createElement(
-	                        'form',
-	                        null,
-	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            null,
-	                            React.createElement(
-	                                'div',
-	                                null,
-	                                React.createElement(
-	                                    'p',
-	                                    null,
-	                                    'Current Objective Intro. This is Where Database will produce the Scavenger Hunt Question'
-	                                )
-	                            ),
-	                            React.createElement(
-	                                _reactBootstrap.InputGroup,
-	                                null,
-	                                React.createElement(
-	                                    _reactBootstrap.ButtonToolbar,
-	                                    null,
-	                                    React.createElement('input', { id: 'play-item', type: 'text', placeholder: 'Enter Answer' }),
-	                                    React.createElement('br', null),
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        null,
-	                                        'Submit'
-	                                    )
-	                                )
-	                            )
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return Play;
-	}(React.Component);
-
-/***/ },
-/* 445 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.AdminHome = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _reactBootstrap = __webpack_require__(186);
-
-	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
-
-	var _Socket = __webpack_require__(453);
-
-	var _navBar = __webpack_require__(446);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var AdminHome = exports.AdminHome = function (_React$Component) {
-	    _inherits(AdminHome, _React$Component);
-
-	    function AdminHome(props) {
-	        _classCallCheck(this, AdminHome);
-
-	        var _this = _possibleConstructorReturn(this, (AdminHome.__proto__ || Object.getPrototypeOf(AdminHome)).call(this, props));
-
-	        _this.changePage = _this.changePage.bind(_this);
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(AdminHome, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('adminHome').style.display = "none";
-	            document.getElementById(page).style.display = "block";
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
-
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'nav-bar' },
-	                    React.createElement(_navBar.NavBar, null)
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'header' },
-	                    React.createElement(
-	                        'header',
-	                        null,
-	                        'Welcome, Admin!'
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'intro' },
-	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Warning_notice_-_EVIL_ADMIN.svg/2000px-Warning_notice_-_EVIL_ADMIN.svg.png', width: '30%' })
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'buttons' },
-	                    React.createElement(
-	                        'form',
-	                        { onSubmit: this.handleSubmit },
-	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            null,
-	                            React.createElement(
-	                                _reactBootstrap.InputGroup,
-	                                null,
-	                                React.createElement(
-	                                    _reactBootstrap.ButtonToolbar,
-	                                    null,
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('admins');
-	                                            } },
-	                                        'Settings'
-	                                    )
-	                                )
-	                            )
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return AdminHome;
-	}(React.Component);
-
-/***/ },
-/* 446 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.NavBar = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _Socket = __webpack_require__(453);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var NavBar = exports.NavBar = function (_React$Component) {
-	    _inherits(NavBar, _React$Component);
-
-	    function NavBar(props) {
-	        _classCallCheck(this, NavBar);
-
-	        var _this = _possibleConstructorReturn(this, (NavBar.__proto__ || Object.getPrototypeOf(NavBar)).call(this, props));
-
-	        _this.changePage = _this.changePage.bind(_this);
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(NavBar, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('adminHome').style.display = "none";
-	            document.getElementById('adminLeaderboard').style.display = "none";
-	            document.getElementById('adminHunts').style.display = "none";
-	            document.getElementById('admins').style.display = "none";
-	            document.getElementById(page).style.display = "block";
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
-
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'topnav' },
-	                    React.createElement(
-	                        'a',
-	                        { onClick: function onClick() {
-	                                return _this2.changePage('adminHome');
-	                            } },
-	                        'Home'
-	                    ),
-	                    React.createElement(
-	                        'a',
-	                        { onClick: function onClick() {
-	                                return _this2.changePage('adminLeaderboard');
-	                            } },
-	                        'Leaderboard'
-	                    ),
-	                    React.createElement(
-	                        'a',
-	                        { onClick: function onClick() {
-	                                return _this2.changePage('adminHunts');
-	                            } },
-	                        'Hunts'
-	                    ),
-	                    React.createElement(
-	                        'a',
-	                        { onClick: function onClick() {
-	                                return _this2.changePage('admins');
-	                            } },
-	                        'Settings'
-	                    ),
-	                    React.createElement(
-	                        'a',
-	                        null,
-	                        'Logout'
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return NavBar;
-	}(React.Component);
-
-/***/ },
-/* 447 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.AdminLeaderboard = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _reactBootstrap = __webpack_require__(186);
-
-	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
-
-	var _Socket = __webpack_require__(453);
-
-	var _navBar = __webpack_require__(446);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	// import { Socket } from './Socket';
-
-	var AdminLeaderboard = exports.AdminLeaderboard = function (_React$Component) {
-	    _inherits(AdminLeaderboard, _React$Component);
-
-	    function AdminLeaderboard(props) {
-	        _classCallCheck(this, AdminLeaderboard);
-
-	        var _this = _possibleConstructorReturn(this, (AdminLeaderboard.__proto__ || Object.getPrototypeOf(AdminLeaderboard)).call(this, props));
-
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(AdminLeaderboard, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'nav-bar' },
-	                    React.createElement(_navBar.NavBar, null)
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'header' },
-	                    React.createElement(
-	                        'header',
-	                        null,
-	                        'Admin Leaderboard Page'
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'search' },
-	                    React.createElement(
-	                        'form',
-	                        { id: 'adminLeaderboard-form' },
-	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            null,
-	                            React.createElement(
-	                                _reactBootstrap.InputGroup,
-	                                null,
-	                                React.createElement('input', { id: 'adminLeaderboard-item', type: 'text', placeholder: 'Search Hunts' }),
-	                                React.createElement(
-	                                    _reactBootstrap.ButtonToolbar,
-	                                    null,
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { id: 'adminLeaderboard-item' },
-	                                        'Search'
-	                                    )
-	                                )
-	                            )
-	                        )
-	                    )
-	                ),
-	                React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/8/87/Maplestory_Leaderboard_2015-10.PNG', width: '30%' }),
-	                React.createElement(
-	                    'div',
-	                    { id: 'buttons' },
-	                    React.createElement(
-	                        'form',
-	                        { onSubmit: this.handleSubmit },
-	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            null,
-	                            React.createElement(
-	                                _reactBootstrap.InputGroup,
-	                                null,
-	                                React.createElement(_reactBootstrap.ButtonToolbar, null)
-	                            )
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return AdminLeaderboard;
-	}(React.Component);
-
-/***/ },
-/* 448 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.AdminHunts = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _reactBootstrap = __webpack_require__(186);
-
-	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
-
-	var _Socket = __webpack_require__(453);
-
-	var _navBar = __webpack_require__(446);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var AdminHunts = exports.AdminHunts = function (_React$Component) {
-	    _inherits(AdminHunts, _React$Component);
-
-	    function AdminHunts(props) {
-	        _classCallCheck(this, AdminHunts);
-
-	        var _this = _possibleConstructorReturn(this, (AdminHunts.__proto__ || Object.getPrototypeOf(AdminHunts)).call(this, props));
-
-	        _this.changePage = _this.changePage.bind(_this);
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(AdminHunts, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('adminHunts').style.display = "none";
-	            document.getElementById(page).style.display = "block";
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
-
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'nav-bar' },
-	                    React.createElement(_navBar.NavBar, null)
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'header' },
-	                    React.createElement(
-	                        'header',
-	                        null,
-	                        'Hunts'
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'intro' },
-	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/8/87/Maplestory_Leaderboard_2015-10.PNG', width: '30%' })
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'buttons' },
-	                    React.createElement(
-	                        'form',
-	                        { onSubmit: this.handleSubmit },
-	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            null,
-	                            React.createElement(
-	                                _reactBootstrap.InputGroup,
-	                                null,
-	                                React.createElement(
-	                                    _reactBootstrap.ButtonToolbar,
-	                                    null,
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('adminEditHunt');
-	                                            } },
-	                                        'Edit'
-	                                    ),
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('adminCreateHunt');
-	                                            } },
-	                                        'Create'
-	                                    )
-	                                )
-	                            )
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return AdminHunts;
-	}(React.Component);
-
-/***/ },
-/* 449 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.AdminCreateHunt = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _reactBootstrap = __webpack_require__(186);
-
-	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	// import { Socket } from './Socket';
-
-
-	var AdminCreateHunt = exports.AdminCreateHunt = function (_React$Component) {
-	    _inherits(AdminCreateHunt, _React$Component);
-
-	    function AdminCreateHunt(props) {
-	        _classCallCheck(this, AdminCreateHunt);
-
-	        var _this = _possibleConstructorReturn(this, (AdminCreateHunt.__proto__ || Object.getPrototypeOf(AdminCreateHunt)).call(this, props));
-
-	        _this.state = {
-	            'count': 0,
-	            'limit': 25
-	        };
-
-	        _this.changePage = _this.changePage.bind(_this);
-	        _this.addQuestion = _this.addQuestion.bind(_this);
-	        _this.printQuestion = _this.printQuestion.bind(_this);
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(AdminCreateHunt, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('adminCreateHunt').style.display = "none";
-	            document.getElementById(page).style.display = "block";
-	        }
-	    }, {
-	        key: 'addQuestion',
-	        value: function addQuestion() {
-	            // Get the quiz form element
-	            var question = document.getElementById('question');
-
-	            // Good to do error checking, make sure we managed to get something
-	            if (question) {
-	                if (this.state.count < this.state.limit) {
-	                    // Create a new <p> element
-	                    var newP = document.createElement('div');
-	                    newP.innerHTML = 'Question ' + (this.state.count + 1);
-
-	                    // Create the new text box
-	                    var newInput = document.createElement('input');
-	                    newInput.type = 'text';
-	                    newInput.name = 'questions0';
-	                    newInput.id = 'Q' + this.state.count + 'desc';
-	                    newInput.placeholder = "Question";
-	                    var newInput2 = document.createElement('input');
-	                    newInput2.type = 'text';
-	                    newInput2.name = 'questions1';
-	                    newInput2.id = 'Q' + this.state.count + 'hint1';
-	                    newInput2.placeholder = "Hint One";
-	                    var newInput3 = document.createElement('input');
-	                    newInput3.type = 'text';
-	                    newInput3.name = 'questions1';
-	                    newInput3.id = 'Q' + this.state.count + 'hint2';
-	                    newInput3.placeholder = "Hint One";
-
-	                    // Good practice to do error checking
-	                    if (newInput && newP) {
-	                        // Add the new elements to the form
-	                        question.appendChild(newP);
-	                        question.appendChild(newInput);
-	                        question.appendChild(newInput2);
-	                        question.appendChild(newInput3);
-	                        // Increment the count
-	                        this.state.count++;
-	                    }
-	                } else {
-	                    alert('Question limit reached');
-	                }
-	            }
-	        }
-	    }, {
-	        key: 'printQuestion',
-	        value: function printQuestion() {
-	            var i;
-	            for (i = 0; i < this.state.count; i++) {
-	                window.alert(document.getElementById("Q" + i + "desc").value + " , " + document.getElementById("Q" + i + "hint1").value + " , " + document.getElementById("Q" + i + "hint2").value);
-	            }
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
-
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'header' },
-	                    React.createElement(
-	                        'header',
-	                        null,
-	                        'Create Hunt'
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'intro' },
-	                    React.createElement(
-	                        'div',
-	                        { id: 'create' },
-	                        React.createElement(
-	                            'form',
-	                            { id: 'create-form' },
-	                            React.createElement(
-	                                _reactBootstrap.FormGroup,
-	                                null,
-	                                React.createElement(
-	                                    _reactBootstrap.InputGroup,
-	                                    null,
-	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Game Name' }),
-	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Start Date' }),
-	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'End Date' }),
-	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Image URL' }),
-	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Description' }),
-	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Hunt Type' }),
-	                                    React.createElement(
-	                                        'div',
-	                                        { id: 'question', action: '', method: 'POST' },
-	                                        React.createElement('input', { type: 'button', value: 'Add question', onClick: function onClick() {
-	                                                return _this2.addQuestion();
-	                                            } }),
-	                                        React.createElement('div', null)
-	                                    ),
-	                                    React.createElement('input', { type: 'button', value: 'Temp Print question(Checks to make sure values are being passed)', onClick: function onClick() {
-	                                            return _this2.printQuestion();
-	                                        } }),
-	                                    React.createElement(
-	                                        _reactBootstrap.ButtonToolbar,
-	                                        null,
-	                                        React.createElement(
-	                                            _reactBootstrap.Button,
-	                                            { id: 'create-item' },
-	                                            'Save'
-	                                        ),
-	                                        React.createElement(
-	                                            _reactBootstrap.Button,
-	                                            { id: 'create-item' },
-	                                            'Publish'
-	                                        )
-	                                    )
-	                                )
-	                            )
-	                        )
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'buttons' },
-	                    React.createElement(
-	                        'form',
-	                        { onSubmit: this.handleSubmit },
-	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            null,
-	                            React.createElement(
-	                                _reactBootstrap.InputGroup,
-	                                null,
-	                                React.createElement(
-	                                    _reactBootstrap.ButtonToolbar,
-	                                    null,
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('adminLeaderboard');
-	                                            } },
-	                                        'Temp Button to Admin Leaderboard'
-	                                    ),
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('adminHome');
-	                                            } },
-	                                        'Temp Button to Admin Homepage'
-	                                    )
-	                                )
-	                            )
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return AdminCreateHunt;
-	}(React.Component);
-
-/***/ },
-/* 450 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.AdminEditHunt = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _reactBootstrap = __webpack_require__(186);
-
-	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	// import { Socket } from './Socket';
-
-
-	var AdminEditHunt = exports.AdminEditHunt = function (_React$Component) {
-	    _inherits(AdminEditHunt, _React$Component);
-
-	    function AdminEditHunt(props) {
-	        _classCallCheck(this, AdminEditHunt);
-
-	        var _this = _possibleConstructorReturn(this, (AdminEditHunt.__proto__ || Object.getPrototypeOf(AdminEditHunt)).call(this, props));
-
-	        _this.state = {
-	            'count': 0,
-	            'limit': 25
-	        };
-
-	        _this.changePage = _this.changePage.bind(_this);
-	        _this.addQuestion = _this.addQuestion.bind(_this);
-	        _this.printQuestion = _this.printQuestion.bind(_this);
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(AdminEditHunt, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('adminEditHunt').style.display = "none";
-	            document.getElementById(page).style.display = "block";
-	        }
-	    }, {
-	        key: 'addQuestion',
-	        value: function addQuestion() {
-	            // Get the quiz form element
-	            var question = document.getElementById('questionEdit');
-
-	            // Good to do error checking, make sure we managed to get something
-	            if (question) {
-	                if (this.state.count < this.state.limit) {
-	                    // Edit a new <p> element
-	                    var newP = document.createElement('div');
-	                    newP.innerHTML = 'Question ' + (this.state.count + 1);
-
-	                    // Edit the new text box
-	                    var newInput = document.createElement('input');
-	                    newInput.type = 'text';
-	                    newInput.id = 'Q' + this.state.count + 'desc';
-	                    newInput.placeholder = "Question";
-	                    var newInput2 = document.createElement('input');
-	                    newInput2.type = 'text';
-	                    newInput2.id = 'Q' + this.state.count + 'hint1';
-	                    newInput2.placeholder = "Hint One";
-	                    var newInput3 = document.createElement('input');
-	                    newInput3.type = 'text';
-	                    newInput3.id = 'Q' + this.state.count + 'hint2';
-	                    newInput3.placeholder = "Hint One";
-
-	                    // Good practice to do error checking
-	                    if (newInput && newP) {
-	                        // Add the new elements to the form
-	                        question.appendChild(newP);
-	                        question.appendChild(newInput);
-	                        question.appendChild(newInput2);
-	                        question.appendChild(newInput3);
-	                        // Increment the count
-	                        this.state.count++;
-	                    }
-	                } else {
-	                    alert('Question limit reached');
-	                }
-	            }
-	        }
-	    }, {
-	        key: 'printQuestion',
-	        value: function printQuestion() {
-	            var i;
-	            for (i = 0; i < this.state.count; i++) {
-	                window.alert(document.getElementById("Q" + i + "desc").value + " , " + document.getElementById("Q" + i + "hint1").value + " , " + document.getElementById("Q" + i + "hint2").value);
-	            }
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
-
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'header' },
-	                    React.createElement(
-	                        'header',
-	                        null,
-	                        'Edit Hunt (Looks like Create Hunt Page for know until database is in place)'
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'intro' },
-	                    React.createElement(
-	                        'div',
-	                        { id: 'edit' },
-	                        React.createElement(
-	                            'form',
-	                            { id: 'edit-form' },
-	                            React.createElement(
-	                                _reactBootstrap.FormGroup,
-	                                null,
-	                                React.createElement(
-	                                    _reactBootstrap.InputGroup,
-	                                    null,
-	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Game Name' }),
-	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Start Date' }),
-	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'End Date' }),
-	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Image URL' }),
-	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Description' }),
-	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Hunt Type' }),
-	                                    React.createElement(
-	                                        'div',
-	                                        { id: 'questionEdit', action: '', method: 'POST' },
-	                                        React.createElement('input', { type: 'button', value: 'Add question', onClick: function onClick() {
-	                                                return _this2.addQuestion();
-	                                            } }),
-	                                        React.createElement('div', null)
-	                                    ),
-	                                    React.createElement('input', { type: 'button', value: 'Temp Print question(Checks to make sure values are being passed)', onClick: function onClick() {
-	                                            return _this2.printQuestion();
-	                                        } }),
-	                                    React.createElement(
-	                                        _reactBootstrap.ButtonToolbar,
-	                                        null,
-	                                        React.createElement(
-	                                            _reactBootstrap.Button,
-	                                            { id: 'edit-item' },
-	                                            'Save'
-	                                        ),
-	                                        React.createElement(
-	                                            _reactBootstrap.Button,
-	                                            { onClick: function onClick() {
-	                                                    return _this2.changePage('adminHunts');
-	                                                } },
-	                                            'Cancel'
-	                                        )
-	                                    )
-	                                )
-	                            )
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return AdminEditHunt;
-	}(React.Component);
-
-/***/ },
-/* 451 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Admins = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _reactBootstrap = __webpack_require__(186);
-
-	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
-
-	var _navBar = __webpack_require__(446);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	// import { Socket } from './Socket';
-
-
-	// import { Socket } from './Socket';
-
-	var Admins = exports.Admins = function (_React$Component) {
-	    _inherits(Admins, _React$Component);
-
-	    function Admins(props) {
-	        _classCallCheck(this, Admins);
-
-	        var _this = _possibleConstructorReturn(this, (Admins.__proto__ || Object.getPrototypeOf(Admins)).call(this, props));
-
-	        _this.changePage = _this.changePage.bind(_this);
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(Admins, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('admins').style.display = "none";
-	            document.getElementById(page).style.display = "block";
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
-
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'nav-bar' },
-	                    React.createElement(_navBar.NavBar, null)
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'header' },
-	                    React.createElement(
-	                        'header',
-	                        null,
-	                        'Administrators'
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'intro' },
-	                    'List of Admins and option to edit admins goes here',
-	                    React.createElement('br', null),
-	                    React.createElement(
-	                        _reactBootstrap.Button,
-	                        { onClick: function onClick() {
-	                                return _this2.changePage('adminCreate');
-	                            } },
-	                        'Create New Admin'
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'buttons' },
-	                    React.createElement(
-	                        'form',
-	                        { onSubmit: this.handleSubmit },
-	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            null,
-	                            React.createElement(
-	                                _reactBootstrap.InputGroup,
-	                                null,
-	                                React.createElement(
-	                                    _reactBootstrap.ButtonToolbar,
-	                                    null,
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('adminHunts');
-	                                            } },
-	                                        'Hunts'
-	                                    ),
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('adminLeaderboard');
-	                                            } },
-	                                        'Temp Button to Admin Leaderboard'
-	                                    ),
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('adminHome');
-	                                            } },
-	                                        'Temp Button to Admin Homepage'
-	                                    )
-	                                )
-	                            )
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return Admins;
-	}(React.Component);
-
-/***/ },
-/* 452 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.AdminCreate = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _reactBootstrap = __webpack_require__(186);
-
-	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
-
-	var _navBar = __webpack_require__(446);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	// import { Socket } from './Socket';
-
-
-	var AdminCreate = exports.AdminCreate = function (_React$Component) {
-	    _inherits(AdminCreate, _React$Component);
-
-	    function AdminCreate(props) {
-	        _classCallCheck(this, AdminCreate);
-
-	        var _this = _possibleConstructorReturn(this, (AdminCreate.__proto__ || Object.getPrototypeOf(AdminCreate)).call(this, props));
-
-	        _this.changePage = _this.changePage.bind(_this);
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(AdminCreate, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('adminCreate').style.display = "none";
-	            document.getElementById(page).style.display = "block";
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
-
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'nav-bar' },
-	                    React.createElement(_navBar.NavBar, null)
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'header' },
-	                    React.createElement(
-	                        'header',
-	                        null,
-	                        'Create Admin'
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'intro' },
-	                    React.createElement(
-	                        'div',
-	                        { id: 'create' },
-	                        React.createElement(
-	                            'form',
-	                            { id: 'create-form' },
-	                            React.createElement(
-	                                _reactBootstrap.FormGroup,
-	                                null,
-	                                React.createElement(
-	                                    _reactBootstrap.InputGroup,
-	                                    null,
-	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Email' }),
-	                                    React.createElement('br', null),
-	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Team Name' }),
-	                                    React.createElement('br', null),
-	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Access Code' }),
-	                                    React.createElement('br', null),
-	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Image URL' }),
-	                                    React.createElement(
-	                                        _reactBootstrap.ButtonToolbar,
-	                                        null,
-	                                        React.createElement(
-	                                            _reactBootstrap.Button,
-	                                            { id: 'add-admin' },
-	                                            'Add Admin'
-	                                        )
-	                                    )
-	                                )
-	                            )
-	                        )
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'buttons' },
-	                    React.createElement(
-	                        'form',
-	                        { onSubmit: this.handleSubmit },
-	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            null,
-	                            React.createElement(
-	                                _reactBootstrap.InputGroup,
-	                                null,
-	                                React.createElement(
-	                                    _reactBootstrap.ButtonToolbar,
-	                                    null,
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('adminLeaderboard');
-	                                            } },
-	                                        'Temp Button to Admin Leaderboard'
-	                                    ),
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('adminHome');
-	                                            } },
-	                                        'Temp Button to Admin Homepage'
-	                                    )
-	                                )
-	                            )
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return AdminCreate;
-	}(React.Component);
-
-/***/ },
-/* 453 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.Socket = undefined;
 
-	var _socket = __webpack_require__(454);
+	var _socket = __webpack_require__(444);
 
 	var SocketIO = _interopRequireWildcard(_socket);
 
@@ -43682,7 +42255,7 @@
 	//here were importing the client side sockeio. this is what enables our client server interaction.
 
 /***/ },
-/* 454 */
+/* 444 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -43690,10 +42263,10 @@
 	 * Module dependencies.
 	 */
 
-	var url = __webpack_require__(455);
-	var parser = __webpack_require__(460);
-	var Manager = __webpack_require__(471);
-	var debug = __webpack_require__(457)('socket.io-client');
+	var url = __webpack_require__(445);
+	var parser = __webpack_require__(450);
+	var Manager = __webpack_require__(461);
+	var debug = __webpack_require__(447)('socket.io-client');
 
 	/**
 	 * Module exports.
@@ -43792,12 +42365,12 @@
 	 * @api public
 	 */
 
-	exports.Manager = __webpack_require__(471);
-	exports.Socket = __webpack_require__(502);
+	exports.Manager = __webpack_require__(461);
+	exports.Socket = __webpack_require__(492);
 
 
 /***/ },
-/* 455 */
+/* 445 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {
@@ -43805,8 +42378,8 @@
 	 * Module dependencies.
 	 */
 
-	var parseuri = __webpack_require__(456);
-	var debug = __webpack_require__(457)('socket.io-client:url');
+	var parseuri = __webpack_require__(446);
+	var debug = __webpack_require__(447)('socket.io-client:url');
 
 	/**
 	 * Module exports.
@@ -43879,7 +42452,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 456 */
+/* 446 */
 /***/ function(module, exports) {
 
 	/**
@@ -43924,7 +42497,7 @@
 
 
 /***/ },
-/* 457 */
+/* 447 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {
@@ -43934,7 +42507,7 @@
 	 * Expose `debug()` as the module.
 	 */
 
-	exports = module.exports = __webpack_require__(458);
+	exports = module.exports = __webpack_require__(448);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -44108,7 +42681,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 458 */
+/* 448 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -44124,7 +42697,7 @@
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(459);
+	exports.humanize = __webpack_require__(449);
 
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -44314,7 +42887,7 @@
 
 
 /***/ },
-/* 459 */
+/* 449 */
 /***/ function(module, exports) {
 
 	/**
@@ -44469,7 +43042,7 @@
 
 
 /***/ },
-/* 460 */
+/* 450 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -44477,11 +43050,11 @@
 	 * Module dependencies.
 	 */
 
-	var debug = __webpack_require__(461)('socket.io-parser');
-	var json = __webpack_require__(464);
-	var Emitter = __webpack_require__(467);
-	var binary = __webpack_require__(468);
-	var isBuf = __webpack_require__(470);
+	var debug = __webpack_require__(451)('socket.io-parser');
+	var json = __webpack_require__(454);
+	var Emitter = __webpack_require__(457);
+	var binary = __webpack_require__(458);
+	var isBuf = __webpack_require__(460);
 
 	/**
 	 * Protocol version.
@@ -44879,7 +43452,7 @@
 
 
 /***/ },
-/* 461 */
+/* 451 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -44889,7 +43462,7 @@
 	 * Expose `debug()` as the module.
 	 */
 
-	exports = module.exports = __webpack_require__(462);
+	exports = module.exports = __webpack_require__(452);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -45053,7 +43626,7 @@
 
 
 /***/ },
-/* 462 */
+/* 452 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -45069,7 +43642,7 @@
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(463);
+	exports.humanize = __webpack_require__(453);
 
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -45256,7 +43829,7 @@
 
 
 /***/ },
-/* 463 */
+/* 453 */
 /***/ function(module, exports) {
 
 	/**
@@ -45387,14 +43960,14 @@
 
 
 /***/ },
-/* 464 */
+/* 454 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/*! JSON v3.3.2 | http://bestiejs.github.io/json3 | Copyright 2012-2014, Kit Cambridge | http://kit.mit-license.org */
 	;(function () {
 	  // Detect the `define` function exposed by asynchronous module loaders. The
 	  // strict `define` check is necessary for compatibility with `r.js`.
-	  var isLoader = "function" === "function" && __webpack_require__(466);
+	  var isLoader = "function" === "function" && __webpack_require__(456);
 
 	  // A set of types used to distinguish objects from primitives.
 	  var objectTypes = {
@@ -46293,10 +44866,10 @@
 	  }
 	}).call(this);
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(465)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(455)(module), (function() { return this; }())))
 
 /***/ },
-/* 465 */
+/* 455 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -46312,7 +44885,7 @@
 
 
 /***/ },
-/* 466 */
+/* 456 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
@@ -46320,7 +44893,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, {}))
 
 /***/ },
-/* 467 */
+/* 457 */
 /***/ function(module, exports) {
 
 	
@@ -46490,7 +45063,7 @@
 
 
 /***/ },
-/* 468 */
+/* 458 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/*global Blob,File*/
@@ -46499,8 +45072,8 @@
 	 * Module requirements
 	 */
 
-	var isArray = __webpack_require__(469);
-	var isBuf = __webpack_require__(470);
+	var isArray = __webpack_require__(459);
+	var isBuf = __webpack_require__(460);
 
 	/**
 	 * Replaces every Buffer | ArrayBuffer in packet with a numbered placeholder.
@@ -46638,7 +45211,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 469 */
+/* 459 */
 /***/ function(module, exports) {
 
 	module.exports = Array.isArray || function (arr) {
@@ -46647,7 +45220,7 @@
 
 
 /***/ },
-/* 470 */
+/* 460 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {
@@ -46667,7 +45240,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 471 */
+/* 461 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -46675,15 +45248,15 @@
 	 * Module dependencies.
 	 */
 
-	var eio = __webpack_require__(472);
-	var Socket = __webpack_require__(502);
-	var Emitter = __webpack_require__(490);
-	var parser = __webpack_require__(460);
-	var on = __webpack_require__(504);
-	var bind = __webpack_require__(505);
-	var debug = __webpack_require__(457)('socket.io-client:manager');
-	var indexOf = __webpack_require__(500);
-	var Backoff = __webpack_require__(506);
+	var eio = __webpack_require__(462);
+	var Socket = __webpack_require__(492);
+	var Emitter = __webpack_require__(480);
+	var parser = __webpack_require__(450);
+	var on = __webpack_require__(494);
+	var bind = __webpack_require__(495);
+	var debug = __webpack_require__(447)('socket.io-client:manager');
+	var indexOf = __webpack_require__(490);
+	var Backoff = __webpack_require__(496);
 
 	/**
 	 * IE6+ hasOwnProperty
@@ -47233,19 +45806,19 @@
 
 
 /***/ },
-/* 472 */
+/* 462 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	module.exports = __webpack_require__(473);
+	module.exports = __webpack_require__(463);
 
 
 /***/ },
-/* 473 */
+/* 463 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	module.exports = __webpack_require__(474);
+	module.exports = __webpack_require__(464);
 
 	/**
 	 * Exports parser
@@ -47253,25 +45826,25 @@
 	 * @api public
 	 *
 	 */
-	module.exports.parser = __webpack_require__(481);
+	module.exports.parser = __webpack_require__(471);
 
 
 /***/ },
-/* 474 */
+/* 464 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
 	 * Module dependencies.
 	 */
 
-	var transports = __webpack_require__(475);
-	var Emitter = __webpack_require__(490);
-	var debug = __webpack_require__(494)('engine.io-client:socket');
-	var index = __webpack_require__(500);
-	var parser = __webpack_require__(481);
-	var parseuri = __webpack_require__(456);
-	var parsejson = __webpack_require__(501);
-	var parseqs = __webpack_require__(491);
+	var transports = __webpack_require__(465);
+	var Emitter = __webpack_require__(480);
+	var debug = __webpack_require__(484)('engine.io-client:socket');
+	var index = __webpack_require__(490);
+	var parser = __webpack_require__(471);
+	var parseuri = __webpack_require__(446);
+	var parsejson = __webpack_require__(491);
+	var parseqs = __webpack_require__(481);
 
 	/**
 	 * Module exports.
@@ -47403,9 +45976,9 @@
 	 */
 
 	Socket.Socket = Socket;
-	Socket.Transport = __webpack_require__(480);
-	Socket.transports = __webpack_require__(475);
-	Socket.parser = __webpack_require__(481);
+	Socket.Transport = __webpack_require__(470);
+	Socket.transports = __webpack_require__(465);
+	Socket.parser = __webpack_require__(471);
 
 	/**
 	 * Creates transport of the given type.
@@ -48002,17 +46575,17 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 475 */
+/* 465 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
 	 * Module dependencies
 	 */
 
-	var XMLHttpRequest = __webpack_require__(476);
-	var XHR = __webpack_require__(478);
-	var JSONP = __webpack_require__(497);
-	var websocket = __webpack_require__(498);
+	var XMLHttpRequest = __webpack_require__(466);
+	var XHR = __webpack_require__(468);
+	var JSONP = __webpack_require__(487);
+	var websocket = __webpack_require__(488);
 
 	/**
 	 * Export transports.
@@ -48062,12 +46635,12 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 476 */
+/* 466 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {// browser shim for xmlhttprequest module
 
-	var hasCORS = __webpack_require__(477);
+	var hasCORS = __webpack_require__(467);
 
 	module.exports = function (opts) {
 	  var xdomain = opts.xdomain;
@@ -48106,7 +46679,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 477 */
+/* 467 */
 /***/ function(module, exports) {
 
 	
@@ -48129,18 +46702,18 @@
 
 
 /***/ },
-/* 478 */
+/* 468 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
 	 * Module requirements.
 	 */
 
-	var XMLHttpRequest = __webpack_require__(476);
-	var Polling = __webpack_require__(479);
-	var Emitter = __webpack_require__(490);
-	var inherit = __webpack_require__(492);
-	var debug = __webpack_require__(494)('engine.io-client:polling-xhr');
+	var XMLHttpRequest = __webpack_require__(466);
+	var Polling = __webpack_require__(469);
+	var Emitter = __webpack_require__(480);
+	var inherit = __webpack_require__(482);
+	var debug = __webpack_require__(484)('engine.io-client:polling-xhr');
 
 	/**
 	 * Module exports.
@@ -48560,19 +47133,19 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 479 */
+/* 469 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies.
 	 */
 
-	var Transport = __webpack_require__(480);
-	var parseqs = __webpack_require__(491);
-	var parser = __webpack_require__(481);
-	var inherit = __webpack_require__(492);
-	var yeast = __webpack_require__(493);
-	var debug = __webpack_require__(494)('engine.io-client:polling');
+	var Transport = __webpack_require__(470);
+	var parseqs = __webpack_require__(481);
+	var parser = __webpack_require__(471);
+	var inherit = __webpack_require__(482);
+	var yeast = __webpack_require__(483);
+	var debug = __webpack_require__(484)('engine.io-client:polling');
 
 	/**
 	 * Module exports.
@@ -48585,7 +47158,7 @@
 	 */
 
 	var hasXHR2 = (function () {
-	  var XMLHttpRequest = __webpack_require__(476);
+	  var XMLHttpRequest = __webpack_require__(466);
 	  var xhr = new XMLHttpRequest({ xdomain: false });
 	  return null != xhr.responseType;
 	})();
@@ -48811,15 +47384,15 @@
 
 
 /***/ },
-/* 480 */
+/* 470 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Module dependencies.
 	 */
 
-	var parser = __webpack_require__(481);
-	var Emitter = __webpack_require__(490);
+	var parser = __webpack_require__(471);
+	var Emitter = __webpack_require__(480);
 
 	/**
 	 * Module exports.
@@ -48974,22 +47547,22 @@
 
 
 /***/ },
-/* 481 */
+/* 471 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
 	 * Module dependencies.
 	 */
 
-	var keys = __webpack_require__(482);
-	var hasBinary = __webpack_require__(483);
-	var sliceBuffer = __webpack_require__(485);
-	var after = __webpack_require__(486);
-	var utf8 = __webpack_require__(487);
+	var keys = __webpack_require__(472);
+	var hasBinary = __webpack_require__(473);
+	var sliceBuffer = __webpack_require__(475);
+	var after = __webpack_require__(476);
+	var utf8 = __webpack_require__(477);
 
 	var base64encoder;
 	if (global && global.ArrayBuffer) {
-	  base64encoder = __webpack_require__(488);
+	  base64encoder = __webpack_require__(478);
 	}
 
 	/**
@@ -49047,7 +47620,7 @@
 	 * Create a blob api even for blob builder when vendor prefixes exist
 	 */
 
-	var Blob = __webpack_require__(489);
+	var Blob = __webpack_require__(479);
 
 	/**
 	 * Encodes a packet.
@@ -49590,7 +48163,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 482 */
+/* 472 */
 /***/ function(module, exports) {
 
 	
@@ -49615,7 +48188,7 @@
 
 
 /***/ },
-/* 483 */
+/* 473 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {
@@ -49623,7 +48196,7 @@
 	 * Module requirements.
 	 */
 
-	var isArray = __webpack_require__(484);
+	var isArray = __webpack_require__(474);
 
 	/**
 	 * Module exports.
@@ -49681,7 +48254,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 484 */
+/* 474 */
 /***/ function(module, exports) {
 
 	module.exports = Array.isArray || function (arr) {
@@ -49690,7 +48263,7 @@
 
 
 /***/ },
-/* 485 */
+/* 475 */
 /***/ function(module, exports) {
 
 	/**
@@ -49725,7 +48298,7 @@
 
 
 /***/ },
-/* 486 */
+/* 476 */
 /***/ function(module, exports) {
 
 	module.exports = after
@@ -49759,7 +48332,7 @@
 
 
 /***/ },
-/* 487 */
+/* 477 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/*! https://mths.be/wtf8 v1.0.0 by @mathias */
@@ -49995,10 +48568,10 @@
 
 	}(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(465)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(455)(module), (function() { return this; }())))
 
 /***/ },
-/* 488 */
+/* 478 */
 /***/ function(module, exports) {
 
 	/*
@@ -50071,7 +48644,7 @@
 
 
 /***/ },
-/* 489 */
+/* 479 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -50174,7 +48747,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 490 */
+/* 480 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -50343,7 +48916,7 @@
 
 
 /***/ },
-/* 491 */
+/* 481 */
 /***/ function(module, exports) {
 
 	/**
@@ -50386,7 +48959,7 @@
 
 
 /***/ },
-/* 492 */
+/* 482 */
 /***/ function(module, exports) {
 
 	
@@ -50398,7 +48971,7 @@
 	};
 
 /***/ },
-/* 493 */
+/* 483 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -50472,7 +49045,7 @@
 
 
 /***/ },
-/* 494 */
+/* 484 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {
@@ -50482,7 +49055,7 @@
 	 * Expose `debug()` as the module.
 	 */
 
-	exports = module.exports = __webpack_require__(495);
+	exports = module.exports = __webpack_require__(485);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -50656,7 +49229,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 495 */
+/* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -50672,7 +49245,7 @@
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(496);
+	exports.humanize = __webpack_require__(486);
 
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -50862,7 +49435,7 @@
 
 
 /***/ },
-/* 496 */
+/* 486 */
 /***/ function(module, exports) {
 
 	/**
@@ -51017,7 +49590,7 @@
 
 
 /***/ },
-/* 497 */
+/* 487 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {
@@ -51025,8 +49598,8 @@
 	 * Module requirements.
 	 */
 
-	var Polling = __webpack_require__(479);
-	var inherit = __webpack_require__(492);
+	var Polling = __webpack_require__(469);
+	var inherit = __webpack_require__(482);
 
 	/**
 	 * Module exports.
@@ -51255,24 +49828,24 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 498 */
+/* 488 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
 	 * Module dependencies.
 	 */
 
-	var Transport = __webpack_require__(480);
-	var parser = __webpack_require__(481);
-	var parseqs = __webpack_require__(491);
-	var inherit = __webpack_require__(492);
-	var yeast = __webpack_require__(493);
-	var debug = __webpack_require__(494)('engine.io-client:websocket');
+	var Transport = __webpack_require__(470);
+	var parser = __webpack_require__(471);
+	var parseqs = __webpack_require__(481);
+	var inherit = __webpack_require__(482);
+	var yeast = __webpack_require__(483);
+	var debug = __webpack_require__(484)('engine.io-client:websocket');
 	var BrowserWebSocket = global.WebSocket || global.MozWebSocket;
 	var NodeWebSocket;
 	if (typeof window === 'undefined') {
 	  try {
-	    NodeWebSocket = __webpack_require__(499);
+	    NodeWebSocket = __webpack_require__(489);
 	  } catch (e) { }
 	}
 
@@ -51547,13 +50120,13 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 499 */
+/* 489 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 500 */
+/* 490 */
 /***/ function(module, exports) {
 
 	
@@ -51568,7 +50141,7 @@
 	};
 
 /***/ },
-/* 501 */
+/* 491 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -51606,7 +50179,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 502 */
+/* 492 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -51614,13 +50187,13 @@
 	 * Module dependencies.
 	 */
 
-	var parser = __webpack_require__(460);
-	var Emitter = __webpack_require__(490);
-	var toArray = __webpack_require__(503);
-	var on = __webpack_require__(504);
-	var bind = __webpack_require__(505);
-	var debug = __webpack_require__(457)('socket.io-client:socket');
-	var hasBin = __webpack_require__(483);
+	var parser = __webpack_require__(450);
+	var Emitter = __webpack_require__(480);
+	var toArray = __webpack_require__(493);
+	var on = __webpack_require__(494);
+	var bind = __webpack_require__(495);
+	var debug = __webpack_require__(447)('socket.io-client:socket');
+	var hasBin = __webpack_require__(473);
 
 	/**
 	 * Module exports.
@@ -52031,7 +50604,7 @@
 
 
 /***/ },
-/* 503 */
+/* 493 */
 /***/ function(module, exports) {
 
 	module.exports = toArray
@@ -52050,7 +50623,7 @@
 
 
 /***/ },
-/* 504 */
+/* 494 */
 /***/ function(module, exports) {
 
 	
@@ -52080,7 +50653,7 @@
 
 
 /***/ },
-/* 505 */
+/* 495 */
 /***/ function(module, exports) {
 
 	/**
@@ -52109,7 +50682,7 @@
 
 
 /***/ },
-/* 506 */
+/* 496 */
 /***/ function(module, exports) {
 
 	
@@ -52198,6 +50771,1365 @@
 	};
 
 
+
+/***/ },
+/* 497 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.Register = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	// import { Socket } from './Socket';
+
+	var Register = exports.Register = function (_React$Component) {
+	    _inherits(Register, _React$Component);
+
+	    function Register(props) {
+	        _classCallCheck(this, Register);
+
+	        var _this = _possibleConstructorReturn(this, (Register.__proto__ || Object.getPrototypeOf(Register)).call(this, props));
+
+	        _this.changePage = _this.changePage.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Register, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            document.getElementById('register').style.display = "none";
+	            document.getElementById(page).style.display = "block";
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        'Register'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement(
+	                        'form',
+	                        { id: 'register-form' },
+	                        React.createElement('input', { id: 'register-item', type: 'text', placeholder: 'Enter email' }),
+	                        React.createElement('br', null),
+	                        React.createElement('input', { id: 'register-item', type: 'text', placeholder: 'Enter access code' }),
+	                        React.createElement('br', null),
+	                        React.createElement(
+	                            'select',
+	                            { id: 'register-item' },
+	                            React.createElement(
+	                                'option',
+	                                null,
+	                                'Hunt One'
+	                            ),
+	                            React.createElement(
+	                                'option',
+	                                null,
+	                                'Hunt Two'
+	                            ),
+	                            React.createElement(
+	                                'option',
+	                                null,
+	                                'Hunt Three'
+	                            )
+	                        ),
+	                        React.createElement('br', null),
+	                        React.createElement(
+	                            'button',
+	                            { id: 'register-item' },
+	                            'Enter!'
+	                        )
+	                    )
+	                ),
+	                React.createElement(
+	                    'form',
+	                    { onSubmit: this.handleSubmit },
+	                    React.createElement(
+	                        'button',
+	                        { onClick: function onClick() {
+	                                return _this2.changePage('home');
+	                            } },
+	                        'Home'
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Register;
+	}(React.Component);
+
+/***/ },
+/* 498 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.Play = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _reactBootstrap = __webpack_require__(186);
+
+	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Needs:
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               To be connected to Database
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Hint options
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               */
+
+	// import { Socket } from './Socket';
+
+
+	// import { Socket } from './Socket';
+
+	var Play = exports.Play = function (_React$Component) {
+	    _inherits(Play, _React$Component);
+
+	    function Play() {
+	        _classCallCheck(this, Play);
+
+	        return _possibleConstructorReturn(this, (Play.__proto__ || Object.getPrototypeOf(Play)).apply(this, arguments));
+	    }
+
+	    _createClass(Play, [{
+	        key: 'render',
+	        value: function render() {
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        'Game Name'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement(
+	                        'form',
+	                        null,
+	                        React.createElement(
+	                            _reactBootstrap.FormGroup,
+	                            null,
+	                            React.createElement(
+	                                'div',
+	                                null,
+	                                React.createElement(
+	                                    'p',
+	                                    null,
+	                                    'Current Objective Intro. This is Where Database will produce the Scavenger Hunt Question'
+	                                )
+	                            ),
+	                            React.createElement(
+	                                _reactBootstrap.InputGroup,
+	                                null,
+	                                React.createElement(
+	                                    _reactBootstrap.ButtonToolbar,
+	                                    null,
+	                                    React.createElement('input', { id: 'play-item', type: 'text', placeholder: 'Enter Answer' }),
+	                                    React.createElement('br', null),
+	                                    React.createElement(
+	                                        _reactBootstrap.Button,
+	                                        null,
+	                                        'Submit'
+	                                    )
+	                                )
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Play;
+	}(React.Component);
+
+/***/ },
+/* 499 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.AdminHome = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _reactBootstrap = __webpack_require__(186);
+
+	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
+	var _Socket = __webpack_require__(443);
+
+	var _navBar = __webpack_require__(500);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AdminHome = exports.AdminHome = function (_React$Component) {
+	    _inherits(AdminHome, _React$Component);
+
+	    function AdminHome(props) {
+	        _classCallCheck(this, AdminHome);
+
+	        var _this = _possibleConstructorReturn(this, (AdminHome.__proto__ || Object.getPrototypeOf(AdminHome)).call(this, props));
+
+	        _this.changePage = _this.changePage.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(AdminHome, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            document.getElementById('adminHome').style.display = "none";
+	            document.getElementById(page).style.display = "block";
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'nav-bar' },
+	                    React.createElement(_navBar.NavBar, null)
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        'Welcome, Admin!'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Warning_notice_-_EVIL_ADMIN.svg/2000px-Warning_notice_-_EVIL_ADMIN.svg.png', width: '30%' })
+	                )
+	            );
+	        }
+	    }]);
+
+	    return AdminHome;
+	}(React.Component);
+
+/***/ },
+/* 500 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.NavBar = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _Socket = __webpack_require__(443);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var NavBar = exports.NavBar = function (_React$Component) {
+	    _inherits(NavBar, _React$Component);
+
+	    function NavBar(props) {
+	        _classCallCheck(this, NavBar);
+
+	        var _this = _possibleConstructorReturn(this, (NavBar.__proto__ || Object.getPrototypeOf(NavBar)).call(this, props));
+
+	        _this.changePage = _this.changePage.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(NavBar, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            //hides all pages then displays appropriate page to prevent multiple 
+	            //pages from showing up
+	            document.getElementById('adminHome').style.display = "none";
+	            document.getElementById('adminLeaderboard').style.display = "none";
+	            document.getElementById('adminHunts').style.display = "none";
+	            document.getElementById('admins').style.display = "none";
+	            document.getElementById(page).style.display = "block";
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'topnav' },
+	                    React.createElement(
+	                        'a',
+	                        { onClick: function onClick() {
+	                                return _this2.changePage('adminHome');
+	                            } },
+	                        'Home'
+	                    ),
+	                    React.createElement(
+	                        'a',
+	                        { onClick: function onClick() {
+	                                return _this2.changePage('adminLeaderboard');
+	                            } },
+	                        'Leaderboard'
+	                    ),
+	                    React.createElement(
+	                        'a',
+	                        { onClick: function onClick() {
+	                                return _this2.changePage('adminHunts');
+	                            } },
+	                        'Hunts'
+	                    ),
+	                    React.createElement(
+	                        'a',
+	                        { onClick: function onClick() {
+	                                return _this2.changePage('admins');
+	                            } },
+	                        'Settings'
+	                    ),
+	                    React.createElement(
+	                        'a',
+	                        null,
+	                        'Logout'
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return NavBar;
+	}(React.Component);
+
+/***/ },
+/* 501 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.AdminLeaderboard = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _reactBootstrap = __webpack_require__(186);
+
+	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
+	var _Socket = __webpack_require__(443);
+
+	var _navBar = __webpack_require__(500);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	// import { Socket } from './Socket';
+
+	var AdminLeaderboard = exports.AdminLeaderboard = function (_React$Component) {
+	    _inherits(AdminLeaderboard, _React$Component);
+
+	    function AdminLeaderboard(props) {
+	        _classCallCheck(this, AdminLeaderboard);
+
+	        var _this = _possibleConstructorReturn(this, (AdminLeaderboard.__proto__ || Object.getPrototypeOf(AdminLeaderboard)).call(this, props));
+
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(AdminLeaderboard, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'nav-bar' },
+	                    React.createElement(_navBar.NavBar, null)
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        'Admin Leaderboard Page'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'search' },
+	                    React.createElement(
+	                        'form',
+	                        { id: 'adminLeaderboard-form' },
+	                        React.createElement(
+	                            _reactBootstrap.FormGroup,
+	                            null,
+	                            React.createElement(
+	                                _reactBootstrap.InputGroup,
+	                                null,
+	                                React.createElement('input', { id: 'adminLeaderboard-item', type: 'text', placeholder: 'Search Hunts' }),
+	                                React.createElement(
+	                                    _reactBootstrap.ButtonToolbar,
+	                                    null,
+	                                    React.createElement(
+	                                        _reactBootstrap.Button,
+	                                        { id: 'adminLeaderboard-item' },
+	                                        'Search'
+	                                    )
+	                                )
+	                            )
+	                        )
+	                    )
+	                ),
+	                React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/8/87/Maplestory_Leaderboard_2015-10.PNG', width: '30%' }),
+	                React.createElement(
+	                    'div',
+	                    { id: 'buttons' },
+	                    React.createElement(
+	                        'form',
+	                        { onSubmit: this.handleSubmit },
+	                        React.createElement(
+	                            _reactBootstrap.FormGroup,
+	                            null,
+	                            React.createElement(
+	                                _reactBootstrap.InputGroup,
+	                                null,
+	                                React.createElement(_reactBootstrap.ButtonToolbar, null)
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return AdminLeaderboard;
+	}(React.Component);
+
+/***/ },
+/* 502 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.AdminHunts = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _reactBootstrap = __webpack_require__(186);
+
+	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
+	var _Socket = __webpack_require__(443);
+
+	var _navBar = __webpack_require__(500);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AdminHunts = exports.AdminHunts = function (_React$Component) {
+	    _inherits(AdminHunts, _React$Component);
+
+	    function AdminHunts(props) {
+	        _classCallCheck(this, AdminHunts);
+
+	        var _this = _possibleConstructorReturn(this, (AdminHunts.__proto__ || Object.getPrototypeOf(AdminHunts)).call(this, props));
+
+	        _this.changePage = _this.changePage.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(AdminHunts, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            document.getElementById('adminHunts').style.display = "none";
+	            document.getElementById(page).style.display = "block";
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'nav-bar' },
+	                    React.createElement(_navBar.NavBar, null)
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        'Hunts'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/8/87/Maplestory_Leaderboard_2015-10.PNG', width: '30%' })
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'buttons' },
+	                    React.createElement(
+	                        'form',
+	                        { onSubmit: this.handleSubmit },
+	                        React.createElement(
+	                            _reactBootstrap.FormGroup,
+	                            null,
+	                            React.createElement(
+	                                _reactBootstrap.InputGroup,
+	                                null,
+	                                React.createElement(
+	                                    _reactBootstrap.ButtonToolbar,
+	                                    null,
+	                                    React.createElement(
+	                                        _reactBootstrap.Button,
+	                                        { onClick: function onClick() {
+	                                                return _this2.changePage('adminEditHunt');
+	                                            } },
+	                                        'Edit'
+	                                    ),
+	                                    React.createElement(
+	                                        _reactBootstrap.Button,
+	                                        { onClick: function onClick() {
+	                                                return _this2.changePage('adminCreateHunt');
+	                                            } },
+	                                        'Create'
+	                                    )
+	                                )
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return AdminHunts;
+	}(React.Component);
+
+/***/ },
+/* 503 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.AdminCreateHunt = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _reactBootstrap = __webpack_require__(186);
+
+	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	// import { Socket } from './Socket';
+
+
+	var AdminCreateHunt = exports.AdminCreateHunt = function (_React$Component) {
+	    _inherits(AdminCreateHunt, _React$Component);
+
+	    function AdminCreateHunt(props) {
+	        _classCallCheck(this, AdminCreateHunt);
+
+	        var _this = _possibleConstructorReturn(this, (AdminCreateHunt.__proto__ || Object.getPrototypeOf(AdminCreateHunt)).call(this, props));
+
+	        _this.state = {
+	            'count': 0,
+	            'limit': 25
+	        };
+
+	        _this.changePage = _this.changePage.bind(_this);
+	        _this.addQuestion = _this.addQuestion.bind(_this);
+	        _this.printQuestion = _this.printQuestion.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(AdminCreateHunt, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            document.getElementById('adminCreateHunt').style.display = "none";
+	            document.getElementById(page).style.display = "block";
+	        }
+	    }, {
+	        key: 'addQuestion',
+	        value: function addQuestion() {
+	            // Get the quiz form element
+	            var question = document.getElementById('question');
+
+	            // Good to do error checking, make sure we managed to get something
+	            if (question) {
+	                if (this.state.count < this.state.limit) {
+	                    // Create a new <p> element
+	                    var newP = document.createElement('div');
+	                    newP.innerHTML = 'Question ' + (this.state.count + 1);
+
+	                    // Create the new text box
+	                    var newInput = document.createElement('input');
+	                    newInput.type = 'text';
+	                    newInput.name = 'questions0';
+	                    newInput.id = 'Q' + this.state.count + 'desc';
+	                    newInput.placeholder = "Question";
+	                    var newInput2 = document.createElement('input');
+	                    newInput2.type = 'text';
+	                    newInput2.name = 'questions1';
+	                    newInput2.id = 'Q' + this.state.count + 'hint1';
+	                    newInput2.placeholder = "Hint One";
+	                    var newInput3 = document.createElement('input');
+	                    newInput3.type = 'text';
+	                    newInput3.name = 'questions1';
+	                    newInput3.id = 'Q' + this.state.count + 'hint2';
+	                    newInput3.placeholder = "Hint One";
+
+	                    // Good practice to do error checking
+	                    if (newInput && newP) {
+	                        // Add the new elements to the form
+	                        question.appendChild(newP);
+	                        question.appendChild(newInput);
+	                        question.appendChild(newInput2);
+	                        question.appendChild(newInput3);
+	                        // Increment the count
+	                        this.state.count++;
+	                    }
+	                } else {
+	                    alert('Question limit reached');
+	                }
+	            }
+	        }
+	    }, {
+	        key: 'printQuestion',
+	        value: function printQuestion() {
+	            var i;
+	            for (i = 0; i < this.state.count; i++) {
+	                window.alert(document.getElementById("Q" + i + "desc").value + " , " + document.getElementById("Q" + i + "hint1").value + " , " + document.getElementById("Q" + i + "hint2").value);
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        'Create Hunt'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement(
+	                        'div',
+	                        { id: 'create' },
+	                        React.createElement(
+	                            'form',
+	                            { id: 'create-form' },
+	                            React.createElement(
+	                                _reactBootstrap.FormGroup,
+	                                null,
+	                                React.createElement(
+	                                    _reactBootstrap.InputGroup,
+	                                    null,
+	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Game Name' }),
+	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Start Date' }),
+	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'End Date' }),
+	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Image URL' }),
+	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Description' }),
+	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Hunt Type' }),
+	                                    React.createElement(
+	                                        'div',
+	                                        { id: 'question', action: '', method: 'POST' },
+	                                        React.createElement('input', { type: 'button', value: 'Add question', onClick: function onClick() {
+	                                                return _this2.addQuestion();
+	                                            } }),
+	                                        React.createElement('div', null)
+	                                    ),
+	                                    React.createElement('input', { type: 'button', value: 'Temp Print question(Checks to make sure values are being passed)', onClick: function onClick() {
+	                                            return _this2.printQuestion();
+	                                        } }),
+	                                    React.createElement(
+	                                        _reactBootstrap.ButtonToolbar,
+	                                        null,
+	                                        React.createElement(
+	                                            _reactBootstrap.Button,
+	                                            { id: 'create-item' },
+	                                            'Save'
+	                                        ),
+	                                        React.createElement(
+	                                            _reactBootstrap.Button,
+	                                            { id: 'create-item' },
+	                                            'Publish'
+	                                        )
+	                                    )
+	                                )
+	                            )
+	                        )
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'buttons' },
+	                    React.createElement(
+	                        'form',
+	                        { onSubmit: this.handleSubmit },
+	                        React.createElement(
+	                            _reactBootstrap.FormGroup,
+	                            null,
+	                            React.createElement(
+	                                _reactBootstrap.InputGroup,
+	                                null,
+	                                React.createElement(
+	                                    _reactBootstrap.ButtonToolbar,
+	                                    null,
+	                                    React.createElement(
+	                                        _reactBootstrap.Button,
+	                                        { onClick: function onClick() {
+	                                                return _this2.changePage('adminLeaderboard');
+	                                            } },
+	                                        'Temp Button to Admin Leaderboard'
+	                                    ),
+	                                    React.createElement(
+	                                        _reactBootstrap.Button,
+	                                        { onClick: function onClick() {
+	                                                return _this2.changePage('adminHome');
+	                                            } },
+	                                        'Temp Button to Admin Homepage'
+	                                    )
+	                                )
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return AdminCreateHunt;
+	}(React.Component);
+
+/***/ },
+/* 504 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.AdminEditHunt = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _reactBootstrap = __webpack_require__(186);
+
+	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	// import { Socket } from './Socket';
+
+
+	var AdminEditHunt = exports.AdminEditHunt = function (_React$Component) {
+	    _inherits(AdminEditHunt, _React$Component);
+
+	    function AdminEditHunt(props) {
+	        _classCallCheck(this, AdminEditHunt);
+
+	        var _this = _possibleConstructorReturn(this, (AdminEditHunt.__proto__ || Object.getPrototypeOf(AdminEditHunt)).call(this, props));
+
+	        _this.state = {
+	            'count': 0,
+	            'limit': 25
+	        };
+
+	        _this.changePage = _this.changePage.bind(_this);
+	        _this.addQuestion = _this.addQuestion.bind(_this);
+	        _this.printQuestion = _this.printQuestion.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(AdminEditHunt, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            document.getElementById('adminEditHunt').style.display = "none";
+	            document.getElementById(page).style.display = "block";
+	        }
+	    }, {
+	        key: 'addQuestion',
+	        value: function addQuestion() {
+	            // Get the quiz form element
+	            var question = document.getElementById('questionEdit');
+
+	            // Good to do error checking, make sure we managed to get something
+	            if (question) {
+	                if (this.state.count < this.state.limit) {
+	                    // Edit a new <p> element
+	                    var newP = document.createElement('div');
+	                    newP.innerHTML = 'Question ' + (this.state.count + 1);
+
+	                    // Edit the new text box
+	                    var newInput = document.createElement('input');
+	                    newInput.type = 'text';
+	                    newInput.id = 'Q' + this.state.count + 'desc';
+	                    newInput.placeholder = "Question";
+	                    var newInput2 = document.createElement('input');
+	                    newInput2.type = 'text';
+	                    newInput2.id = 'Q' + this.state.count + 'hint1';
+	                    newInput2.placeholder = "Hint One";
+	                    var newInput3 = document.createElement('input');
+	                    newInput3.type = 'text';
+	                    newInput3.id = 'Q' + this.state.count + 'hint2';
+	                    newInput3.placeholder = "Hint One";
+
+	                    // Good practice to do error checking
+	                    if (newInput && newP) {
+	                        // Add the new elements to the form
+	                        question.appendChild(newP);
+	                        question.appendChild(newInput);
+	                        question.appendChild(newInput2);
+	                        question.appendChild(newInput3);
+	                        // Increment the count
+	                        this.state.count++;
+	                    }
+	                } else {
+	                    alert('Question limit reached');
+	                }
+	            }
+	        }
+	    }, {
+	        key: 'printQuestion',
+	        value: function printQuestion() {
+	            var i;
+	            for (i = 0; i < this.state.count; i++) {
+	                window.alert(document.getElementById("Q" + i + "desc").value + " , " + document.getElementById("Q" + i + "hint1").value + " , " + document.getElementById("Q" + i + "hint2").value);
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        'Edit Hunt (Looks like Create Hunt Page for know until database is in place)'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement(
+	                        'div',
+	                        { id: 'edit' },
+	                        React.createElement(
+	                            'form',
+	                            { id: 'edit-form' },
+	                            React.createElement(
+	                                _reactBootstrap.FormGroup,
+	                                null,
+	                                React.createElement(
+	                                    _reactBootstrap.InputGroup,
+	                                    null,
+	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Game Name' }),
+	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Start Date' }),
+	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'End Date' }),
+	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Image URL' }),
+	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Description' }),
+	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Hunt Type' }),
+	                                    React.createElement(
+	                                        'div',
+	                                        { id: 'questionEdit', action: '', method: 'POST' },
+	                                        React.createElement('input', { type: 'button', value: 'Add question', onClick: function onClick() {
+	                                                return _this2.addQuestion();
+	                                            } }),
+	                                        React.createElement('div', null)
+	                                    ),
+	                                    React.createElement('input', { type: 'button', value: 'Temp Print question(Checks to make sure values are being passed)', onClick: function onClick() {
+	                                            return _this2.printQuestion();
+	                                        } }),
+	                                    React.createElement(
+	                                        _reactBootstrap.ButtonToolbar,
+	                                        null,
+	                                        React.createElement(
+	                                            _reactBootstrap.Button,
+	                                            { id: 'edit-item' },
+	                                            'Save'
+	                                        ),
+	                                        React.createElement(
+	                                            _reactBootstrap.Button,
+	                                            { onClick: function onClick() {
+	                                                    return _this2.changePage('adminHunts');
+	                                                } },
+	                                            'Cancel'
+	                                        )
+	                                    )
+	                                )
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return AdminEditHunt;
+	}(React.Component);
+
+/***/ },
+/* 505 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.Admins = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _reactBootstrap = __webpack_require__(186);
+
+	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
+	var _navBar = __webpack_require__(500);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	// import { Socket } from './Socket';
+
+
+	// import { Socket } from './Socket';
+
+	var Admins = exports.Admins = function (_React$Component) {
+	    _inherits(Admins, _React$Component);
+
+	    function Admins(props) {
+	        _classCallCheck(this, Admins);
+
+	        var _this = _possibleConstructorReturn(this, (Admins.__proto__ || Object.getPrototypeOf(Admins)).call(this, props));
+
+	        _this.changePage = _this.changePage.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Admins, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            document.getElementById('admins').style.display = "none";
+	            document.getElementById(page).style.display = "block";
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'nav-bar' },
+	                    React.createElement(_navBar.NavBar, null)
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        'Administrators'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    'List of Admins and option to edit admins goes here',
+	                    React.createElement('br', null),
+	                    React.createElement(
+	                        _reactBootstrap.Button,
+	                        { onClick: function onClick() {
+	                                return _this2.changePage('adminCreate');
+	                            } },
+	                        'Create New Admin'
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Admins;
+	}(React.Component);
+
+/***/ },
+/* 506 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.AdminCreate = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _reactBootstrap = __webpack_require__(186);
+
+	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
+	var _navBar = __webpack_require__(500);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	// import { Socket } from './Socket';
+
+
+	var AdminCreate = exports.AdminCreate = function (_React$Component) {
+	    _inherits(AdminCreate, _React$Component);
+
+	    function AdminCreate(props) {
+	        _classCallCheck(this, AdminCreate);
+
+	        var _this = _possibleConstructorReturn(this, (AdminCreate.__proto__ || Object.getPrototypeOf(AdminCreate)).call(this, props));
+
+	        _this.changePage = _this.changePage.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(AdminCreate, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            document.getElementById('adminCreate').style.display = "none";
+	            document.getElementById(page).style.display = "block";
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'nav-bar' },
+	                    React.createElement(_navBar.NavBar, null)
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        'Create Admin'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement(
+	                        'div',
+	                        { id: 'create' },
+	                        React.createElement(
+	                            'form',
+	                            { id: 'create-form' },
+	                            React.createElement(
+	                                _reactBootstrap.FormGroup,
+	                                null,
+	                                React.createElement(
+	                                    _reactBootstrap.InputGroup,
+	                                    null,
+	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Email' }),
+	                                    React.createElement('br', null),
+	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Team Name' }),
+	                                    React.createElement('br', null),
+	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Access Code' }),
+	                                    React.createElement('br', null),
+	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Image URL' }),
+	                                    React.createElement(
+	                                        _reactBootstrap.ButtonToolbar,
+	                                        null,
+	                                        React.createElement(
+	                                            _reactBootstrap.Button,
+	                                            { id: 'add-admin' },
+	                                            'Add Admin'
+	                                        )
+	                                    )
+	                                )
+	                            )
+	                        )
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'buttons' },
+	                    React.createElement(
+	                        'form',
+	                        { onSubmit: this.handleSubmit },
+	                        React.createElement(
+	                            _reactBootstrap.FormGroup,
+	                            null,
+	                            React.createElement(
+	                                _reactBootstrap.InputGroup,
+	                                null,
+	                                React.createElement(
+	                                    _reactBootstrap.ButtonToolbar,
+	                                    null,
+	                                    React.createElement(
+	                                        _reactBootstrap.Button,
+	                                        { onClick: function onClick() {
+	                                                return _this2.changePage('adminLeaderboard');
+	                                            } },
+	                                        'Temp Button to Admin Leaderboard'
+	                                    ),
+	                                    React.createElement(
+	                                        _reactBootstrap.Button,
+	                                        { onClick: function onClick() {
+	                                                return _this2.changePage('adminHome');
+	                                            } },
+	                                        'Temp Button to Admin Homepage'
+	                                    )
+	                                )
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return AdminCreate;
+	}(React.Component);
 
 /***/ }
 /******/ ]);

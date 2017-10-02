@@ -14,6 +14,8 @@ export class NavBar extends React.Component {
     }
     //changes the display of the pages when button is pressed
     changePage(page){
+        //hides all pages then displays appropriate page to prevent multiple 
+                //pages from showing up
         document.getElementById('adminHome').style.display = "none";
         document.getElementById('adminLeaderboard').style.display = "none";
         document.getElementById('adminHunts').style.display = "none";
