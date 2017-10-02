@@ -1,12 +1,14 @@
 import * as React from 'react';
 import * as ReactBootstrap from 'react-bootstrap';
-// import { Socket } from './Socket';
+import { Socket } from '../Socket';
 import { Button } from 'react-bootstrap';
 import { InputGroup } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
 import { FormGroup } from 'react-bootstrap';
 import { ButtonToolbar } from 'react-bootstrap';
 import { ButtonGroup } from 'react-bootstrap';
+
+import { NavBar } from './nav-bar';
 
 export class AdminHunts extends React.Component {
         constructor(props) {
@@ -18,7 +20,7 @@ export class AdminHunts extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-    }
+        }
     //changes the display of the pages when button is pressed
     changePage(page){
         document.getElementById('adminHunts').style.display = "none";
@@ -28,6 +30,9 @@ export class AdminHunts extends React.Component {
     render() {
         return (
             <div>
+                <div id = 'nav-bar'>
+                    <NavBar/>
+                </div>
                 <div id = 'header'>
                     <header>Hunts</header>
                 </div>
@@ -41,8 +46,6 @@ export class AdminHunts extends React.Component {
                                 <ButtonToolbar>
                                     <Button onClick={() => this.changePage('adminEditHunt')}>Edit</Button>
                                     <Button onClick={() => this.changePage('adminCreateHunt')}>Create</Button>
-                                    <Button onClick={() => this.changePage('adminLeaderboard')}>Temp Button to Admin Leaderboard</Button>
-                                    <Button onClick={() => this.changePage('adminHome')}>Temp Button to Admin Homepage</Button>
                                 </ButtonToolbar>
                             </InputGroup>
                         </FormGroup>

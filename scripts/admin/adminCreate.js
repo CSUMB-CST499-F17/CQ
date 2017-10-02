@@ -8,6 +8,8 @@ import { FormGroup } from 'react-bootstrap';
 import { ButtonToolbar } from 'react-bootstrap';
 import { ButtonGroup } from 'react-bootstrap';
 
+import { NavBar } from './nav-bar';
+
 export class AdminCreate extends React.Component {
         constructor(props) {
         super(props);
@@ -28,6 +30,9 @@ export class AdminCreate extends React.Component {
     render() {
         return (
             <div>
+                <div id = 'nav-bar'>
+                    <NavBar/>
+                </div>
                 <div id = 'header'>
                     <header>Create Admin</header>
                 </div>

@@ -10,6 +10,8 @@ import { ButtonGroup } from 'react-bootstrap';
 
 // import { Socket } from './Socket';
 
+import { NavBar } from './nav-bar';
+
 export class Admins extends React.Component {
     constructor(props) {
         super(props);
@@ -30,6 +32,9 @@ export class Admins extends React.Component {
     render() {
         return (
             <div>
+                <div id = 'nav-bar'>
+                    <NavBar/>
+                </div>
                 <div id = 'header'>
                     <header>Administrators</header>
                 </div>

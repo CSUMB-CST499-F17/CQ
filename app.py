@@ -8,7 +8,7 @@ import models
 @app.route('/')
 def hello():
     return flask.render_template('index.html')
-    
+
 if __name__ == '__main__':
     socketio.run(
             app,
