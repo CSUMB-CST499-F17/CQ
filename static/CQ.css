@@ -51,7 +51,7 @@ body {
     justify-content: center;
     margin: 15px;
 }
-#question {
+#question, #questionEdit  {
     text-align:center;
     justify-content: center;
     width: 600px;

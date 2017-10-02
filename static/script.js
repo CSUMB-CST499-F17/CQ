@@ -21908,6 +21908,8 @@
 
 	var _adminCreateHunt = __webpack_require__(448);
 
+	var _adminEditHunt = __webpack_require__(449);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21983,6 +21985,11 @@
 	                    'div',
 	                    { id: 'adminCreateHunt', style: { display: 'none' } },
 	                    React.createElement(_adminCreateHunt.AdminCreateHunt, null)
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'adminEditHunt', style: { display: 'none' } },
+	                    React.createElement(_adminEditHunt.AdminEditHunt, null)
 	                )
 	            );
 	        }
@@ -42795,7 +42802,7 @@
 	                                    React.createElement(
 	                                        _reactBootstrap.Button,
 	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('adminLeaderboard');
+	                                                return _this2.changePage('adminEditHunt');
 	                                            } },
 	                                        'Edit'
 	                                    ),
@@ -43037,20 +43044,6 @@
 	                                        { onClick: function onClick() {
 	                                                return _this2.changePage('adminLeaderboard');
 	                                            } },
-	                                        'Edit'
-	                                    ),
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('adminHome');
-	                                            } },
-	                                        'Create'
-	                                    ),
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('adminLeaderboard');
-	                                            } },
 	                                        'Temp Button to Admin Leaderboard'
 	                                    ),
 	                                    React.createElement(
@@ -43070,6 +43063,197 @@
 	    }]);
 
 	    return AdminCreateHunt;
+	}(React.Component);
+
+/***/ },
+/* 449 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.AdminEditHunt = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _reactBootstrap = __webpack_require__(186);
+
+	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	// import { Socket } from './Socket';
+
+
+	var AdminEditHunt = exports.AdminEditHunt = function (_React$Component) {
+	    _inherits(AdminEditHunt, _React$Component);
+
+	    function AdminEditHunt(props) {
+	        _classCallCheck(this, AdminEditHunt);
+
+	        var _this = _possibleConstructorReturn(this, (AdminEditHunt.__proto__ || Object.getPrototypeOf(AdminEditHunt)).call(this, props));
+
+	        _this.state = {
+	            'count': 0,
+	            'limit': 25
+	        };
+
+	        _this.changePage = _this.changePage.bind(_this);
+	        _this.addQuestion = _this.addQuestion.bind(_this);
+	        _this.printQuestion = _this.printQuestion.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(AdminEditHunt, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            document.getElementById('adminEditHunt').style.display = "none";
+	            document.getElementById(page).style.display = "block";
+	        }
+	    }, {
+	        key: 'addQuestion',
+	        value: function addQuestion() {
+	            // Get the quiz form element
+	            var question = document.getElementById('questionEdit');
+
+	            // Good to do error checking, make sure we managed to get something
+	            if (question) {
+	                if (this.state.count < this.state.limit) {
+	                    // Edit a new <p> element
+	                    var newP = document.createElement('div');
+	                    newP.innerHTML = 'Question ' + (this.state.count + 1);
+
+	                    // Edit the new text box
+	                    var newInput = document.createElement('input');
+	                    newInput.type = 'text';
+	                    newInput.id = 'Q' + this.state.count + 'desc';
+	                    newInput.placeholder = "Question";
+	                    var newInput2 = document.createElement('input');
+	                    newInput2.type = 'text';
+	                    newInput2.id = 'Q' + this.state.count + 'hint1';
+	                    newInput2.placeholder = "Hint One";
+	                    var newInput3 = document.createElement('input');
+	                    newInput3.type = 'text';
+	                    newInput3.id = 'Q' + this.state.count + 'hint2';
+	                    newInput3.placeholder = "Hint One";
+
+	                    // Good practice to do error checking
+	                    if (newInput && newP) {
+	                        // Add the new elements to the form
+	                        question.appendChild(newP);
+	                        question.appendChild(newInput);
+	                        question.appendChild(newInput2);
+	                        question.appendChild(newInput3);
+	                        // Increment the count
+	                        this.state.count++;
+	                    }
+	                } else {
+	                    alert('Question limit reached');
+	                }
+	            }
+	        }
+	    }, {
+	        key: 'printQuestion',
+	        value: function printQuestion() {
+	            var i;
+	            for (i = 0; i < this.state.count; i++) {
+	                window.alert(document.getElementById("Q" + i + "desc").value + " , " + document.getElementById("Q" + i + "hint1").value + " , " + document.getElementById("Q" + i + "hint2").value);
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        'Edit Hunt (Looks like Create Hunt Page for know until database is in place)'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement(
+	                        'div',
+	                        { id: 'edit' },
+	                        React.createElement(
+	                            'form',
+	                            { id: 'edit-form' },
+	                            React.createElement(
+	                                _reactBootstrap.FormGroup,
+	                                null,
+	                                React.createElement(
+	                                    _reactBootstrap.InputGroup,
+	                                    null,
+	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Game Name' }),
+	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Start Date' }),
+	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'End Date' }),
+	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Image URL' }),
+	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Description' }),
+	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Hunt Type' }),
+	                                    React.createElement(
+	                                        'div',
+	                                        { id: 'questionEdit', action: '', method: 'POST' },
+	                                        React.createElement('input', { type: 'button', value: 'Add question', onClick: function onClick() {
+	                                                return _this2.addQuestion();
+	                                            } }),
+	                                        React.createElement('div', null)
+	                                    ),
+	                                    React.createElement('input', { type: 'button', value: 'Temp Print question(Checks to make sure values are being passed)', onClick: function onClick() {
+	                                            return _this2.printQuestion();
+	                                        } }),
+	                                    React.createElement(
+	                                        _reactBootstrap.ButtonToolbar,
+	                                        null,
+	                                        React.createElement(
+	                                            _reactBootstrap.Button,
+	                                            { id: 'edit-item' },
+	                                            'Save'
+	                                        ),
+	                                        React.createElement(
+	                                            _reactBootstrap.Button,
+	                                            { onClick: function onClick() {
+	                                                    return _this2.changePage('adminHunts');
+	                                                } },
+	                                            'Cancel'
+	                                        )
+	                                    )
+	                                )
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return AdminEditHunt;
 	}(React.Component);
 
 /***/ }
