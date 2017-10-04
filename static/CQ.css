@@ -177,21 +177,7 @@ body {
   padding-top: 8px;
   min-height: 24px;
   text-align: center;
-}
-
-#stripe-success, #stripe-error {
-  display:inline;
+  
   font-size: 13px;
 }
-
-#stripe-error {
-  color: #E4584C;
-}
-
-#stripe-success {
-  color: #666EE8;
-  font-weight: 500;
-  font-size: 13px;
-}
-
 

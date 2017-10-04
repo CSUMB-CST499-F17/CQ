@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
-
-// import { Socket } from './Socket';
+import { Socket } from './Socket';
 
 export class Register extends React.Component {
     constructor(props) {
@@ -25,6 +24,11 @@ export class Register extends React.Component {
             }
         });
         this.token;
+        this.userdata = {
+            'email': '',
+            'teamname': '',
+            'hunt_id': ''
+        }
         
         this.changePage = this.changePage.bind(this);
         this.setOutcome = this.setOutcome.bind(this);
@@ -34,25 +38,27 @@ export class Register extends React.Component {
     }
     
     componentDidMount() {
-          // Add an instance of the card Element into the `card-element` <div>
-          this.card.mount('#card-element');
+        // Add an instance of the card Element into the `card-element` <div>
+        this.card.mount('#card-element');
     }
     
     handleSubmit(event) {
         event.preventDefault();
         // Handle form submission
         var form = document.getElementById('payment-form');
-        var successElement = document.getElementById('stripe-success');
-        var errorElement = document.getElementById('stripe-error');
+        var outcomeElement = document.getElementById('stripe-outcome');
+        // var errorElement = document.getElementById('stripe-error');
         
         this.stripe.createToken(this.card).then(function(result) {
             if (result.error) {
                 // Inform the user if there was an error
-                errorElement.textContent = result.error.message;
+                outcomeElement.textContent = result.error.message;
+                outcomeElement.style.color = "#E4584C";
             } 
             else {
-                errorElement.textContent = "";
-                successElement.textContent = "Success! Token generated: " + result.token.id;
+                outcomeElement.textContent = "Success! Token generated: " + result.token.id;
+                outcomeElement.style.color = "#666EE8";
+                
                 // Send the token to your server
                 this.stripeTokenHandler(result.token);
             }
@@ -63,14 +69,13 @@ export class Register extends React.Component {
         this.setOutcome(event);
     }
     setOutcome(result) {
-        var errorElement = document.getElementById('stripe-error');
+        var outcomeElement = document.getElementById('stripe-outcome');
         if (result.error) {
-          errorElement.textContent = result.error.message;
+          outcomeElement.textContent = result.error.message;
         }
     }
     stripeTokenHandler(token){
-        //send token to server
-        console.log(token);
+        Socket.emit('checkout', {'token':this.token, 'userData': this.userData});
     }
     changePage(page){
         //changes the display of the pages when button is pressed
@@ -102,10 +107,7 @@ export class Register extends React.Component {
                       </label>
                     </div>
                     <button type="submit">Register and Pay</button>
-                    <div id="stripe-outcome">
-                      <div id="stripe-error"></div>
-                      <div id="stripe-success"></div>
-                    </div>
+                    <div id="stripe-outcome"></div>
                     <div className="clear"></div>
                 </form>
                 

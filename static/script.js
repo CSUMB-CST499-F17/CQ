@@ -51067,6 +51067,8 @@
 
 	var _reactBootstrap = __webpack_require__(186);
 
+	var _Socket = __webpack_require__(443);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51074,8 +51076,6 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	// import { Socket } from './Socket';
 
 	var Register = exports.Register = function (_React$Component) {
 	    _inherits(Register, _React$Component);
@@ -51104,6 +51104,11 @@
 	            }
 	        });
 	        _this.token;
+	        _this.userdata = {
+	            'email': '',
+	            'teamname': '',
+	            'hunt_id': ''
+	        };
 
 	        _this.changePage = _this.changePage.bind(_this);
 	        _this.setOutcome = _this.setOutcome.bind(_this);
@@ -51125,16 +51130,18 @@
 	            event.preventDefault();
 	            // Handle form submission
 	            var form = document.getElementById('payment-form');
-	            var successElement = document.getElementById('stripe-success');
-	            var errorElement = document.getElementById('stripe-error');
+	            var outcomeElement = document.getElementById('stripe-outcome');
+	            // var errorElement = document.getElementById('stripe-error');
 
 	            this.stripe.createToken(this.card).then(function (result) {
 	                if (result.error) {
 	                    // Inform the user if there was an error
-	                    errorElement.textContent = result.error.message;
+	                    outcomeElement.textContent = result.error.message;
+	                    outcomeElement.style.color = "#E4584C";
 	                } else {
-	                    errorElement.textContent = "";
-	                    successElement.textContent = "Success! Token generated: " + result.token.id;
+	                    outcomeElement.textContent = "Success! Token generated: " + result.token.id;
+	                    outcomeElement.style.color = "#666EE8";
+
 	                    // Send the token to your server
 	                    this.stripeTokenHandler(result.token);
 	                }
@@ -51149,16 +51156,15 @@
 	    }, {
 	        key: 'setOutcome',
 	        value: function setOutcome(result) {
-	            var errorElement = document.getElementById('stripe-error');
+	            var outcomeElement = document.getElementById('stripe-outcome');
 	            if (result.error) {
-	                errorElement.textContent = result.error.message;
+	                outcomeElement.textContent = result.error.message;
 	            }
 	        }
 	    }, {
 	        key: 'stripeTokenHandler',
 	        value: function stripeTokenHandler(token) {
-	            //send token to server
-	            console.log(token);
+	            _Socket.Socket.emit('checkout', { 'token': this.token, 'userData': this.userData });
 	        }
 	    }, {
 	        key: 'changePage',
@@ -51230,12 +51236,7 @@
 	                        { type: 'submit' },
 	                        'Register and Pay'
 	                    ),
-	                    React.createElement(
-	                        'div',
-	                        { id: 'stripe-outcome' },
-	                        React.createElement('div', { id: 'stripe-error' }),
-	                        React.createElement('div', { id: 'stripe-success' })
-	                    ),
+	                    React.createElement('div', { id: 'stripe-outcome' }),
 	                    React.createElement('div', { className: 'clear' })
 	                ),
 	                React.createElement(
