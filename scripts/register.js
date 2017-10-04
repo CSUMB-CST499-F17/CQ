@@ -1,45 +1,115 @@
 import * as React from 'react';
+import { Button } from 'react-bootstrap';
 
 // import { Socket } from './Socket';
 
 export class Register extends React.Component {
     constructor(props) {
         super(props);
-
+        this.stripe = Stripe('pk_test_50M0ZvrdCP5uiJUU0yUCa6o8');
+        this.elements = this.stripe.elements();
+        this.card = this.elements.create('card', {
+            style: {
+              base: {
+                iconColor: '#666EE8',
+                color: '#31325F',
+                lineHeight: '40px',
+                fontWeight: 300,
+                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                fontSize: '15px',
+          
+                '::placeholder': {
+                  color: '#CFD7E0',
+                },
+              },
+            }
+        });
+        this.token;
+        
         this.changePage = this.changePage.bind(this);
+        this.setOutcome = this.setOutcome.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.stripeTokenHandler = this.stripeTokenHandler.bind(this);
+    }
+    
+    componentDidMount() {
+          // Add an instance of the card Element into the `card-element` <div>
+          this.card.mount('#card-element');
     }
     
     handleSubmit(event) {
         event.preventDefault();
+        // Handle form submission
+        var form = document.getElementById('payment-form');
+        var successElement = document.getElementById('stripe-success');
+        var errorElement = document.getElementById('stripe-error');
+        
+        this.stripe.createToken(this.card).then(function(result) {
+            if (result.error) {
+                // Inform the user if there was an error
+                errorElement.textContent = result.error.message;
+            } 
+            else {
+                errorElement.textContent = "";
+                successElement.textContent = "Success! Token generated: " + result.token.id;
+                // Send the token to your server
+                this.stripeTokenHandler(result.token);
+            }
+        });
     }
-    //changes the display of the pages when button is pressed
+    handleChange(event) {
+        event.preventDefault();
+        this.setOutcome(event);
+    }
+    setOutcome(result) {
+        var errorElement = document.getElementById('stripe-error');
+        if (result.error) {
+          errorElement.textContent = result.error.message;
+        }
+    }
+    stripeTokenHandler(token){
+        //send token to server
+        console.log(token);
+    }
     changePage(page){
+        //changes the display of the pages when button is pressed
         document.getElementById('register').style.display = "none";
         document.getElementById(page).style.display = "block";
     }
-        
     render() {
         return (
             <div>
                 <div id = 'header'>
                     <header>Register</header>
                 </div>
-                <div id='intro'>
-                    <form id='register-form'>
-                        <input id='register-item' type="text" placeholder="Enter email" /><br/>
-                        <input id='register-item' type="text" placeholder="Enter access code" /><br/>
-                        <select id='register-item'>
-                            <option>Hunt One</option>
-                            <option>Hunt Two</option>
-                            <option>Hunt Three</option>
-                        </select><br/>
-                        <button id='register-item'>Enter!</button>
-                    </form>
-                </div>
-                <form onSubmit = {this.handleSubmit}>
-                    <button onClick={() => this.changePage('home')}>Home</button>
+                
+                <form id = 'stripe-form' onSubmit={this.handleSubmit}>
+                    <div className="group">
+                      <label>
+                        <span>Email</span>
+                        <input className="field" placeholder="sample@email.com" type="email" />
+                      </label>
+                    </div>
+                    <div className="group">
+                      <label>
+                        <span>Name</span>
+                        <input name="cardholder-name" className="field" placeholder="Jane Doe" />
+                      </label>
+                      <label>
+                        <span>Card</span>
+                        <div id="card-element" className="field" onChange={this.handleChange}></div>
+                      </label>
+                    </div>
+                    <button type="submit">Register and Pay</button>
+                    <div id="stripe-outcome">
+                      <div id="stripe-error"></div>
+                      <div id="stripe-success"></div>
+                    </div>
+                    <div className="clear"></div>
                 </form>
+                
+                <Button onClick={() => this.changePage('home')}>Home</Button>
             </div>
          
         );
