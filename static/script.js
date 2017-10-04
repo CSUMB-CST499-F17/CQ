@@ -51293,15 +51293,34 @@
 	var Play = exports.Play = function (_React$Component) {
 	    _inherits(Play, _React$Component);
 
-	    function Play() {
+	    function Play(props) {
 	        _classCallCheck(this, Play);
 
-	        return _possibleConstructorReturn(this, (Play.__proto__ || Object.getPrototypeOf(Play)).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, (Play.__proto__ || Object.getPrototypeOf(Play)).call(this, props));
+
+	        _this.changePage = _this.changePage.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
 	    }
 
 	    _createClass(Play, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            document.getElementById('play').style.display = "none";
+	            document.getElementById(page).style.display = "block";
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var _this2 = this;
+
 	            return React.createElement(
 	                'div',
 	                null,
@@ -51318,33 +51337,36 @@
 	                    'div',
 	                    { id: 'intro' },
 	                    React.createElement(
-	                        'form',
+	                        _reactBootstrap.Form,
 	                        null,
 	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            null,
+	                            'div',
+	                            { id: 'buttons' },
 	                            React.createElement(
-	                                'div',
+	                                _reactBootstrap.FormGroup,
 	                                null,
 	                                React.createElement(
-	                                    'p',
+	                                    _reactBootstrap.ControlLabel,
 	                                    null,
-	                                    'Current Objective Intro. This is Where Database will produce the Scavenger Hunt Question'
-	                                )
-	                            ),
-	                            React.createElement(
-	                                _reactBootstrap.InputGroup,
-	                                null,
+	                                    'Current Objective Intro.'
+	                                ),
 	                                React.createElement(
-	                                    _reactBootstrap.ButtonToolbar,
+	                                    _reactBootstrap.FormControl.Static,
 	                                    null,
-	                                    React.createElement('input', { id: 'play-item', type: 'text', placeholder: 'Enter Answer' }),
-	                                    React.createElement('br', null),
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        null,
-	                                        'Submit'
-	                                    )
+	                                    'This is Where Database will produce the Scavenger Hunt Question.'
+	                                ),
+	                                React.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', placeholder: 'Answer' }),
+	                                React.createElement(
+	                                    _reactBootstrap.Button,
+	                                    { type: 'submit' },
+	                                    'Submit'
+	                                ),
+	                                React.createElement(
+	                                    _reactBootstrap.Button,
+	                                    { onClick: function onClick() {
+	                                            return _this2.changePage('home');
+	                                        } },
+	                                    'Home'
 	                                )
 	                            )
 	                        )
@@ -51356,6 +51378,13 @@
 
 	    return Play;
 	}(React.Component);
+
+	// <InputGroup>
+	//     <ButtonToolbar>
+	//         <input id='play-item' type="text" placeholder="Enter Answer" /><br/>
+	//         <Button>Submit</Button>
+	//     </ButtonToolbar>
+	// </InputGroup>
 
 /***/ },
 /* 499 */
