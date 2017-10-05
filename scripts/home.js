@@ -27,7 +27,7 @@ export class Home extends React.Component {
     render() {
 
         return (
-            <div>
+            <div id='center'>
                 <div id='header'>
                     <header>Coastal Quest</header>
                 </div>

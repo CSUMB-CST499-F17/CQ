@@ -15,15 +15,21 @@ body {
     flex-direction: column;
     height: 83.5%;
 }
-
+#center{
+    text-align:center;
+    justify-content: center;
+}
 
 #buttons{
+    margin: auto;
     display: flex;
     flex-direction: row;
     justify-content: center;
     padding: 20px;
     background: DarkGoldenRod;
     max-width: 80%;
+    color: white;
+    font-size: 24pt;
 }
 #button{
     display: flex;
@@ -34,7 +40,7 @@ body {
 #header {
     color: white;
     font-family: 'Trocchi',serif;
-    font-size: 60px;
+    font-size: 56pt;
     margin: 10px;
     flex-direction: row;
     text-align:center;
@@ -52,6 +58,8 @@ body {
     justify-content: center;
     margin: 15px;
 }
+
+
 #question, #questionEdit  {
     text-align:center;
     justify-content: center;

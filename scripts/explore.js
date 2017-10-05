@@ -29,7 +29,7 @@ export class Explore extends React.Component {
 
     render() {
         return (
-            <div>
+            <div id='center'>
                 <div id ='header'>
                     <header>EXPLORE THIS</header>
                 </div>

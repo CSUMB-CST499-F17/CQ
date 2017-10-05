@@ -3,6 +3,7 @@ import * as ReactBootstrap from 'react-bootstrap';
 import { Socket } from './Socket';
 import { Button } from 'react-bootstrap';
 import { InputGroup } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
 import { FormGroup } from 'react-bootstrap';
 import { ButtonToolbar } from 'react-bootstrap';
@@ -33,7 +34,7 @@ export class ExistingTeam extends React.Component {
     }
     render() {
         return (
-            <div>
+            <div id= 'center'>
                 <div id='header'>
                     <header>EXISTING TEAMS</header>
                 </div>
@@ -41,18 +42,21 @@ export class ExistingTeam extends React.Component {
                     <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Full_Spectrum_Team_Waving.jpg/1024px-Full_Spectrum_Team_Waving.jpg' width='40%'></img>
                 </div>
                 <div id='buttons'>
-                    <form onSubmit = {this.handleSubmit}>
-                        <FormGroup bsSize="medium">
+                    <Form onSubmit = {this.handleSubmit}>
+                        <FormGroup>
                             <InputGroup>
                                 <ButtonToolbar>
                                     <FormControl type="text" placeholder="Enter email" />
+                                    
                                     <FormControl type="text" placeholder="Enter access code" />
+                                    
                                     <Button id= "chatSubmit">Enter!</Button>
+                                    
                                     <Button onClick={() => this.changePage('home')}>Home</Button>
                                 </ButtonToolbar>
                             </InputGroup>
                         </FormGroup>
-                     </form>
+                     </Form>
                     
                 </div>
             </div>

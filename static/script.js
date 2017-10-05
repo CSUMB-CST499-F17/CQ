@@ -22389,7 +22389,7 @@
 
 	            return React.createElement(
 	                'div',
-	                null,
+	                { id: 'center' },
 	                React.createElement(
 	                    'div',
 	                    { id: 'header' },
@@ -42197,7 +42197,7 @@
 
 	            return React.createElement(
 	                'div',
-	                null,
+	                { id: 'center' },
 	                React.createElement(
 	                    'div',
 	                    { id: 'header' },
@@ -42445,7 +42445,7 @@
 
 	            return React.createElement(
 	                'div',
-	                null,
+	                { id: 'center' },
 	                React.createElement(
 	                    'div',
 	                    { id: 'header' },
@@ -42464,11 +42464,11 @@
 	                    'div',
 	                    { id: 'buttons' },
 	                    React.createElement(
-	                        'form',
+	                        _reactBootstrap.Form,
 	                        { onSubmit: this.handleSubmit },
 	                        React.createElement(
 	                            _reactBootstrap.FormGroup,
-	                            { bsSize: 'medium' },
+	                            null,
 	                            React.createElement(
 	                                _reactBootstrap.InputGroup,
 	                                null,
