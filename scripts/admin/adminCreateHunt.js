@@ -67,8 +67,7 @@ export class AdminCreateHunt extends React.Component {
             'hint2':this.state.hint2,
             'image':this.state.image
     	});
-    	window.console.log(this.state.name);
-    	
+    	this.changePage('adminHome')
     }
     //changes the display of the pages when button is pressed
     changePage(page){
@@ -110,7 +109,7 @@ export class AdminCreateHunt extends React.Component {
                 newHint2.type = 'text';
                 newHint2.id = 'Q' + this.state.count  + 'hint2';
                 newHint2.className = 'question-item';
-                newHint2.placeholder="Hint One";
+                newHint2.placeholder="Hint Two";
                 var newImage = document.createElement('input');
                 newImage.type = 'text';
                 newImage.id = 'Q' + this.state.count  + 'image';
