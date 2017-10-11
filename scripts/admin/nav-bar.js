@@ -31,7 +31,7 @@ export class NavBar extends React.Component {
                     <a onClick={() => this.changePage('adminLeaderboard')}>Leaderboard</a>
                     <a onClick={() => this.changePage('adminHunts')}>Hunts</a>
                     <a onClick={() => this.changePage('admins')}>Settings</a>
-                    <a >Logout</a>
+                    <a onClick={() => this.changePage('adminHome')}>Logout</a>
                 </div> 
             </div>
          

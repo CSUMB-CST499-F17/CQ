@@ -51255,7 +51255,9 @@
 	                    ),
 	                    React.createElement(
 	                        'a',
-	                        null,
+	                        { onClick: function onClick() {
+	                                return _this2.changePage('adminHome');
+	                            } },
 	                        'Logout'
 	                    )
 	                )
@@ -51637,32 +51639,32 @@
 	                    var newQuestion = document.createElement('input');
 	                    newQuestion.type = 'text';
 	                    newQuestion.id = 'Q' + this.state.count + 'desc';
-	                    newQuestion.className = 'question-item';
+	                    newQuestion.className = 'form-control';
 	                    newQuestion.placeholder = "Question";
 	                    var newAnswer = document.createElement('input');
 	                    newAnswer.type = 'text';
 	                    newAnswer.id = 'Q' + this.state.count + 'ans';
-	                    newAnswer.className = 'question-item';
+	                    newAnswer.className = 'form-control';
 	                    newAnswer.placeholder = "Answer";
 	                    var newAnswerDesc = document.createElement('input');
 	                    newAnswerDesc.type = 'text';
 	                    newAnswerDesc.id = 'Q' + this.state.count + 'anstext';
-	                    newAnswerDesc.className = 'question-item';
+	                    newAnswerDesc.className = 'form-control';
 	                    newAnswerDesc.placeholder = "Answer Description";
 	                    var newHint = document.createElement('input');
 	                    newHint.type = 'text';
 	                    newHint.id = 'Q' + this.state.count + 'hint1';
-	                    newHint.className = 'question-item';
+	                    newHint.className = 'form-control';
 	                    newHint.placeholder = "Hint One";
 	                    var newHint2 = document.createElement('input');
 	                    newHint2.type = 'text';
 	                    newHint2.id = 'Q' + this.state.count + 'hint2';
-	                    newHint2.className = 'question-item';
+	                    newHint2.className = 'form-control';
 	                    newHint2.placeholder = "Hint Two";
 	                    var newImage = document.createElement('input');
 	                    newImage.type = 'text';
 	                    newImage.id = 'Q' + this.state.count + 'image';
-	                    newImage.className = 'question-item';
+	                    newImage.className = 'form-control';
 	                    newImage.placeholder = "Image URL";
 
 	                    // Create a new <p> element
@@ -51753,16 +51755,16 @@
 	                                            null,
 	                                            'Question 1'
 	                                        ),
-	                                        React.createElement('input', { type: 'text', id: 'Q0desc', placeholder: 'Question' }),
+	                                        React.createElement('input', { type: 'text', id: 'Q0desc', className: 'form-control', placeholder: 'Question' }),
 	                                        React.createElement('br', null),
-	                                        React.createElement('input', { type: 'text', id: 'Q0ans', placeholder: 'Answer' }),
+	                                        React.createElement('input', { type: 'text', id: 'Q0ans', className: 'form-control', placeholder: 'Answer' }),
 	                                        React.createElement('br', null),
-	                                        React.createElement('input', { type: 'text', id: 'Q0anstext', placeholder: 'Answer Description' }),
+	                                        React.createElement('input', { type: 'text', id: 'Q0anstext', className: 'form-control', placeholder: 'Answer Description' }),
 	                                        React.createElement('br', null),
-	                                        React.createElement('input', { type: 'text', id: 'Q0hint1', placeholder: 'Hint1' }),
-	                                        React.createElement('input', { type: 'text', id: 'Q0hint2', placeholder: 'Hint2' }),
+	                                        React.createElement('input', { type: 'text', id: 'Q0hint1', className: 'form-control', placeholder: 'Hint1' }),
+	                                        React.createElement('input', { type: 'text', id: 'Q0hint2', className: 'form-control', placeholder: 'Hint2' }),
 	                                        React.createElement('br', null),
-	                                        React.createElement('input', { type: 'text', id: 'Q0image', placeholder: 'Question Image' }),
+	                                        React.createElement('input', { type: 'text', id: 'Q0image', className: 'form-control', placeholder: 'Question Image' }),
 	                                        React.createElement('br', null)
 	                                    )
 	                                ),
