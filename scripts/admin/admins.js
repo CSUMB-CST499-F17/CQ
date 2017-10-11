@@ -40,7 +40,17 @@ export class Admins extends React.Component {
                 </div>
                 <div id='intro'>
                     List of Admins and option to edit admins goes here<br/>
-                    <Button onClick={() => this.changePage('adminCreate')}>Create New Admin</Button>
+                    <div id='buttons'>
+                        <form onSubmit = {this.handleSubmit}>
+                            <FormGroup>
+                                <InputGroup>
+                                    <ButtonToolbar>
+                                        <Button onClick={() => this.changePage('adminCreate')}>Create New Admin</Button>
+                                    </ButtonToolbar>
+                                </InputGroup>
+                            </FormGroup>
+                        </form>
+                    </div>
                 </div>
             </div>
 

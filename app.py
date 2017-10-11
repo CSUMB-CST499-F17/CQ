@@ -1,4 +1,4 @@
-import os, flask, flask_socketio, flask_sqlalchemy, time
+import os, flask, flask_socketio, flask_sqlalchemy, time, requests
 
 app = flask.Flask(__name__)
 socketio = flask_socketio.SocketIO(app)
@@ -8,6 +8,10 @@ import models
 @app.route('/')
 def hello():
     return flask.render_template('index.html')
+
+@socketio.on('createHunt')
+def createHunt(data):
+    print data
 
 if __name__ == '__main__':
     socketio.run(
