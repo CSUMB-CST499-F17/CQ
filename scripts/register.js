@@ -29,7 +29,6 @@ export class Register extends React.Component {
         this.setOutcome = this.setOutcome.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.stripeTokenHandler = this.stripeTokenHandler.bind(this);
     }
     
     componentDidMount() {
@@ -53,8 +52,8 @@ export class Register extends React.Component {
             else {
                 outcomeElement.textContent = "Success! Token generated: " + result.token.id;
                 outcomeElement.style.color = "#666EE8";
+                Socket.emit('checkout', {'token':result.token});
                 // Send the token to your server
-                this.stripeTokenHandler(result.token);
             }
         });
     }
@@ -67,9 +66,6 @@ export class Register extends React.Component {
         if (result.error) {
           outcomeElement.textContent = result.error.message;
         }
-    }
-    stripeTokenHandler(token){
-        Socket.emit('checkout', {'token':this.token});
     }
     changePage(page){
         //changes the display of the pages when button is pressed
