@@ -50793,7 +50793,6 @@
 	        _this.setOutcome = _this.setOutcome.bind(_this);
 	        _this.handleChange = _this.handleChange.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        _this.stripeTokenHandler = _this.stripeTokenHandler.bind(_this);
 	        return _this;
 	    }
 
@@ -50820,8 +50819,8 @@
 	                } else {
 	                    outcomeElement.textContent = "Success! Token generated: " + result.token.id;
 	                    outcomeElement.style.color = "#666EE8";
+	                    _Socket.Socket.emit('checkout', { 'token': result.token });
 	                    // Send the token to your server
-	                    this.stripeTokenHandler(result.token);
 	                }
 	            });
 	        }
@@ -50838,11 +50837,6 @@
 	            if (result.error) {
 	                outcomeElement.textContent = result.error.message;
 	            }
-	        }
-	    }, {
-	        key: 'stripeTokenHandler',
-	        value: function stripeTokenHandler(token) {
-	            _Socket.Socket.emit('checkout', { 'token': this.token });
 	        }
 	    }, {
 	        key: 'changePage',

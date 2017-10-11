@@ -20,7 +20,7 @@ def checkout(data):
       description="Coastal Quest Scavenger Hunt",
       source=token,
     )
-        
+    
     # create account
     # will get team_name, email, hunt_id
     
