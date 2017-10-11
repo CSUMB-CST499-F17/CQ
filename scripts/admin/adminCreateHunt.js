@@ -152,7 +152,7 @@ export class AdminCreateHunt extends React.Component {
 
     render() {
         return (
-            <div>
+            <div >
                 <div id = 'header'>
                     <header>Create Hunt</header>
                 </div>

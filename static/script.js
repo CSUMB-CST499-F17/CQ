@@ -22089,7 +22089,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'intro' },
-	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG/1200px-Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG', width: '50%' })
+	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG/1200px-Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG', width: '30%' })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -51250,7 +51250,7 @@
 	                    React.createElement(
 	                        'a',
 	                        { onClick: function onClick() {
-	                                return _this2.changePage('adminHome');
+	                                return _this2.changePage('home');
 	                            } },
 	                        'Logout'
 	                    )
@@ -51356,24 +51356,6 @@
 	                                        'Search'
 	                                    )
 	                                )
-	                            )
-	                        )
-	                    )
-	                ),
-	                React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/8/87/Maplestory_Leaderboard_2015-10.PNG', width: '30%' }),
-	                React.createElement(
-	                    'div',
-	                    { id: 'buttons' },
-	                    React.createElement(
-	                        'form',
-	                        { onSubmit: this.handleSubmit },
-	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            null,
-	                            React.createElement(
-	                                _reactBootstrap.InputGroup,
-	                                null,
-	                                React.createElement(_reactBootstrap.ButtonToolbar, null)
 	                            )
 	                        )
 	                    )

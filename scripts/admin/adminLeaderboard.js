@@ -44,17 +44,6 @@ export class AdminLeaderboard extends React.Component {
                         </FormGroup>
                     </form>
                 </div>
-                <img src='https://upload.wikimedia.org/wikipedia/commons/8/87/Maplestory_Leaderboard_2015-10.PNG' width='30%'></img>
-                <div id='buttons'>
-                    <form onSubmit = {this.handleSubmit}>
-                        <FormGroup>
-                            <InputGroup>
-                                <ButtonToolbar>
-                                </ButtonToolbar>
-                            </InputGroup>
-                        </FormGroup>
-                    </form>
-                </div>
             </div>
 
         );
