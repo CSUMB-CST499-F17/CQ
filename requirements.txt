@@ -4,3 +4,4 @@ flask-socketio
 requests
 pyscopg2
 Flask-SQLAlchemy
+stripe
