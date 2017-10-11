@@ -24,11 +24,6 @@ export class Register extends React.Component {
             }
         });
         this.token;
-        this.userdata = {
-            'email': '',
-            'teamname': '',
-            'hunt_id': ''
-        }
         
         this.changePage = this.changePage.bind(this);
         this.setOutcome = this.setOutcome.bind(this);
@@ -58,7 +53,6 @@ export class Register extends React.Component {
             else {
                 outcomeElement.textContent = "Success! Token generated: " + result.token.id;
                 outcomeElement.style.color = "#666EE8";
-                
                 // Send the token to your server
                 this.stripeTokenHandler(result.token);
             }
@@ -75,7 +69,7 @@ export class Register extends React.Component {
         }
     }
     stripeTokenHandler(token){
-        Socket.emit('checkout', {'token':this.token, 'userData': this.userData});
+        Socket.emit('checkout', {'token':this.token});
     }
     changePage(page){
         //changes the display of the pages when button is pressed

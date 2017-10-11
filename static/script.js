@@ -51104,11 +51104,6 @@
 	            }
 	        });
 	        _this.token;
-	        _this.userdata = {
-	            'email': '',
-	            'teamname': '',
-	            'hunt_id': ''
-	        };
 
 	        _this.changePage = _this.changePage.bind(_this);
 	        _this.setOutcome = _this.setOutcome.bind(_this);
@@ -51141,7 +51136,6 @@
 	                } else {
 	                    outcomeElement.textContent = "Success! Token generated: " + result.token.id;
 	                    outcomeElement.style.color = "#666EE8";
-
 	                    // Send the token to your server
 	                    this.stripeTokenHandler(result.token);
 	                }
@@ -51164,7 +51158,7 @@
 	    }, {
 	        key: 'stripeTokenHandler',
 	        value: function stripeTokenHandler(token) {
-	            _Socket.Socket.emit('checkout', { 'token': this.token, 'userData': this.userData });
+	            _Socket.Socket.emit('checkout', { 'token': this.token });
 	        }
 	    }, {
 	        key: 'changePage',
