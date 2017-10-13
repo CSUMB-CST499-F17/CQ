@@ -29,7 +29,7 @@ export class Explore extends React.Component {
 
     render() {
         return (
-            <div>
+            <div id='center'>
                 <div id ='header'>
                     <header>EXPLORE THIS</header>
                 </div>
@@ -37,25 +37,11 @@ export class Explore extends React.Component {
                     <img src='https://upload.wikimedia.org/wikipedia/commons/8/8c/FZ_%28Explore%21%29_%288584496885%29.jpg' width='50%'></img>
                 </div>
                 <div id='buttons'>
-                    <form onSubmit = {this.handleSubmit}>
-                        <FormGroup>
-                            <InputGroup>
-                                <ButtonToolbar>
-                                    <Button onClick={() => this.changePage('leaderboard')}>Leaderboard</Button>
-                                    <Button onClick={() => this.changePage('register')}>Participate</Button>
-                                </ButtonToolbar>
-                            </InputGroup>
-                        </FormGroup>
-                    </form>
-                    <form onSubmit = {this.handleSubmit}>
-                        <FormGroup>
-                            <InputGroup>
-                                <ButtonToolbar>
-                                    <Button onClick={() => this.changePage('home')}>Home</Button>
-                                </ButtonToolbar>
-                            </InputGroup>
-                        </FormGroup>
-                    </form>
+                    <ButtonToolbar>
+                        <Button onClick={() => this.changePage('leaderboard')}>Leaderboard</Button>
+                        <Button onClick={() => this.changePage('register')}>Participate</Button>
+                        <Button onClick={() => this.changePage('home')}>Home</Button>
+                    </ButtonToolbar>
                 </div>
             </div>
 

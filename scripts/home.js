@@ -27,26 +27,20 @@ export class Home extends React.Component {
     render() {
 
         return (
-            <div>
+            <div id='center'>
                 <div id='header'>
                     <header>Coastal Quest</header>
                 </div>
                 <div id='intro'>
-                    <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG/1200px-Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG' width='50%'></img>
+                    <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG/1200px-Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG' width='30%'></img>
                 </div>
                 <div id='buttons'>
-                    <form onSubmit = {this.handleSubmit}>
-                        <FormGroup>
-                            <InputGroup>
-                                <ButtonToolbar>
-                                    <Button onClick={() => this.changePage('explore')}>Let's Explore!</Button>
-                                    <Button onClick={() => this.changePage('existingTeam')}>Log into Existing Team</Button>
-                                    <Button onClick={() => this.changePage('adminHome')}>Temp Button to Admin Homepage</Button>
-                                    <Button onClick={() => this.changePage('play')}>Temp Button to Play Page</Button>
-                                </ButtonToolbar>
-                            </InputGroup>
-                        </FormGroup>
-                    </form>
+                    <ButtonToolbar>
+                        <Button onClick={() => this.changePage('explore')}>Let's Explore!</Button>
+                        <Button onClick={() => this.changePage('existingTeam')}>Log into Existing Team</Button>
+                        <Button onClick={() => this.changePage('adminHome')}>Temp Button to Admin Homepage</Button>
+                        <Button onClick={() => this.changePage('play')}>Temp Button to Play Page</Button>
+                    </ButtonToolbar>
                 </div>
             </div>
 

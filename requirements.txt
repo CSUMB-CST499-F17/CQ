@@ -1,5 +1,7 @@
 Flask
 Flask-SocketIO
+flask-socketio
 requests
 pyscopg2
 Flask-SQLAlchemy
+stripe
