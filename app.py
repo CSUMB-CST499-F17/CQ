@@ -22,6 +22,7 @@ def checkout(data):
     stripe.api_key = "sk_test_O6BW3ED77qHecdLRd832IdjW"
     
     token = data['token']
+    #userInfo = data['userInfo']
     
     charge = stripe.Charge.create(
       amount=50,
@@ -33,7 +34,9 @@ def checkout(data):
     # create account
     # will get team_name, email, hunt_id
     
-    # emit access code
+    # access_code = "Wowzers"
+    # models.Participants.__init__(userInfo['email'],userInfo['team_name'], userInfo['image'], access_code, 0, 0, userInfo['hunts_id'])
+    # socketio.emit('access', {'access_code':access_code});
     
     # send email
 
