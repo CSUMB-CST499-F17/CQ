@@ -1,5 +1,4 @@
-import os, flask, flask_socketio, flask_sqlalchemy, time
-# , stripe
+import os, flask, flask_socketio, flask_sqlalchemy, time, stripe
 import models
 
 app = flask.Flask(__name__)
@@ -8,14 +7,10 @@ socketio = flask_socketio.SocketIO(app)
 @app.route('/')
 def hello():
     return flask.render_template('index.html')
-
-@socketio.on('createHunt')
-def createHunt(data):
-    print data
     
 @socketio.on('checkout')
 def checkout(data):
-    stripe.api_key = "sk_test_BQokikJOvBiI2HlWgH4olfQ2"
+    stripe.api_key = "sk_test_O6BW3ED77qHecdLRd832IdjW"
     
     token = data['token']
     
@@ -23,7 +18,7 @@ def checkout(data):
       amount=50,
       currency="usd",
       description="Coastal Quest Scavenger Hunt",
-      source=token,
+      source=token['id'],
     )
     
     # create account
