@@ -51121,6 +51121,12 @@
 	            }
 	        });
 	        _this.token;
+	        _this.userdata = {
+	            'team_name': '',
+	            'email': '',
+	            'hunt_id': ''
+	        };
+	        _this.hunts = [[1, 'Marco'], [2, 'Polo']];
 
 	        _this.changePage = _this.changePage.bind(_this);
 	        _this.setOutcome = _this.setOutcome.bind(_this);
@@ -51154,6 +51160,7 @@
 	                    outcomeElement.style.color = "#666EE8";
 	                    _Socket.Socket.emit('checkout', { 'token': result.token });
 	                    // Send the token to your server
+	                    console.log();
 	                }
 	            });
 	        }
@@ -51183,6 +51190,13 @@
 	        value: function render() {
 	            var _this2 = this;
 
+	            var hunts = this.hunts.map(function (n, index) {
+	                return React.createElement(
+	                    'option',
+	                    { value: n[0] },
+	                    n[1]
+	                );
+	            });
 	            return React.createElement(
 	                'div',
 	                null,
@@ -51207,23 +51221,19 @@
 	                            React.createElement(
 	                                'span',
 	                                null,
-	                                'Email'
+	                                'Team'
 	                            ),
-	                            React.createElement('input', { className: 'field', placeholder: 'sample@email.com', type: 'email' })
-	                        )
-	                    ),
-	                    React.createElement(
-	                        'div',
-	                        { className: 'group' },
+	                            React.createElement('input', { className: 'field', placeholder: 'MyTeamName', onChange: this.handleChange })
+	                        ),
 	                        React.createElement(
 	                            'label',
 	                            null,
 	                            React.createElement(
 	                                'span',
 	                                null,
-	                                'Name'
+	                                'Email'
 	                            ),
-	                            React.createElement('input', { name: 'cardholder-name', className: 'field', placeholder: 'Jane Doe' })
+	                            React.createElement('input', { className: 'field', placeholder: 'sample@email.com', type: 'email', onChange: this.handleChange })
 	                        ),
 	                        React.createElement(
 	                            'label',
@@ -51234,6 +51244,20 @@
 	                                'Card'
 	                            ),
 	                            React.createElement('div', { id: 'card-element', className: 'field', onChange: this.handleChange })
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { className: 'group full' },
+	                        React.createElement(
+	                            'label',
+	                            null,
+	                            'Ongoing Scavenger Hunts'
+	                        ),
+	                        React.createElement(
+	                            'select',
+	                            { name: 'hunts', form: 'stripe-form' },
+	                            hunts
 	                        )
 	                    ),
 	                    React.createElement(

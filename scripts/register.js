@@ -24,6 +24,12 @@ export class Register extends React.Component {
             }
         });
         this.token;
+        this.userdata = {
+            'team_name': '',
+            'email': '',
+            'hunt_id': ''
+        };
+        this.hunts = [[1,'Marco'],[2,'Polo']];
         
         this.changePage = this.changePage.bind(this);
         this.setOutcome = this.setOutcome.bind(this);
@@ -54,6 +60,7 @@ export class Register extends React.Component {
                 outcomeElement.style.color = "#666EE8";
                 Socket.emit('checkout', {'token':result.token});
                 // Send the token to your server
+                console.log();
             }
         });
     }
@@ -73,33 +80,38 @@ export class Register extends React.Component {
         document.getElementById(page).style.display = "block";
     }
     render() {
+        let hunts = this.hunts.map((n, index) => 
+            <option value={n[0]}>{n[1]}</option>
+        );
         return (
             <div>
                 <div id = 'header'>
                     <header>Register</header>
                 </div>
-                
                 <form id = 'stripe-form' onSubmit={this.handleSubmit}>
                     <div className="group">
                       <label>
-                        <span>Email</span>
-                        <input className="field" placeholder="sample@email.com" type="email" />
+                        <span>Team</span>
+                        <input className="field" placeholder="MyTeamName" onChange={this.handleChange} />
                       </label>
-                    </div>
-                    <div className="group">
                       <label>
-                        <span>Name</span>
-                        <input name="cardholder-name" className="field" placeholder="Jane Doe" />
+                        <span>Email</span>
+                        <input className="field" placeholder="sample@email.com" type="email" onChange={this.handleChange}/>
                       </label>
                       <label>
                         <span>Card</span>
                         <div id="card-element" className="field" onChange={this.handleChange}></div>
                       </label>
                     </div>
+                    <div className="group full">
+                        <label>Ongoing Scavenger Hunts</label>
+                        <select name="hunts" form='stripe-form'>{hunts}</select>
+                    </div>
                     <button type="submit">Register and Pay</button>
                     <div id="stripe-outcome"></div>
                     <div className="clear"></div>
                 </form>
+                
                 
                 <Button onClick={() => this.changePage('home')}>Home</Button>
             </div>

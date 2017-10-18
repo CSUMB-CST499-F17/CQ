@@ -139,6 +139,14 @@ img {
   border-bottom: 1px solid #F0F5FA;
 }
 
+#stripe-form .full {
+  text-align: center;
+}
+
+#stripe-form .full label {
+  margin-right: 20px;
+}
+
 #stripe-form label {
   position: relative;
   color: #8898AA;

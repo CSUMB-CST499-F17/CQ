@@ -1,10 +1,8 @@
-import flask_sqlalchemy, app, os
-
+import flask_sqlalchemy, app, os, datetime
 
 app.app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+
 db = flask_sqlalchemy.SQLAlchemy(app.app)
-
-
 
 class Hunts(db.Model):
     id = db.Column(db.Integer, primary_key=True) # key
@@ -57,7 +55,7 @@ class Participants(db.Model):
     image = db.Column(db.String(512))
     access_code = db.Column(db.String(40))
     question_score = db.Column(db.Integer)
-    time_taken = db.Column(db.Time())
+    time_taken = db.Column(db.Time)
     hunts_id = db.Column(db.Integer, db.ForeignKey('hunts.id'), nullable=False)
     
     def __init__(self, e, tn, i, ac, qs, tt, hid):
