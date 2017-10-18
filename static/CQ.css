@@ -5,7 +5,11 @@ body {
     background: SteelBlue;
     height: 100%;
 }
-
+img {
+	width:400;
+	max-width:100%;
+	height:auto;
+}
 
 #content{
     display: flex;
@@ -15,10 +19,6 @@ body {
     flex-direction: column;
     height: 83.5%;
 }
-#center{
-    text-align:center;
-    justify-content: center;
-}
 
 #buttons{
     margin: auto;
@@ -26,21 +26,14 @@ body {
     flex-direction: row;
     justify-content: center;
     padding: 20px;
-    background: DarkGoldenRod;
-    max-width: 80%;
+    max-width: 50%;
     color: white;
     font-size: 24pt;
 }
-#button{
-    display: flex;
-    background: grey;
-    margin: 15px;
-}
-
 #header {
     color: white;
     font-family: 'Trocchi',serif;
-    font-size: 56pt;
+    font-size: 75px;
     margin: 10px;
     flex-direction: row;
     text-align:center;
@@ -49,9 +42,16 @@ body {
 #intro{
     text-align:center;
     justify-content: center;
-    background: white;
     margin:auto;
-    max-width: 80%;
+    max-width: 100%;
+    display:block;
+}
+#introhunts{
+    text-align:center;
+    justify-content: center;
+    margin:auto;
+    max-width: 100%;
+    display:flex;
 }
 
 #search{
@@ -63,27 +63,32 @@ body {
 #question, #questionEdit  {
     justify-content: center;
     width: 100%;
-    height: 200px;
+    height: 250px;
     overflow-y: scroll;
 }
 .question-group{
-    margin:10px;
+    margin:5px;
 }
 #create-form{
     position: static;
     display: flex;
     justify-content: center;
-    /*position: absolute;*/
-    /*top: 50%;*/
-    /*left: 50%;*/
-    /*margin-right: -50%;*/
-    /*transform: translate(-50%, -50%);*/
+    border-radius: 25px;
+    background:#E8DDCB;
+    padding:20px 20px 0px 20px; 
+    width:55%;
 }
-.create-item{
+.create-item, .ET-field{
     margin:5px;
     justify-content: center;
+    
 }
-
+#ET-form{
+    position: static;
+    display: flex;
+    justify-content: center;
+    margin:10px;
+}
  /* Add a black background color to the top navigation */
 #topnav {
     background-color: #333;
@@ -132,6 +137,14 @@ body {
 
 .group label:not(:last-child) {
   border-bottom: 1px solid #F0F5FA;
+}
+
+#stripe-form .full {
+  text-align: center;
+}
+
+#stripe-form .full label {
+  margin-right: 20px;
 }
 
 #stripe-form label {
@@ -203,4 +216,62 @@ body {
   text-align: center;
   
   font-size: 13px;
+}
+
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+    #header {
+        color: white;
+        font-family: 'Trocchi',serif;
+        font-size: 2.5em;
+        margin: 10px;
+        flex-direction: row;
+        text-align:center;
+        justify-content: center;
+    }
+
+    #intro{
+        text-align:center;
+        justify-content: center;
+        display: flex;
+        margin:auto;
+        max-width: 100%;
+    }
+         /* Add a black background color to the top navigation */
+    #topnav {
+        background-color: #333;
+        overflow: hidden;
+    }
+    
+    /* Style the links inside the navigation bar */
+    #topnav a {
+        float: left;
+        display: block;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 10px; /* first is top and bottom second is left and right*/
+        text-decoration: none;
+        font-size: 14px;
+    }
+    
+    /* Change the color of links on hover */
+    #topnav a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+    
+    /* Hide the link that should open and close the topnav on small screens */
+    #topnav .icon {
+        display: none;
+    } 
+    
+    
+    img
+    {
+        width: 33%;
+        max-width: 180px;
+        height: 33%;
+    }
+
+
 }

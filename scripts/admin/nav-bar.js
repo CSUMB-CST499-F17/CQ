@@ -20,6 +20,8 @@ export class NavBar extends React.Component {
         document.getElementById('adminLeaderboard').style.display = "none";
         document.getElementById('adminHunts').style.display = "none";
         document.getElementById('admins').style.display = "none";
+        document.getElementById('adminCreate').style.display = "none";
+        document.getElementById('adminCreateHunt').style.display = "none";
         document.getElementById(page).style.display = "block";
     }
     

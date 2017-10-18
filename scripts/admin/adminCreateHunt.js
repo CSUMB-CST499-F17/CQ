@@ -5,12 +5,16 @@ import { Button } from 'react-bootstrap';
 import { InputGroup } from 'react-bootstrap';
 import { FormGroup } from 'react-bootstrap';
 import { ButtonToolbar } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
+
+import { NavBar } from './nav-bar';
+
 
 export class AdminCreateHunt extends React.Component {
         constructor(props) {
         super(props);
         this.state = {
-            'count':1,
+            'count':0,
             'limit':25,
             'name':'',
             'sDate':'',
@@ -85,33 +89,33 @@ export class AdminCreateHunt extends React.Component {
             if (this.state.count < this.state.limit)
             {
                 //creating elements
-                var newQuestion = document.createElement('input');
-                newQuestion.type = 'text';
+                var newQuestion = document.createElement('textarea');
                 newQuestion.id = 'Q' + this.state.count + 'desc';
                 newQuestion.className = 'form-control';
                 newQuestion.placeholder="Question";
+                newQuestion.rows="1";
                 var newAnswer = document.createElement('input');
                 newAnswer.type = 'text';
                 newAnswer.id = 'Q' + this.state.count + 'ans';
                 newAnswer.className = 'form-control';
                 newAnswer.placeholder="Answer";
-                var newAnswerDesc = document.createElement('input');
-                newAnswerDesc.type = 'text';
+                var newAnswerDesc = document.createElement('textarea');
                 newAnswerDesc.id = 'Q' + this.state.count + 'anstext';
                 newAnswerDesc.className = 'form-control';
                 newAnswerDesc.placeholder="Answer Description";
-                var newHint = document.createElement('input');
-                newHint.type = 'text';
+                newAnswerDesc.rows="1";
+                var newHint = document.createElement('textarea');
                 newHint.id = 'Q' + this.state.count  + 'hint1';
                 newHint.className = 'form-control';
                 newHint.placeholder="Hint One";
-                var newHint2 = document.createElement('input');
-                newHint2.type = 'text';
+                newHint.rows="1";
+                var newHint2 = document.createElement('textarea');
                 newHint2.id = 'Q' + this.state.count  + 'hint2';
                 newHint2.className = 'form-control';
                 newHint2.placeholder="Hint Two";
+                newHint2.rows="1";
                 var newImage = document.createElement('input');
-                newImage.type = 'text';
+                newImage.type='text'
                 newImage.id = 'Q' + this.state.count  + 'image';
                 newImage.className = 'form-control';
                 newImage.placeholder="Image URL";
@@ -153,45 +157,36 @@ export class AdminCreateHunt extends React.Component {
     render() {
         return (
             <div >
+                <div id = 'nav-bar'>
+                    <NavBar/>
+                </div>
                 <div id = 'header'>
                     <header>Create Hunt</header>
                 </div>
-                <div id='intro'>
+                <div id='introhunts'>
                     <Form id = 'create-form'>
                             <FormGroup>
                                 <InputGroup>
                                     <div id='create-form1'>
-                                        <input id='name' className='create-item' type="text" placeholder="Game Name" /><br/>
-                                        <input id='sDate' className='create-item' type="text" placeholder="Start Date" />
-                                        <input id='eDate' className='create-item' type="text" placeholder="End Date" /><br/>
-                                        <input id='url' className='create-item' type="text" placeholder="Image URL" /><br/>
-                                        <input id='type' className='create-item' type="text" placeholder="Hunt Type" />
-                                        <input id='desc' className='create-item' type="text" placeholder="Description" /><br/>
+                                        <FormControl id='name' className='create-item' type="text" placeholder="Game Name" /><br/>
+                                        <FormControl id='sDate' className='create-item' type="text" placeholder="Start Date" />
+                                        <FormControl id='eDate' className='create-item' type="text" placeholder="End Date" /><br/>
+                                        <FormControl id='url' className='create-item' type="text" placeholder="Image URL" /><br/>
+                                        <FormControl id='type' className='create-item' type="text" placeholder="Hunt Type" />
+                                        <FormControl id='desc' className='create-item' type="text" placeholder="Description" /><br/>
                                     </div>
                                     <div id='create-form2'>
                                         <Button id='create-item' onClick={() => this.addQuestion()}>Add question</Button>
-                                        
-                                        <div id="question" action="" method="POST">
-                                        <div>Question 1</div>
-                                        <input type='text' id = 'Q0desc' className='form-control' placeholder='Question'/><br/>
-                                        <input type='text' id = 'Q0ans' className='form-control' placeholder='Answer'/><br/>
-                                        <input type="text" id = 'Q0anstext' className='form-control' placeholder="Answer Description" /><br/>
-                                        <input type='text' id = 'Q0hint1' className='form-control' placeholder='Hint1'/>
-                                        <input type='text' id = 'Q0hint2' className='form-control' placeholder='Hint2'/><br/>
-                                        <input type="text" id = 'Q0image'   className='form-control' placeholder="Question Image" /><br/>
-                                        
-                                        
-                                        </div>
-                                    </div>
-                                    <div id='buttons'>
-                                        <ButtonToolbar>
-                                            <Button id='create-item' onClick={this.handleSubmit}>Save</Button>
-                                        </ButtonToolbar>
+                                        <div id="question" action="" method="POST"></div>
                                     </div>
                                 </InputGroup>
                             </FormGroup>
-                        
                     </Form>
+                </div>
+                <div id='buttons'>
+                    <ButtonToolbar>
+                        <Button onClick={this.handleSubmit}>Save</Button>
+                    </ButtonToolbar>
                 </div>
             </div>
          

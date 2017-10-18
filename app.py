@@ -13,8 +13,13 @@ def hello():
 def createHunt(data):
     global x
     print data
-    models.Hunts.__init__(data['name'], data['type'], data['desc'], data['image'], data['sDate'], data['eDate'], data['sDate'])
-    models.Questions.__init__(data['question'], data['answer'], data['image'], data['hint1'], data['hint2'], data[x])
+    hunts = models.Hunts(data['name'], data['type'], data['desc'], data['image'], data['sDate'], data['eDate'], data['sDate'])
+    models.db.session.add(hunts)  
+    models.db.session.commit()
+    
+    questions = models.Questions(data['question'], data['answer'], data['image'], data['hint1'], data['hint2'], data[x])
+    models.db.session.add(questions)  
+    models.db.session.commit()
     x += 1
 
 @socketio.on('checkout')
@@ -22,6 +27,7 @@ def checkout(data):
     stripe.api_key = "sk_test_O6BW3ED77qHecdLRd832IdjW"
     
     token = data['token']
+    #userInfo = data['userInfo']
     
     charge = stripe.Charge.create(
       amount=50,
@@ -33,7 +39,9 @@ def checkout(data):
     # create account
     # will get team_name, email, hunt_id
     
-    # emit access code
+    # access_code = "Wowzers"
+    # models.Participants.__init__(userInfo['email'],userInfo['team_name'], userInfo['image'], access_code, 0, 0, userInfo['hunts_id'])
+    # socketio.emit('access', {'access_code':access_code});
     
     # send email
 

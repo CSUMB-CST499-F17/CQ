@@ -1,18 +1,8 @@
-import flask_sqlalchemy, app
+import flask_sqlalchemy, app, os, datetime
 
-app.app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://username:password@localhost/postgres' 
+app.app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 
 db = flask_sqlalchemy.SQLAlchemy(app.app)
-
-class Message(db.Model):
-    id = db.Column(db.Integer, primary_key=True) # key
-    text = db.Column(db.String(120))
-     
-    def __init__(self, t):
-        self.text = t
-    
-    def __repr__(self): # what's __repr__?
-        return '<Message text: %s>' % self.text
 
 class Hunts(db.Model):
     id = db.Column(db.Integer, primary_key=True) # key
@@ -65,7 +55,7 @@ class Participants(db.Model):
     image = db.Column(db.String(512))
     access_code = db.Column(db.String(40))
     question_score = db.Column(db.Integer)
-    time_taken = db.Column(db.Time())
+    time_taken = db.Column(db.Time)
     hunts_id = db.Column(db.Integer, db.ForeignKey('hunts.id'), nullable=False)
     
     def __init__(self, e, tn, i, ac, qs, tt, hid):
