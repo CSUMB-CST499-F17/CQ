@@ -13,8 +13,13 @@ def hello():
 def createHunt(data):
     global x
     print data
-    models.Hunts.__init__(data['name'], data['type'], data['desc'], data['image'], data['sDate'], data['eDate'], data['sDate'])
-    models.Questions.__init__(data['question'], data['answer'], data['image'], data['hint1'], data['hint2'], data[x])
+    hunts = models.Hunts(data['name'], data['type'], data['desc'], data['image'], data['sDate'], data['eDate'], data['sDate'])
+    models.db.session.add(hunts)  
+    models.db.session.commit()
+    
+    questions = models.Questions(data['question'], data['answer'], data['image'], data['hint1'], data['hint2'], data[x])
+    models.db.session.add(questions)  
+    models.db.session.commit()
     x += 1
 
 @socketio.on('checkout')

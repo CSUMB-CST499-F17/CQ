@@ -163,7 +163,7 @@ export class AdminCreateHunt extends React.Component {
                 <div id = 'header'>
                     <header>Create Hunt</header>
                 </div>
-                <div id='intro'>
+                <div id='introhunts'>
                     <Form id = 'create-form'>
                             <FormGroup>
                                 <InputGroup>

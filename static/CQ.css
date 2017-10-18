@@ -46,6 +46,13 @@ img {
     max-width: 100%;
     display:block;
 }
+#introhunts{
+    text-align:center;
+    justify-content: center;
+    margin:auto;
+    max-width: 100%;
+    display:flex;
+}
 
 #search{
     display: flex;
