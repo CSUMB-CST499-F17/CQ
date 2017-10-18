@@ -5,12 +5,16 @@ import { Button } from 'react-bootstrap';
 import { InputGroup } from 'react-bootstrap';
 import { FormGroup } from 'react-bootstrap';
 import { ButtonToolbar } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
+
+import { NavBar } from './nav-bar';
+
 
 export class AdminCreateHunt extends React.Component {
         constructor(props) {
         super(props);
         this.state = {
-            'count':1,
+            'count':0,
             'limit':25,
             'name':'',
             'sDate':'',
@@ -153,6 +157,9 @@ export class AdminCreateHunt extends React.Component {
     render() {
         return (
             <div >
+                <div id = 'nav-bar'>
+                    <NavBar/>
+                </div>
                 <div id = 'header'>
                     <header>Create Hunt</header>
                 </div>
@@ -161,37 +168,25 @@ export class AdminCreateHunt extends React.Component {
                             <FormGroup>
                                 <InputGroup>
                                     <div id='create-form1'>
-                                        <input id='name' className='create-item' type="text" placeholder="Game Name" /><br/>
-                                        <input id='sDate' className='create-item' type="text" placeholder="Start Date" />
-                                        <input id='eDate' className='create-item' type="text" placeholder="End Date" /><br/>
-                                        <input id='url' className='create-item' type="text" placeholder="Image URL" /><br/>
-                                        <input id='type' className='create-item' type="text" placeholder="Hunt Type" />
-                                        <input id='desc' className='create-item' type="text" placeholder="Description" /><br/>
+                                        <FormControl id='name' className='create-item' type="text" placeholder="Game Name" /><br/>
+                                        <FormControl id='sDate' className='create-item' type="text" placeholder="Start Date" />
+                                        <FormControl id='eDate' className='create-item' type="text" placeholder="End Date" /><br/>
+                                        <FormControl id='url' className='create-item' type="text" placeholder="Image URL" /><br/>
+                                        <FormControl id='type' className='create-item' type="text" placeholder="Hunt Type" />
+                                        <FormControl id='desc' className='create-item' type="text" placeholder="Description" /><br/>
                                     </div>
                                     <div id='create-form2'>
                                         <Button id='create-item' onClick={() => this.addQuestion()}>Add question</Button>
-                                        
-                                        <div id="question" action="" method="POST">
-                                        <div>Question 1</div>
-                                        <input type='text' id = 'Q0desc' className='form-control' placeholder='Question'/><br/>
-                                        <input type='text' id = 'Q0ans' className='form-control' placeholder='Answer'/><br/>
-                                        <input type="text" id = 'Q0anstext' className='form-control' placeholder="Answer Description" /><br/>
-                                        <input type='text' id = 'Q0hint1' className='form-control' placeholder='Hint1'/>
-                                        <input type='text' id = 'Q0hint2' className='form-control' placeholder='Hint2'/><br/>
-                                        <input type="text" id = 'Q0image'   className='form-control' placeholder="Question Image" /><br/>
-                                        
-                                        
-                                        </div>
-                                    </div>
-                                    <div id='buttons'>
-                                        <ButtonToolbar>
-                                            <Button id='create-item' onClick={this.handleSubmit}>Save</Button>
-                                        </ButtonToolbar>
+                                        <div id="question" action="" method="POST"></div>
                                     </div>
                                 </InputGroup>
                             </FormGroup>
-                        
                     </Form>
+                </div>
+                <div id='buttons'>
+                    <ButtonToolbar>
+                        <Button onClick={this.handleSubmit}>Save</Button>
+                    </ButtonToolbar>
                 </div>
             </div>
          

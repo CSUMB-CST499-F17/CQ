@@ -34,24 +34,29 @@ export class ExistingTeam extends React.Component {
     }
     render() {
         return (
-            <div id= 'center'>
+            <div>
                 <div id='header'>
                     <header>EXISTING TEAMS</header>
                 </div>
                 <div id='intro'>
                     <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Full_Spectrum_Team_Waving.jpg/1024px-Full_Spectrum_Team_Waving.jpg' width='40%'></img>
+                    <Form id = "ET-form" onSubmit = {this.handleSubmit}>
+                        <FormGroup>
+                            <InputGroup>
+                                    <FormControl type="text" className="ET-field" placeholder="Enter email" />
+                                    <FormControl type="text" className="ET-field" placeholder="Enter access code" />
+                                <ButtonToolbar>
+                                    <Button id= "ET-submit" className="ET-field">Enter!</Button>
+                                </ButtonToolbar>
+                            </InputGroup>
+                        </FormGroup>
+                    </Form>
                 </div>
                 <div id='buttons'>
-                    <Form onSubmit = {this.handleSubmit}>
+                    <Form>
                         <FormGroup>
                             <InputGroup>
                                 <ButtonToolbar>
-                                    <FormControl type="text" placeholder="Enter email" />
-                                    
-                                    <FormControl type="text" placeholder="Enter access code" />
-                                    
-                                    <Button id= "chatSubmit">Enter!</Button>
-                                    
                                     <Button onClick={() => this.changePage('home')}>Home</Button>
                                 </ButtonToolbar>
                             </InputGroup>

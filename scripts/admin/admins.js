@@ -15,7 +15,7 @@ import { NavBar } from './nav-bar';
 export class Admins extends React.Component {
     constructor(props) {
         super(props);
-
+        
         this.changePage = this.changePage.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -23,12 +23,12 @@ export class Admins extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
     }
-    //changes the display of the pages when button is pressed
+        //changes the display of the pages when button is pressed
     changePage(page){
         document.getElementById('admins').style.display = "none";
         document.getElementById(page).style.display = "block";
     }
-
+    
     render() {
         return (
             <div>
@@ -40,17 +40,17 @@ export class Admins extends React.Component {
                 </div>
                 <div id='intro'>
                     List of Admins and option to edit admins goes here<br/>
-                    <div id='buttons'>
-                        <form onSubmit = {this.handleSubmit}>
-                            <FormGroup>
-                                <InputGroup>
-                                    <ButtonToolbar>
-                                        <Button onClick={() => this.changePage('adminCreate')}>Create New Admin</Button>
-                                    </ButtonToolbar>
-                                </InputGroup>
-                            </FormGroup>
-                        </form>
-                    </div>
+                </div>
+                <div id='buttons'>
+                    <form onSubmit = {this.handleSubmit}>
+                        <FormGroup>
+                            <InputGroup>
+                                <ButtonToolbar>
+                                    <Button onClick={() => this.changePage('adminCreate')}>Create New Admin</Button>
+                                </ButtonToolbar>
+                            </InputGroup>
+                        </FormGroup>
+                    </form>
                 </div>
             </div>
 

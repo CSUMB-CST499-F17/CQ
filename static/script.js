@@ -22076,7 +22076,7 @@
 
 	            return React.createElement(
 	                'div',
-	                { id: 'center' },
+	                null,
 	                React.createElement(
 	                    'div',
 	                    { id: 'header' },
@@ -22089,7 +22089,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'intro' },
-	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG/1200px-Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG', width: '30%' })
+	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG/1200px-Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG', width: '40%' })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -41881,7 +41881,7 @@
 
 	            return React.createElement(
 	                'div',
-	                { id: 'center' },
+	                null,
 	                React.createElement(
 	                    'div',
 	                    { id: 'header' },
@@ -42129,7 +42129,7 @@
 
 	            return React.createElement(
 	                'div',
-	                { id: 'center' },
+	                null,
 	                React.createElement(
 	                    'div',
 	                    { id: 'header' },
@@ -42142,14 +42142,37 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'intro' },
-	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Full_Spectrum_Team_Waving.jpg/1024px-Full_Spectrum_Team_Waving.jpg', width: '40%' })
+	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Full_Spectrum_Team_Waving.jpg/1024px-Full_Spectrum_Team_Waving.jpg', width: '40%' }),
+	                    React.createElement(
+	                        _reactBootstrap.Form,
+	                        { id: 'ET-form', onSubmit: this.handleSubmit },
+	                        React.createElement(
+	                            _reactBootstrap.FormGroup,
+	                            null,
+	                            React.createElement(
+	                                _reactBootstrap.InputGroup,
+	                                null,
+	                                React.createElement(_reactBootstrap.FormControl, { type: 'text', className: 'ET-field', placeholder: 'Enter email' }),
+	                                React.createElement(_reactBootstrap.FormControl, { type: 'text', className: 'ET-field', placeholder: 'Enter access code' }),
+	                                React.createElement(
+	                                    _reactBootstrap.ButtonToolbar,
+	                                    null,
+	                                    React.createElement(
+	                                        _reactBootstrap.Button,
+	                                        { id: 'ET-submit', className: 'ET-field' },
+	                                        'Enter!'
+	                                    )
+	                                )
+	                            )
+	                        )
+	                    )
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'buttons' },
 	                    React.createElement(
 	                        _reactBootstrap.Form,
-	                        { onSubmit: this.handleSubmit },
+	                        null,
 	                        React.createElement(
 	                            _reactBootstrap.FormGroup,
 	                            null,
@@ -42159,13 +42182,6 @@
 	                                React.createElement(
 	                                    _reactBootstrap.ButtonToolbar,
 	                                    null,
-	                                    React.createElement(_reactBootstrap.FormControl, { type: 'text', placeholder: 'Enter email' }),
-	                                    React.createElement(_reactBootstrap.FormControl, { type: 'text', placeholder: 'Enter access code' }),
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { id: 'chatSubmit' },
-	                                        'Enter!'
-	                                    ),
 	                                    React.createElement(
 	                                        _reactBootstrap.Button,
 	                                        { onClick: function onClick() {
@@ -51206,6 +51222,7 @@
 	            document.getElementById('adminLeaderboard').style.display = "none";
 	            document.getElementById('adminHunts').style.display = "none";
 	            document.getElementById('admins').style.display = "none";
+	            document.getElementById('adminCreate').style.display = "none";
 	            document.getElementById(page).style.display = "block";
 	        }
 	    }, {
@@ -51515,6 +51532,8 @@
 
 	var _reactBootstrap = __webpack_require__(186);
 
+	var _navBar = __webpack_require__(500);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51532,7 +51551,7 @@
 	        var _this = _possibleConstructorReturn(this, (AdminCreateHunt.__proto__ || Object.getPrototypeOf(AdminCreateHunt)).call(this, props));
 
 	        _this.state = {
-	            'count': 1,
+	            'count': 0,
 	            'limit': 25,
 	            'name': '',
 	            'sDate': '',
@@ -51680,6 +51699,11 @@
 	                null,
 	                React.createElement(
 	                    'div',
+	                    { id: 'nav-bar' },
+	                    React.createElement(_navBar.NavBar, null)
+	                ),
+	                React.createElement(
+	                    'div',
 	                    { id: 'header' },
 	                    React.createElement(
 	                        'header',
@@ -51702,15 +51726,15 @@
 	                                React.createElement(
 	                                    'div',
 	                                    { id: 'create-form1' },
-	                                    React.createElement('input', { id: 'name', className: 'create-item', type: 'text', placeholder: 'Game Name' }),
+	                                    React.createElement(_reactBootstrap.FormControl, { id: 'name', className: 'create-item', type: 'text', placeholder: 'Game Name' }),
 	                                    React.createElement('br', null),
-	                                    React.createElement('input', { id: 'sDate', className: 'create-item', type: 'text', placeholder: 'Start Date' }),
-	                                    React.createElement('input', { id: 'eDate', className: 'create-item', type: 'text', placeholder: 'End Date' }),
+	                                    React.createElement(_reactBootstrap.FormControl, { id: 'sDate', className: 'create-item', type: 'text', placeholder: 'Start Date' }),
+	                                    React.createElement(_reactBootstrap.FormControl, { id: 'eDate', className: 'create-item', type: 'text', placeholder: 'End Date' }),
 	                                    React.createElement('br', null),
-	                                    React.createElement('input', { id: 'url', className: 'create-item', type: 'text', placeholder: 'Image URL' }),
+	                                    React.createElement(_reactBootstrap.FormControl, { id: 'url', className: 'create-item', type: 'text', placeholder: 'Image URL' }),
 	                                    React.createElement('br', null),
-	                                    React.createElement('input', { id: 'type', className: 'create-item', type: 'text', placeholder: 'Hunt Type' }),
-	                                    React.createElement('input', { id: 'desc', className: 'create-item', type: 'text', placeholder: 'Description' }),
+	                                    React.createElement(_reactBootstrap.FormControl, { id: 'type', className: 'create-item', type: 'text', placeholder: 'Hunt Type' }),
+	                                    React.createElement(_reactBootstrap.FormControl, { id: 'desc', className: 'create-item', type: 'text', placeholder: 'Description' }),
 	                                    React.createElement('br', null)
 	                                ),
 	                                React.createElement(
@@ -51723,41 +51747,22 @@
 	                                            } },
 	                                        'Add question'
 	                                    ),
-	                                    React.createElement(
-	                                        'div',
-	                                        { id: 'question', action: '', method: 'POST' },
-	                                        React.createElement(
-	                                            'div',
-	                                            null,
-	                                            'Question 1'
-	                                        ),
-	                                        React.createElement('input', { type: 'text', id: 'Q0desc', className: 'form-control', placeholder: 'Question' }),
-	                                        React.createElement('br', null),
-	                                        React.createElement('input', { type: 'text', id: 'Q0ans', className: 'form-control', placeholder: 'Answer' }),
-	                                        React.createElement('br', null),
-	                                        React.createElement('input', { type: 'text', id: 'Q0anstext', className: 'form-control', placeholder: 'Answer Description' }),
-	                                        React.createElement('br', null),
-	                                        React.createElement('input', { type: 'text', id: 'Q0hint1', className: 'form-control', placeholder: 'Hint1' }),
-	                                        React.createElement('input', { type: 'text', id: 'Q0hint2', className: 'form-control', placeholder: 'Hint2' }),
-	                                        React.createElement('br', null),
-	                                        React.createElement('input', { type: 'text', id: 'Q0image', className: 'form-control', placeholder: 'Question Image' }),
-	                                        React.createElement('br', null)
-	                                    )
-	                                ),
-	                                React.createElement(
-	                                    'div',
-	                                    { id: 'buttons' },
-	                                    React.createElement(
-	                                        _reactBootstrap.ButtonToolbar,
-	                                        null,
-	                                        React.createElement(
-	                                            _reactBootstrap.Button,
-	                                            { id: 'create-item', onClick: this.handleSubmit },
-	                                            'Save'
-	                                        )
-	                                    )
+	                                    React.createElement('div', { id: 'question', action: '', method: 'POST' })
 	                                )
 	                            )
+	                        )
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'buttons' },
+	                    React.createElement(
+	                        _reactBootstrap.ButtonToolbar,
+	                        null,
+	                        React.createElement(
+	                            _reactBootstrap.Button,
+	                            { onClick: this.handleSubmit },
+	                            'Save'
 	                        )
 	                    )
 	                )
@@ -52046,29 +52051,29 @@
 	                    'div',
 	                    { id: 'intro' },
 	                    'List of Admins and option to edit admins goes here',
-	                    React.createElement('br', null),
+	                    React.createElement('br', null)
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'buttons' },
 	                    React.createElement(
-	                        'div',
-	                        { id: 'buttons' },
+	                        'form',
+	                        { onSubmit: this.handleSubmit },
 	                        React.createElement(
-	                            'form',
-	                            { onSubmit: this.handleSubmit },
+	                            _reactBootstrap.FormGroup,
+	                            null,
 	                            React.createElement(
-	                                _reactBootstrap.FormGroup,
+	                                _reactBootstrap.InputGroup,
 	                                null,
 	                                React.createElement(
-	                                    _reactBootstrap.InputGroup,
+	                                    _reactBootstrap.ButtonToolbar,
 	                                    null,
 	                                    React.createElement(
-	                                        _reactBootstrap.ButtonToolbar,
-	                                        null,
-	                                        React.createElement(
-	                                            _reactBootstrap.Button,
-	                                            { onClick: function onClick() {
-	                                                    return _this2.changePage('adminCreate');
-	                                                } },
-	                                            'Create New Admin'
-	                                        )
+	                                        _reactBootstrap.Button,
+	                                        { onClick: function onClick() {
+	                                                return _this2.changePage('adminCreate');
+	                                            } },
+	                                        'Create New Admin'
 	                                    )
 	                                )
 	                            )
@@ -52133,19 +52138,18 @@
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
 	        }
+
 	        //changes the display of the pages when button is pressed
 
 	    }, {
 	        key: 'changePage',
 	        value: function changePage(page) {
-	            document.getElementById('adminCreate').style.display = "none";
+	            document.getElementById('adminHunts').style.display = "none";
 	            document.getElementById(page).style.display = "block";
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
-
 	            return React.createElement(
 	                'div',
 	                null,
@@ -52167,34 +52171,21 @@
 	                    'div',
 	                    { id: 'intro' },
 	                    React.createElement(
-	                        'div',
-	                        { id: 'create' },
+	                        'form',
+	                        { id: 'create-form' },
 	                        React.createElement(
-	                            'form',
-	                            { id: 'create-form' },
+	                            _reactBootstrap.FormGroup,
+	                            null,
 	                            React.createElement(
-	                                _reactBootstrap.FormGroup,
+	                                _reactBootstrap.InputGroup,
 	                                null,
-	                                React.createElement(
-	                                    _reactBootstrap.InputGroup,
-	                                    null,
-	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Email' }),
-	                                    React.createElement('br', null),
-	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Team Name' }),
-	                                    React.createElement('br', null),
-	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Access Code' }),
-	                                    React.createElement('br', null),
-	                                    React.createElement('input', { id: 'create-item', type: 'text', placeholder: 'Image URL' }),
-	                                    React.createElement(
-	                                        _reactBootstrap.ButtonToolbar,
-	                                        null,
-	                                        React.createElement(
-	                                            _reactBootstrap.Button,
-	                                            { id: 'add-admin' },
-	                                            'Add Admin'
-	                                        )
-	                                    )
-	                                )
+	                                React.createElement(_reactBootstrap.FormControl, { id: 'create-item', type: 'text', placeholder: 'Email' }),
+	                                React.createElement('br', null),
+	                                React.createElement(_reactBootstrap.FormControl, { id: 'create-item', type: 'text', placeholder: 'Team Name' }),
+	                                React.createElement('br', null),
+	                                React.createElement(_reactBootstrap.FormControl, { id: 'create-item', type: 'text', placeholder: 'Access Code' }),
+	                                React.createElement('br', null),
+	                                React.createElement(_reactBootstrap.FormControl, { id: 'create-item', type: 'text', placeholder: 'Image URL' })
 	                            )
 	                        )
 	                    )
@@ -52216,17 +52207,8 @@
 	                                    null,
 	                                    React.createElement(
 	                                        _reactBootstrap.Button,
-	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('adminLeaderboard');
-	                                            } },
-	                                        'Temp Button to Admin Leaderboard'
-	                                    ),
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('adminHome');
-	                                            } },
-	                                        'Temp Button to Admin Homepage'
+	                                        { id: 'add-admin' },
+	                                        'Add Admin'
 	                                    )
 	                                )
 	                            )
