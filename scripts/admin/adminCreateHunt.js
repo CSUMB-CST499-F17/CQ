@@ -89,33 +89,33 @@ export class AdminCreateHunt extends React.Component {
             if (this.state.count < this.state.limit)
             {
                 //creating elements
-                var newQuestion = document.createElement('input');
-                newQuestion.type = 'text';
+                var newQuestion = document.createElement('textarea');
                 newQuestion.id = 'Q' + this.state.count + 'desc';
                 newQuestion.className = 'form-control';
                 newQuestion.placeholder="Question";
+                newQuestion.rows="1";
                 var newAnswer = document.createElement('input');
                 newAnswer.type = 'text';
                 newAnswer.id = 'Q' + this.state.count + 'ans';
                 newAnswer.className = 'form-control';
                 newAnswer.placeholder="Answer";
-                var newAnswerDesc = document.createElement('input');
-                newAnswerDesc.type = 'text';
+                var newAnswerDesc = document.createElement('textarea');
                 newAnswerDesc.id = 'Q' + this.state.count + 'anstext';
                 newAnswerDesc.className = 'form-control';
                 newAnswerDesc.placeholder="Answer Description";
-                var newHint = document.createElement('input');
-                newHint.type = 'text';
+                newAnswerDesc.rows="1";
+                var newHint = document.createElement('textarea');
                 newHint.id = 'Q' + this.state.count  + 'hint1';
                 newHint.className = 'form-control';
                 newHint.placeholder="Hint One";
-                var newHint2 = document.createElement('input');
-                newHint2.type = 'text';
+                newHint.rows="1";
+                var newHint2 = document.createElement('textarea');
                 newHint2.id = 'Q' + this.state.count  + 'hint2';
                 newHint2.className = 'form-control';
                 newHint2.placeholder="Hint Two";
+                newHint2.rows="1";
                 var newImage = document.createElement('input');
-                newImage.type = 'text';
+                newImage.type='text'
                 newImage.id = 'Q' + this.state.count  + 'image';
                 newImage.className = 'form-control';
                 newImage.placeholder="Image URL";

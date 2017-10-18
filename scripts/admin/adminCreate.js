@@ -23,7 +23,7 @@ export class AdminCreate extends React.Component {
     
         //changes the display of the pages when button is pressed
     changePage(page){
-        document.getElementById('adminHunts').style.display = "none";
+        document.getElementById('adminCreate').style.display = "none";
         document.getElementById(page).style.display = "block";
     }
 

@@ -42142,7 +42142,8 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'intro' },
-	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Full_Spectrum_Team_Waving.jpg/1024px-Full_Spectrum_Team_Waving.jpg', width: '40%' }),
+	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Full_Spectrum_Team_Waving.jpg/1024px-Full_Spectrum_Team_Waving.jpg', width: '100%' }),
+	                    React.createElement('br', null),
 	                    React.createElement(
 	                        _reactBootstrap.Form,
 	                        { id: 'ET-form', onSubmit: this.handleSubmit },
@@ -51223,6 +51224,7 @@
 	            document.getElementById('adminHunts').style.display = "none";
 	            document.getElementById('admins').style.display = "none";
 	            document.getElementById('adminCreate').style.display = "none";
+	            document.getElementById('adminCreateHunt').style.display = "none";
 	            document.getElementById(page).style.display = "block";
 	        }
 	    }, {
@@ -51363,7 +51365,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.InputGroup,
 	                                null,
-	                                React.createElement('input', { id: 'adminLeaderboard-item', type: 'text', placeholder: 'Search Hunts' }),
+	                                React.createElement(_reactBootstrap.FormControl, { id: 'adminLeaderboard-item', type: 'text', placeholder: 'Search Hunts' }),
 	                                React.createElement(
 	                                    _reactBootstrap.ButtonToolbar,
 	                                    null,
@@ -51631,31 +51633,31 @@
 	            if (question) {
 	                if (this.state.count < this.state.limit) {
 	                    //creating elements
-	                    var newQuestion = document.createElement('input');
-	                    newQuestion.type = 'text';
+	                    var newQuestion = document.createElement('textarea');
 	                    newQuestion.id = 'Q' + this.state.count + 'desc';
 	                    newQuestion.className = 'form-control';
 	                    newQuestion.placeholder = "Question";
+	                    newQuestion.rows = "1";
 	                    var newAnswer = document.createElement('input');
 	                    newAnswer.type = 'text';
 	                    newAnswer.id = 'Q' + this.state.count + 'ans';
 	                    newAnswer.className = 'form-control';
 	                    newAnswer.placeholder = "Answer";
-	                    var newAnswerDesc = document.createElement('input');
-	                    newAnswerDesc.type = 'text';
+	                    var newAnswerDesc = document.createElement('textarea');
 	                    newAnswerDesc.id = 'Q' + this.state.count + 'anstext';
 	                    newAnswerDesc.className = 'form-control';
 	                    newAnswerDesc.placeholder = "Answer Description";
-	                    var newHint = document.createElement('input');
-	                    newHint.type = 'text';
+	                    newAnswerDesc.rows = "1";
+	                    var newHint = document.createElement('textarea');
 	                    newHint.id = 'Q' + this.state.count + 'hint1';
 	                    newHint.className = 'form-control';
 	                    newHint.placeholder = "Hint One";
-	                    var newHint2 = document.createElement('input');
-	                    newHint2.type = 'text';
+	                    newHint.rows = "1";
+	                    var newHint2 = document.createElement('textarea');
 	                    newHint2.id = 'Q' + this.state.count + 'hint2';
 	                    newHint2.className = 'form-control';
 	                    newHint2.placeholder = "Hint Two";
+	                    newHint2.rows = "1";
 	                    var newImage = document.createElement('input');
 	                    newImage.type = 'text';
 	                    newImage.id = 'Q' + this.state.count + 'image';
@@ -52144,7 +52146,7 @@
 	    }, {
 	        key: 'changePage',
 	        value: function changePage(page) {
-	            document.getElementById('adminHunts').style.display = "none";
+	            document.getElementById('adminCreate').style.display = "none";
 	            document.getElementById(page).style.display = "block";
 	        }
 	    }, {

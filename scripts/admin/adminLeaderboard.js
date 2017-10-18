@@ -36,7 +36,7 @@ export class AdminLeaderboard extends React.Component {
                     <form id='adminLeaderboard-form'>
                         <FormGroup>
                             <InputGroup>
-                                <input id='adminLeaderboard-item' type="text" placeholder="Search Hunts" />
+                                <FormControl id='adminLeaderboard-item' type="text" placeholder="Search Hunts" />
                                 <ButtonToolbar>
                                     <Button id='adminLeaderboard-item'>Search</Button>
                                 </ButtonToolbar>
