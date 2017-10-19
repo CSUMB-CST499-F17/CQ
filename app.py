@@ -12,7 +12,7 @@ def hello():
 @socketio.on('createHunt')
 def createHunt(data):
     global x
-    print data
+    print(data)
     hunts = models.Hunts(data['name'], data['type'], data['desc'], data['image'], data['sDate'], data['eDate'], data['sDate'])
     models.db.session.add(hunts)  
     models.db.session.commit()
