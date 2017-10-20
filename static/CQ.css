@@ -81,8 +81,8 @@ img {
 .create-item, .ET-field{
     margin:5px;
     justify-content: center;
-    
 }
+
 #ET-form{
     position: static;
     display: flex;

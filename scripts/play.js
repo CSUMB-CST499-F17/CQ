@@ -6,7 +6,7 @@ Hint options
 
 import * as React from 'react';
 import * as ReactBootstrap from 'react-bootstrap';
-// import { Socket } from './Socket';
+import { Socket } from './Socket';
 import { Form } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { InputGroup } from 'react-bootstrap';
@@ -21,7 +21,7 @@ import { ControlLabel } from 'react-bootstrap';
 export class Play extends React.Component {
     constructor(props) {
         super(props);
-
+        this.state = {'questions': []};
         this.changePage = this.changePage.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -34,8 +34,28 @@ export class Play extends React.Component {
         document.getElementById('play').style.display = "none";
         document.getElementById(page).style.display = "block";
     }
+        
+        
+    componentDidMount() {
+        
+        Socket.on('hunt', (data) => {
+            this.setState({
+                'prompt': data['questions']
+            });
+        });
+    }
     
     render() {
+        let prompt = '';
+        prompt = this.state.prompt;
+        alert(prompt);
+        
+    
+        // if (this.state.questions != null) {
+        //     questions = this.state.questions.map((n, index) => {
+        //         return <Question question={n.question} />;
+        //      });
+        // }
         
         return (
             
@@ -51,7 +71,9 @@ export class Play extends React.Component {
                                     <ControlLabel>Current Objective Intro.</ControlLabel>
                                         
                                         <FormControl.Static>
-                                            This is Where Database will produce the Scavenger Hunt Question. 
+                                            <div>
+                                                <ul>{prompt}</ul>
+                                            </div>
                                         </FormControl.Static>
                                         
                                         <FormControl componentClass="textarea" placeholder="Answer" />

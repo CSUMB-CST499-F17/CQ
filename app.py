@@ -7,6 +7,7 @@ socketio = flask_socketio.SocketIO(app)
 
 @app.route('/')
 def hello():
+    getHunt()
     return flask.render_template('index.html')
 
 @socketio.on('createHunt')
@@ -21,6 +22,26 @@ def createHunt(data):
     models.db.session.add(questions)  
     models.db.session.commit()
     x += 1
+    
+def getHunt():
+    # huntsQuery = models.Hunts.query.all()
+    # for i in range (0, len(huntsQuery)):
+    #     questionsQuery = { 'message':huntsQuery[i].question,'name':huntsQuery[i].answer,'picture':huntsQuery[i].hint}
+    #     questions.append(questionsQuery)
+    
+    # question = {
+    #     'question': "Find California's first theatre.  On the front door, there is a poem.  Who is the poem about?",
+    #     'answer': "Miners",
+    #     'hint1': "You will find the theatre on the corner of Pacific and John Street.",
+    #     'hint2': "",
+    #     'questionNum': 1
+    # }
+    question = []
+    question = "Find California's first theatre.  On the front door, there is a poem.  Who is the poem about?"
+    
+    socketio.emit('hunt', {
+        'questions': question
+    })
 
 @socketio.on('checkout')
 def checkout(data):

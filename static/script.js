@@ -51303,6 +51303,8 @@
 
 	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
 
+	var _Socket = __webpack_require__(443);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51317,9 +51319,6 @@
 
 	// import { Socket } from './Socket';
 
-
-	// import { Socket } from './Socket';
-
 	var Play = exports.Play = function (_React$Component) {
 	    _inherits(Play, _React$Component);
 
@@ -51328,6 +51327,7 @@
 
 	        var _this = _possibleConstructorReturn(this, (Play.__proto__ || Object.getPrototypeOf(Play)).call(this, props));
 
+	        _this.state = { 'questions': [] };
 	        _this.changePage = _this.changePage.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
@@ -51347,9 +51347,30 @@
 	            document.getElementById(page).style.display = "block";
 	        }
 	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _this2 = this;
+
+	            _Socket.Socket.on('hunt', function (data) {
+	                _this2.setState({
+	                    'prompt': data['questions']
+	                });
+	            });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
+	            var _this3 = this;
+
+	            var prompt = '';
+	            prompt = this.state.prompt;
+	            alert(prompt);
+
+	            // if (this.state.questions != null) {
+	            //     questions = this.state.questions.map((n, index) => {
+	            //         return <Question question={n.question} />;
+	            //      });
+	            // }
 
 	            return React.createElement(
 	                'div',
@@ -51383,7 +51404,15 @@
 	                                React.createElement(
 	                                    _reactBootstrap.FormControl.Static,
 	                                    null,
-	                                    'This is Where Database will produce the Scavenger Hunt Question.'
+	                                    React.createElement(
+	                                        'div',
+	                                        null,
+	                                        React.createElement(
+	                                            'ul',
+	                                            null,
+	                                            prompt
+	                                        )
+	                                    )
 	                                ),
 	                                React.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', placeholder: 'Answer' }),
 	                                React.createElement(
@@ -51394,7 +51423,7 @@
 	                                React.createElement(
 	                                    _reactBootstrap.Button,
 	                                    { onClick: function onClick() {
-	                                            return _this2.changePage('home');
+	                                            return _this3.changePage('home');
 	                                        } },
 	                                    'Home'
 	                                )
