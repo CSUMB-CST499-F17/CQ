@@ -7,6 +7,7 @@ import { FormControl } from 'react-bootstrap';
 import { FormGroup } from 'react-bootstrap';
 import { ButtonToolbar } from 'react-bootstrap';
 import { ButtonGroup } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
 // import { Socket } from './Socket';
 
@@ -33,19 +34,21 @@ export class Leaderboard extends React.Component {
                 <div id = 'header'>
                     <header>Leaderboard</header>
                 </div>
-                <div id='search'>
-                    <form id='leaderboard-form'>
-                        <FormGroup>
-                            <InputGroup>
-                                <ButtonToolbar>
-                                    <input id='leaderboard-item' type="text" placeholder="Search Hunts" />
-                                    <Button id='leaderboard-item'>Search</Button>
-                                </ButtonToolbar>
-                            </InputGroup>
-                        </FormGroup>
-                    </form>
+                <div id='intro'>
+                    <div id='leaderboard-form'>
+                        <Form>
+                            <FormGroup>
+                                <InputGroup>
+                                        <FormControl id="leaderboard-item1" className='leaderboard-item' placeholder="Search Hunts" />
+                                        <Button id="leaderboard-item2" className='leaderboard-item'>Search</Button>
+                                </InputGroup>
+                            </FormGroup>
+                        </Form>
+                    </div>
+                    <div>
+                        <img src='https://upload.wikimedia.org/wikipedia/commons/8/87/Maplestory_Leaderboard_2015-10.PNG' width='30%'></img>
+                    </div>
                 </div>
-                <img src='https://upload.wikimedia.org/wikipedia/commons/8/87/Maplestory_Leaderboard_2015-10.PNG' width='30%'></img>
                 <div id='buttons'>
                     <form onSubmit = {this.handleSubmit}>
                         <Button onClick={() => this.changePage('home')}>Home</Button>
