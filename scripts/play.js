@@ -21,9 +21,18 @@ import { ControlLabel } from 'react-bootstrap';
 export class Play extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {'questions': []};
+        this.state = {
+            'prompt': ''
+    
+        };
         this.changePage = this.changePage.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        
+                Socket.on('hunt', (data) => {
+            this.setState({
+                'prompt': data
+            });
+        });
     }
 
     handleSubmit(event) {
@@ -38,12 +47,9 @@ export class Play extends React.Component {
         
     componentDidMount() {
         
-        Socket.on('hunt', (data) => {
-            this.setState({
-                'prompt': data['questions']
-            });
-        });
+
     }
+    
     
     render() {
         let prompt = '';

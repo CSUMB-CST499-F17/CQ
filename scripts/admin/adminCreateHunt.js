@@ -164,24 +164,26 @@ export class AdminCreateHunt extends React.Component {
                     <header>Create Hunt</header>
                 </div>
                 <div id='introhunts'>
-                    <Form id = 'create-form'>
-                            <FormGroup>
-                                <InputGroup>
-                                    <div id='create-form1'>
-                                        <FormControl id='name' className='create-item' type="text" placeholder="Game Name" /><br/>
-                                        <FormControl id='sDate' className='create-item' type="text" placeholder="Start Date" />
-                                        <FormControl id='eDate' className='create-item' type="text" placeholder="End Date" /><br/>
-                                        <FormControl id='url' className='create-item' type="text" placeholder="Image URL" /><br/>
-                                        <FormControl id='type' className='create-item' type="text" placeholder="Hunt Type" />
-                                        <FormControl id='desc' className='create-item' type="text" placeholder="Description" /><br/>
-                                    </div>
-                                    <div id='create-form2'>
-                                        <Button id='create-item' onClick={() => this.addQuestion()}>Add question</Button>
-                                        <div id="question" action="" method="POST"></div>
-                                    </div>
-                                </InputGroup>
-                            </FormGroup>
-                    </Form>
+                    <div id="create-form-contianer">
+                        <Form id = 'create-form'>
+                                <FormGroup>
+                                    <InputGroup>
+                                        <div id='create-form1'>
+                                            <FormControl id='name' className='create-item' type="text" placeholder="Game Name" /><br/>
+                                            <FormControl id='sDate' className='create-item' type="text" placeholder="Start Date" />
+                                            <FormControl id='eDate' className='create-item' type="text" placeholder="End Date" /><br/>
+                                            <FormControl id='url' className='create-item' type="text" placeholder="Image URL" /><br/>
+                                            <FormControl id='type' className='create-item' type="text" placeholder="Hunt Type" />
+                                            <FormControl id='desc' className='create-item' type="text" placeholder="Description" /><br/>
+                                        </div>
+                                        <div id='create-form2'>
+                                            <Button id='create-item' onClick={() => this.addQuestion()}>Add question</Button>
+                                            <div id="question" action="" method="POST"></div>
+                                        </div>
+                                    </InputGroup>
+                                </FormGroup>
+                        </Form>
+                    </div>
                 </div>
                 <div id='buttons'>
                     <ButtonToolbar>

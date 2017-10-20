@@ -5,9 +5,12 @@ x = 1
 app = flask.Flask(__name__)
 socketio = flask_socketio.SocketIO(app)
 
+
+
 @app.route('/')
 def hello():
     getHunt()
+    dropDown()
     return flask.render_template('index.html')
 
 @socketio.on('createHunt')
@@ -43,6 +46,20 @@ def getHunt():
         'questions': question
     })
 
+def dropDown():
+    print "Helloq"
+    hunts = [];
+    # query = models.Hunts.query.all()
+    # for row in messages:
+    #     hunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
+
+    # recent = models.db.session.query(models.Hunts).order_by(models.Hunts.id.desc()).limit(200)
+    # for row in recent
+    #     hunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
+    # print hunts
+#     socketio.emit('hunt-info', hunts)
+    
+    
 @socketio.on('checkout')
 def checkout(data):
     stripe.api_key = "sk_test_O6BW3ED77qHecdLRd832IdjW"

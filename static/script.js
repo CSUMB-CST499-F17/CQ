@@ -41836,6 +41836,8 @@
 
 	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
 
+	var _Socket = __webpack_require__(443);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -41846,8 +41848,6 @@
 	// import { Socket } from './Socket';
 
 
-	// import { Socket } from './Socket';
-
 	var Explore = exports.Explore = function (_React$Component) {
 	    _inherits(Explore, _React$Component);
 
@@ -41856,12 +41856,71 @@
 
 	        var _this = _possibleConstructorReturn(this, (Explore.__proto__ || Object.getPrototypeOf(Explore)).call(this, props));
 
+	        _this.state = {
+	            'count': 0,
+
+	            'name': [],
+	            'h_type': [],
+	            'desc': [],
+	            'image': [],
+	            'start_time': [],
+	            'end_time': [],
+	            'start_text': []
+	        };
+
 	        _this.changePage = _this.changePage.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
 	    }
 
 	    _createClass(Explore, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _this2 = this;
+
+	            _Socket.Socket.on('hunt-info', function (data) {
+	                var name = _this2.state.name.slice();
+	                var h_type = _this2.state.h_type.slice();
+	                var desc = _this2.state.desc.slice();
+	                var image = _this2.state.image.slice();
+	                var start_time = _this2.state.start_time.slice();
+	                var end_time = _this2.state.end_time.slice();
+	                var start_text = _this2.state.start_text.slice();
+
+	                for (var i = 0; i < data.size(); i++) {
+	                    name.push(data['name'][i]);
+	                    _this2.setState({ 'name': name });
+	                    h_type.push(data['h_type'][i]);
+	                    _this2.setState({ 'h_type': h_type });
+	                    desc.push(data['desc'][i]);
+	                    _this2.setState({ 'desc': desc });
+	                    image.push(data['image'][i]);
+	                    _this2.setState({ 'image': image });
+	                    start_time.push(data['start_time'][i]);
+	                    _this2.setState({ 'start_time': start_time });
+	                    end_time.push(data['end_time'][i]);
+	                    _this2.setState({ 'end_time': end_time });
+	                    start_text.push(data['start_text'][i]);
+	                    _this2.setState({ 'start_text': start_text });
+	                }
+	                // Get the quiz form element
+	                var dropdown = document.getElementById('bg-nested-dropdown');
+
+	                // Good to do error checking, make sure we managed to get something
+	                if (dropdown) {
+	                    // Create a new <p> element
+	                    var hunts = _this2.state.h_type;
+	                    var item = document.createElement('MENUITEM');
+	                    item.value = hunts[0];
+	                    dropdown.appendChild(item);
+	                    // for(var j = 0; j < hunts.size(); j++ )
+	                    // {
+
+	                    // }
+	                }
+	            });
+	        }
+	    }, {
 	        key: 'handleSubmit',
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
@@ -41877,11 +41936,29 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
+	            var _this3 = this;
 
 	            return React.createElement(
 	                'div',
 	                null,
+	                React.createElement(
+	                    _reactBootstrap.ButtonGroup,
+	                    null,
+	                    React.createElement(
+	                        _reactBootstrap.DropdownButton,
+	                        { title: 'Hunts', id: 'bg-nested-dropdown' },
+	                        React.createElement(
+	                            _reactBootstrap.MenuItem,
+	                            null,
+	                            'Nothing'
+	                        )
+	                    )
+	                ),
+	                React.createElement(
+	                    'span',
+	                    null,
+	                    'Scavenger Hunt'
+	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'header' },
@@ -41894,7 +41971,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'intro' },
-	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/8/8c/FZ_%28Explore%21%29_%288584496885%29.jpg', width: '50%' })
+	                    React.createElement('div', { id: 'info' })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -41905,21 +41982,21 @@
 	                        React.createElement(
 	                            _reactBootstrap.Button,
 	                            { onClick: function onClick() {
-	                                    return _this2.changePage('leaderboard');
+	                                    return _this3.changePage('leaderboard');
 	                                } },
 	                            'Leaderboard'
 	                        ),
 	                        React.createElement(
 	                            _reactBootstrap.Button,
 	                            { onClick: function onClick() {
-	                                    return _this2.changePage('register');
+	                                    return _this3.changePage('register');
 	                                } },
 	                            'Participate'
 	                        ),
 	                        React.createElement(
 	                            _reactBootstrap.Button,
 	                            { onClick: function onClick() {
-	                                    return _this2.changePage('home');
+	                                    return _this3.changePage('home');
 	                                } },
 	                            'Home'
 	                        )
@@ -51015,9 +51092,18 @@
 
 	        var _this = _possibleConstructorReturn(this, (Play.__proto__ || Object.getPrototypeOf(Play)).call(this, props));
 
-	        _this.state = { 'questions': [] };
+	        _this.state = {
+	            'prompt': ''
+
+	        };
 	        _this.changePage = _this.changePage.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+
+	        _Socket.Socket.on('hunt', function (data) {
+	            _this.setState({
+	                'prompt': data
+	            });
+	        });
 	        return _this;
 	    }
 
@@ -51036,19 +51122,11 @@
 	        }
 	    }, {
 	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            var _this2 = this;
-
-	            _Socket.Socket.on('hunt', function (data) {
-	                _this2.setState({
-	                    'prompt': data['questions']
-	                });
-	            });
-	        }
+	        value: function componentDidMount() {}
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this3 = this;
+	            var _this2 = this;
 
 	            var prompt = '';
 	            prompt = this.state.prompt;
@@ -51111,7 +51189,7 @@
 	                                React.createElement(
 	                                    _reactBootstrap.Button,
 	                                    { onClick: function onClick() {
-	                                            return _this3.changePage('home');
+	                                            return _this2.changePage('home');
 	                                        } },
 	                                    'Home'
 	                                )
@@ -51774,39 +51852,43 @@
 	                    'div',
 	                    { id: 'introhunts' },
 	                    React.createElement(
-	                        _reactBootstrap.Form,
-	                        { id: 'create-form' },
+	                        'div',
+	                        { id: 'create-form-contianer' },
 	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            null,
+	                            _reactBootstrap.Form,
+	                            { id: 'create-form' },
 	                            React.createElement(
-	                                _reactBootstrap.InputGroup,
+	                                _reactBootstrap.FormGroup,
 	                                null,
 	                                React.createElement(
-	                                    'div',
-	                                    { id: 'create-form1' },
-	                                    React.createElement(_reactBootstrap.FormControl, { id: 'name', className: 'create-item', type: 'text', placeholder: 'Game Name' }),
-	                                    React.createElement('br', null),
-	                                    React.createElement(_reactBootstrap.FormControl, { id: 'sDate', className: 'create-item', type: 'text', placeholder: 'Start Date' }),
-	                                    React.createElement(_reactBootstrap.FormControl, { id: 'eDate', className: 'create-item', type: 'text', placeholder: 'End Date' }),
-	                                    React.createElement('br', null),
-	                                    React.createElement(_reactBootstrap.FormControl, { id: 'url', className: 'create-item', type: 'text', placeholder: 'Image URL' }),
-	                                    React.createElement('br', null),
-	                                    React.createElement(_reactBootstrap.FormControl, { id: 'type', className: 'create-item', type: 'text', placeholder: 'Hunt Type' }),
-	                                    React.createElement(_reactBootstrap.FormControl, { id: 'desc', className: 'create-item', type: 'text', placeholder: 'Description' }),
-	                                    React.createElement('br', null)
-	                                ),
-	                                React.createElement(
-	                                    'div',
-	                                    { id: 'create-form2' },
+	                                    _reactBootstrap.InputGroup,
+	                                    null,
 	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { id: 'create-item', onClick: function onClick() {
-	                                                return _this2.addQuestion();
-	                                            } },
-	                                        'Add question'
+	                                        'div',
+	                                        { id: 'create-form1' },
+	                                        React.createElement(_reactBootstrap.FormControl, { id: 'name', className: 'create-item', type: 'text', placeholder: 'Game Name' }),
+	                                        React.createElement('br', null),
+	                                        React.createElement(_reactBootstrap.FormControl, { id: 'sDate', className: 'create-item', type: 'text', placeholder: 'Start Date' }),
+	                                        React.createElement(_reactBootstrap.FormControl, { id: 'eDate', className: 'create-item', type: 'text', placeholder: 'End Date' }),
+	                                        React.createElement('br', null),
+	                                        React.createElement(_reactBootstrap.FormControl, { id: 'url', className: 'create-item', type: 'text', placeholder: 'Image URL' }),
+	                                        React.createElement('br', null),
+	                                        React.createElement(_reactBootstrap.FormControl, { id: 'type', className: 'create-item', type: 'text', placeholder: 'Hunt Type' }),
+	                                        React.createElement(_reactBootstrap.FormControl, { id: 'desc', className: 'create-item', type: 'text', placeholder: 'Description' }),
+	                                        React.createElement('br', null)
 	                                    ),
-	                                    React.createElement('div', { id: 'question', action: '', method: 'POST' })
+	                                    React.createElement(
+	                                        'div',
+	                                        { id: 'create-form2' },
+	                                        React.createElement(
+	                                            _reactBootstrap.Button,
+	                                            { id: 'create-item', onClick: function onClick() {
+	                                                    return _this2.addQuestion();
+	                                                } },
+	                                            'Add question'
+	                                        ),
+	                                        React.createElement('div', { id: 'question', action: '', method: 'POST' })
+	                                    )
 	                                )
 	                            )
 	                        )
