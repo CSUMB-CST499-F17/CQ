@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactBootstrap from 'react-bootstrap';
-// import { Socket } from './Socket';
+import { Socket } from './Socket';
 import { Button } from 'react-bootstrap';
 import { InputGroup } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
@@ -9,14 +9,25 @@ import { ButtonToolbar } from 'react-bootstrap';
 import { ButtonGroup } from 'react-bootstrap';
 import { Form } from 'react-bootstrap';
 
-// import { Socket } from './Socket';
 
 export class Leaderboard extends React.Component {
     constructor(props) {
         super(props);
-
+        
+        this.state = {
+            'userlist': []
+        };
+        
         this.changePage = this.changePage.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    
+    componentDidMount(){
+        Socket.on('users', (data) => {
+            this.setState({
+                'userlist': data['userlist']
+            });
+        });
     }
 
     handleSubmit(event) {
@@ -27,8 +38,25 @@ export class Leaderboard extends React.Component {
         document.getElementById('leaderboard').style.display = "none";
         document.getElementById(page).style.display = "block";
     }
+    
+    
 
     render() {
+
+        let userlist = '';
+        if (this.state.userlist != null) { 
+            console.log('here');
+            userlist = this.state.userlist.map((n, index) => 
+                <li key={index}>
+                    {n.name}
+                    {n.picture}
+                </li>
+             );
+            
+            console.log(userlist);
+
+        }
+        
         return (
             <div>
                 <div id = 'header'>
@@ -46,6 +74,7 @@ export class Leaderboard extends React.Component {
                         </Form>
                     </div>
                     <div>
+                        <ul>{userlist}</ul>
                         <img src='https://upload.wikimedia.org/wikipedia/commons/8/87/Maplestory_Leaderboard_2015-10.PNG' width='30%'></img>
                     </div>
                 </div>

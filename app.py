@@ -6,10 +6,10 @@ app = flask.Flask(__name__)
 socketio = flask_socketio.SocketIO(app)
 
 
-
 @app.route('/')
 def hello():
     getHunt()
+    updateLeaderboard()
     dropDown()
     return flask.render_template('index.html')
 
@@ -25,7 +25,9 @@ def createHunt(data):
     models.db.session.add(questions)  
     models.db.session.commit()
     x += 1
-    
+
+all_mah_user = []  
+
 def getHunt():
     # huntsQuery = models.Hunts.query.all()
     # for i in range (0, len(huntsQuery)):
@@ -40,11 +42,26 @@ def getHunt():
     #     'questionNum': 1
     # }
     question = []
+
     question = "Find California's first theatre.  On the front door, there is a poem.  Who is the poem about?"
     
     socketio.emit('hunt', {
         'questions': question
     })
+    print('emited')
+    
+def updateLeaderboard():
+
+    
+    all_mah_user.append({
+            'name': 'jason',
+            'picture': 'me',
+    })
+
+    socketio.emit('users', {
+        'userlist': all_mah_user
+    })
+    print('emited')
 
 def dropDown():
     print "Helloq"
@@ -91,3 +108,15 @@ if __name__ == '__main__':
             debug=True,
             use_reloader=False
         )
+        
+        # team = []
+        # team = {
+        #     'team_name': "Lakers",
+        #     'image': "yourface.png",
+        #     'question_score': "100",
+        #     'time_taken': "60 second",
+        #     'hunts_id': '1',
+        # }
+        # socketio.emit('leaderboard', {
+        #     'teams': team 
+        # })
