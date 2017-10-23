@@ -3,8 +3,9 @@ import models
 x = 1
 
 app = flask.Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 socketio = flask_socketio.SocketIO(app)
-
+db = flask_sqlalchemy.SQLAlchemy(app)
 
 @app.route('/')
 def hello():
@@ -66,14 +67,11 @@ def updateLeaderboard():
 def dropDown():
     print "Helloq"
     hunts = [];
-    # query = models.Hunts.query.all()
-    # for row in messages:
-    #     hunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
-
-    # recent = models.db.session.query(models.Hunts).order_by(models.Hunts.id.desc()).limit(200)
-    # for row in recent
-    #     hunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
-    # print hunts
+    
+    recent = models.db.session.query(models.Hunts)
+    for row in recent:
+        hunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
+    print hunts
 #     socketio.emit('hunt-info', hunts)
     
     
@@ -107,8 +105,7 @@ if __name__ == '__main__':
             port=int(os.getenv('PORT', 8080)),
             debug=True,
             use_reloader=False
-        )
-        
+            )
         # team = []
         # team = {
         #     'team_name': "Lakers",
