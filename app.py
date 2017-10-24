@@ -20,6 +20,7 @@ def initData():
     hunts = models.db.session.query(models.Hunts)
     print(hunts)
 
+@socketio.on('play')
 def getHunt():
     # huntsQuery = models.Hunts.query.all()
     # for i in range (0, len(huntsQuery)):
@@ -33,8 +34,7 @@ def getHunt():
     #     'hint2': "",
     #     'questionNum': 1
     # }
-    question = []
-
+    
     question = "Find California's first theatre.  On the front door, there is a poem.  Who is the poem about?"
     
     socketio.emit('hunt', {

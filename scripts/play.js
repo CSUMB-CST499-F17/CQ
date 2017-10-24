@@ -26,11 +26,7 @@ export class Play extends React.Component {
         this.changePage = this.changePage.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         
-                Socket.on('hunt', (data) => {
-            this.setState({
-                'prompt': data
-            });
-        });
+            
     }
 
     handleSubmit(event) {
@@ -45,7 +41,12 @@ export class Play extends React.Component {
         
         
     componentDidMount() {
-        
+        Socket.on('hunt', (data) => {
+            this.setState({
+                'prompt': data['questions'],
+                
+            });
+        });
     }
     
     
