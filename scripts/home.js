@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactBootstrap from 'react-bootstrap';
-// import { Socket } from './Socket';
+import { Socket } from './Socket';
+
 import { Button } from 'react-bootstrap';
 import { InputGroup } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
@@ -22,6 +23,7 @@ export class Home extends React.Component {
     //changes the display of the pages when button is pressed
     changePage(page){
         document.getElementById('home').style.display = "none";
+        Socket.emit(page);
         document.getElementById(page).style.display = "block";
     }
     render() {

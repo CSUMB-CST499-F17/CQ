@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactBootstrap from 'react-bootstrap';
-// import { Socket } from './Socket';
+import { Socket } from './Socket';
+
 import { Button } from 'react-bootstrap';
 import { InputGroup } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
@@ -9,9 +10,6 @@ import { ButtonToolbar } from 'react-bootstrap';
 import { ButtonGroup } from 'react-bootstrap';
 import { DropdownButton } from 'react-bootstrap';
 import { MenuItem } from 'react-bootstrap';
-
-import { Socket } from './Socket';
-
 
 export class Explore extends React.Component {
     constructor(props) {
@@ -28,7 +26,6 @@ export class Explore extends React.Component {
             'start_text':[]
         };
         
-
         this.changePage = this.changePage.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -87,6 +84,7 @@ export class Explore extends React.Component {
     //changes the display of the pages when button is pressed
     changePage(page){
         document.getElementById('explore').style.display = "none";
+        Socket.emit(page);
         document.getElementById(page).style.display = "block";
     }
 

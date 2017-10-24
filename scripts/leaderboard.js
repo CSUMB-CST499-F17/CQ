@@ -13,11 +13,10 @@ import { Form } from 'react-bootstrap';
 export class Leaderboard extends React.Component {
     constructor(props) {
         super(props);
-        
         this.state = {
             'userlist': []
         };
-        
+
         this.changePage = this.changePage.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -36,13 +35,13 @@ export class Leaderboard extends React.Component {
     //changes the display of the pages when button is pressed
     changePage(page){
         document.getElementById('leaderboard').style.display = "none";
+        Socket.emit(page);
         document.getElementById(page).style.display = "block";
     }
     
     
 
     render() {
-
         let userlist = '';
         if (this.state.userlist != null) { 
             console.log('here');

@@ -16,8 +16,6 @@ import { ButtonToolbar } from 'react-bootstrap';
 import { ButtonGroup } from 'react-bootstrap';
 import { ControlLabel } from 'react-bootstrap';
 
-// import { Socket } from './Socket';
-
 export class Play extends React.Component {
     constructor(props) {
         super(props);
@@ -41,20 +39,20 @@ export class Play extends React.Component {
     //changes the display of the pages when button is pressed
     changePage(page){
         document.getElementById('play').style.display = "none";
+        Socket.emit(page);
         document.getElementById(page).style.display = "block";
     }
         
         
     componentDidMount() {
         
-
     }
     
     
     render() {
         let prompt = '';
         prompt = this.state.prompt;
-        alert(prompt);
+        // alert(prompt);
         
     
         // if (this.state.questions != null) {

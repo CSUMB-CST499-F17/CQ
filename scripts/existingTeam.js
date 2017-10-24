@@ -30,6 +30,7 @@ export class ExistingTeam extends React.Component {
     //changes the display of the pages when button is pressed
     changePage(page){
         document.getElementById('existingTeam').style.display = "none";
+        Socket.emit(page);
         document.getElementById(page).style.display = "block";
     }
     render() {

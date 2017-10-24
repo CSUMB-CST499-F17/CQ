@@ -77,6 +77,7 @@ export class Register extends React.Component {
     changePage(page){
         //changes the display of the pages when button is pressed
         document.getElementById('register').style.display = "none";
+        Socket.emit(page);
         document.getElementById(page).style.display = "block";
     }
     render() {

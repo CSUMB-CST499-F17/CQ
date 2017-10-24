@@ -1,33 +1,24 @@
 import os, flask, flask_socketio, flask_sqlalchemy, time, stripe
 import models
-x = 1
 
+#GLOBAL VARS
+x = 1
+teams = []
+
+#REACT, FLASK, AND DB STUFF
 app = flask.Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 socketio = flask_socketio.SocketIO(app)
 db = flask_sqlalchemy.SQLAlchemy(app)
 
+#FUNCTIONS
 @app.route('/')
 def hello():
-    getHunt()
-    updateLeaderboard()
-    dropDown()
     return flask.render_template('index.html')
 
-@socketio.on('createHunt')
-def createHunt(data):
-    global x
-    print(data)
-    hunts = models.Hunts(data['name'], data['type'], data['desc'], data['image'], data['sDate'], data['eDate'], data['sDate'])
-    models.db.session.add(hunts)  
-    models.db.session.commit()
-    
-    questions = models.Questions(data['question'], data['answer'], data['image'], data['hint1'], data['hint2'], data[x])
-    models.db.session.add(questions)  
-    models.db.session.commit()
-    x += 1
-
-all_mah_user = []  
+def initData():
+    hunts = models.db.session.query(models.Hunts)
+    print(hunts)
 
 def getHunt():
     # huntsQuery = models.Hunts.query.all()
@@ -49,23 +40,9 @@ def getHunt():
     socketio.emit('hunt', {
         'questions': question
     })
-    print('emited')
-    
-def updateLeaderboard():
-
-    
-    all_mah_user.append({
-            'name': 'jason',
-            'picture': 'me',
-    })
-
-    socketio.emit('users', {
-        'userlist': all_mah_user
-    })
-    print('emited')
+    print('Scavenger hunt data sent.')
 
 def dropDown():
-    print "Helloq"
     hunts = [];
     
     recent = models.db.session.query(models.Hunts)
@@ -73,7 +50,35 @@ def dropDown():
         hunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
     print hunts
 #     socketio.emit('hunt-info', hunts)
+
+@socketio.on('ready')
+def run():
+    initData()
+
+@socketio.on('leaderboard')
+def updateLeaderboard():
+    global teams
+    teams.append({
+      'name': 'jason',
+      'picture': 'me',
+    })
+    socketio.emit('users', {
+        'userlist': teams
+    })
+    print('Leaderboard data sent.')
+
+@socketio.on('createHunt')
+def createHunt(data):
+    global x
+    print(data)
+    hunts = models.Hunts(data['name'], data['type'], data['desc'], data['image'], data['sDate'], data['eDate'], data['sDate'])
+    models.db.session.add(hunts)  
+    models.db.session.commit()
     
+    questions = models.Questions(data['question'], data['answer'], data['image'], data['hint1'], data['hint2'], data[x])
+    models.db.session.add(questions)  
+    models.db.session.commit()
+    x += 1
     
 @socketio.on('checkout')
 def checkout(data):
