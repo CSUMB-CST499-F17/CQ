@@ -15,15 +15,42 @@ import { NavBar } from './nav-bar';
 export class AdminLeaderboard extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            'userlist': []
+        };
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.changePage = this.changePage.bind(this);
     }
 
     handleSubmit(event) {
         event.preventDefault();
+
     }
-    
+
+    changePage(page){
+        Socket.emit(page);
+    }
+
+    componentDidMount(){
+        Socket.on('users', (data) => {
+            this.setState({
+                'userlist': data['userlist']
+            });
+        });
+    }
+
     render() {
+        let userlist = '';
+        if (this.state.userlist != null) {
+            userlist = this.state.userlist.map((n, index) =>
+                <li key={index}>
+                    {n.name}
+                    :
+                    {n.picture}
+                </li>
+             );
+        }
         return (
             <div>
                 <div id = 'nav-bar'>
@@ -37,6 +64,9 @@ export class AdminLeaderboard extends React.Component {
                         <FormGroup>
                             <InputGroup>
                                 <FormControl id='adminLeaderboard-item' type="text" placeholder="Search Hunts" />
+                                <div id='leaderboards'>
+                                    <ul>{userlist}</ul>
+                                </div>
                                 <ButtonToolbar>
                                     <Button id='adminLeaderboard-item'>Search</Button>
                                 </ButtonToolbar>

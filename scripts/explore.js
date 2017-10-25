@@ -95,11 +95,6 @@ export class Explore extends React.Component {
                 <div id = 'logo-small'>
                     <LogoSmall/>
                 </div>
-              <ButtonGroup>
-                <DropdownButton title="Hunts" id="bg-nested-dropdown" >
-                <MenuItem>Nothing</MenuItem>
-                </DropdownButton>
-              </ButtonGroup>
               <span>Scavenger Hunt</span>
                 <div id ='header'>
                     <header>EXPLORE THIS</header>
@@ -113,6 +108,13 @@ export class Explore extends React.Component {
                         <Button onClick={() => this.changePage('register')}>Participate</Button>
                         <Button onClick={() => this.changePage('home')}>Home</Button>
                     </ButtonToolbar>
+                </div>
+                <div id='buttons'>
+                    <ButtonGroup>
+                    <DropdownButton title="Select Hunt    " id="bg-nested-dropdown" >
+                        <MenuItem>no hunts yet my dog</MenuItem>
+                    </DropdownButton>
+                    </ButtonGroup>
                 </div>
             </div>
 

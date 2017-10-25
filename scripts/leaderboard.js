@@ -44,16 +44,11 @@ export class Leaderboard extends React.Component {
     render() {
         let userlist = '';
         if (this.state.userlist != null) { 
-            console.log('here');
             userlist = this.state.userlist.map((n, index) => 
                 <li key={index}>
-                    {n.name}
-                    {n.picture}
+                    {n.name} : {n.picture}
                 </li>
              );
-            
-            console.log(userlist);
-
         }
         
         return (
@@ -76,8 +71,10 @@ export class Leaderboard extends React.Component {
                         </Form>
                     </div>
                     <div>
-                        <ul>{userlist}</ul>
-                        <img src='https://upload.wikimedia.org/wikipedia/commons/8/87/Maplestory_Leaderboard_2015-10.PNG' width='30%'></img>
+                        <div id='leaderboards'>
+                            <ul>{userlist}</ul>
+                        </div>
+                        
                     </div>
                 </div>
                 <div id='buttons'>
