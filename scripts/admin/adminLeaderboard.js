@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap';
 import { InputGroup } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
 import { FormGroup } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { ButtonToolbar } from 'react-bootstrap';
 import { ButtonGroup } from 'react-bootstrap';
 
@@ -60,19 +61,19 @@ export class AdminLeaderboard extends React.Component {
                     <header>Admin Leaderboard Page</header>
                 </div>
                 <div id='search'>
-                    <form id='adminLeaderboard-form'>
+                    <Form id='adminLeaderboard-form'>
                         <FormGroup>
                             <InputGroup>
                                 <FormControl id='adminLeaderboard-item' type="text" placeholder="Search Hunts" />
-                                <div id='leaderboards'>
-                                    <ul>{userlist}</ul>
-                                </div>
                                 <ButtonToolbar>
                                     <Button id='adminLeaderboard-item'>Search</Button>
                                 </ButtonToolbar>
                             </InputGroup>
                         </FormGroup>
-                    </form>
+                    </Form>
+                </div>
+                <div id='leaderboards'>
+                    <ul>{userlist}</ul>
                 </div>
             </div>
 
