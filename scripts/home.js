@@ -37,12 +37,12 @@ export class Home extends React.Component {
                     <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG/1200px-Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG' width='40%'></img>
                 </div>
                 <div id='buttons'>
-                    <ButtonToolbar>
-                        <Button onClick={() => this.changePage('explore')}>Let's Explore!</Button>
-                        <Button onClick={() => this.changePage('existingTeam')}>Log into Existing Team</Button>
-                        <Button onClick={() => this.changePage('adminHome')}>Temp Button to Admin Homepage</Button>
-                        <Button onClick={() => this.changePage('play')}>Temp Button to Play Page</Button>
-                    </ButtonToolbar>
+                    <div className ="tool">
+                        <button className="btn" onClick={() => this.changePage('explore')}>Let's Explore!</button>
+                        <button className="btn" onClick={() => this.changePage('existingTeam')}>Log into Existing Team</button>
+                        <button className="btn" onClick={() => this.changePage('adminHome')}>Temp Button to Admin Homepage</button>
+                        <button className="btn" onClick={() => this.changePage('play')}>Temp Button to Play Page</button>
+                    </div>
                 </div>
             </div>
 
