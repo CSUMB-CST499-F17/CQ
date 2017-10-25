@@ -49,10 +49,10 @@ def getHunt():
 def dropDown():
     hunts = [];
     
-    # recent = models.db.session.query(models.Hunts)
-    # for row in recent:
-    #     hunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
-    # print hunts
+    recent = models.db.session.query(models.Hunts)
+    for row in recent:
+        hunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
+    print hunts
 #     socketio.emit('hunt-info', hunts)
 
 @socketio.on('ready')
