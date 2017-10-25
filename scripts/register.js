@@ -40,6 +40,10 @@ export class Register extends React.Component {
     componentDidMount() {
         // Add an instance of the card Element into the `card-element` <div>
         this.card.mount('#card-element');
+        Socket.on('updateRegister', (data) => {
+            alert(data['ongoingHunts']);
+        });
+        
     }
     
     handleSubmit(event) {

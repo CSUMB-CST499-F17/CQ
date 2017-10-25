@@ -1,4 +1,4 @@
-import os, flask, flask_socketio, flask_sqlalchemy, time, stripe
+import os, flask, flask_socketio, flask_sqlalchemy, time, stripe, datetime, sqlalchemy
 import models
 
 #GLOBAL VARS
@@ -14,11 +14,8 @@ db = flask_sqlalchemy.SQLAlchemy(app)
 #FUNCTIONS
 @app.route('/')
 def hello():
+    dropDown()
     return flask.render_template('index.html')
-
-def initData():
-    hunts = models.db.session.query(models.Hunts)
-    print(hunts)
 
 @socketio.on('play')
 def getHunt():
@@ -41,7 +38,7 @@ def getHunt():
         'questions': question
     })
     print('Scavenger hunt data sent.')
-
+    
 def dropDown():
     hunts = [];
     
@@ -66,6 +63,17 @@ def updateLeaderboard():
         'userlist': teams
     })
     print('Leaderboard data sent.')
+
+@socketio.on('register')
+def updateRegister():
+    ongoingHunts = [];
+    sql = models.db.session.query(models.Hunts).filter(sqlalchemy.and_(models.Hunts.start_time <= datetime.datetime.now(),models.Hunts.end_time >= datetime.datetime.now())).order_by(models.Hunts.id.desc())
+    for row in sql:
+        ongoingHunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
+    #datetime to string, not json serializable
+    # socketio.emit('updateRegister', {
+    #     'ongoingHunts': ongoingHunts
+    # }) 
 
 @socketio.on('createHunt')
 def createHunt(data):
