@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
 import { Socket } from './Socket';
-import { LogoSmall } from './logo-small';
 
 export class Register extends React.Component {
     constructor(props) {
@@ -24,11 +23,12 @@ export class Register extends React.Component {
               },
             }
         });
-        this.token;
+        
         this.userdata = {
-            'team_name': '',
-            'email': '',
-            'hunt_id': ''
+            team_name: 'CQ',
+            email: 'coastalquest1337@gmail.com',
+            hunts_id: '1',
+            image: 'image.png'
         };
         this.hunts = [[1,'Marco'],[2,'Polo']];
         
@@ -54,20 +54,22 @@ export class Register extends React.Component {
         var outcomeElement = document.getElementById('stripe-outcome');
         // var errorElement = document.getElementById('stripe-error');
         
-        this.stripe.createToken(this.card).then(function(result) {
+        var ud = this.userdata;
+        
+        this.token = this.stripe.createToken(this.card).then(function(result) {
             if (result.error) {
                 // Inform the user if there was an error
                 outcomeElement.textContent = result.error.message;
                 outcomeElement.style.color = "#E4584C";
+                return 0;
             } 
             else {
                 outcomeElement.textContent = "Success! Token generated: " + result.token.id;
                 outcomeElement.style.color = "#666EE8";
-                Socket.emit('checkout', {'token':result.token});
-                // Send the token to your server
-                console.log();
+                Socket.emit('checkout', {'token':result.token.id, 'userdata':ud});
             }
         });
+        
     }
     handleChange(event) {
         event.preventDefault();
@@ -91,9 +93,6 @@ export class Register extends React.Component {
         );
         return (
             <div>
-                <div id = 'logo-small'>
-                    <LogoSmall/>
-                </div>
                 <div id = 'header'>
                     <header>Register</header>
                 </div>
