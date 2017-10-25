@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
 import { Socket } from './Socket';
+import { LogoSmall } from './logo-small';
 
 export class Register extends React.Component {
     constructor(props) {
@@ -90,6 +91,9 @@ export class Register extends React.Component {
         );
         return (
             <div>
+                <div id = 'logo-small'>
+                    <LogoSmall/>
+                </div>
                 <div id = 'header'>
                     <header>Register</header>
                 </div>

@@ -8,7 +8,7 @@ import { FormGroup } from 'react-bootstrap';
 import { ButtonToolbar } from 'react-bootstrap';
 import { ButtonGroup } from 'react-bootstrap';
 import { Form } from 'react-bootstrap';
-
+import { LogoSmall } from './logo-small';
 
 export class Leaderboard extends React.Component {
     constructor(props) {
@@ -58,6 +58,9 @@ export class Leaderboard extends React.Component {
         
         return (
             <div>
+                <div id = 'logo-small'>
+                    <LogoSmall/>
+                </div>
                 <div id = 'header'>
                     <header>Leaderboard</header>
                 </div>

@@ -15,6 +15,7 @@ import { FormGroup } from 'react-bootstrap';
 import { ButtonToolbar } from 'react-bootstrap';
 import { ButtonGroup } from 'react-bootstrap';
 import { ControlLabel } from 'react-bootstrap';
+import { LogoSmall } from './logo-small';
 
 export class Play extends React.Component {
     constructor(props) {
@@ -105,6 +106,9 @@ export class Play extends React.Component {
 
 
             <div>
+                <div id = 'logo-small'>
+                    <LogoSmall/>
+                </div>
                 <div id = 'header'>
                     <header>Game Name</header>
                 </div>

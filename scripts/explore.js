@@ -10,6 +10,7 @@ import { ButtonToolbar } from 'react-bootstrap';
 import { ButtonGroup } from 'react-bootstrap';
 import { DropdownButton } from 'react-bootstrap';
 import { MenuItem } from 'react-bootstrap';
+import { LogoSmall } from './logo-small';
 
 export class Explore extends React.Component {
     constructor(props) {
@@ -91,6 +92,9 @@ export class Explore extends React.Component {
     render() {
         return (
             <div>
+                <div id = 'logo-small'>
+                    <LogoSmall/>
+                </div>
               <ButtonGroup>
                 <DropdownButton title="Hunts" id="bg-nested-dropdown" >
                 <MenuItem>Nothing</MenuItem>

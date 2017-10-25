@@ -31,7 +31,7 @@ export class Home extends React.Component {
         return (
             <div>
                 <div id='header'>
-                    <header>Coastal Quest</header>
+                    <img id="logo-big" src="../static/image/logo-big.png"/>
                 </div>
                 <div id='intro'>
                     <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG/1200px-Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG' width='40%'></img>

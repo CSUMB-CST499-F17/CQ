@@ -10,7 +10,13 @@ img {
 	max-width:100%;
 	height:auto;
 }
-
+#logo-big{
+    width:700px;
+}
+#logo-small{
+    width:100px;
+    float:left;
+}
 #content{
     display: flex;
     background-repeat: no-repeat;
@@ -21,6 +27,7 @@ img {
 }
 
 #buttons{
+    margin-top:10px;
     margin: auto;
     display: flex;
     flex-direction: row;
@@ -33,8 +40,9 @@ img {
 #header {
     color: white;
     font-family: 'Trocchi',serif;
-    font-size: 75px;
-    margin: 10px;
+    font-size: 70px;
+    margin:auto;
+    margin-bottom:10px;
     flex-direction: row;
     text-align:center;
     justify-content: center;
