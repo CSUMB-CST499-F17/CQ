@@ -33,19 +33,26 @@ def getHunt():
     # }
     
     question = "Find California's first theatre.  On the front door, there is a poem.  Who is the poem about?"
-    
+    correctAnswer = "Miners"
+    hint1 = "You will find the theatre on the corner of Pacific and John Street."
+    hint2 = ""
+    questionNum = 1
     socketio.emit('hunt', {
-        'questions': question
+        'questions': question,
+        'correctAnswer': correctAnswer,
+        'hint1': hint1,
+        'hint2': hint2,
+        'questionNum' : questionNum
     })
     print('Scavenger hunt data sent.')
     
 def dropDown():
     hunts = [];
     
-    recent = models.db.session.query(models.Hunts)
-    for row in recent:
-        hunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
-    print hunts
+    # recent = models.db.session.query(models.Hunts)
+    # for row in recent:
+    #     hunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
+    # print hunts
 #     socketio.emit('hunt-info', hunts)
 
 @socketio.on('ready')
