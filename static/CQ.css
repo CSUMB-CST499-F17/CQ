@@ -41,8 +41,8 @@ img {
     color: white;
     font-family: 'Trocchi',serif;
     font-size: 70px;
-    margin:auto;
     margin-bottom:10px;
+    padding-right:100px;
     flex-direction: row;
     text-align:center;
     justify-content: center;
@@ -93,7 +93,34 @@ img {
     margin:5px;
     justify-content: center;
 }
-
+#play-container{
+    margin:20px;
+    width:50%;
+    justify-content: center;
+    margin:auto;
+    color:white;
+}
+#play-form{
+    justify-content: center;
+    margin:auto;
+    text-align: center;
+}
+#hint, #play-question, #answer{
+    margin:10px;
+}
+#play-question{
+    font-size: 42px
+}
+#result{
+    font-size: 24px;
+    font-weight: bold;
+}
+#hints{
+    justify-content: center;
+    margin:auto;
+    width:70%;
+    text-align:left;
+}
 #ET-form{
     position: static;
     display: flex;

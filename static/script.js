@@ -51187,11 +51187,16 @@
 	            event.preventDefault();
 
 	            var result = document.getElementById('result');
-
+	            result.style.visibility = 'visible';
 	            if (this.state.userAnswer == this.state.correctAnswer) {
 	                result.textContent = 'Correct';
+	                result.style.color = "#9bf442";
+	                document.getElementById('answer-submit').style.display = "none";
+	                document.getElementById('hint-submit').style.display = "none";
+	                document.getElementById('next').style.display = "block";
 	            } else {
 	                result.textContent = 'Incorrect';
+	                result.style.color = "red";
 	            }
 	        }
 	        //changes the display of the pages when button is pressed
@@ -51215,15 +51220,15 @@
 	        value: function showHint(event) {
 	            this.state.x += 1;
 	            var hint = document.getElementById('hint');
-
+	            console.log(this.state.x);
 	            if (this.state.x == 1) {
-	                hint.textContent = this.state.hint1;
-	            } else if (this.state.x == 2) {
-
-	                hint.textContent = this.state.hint2;
-	                if (this.state.hint2 == "") {
-	                    hint.textContent = this.state.hint1;
-	                }
+	                hint.innerHTML = "Hint One: " + this.state.hint1;
+	            }
+	            if (this.state.x == 2 && this.state.hint2 != "") {
+	                hint.innerHTML = hint.innerHTML + ' <br/>' + "Hint Two: " + this.state.hint2;
+	            }
+	            if (this.state.x > 2 || this.state.x == 2 && this.state.hint2 == "") {
+	                alert("No more hints available");
 	            }
 	        }
 	    }, {
@@ -51241,6 +51246,7 @@
 	                    'questionNum': data['questionNum']
 	                });
 	            });
+	            console.log(this.state.hint2);
 	        }
 	    }, {
 	        key: 'render',
@@ -51270,56 +51276,73 @@
 	                ),
 	                React.createElement(
 	                    'div',
-	                    { id: 'intro' },
+	                    { id: 'play-container' },
 	                    React.createElement(
 	                        _reactBootstrap.Form,
 	                        null,
 	                        React.createElement(
-	                            'div',
-	                            { id: 'buttons' },
+	                            _reactBootstrap.FormGroup,
+	                            { id: 'play-form' },
 	                            React.createElement(
-	                                _reactBootstrap.FormGroup,
+	                                _reactBootstrap.ControlLabel,
+	                                null,
+	                                'Current Objective Intro.'
+	                            ),
+	                            React.createElement(
+	                                _reactBootstrap.FormControl.Static,
 	                                null,
 	                                React.createElement(
-	                                    _reactBootstrap.ControlLabel,
-	                                    null,
-	                                    'Current Objective Intro.'
-	                                ),
-	                                React.createElement(
-	                                    _reactBootstrap.FormControl.Static,
-	                                    null,
+	                                    'div',
+	                                    { id: 'play-question' },
 	                                    React.createElement(
-	                                        'div',
+	                                        'p',
 	                                        null,
-	                                        React.createElement(
-	                                            'p',
-	                                            null,
-	                                            prompt
-	                                        )
-	                                    ),
-	                                    React.createElement('div', { id: 'hint' }),
-	                                    React.createElement('div', { id: 'result' })
-	                                ),
-	                                React.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
-	                                React.createElement(
-	                                    _reactBootstrap.Button,
-	                                    { id: 'answerSubmit', onClick: this.handleSubmit },
-	                                    'Submit'
+	                                        prompt
+	                                    )
 	                                ),
 	                                React.createElement(
-	                                    _reactBootstrap.Button,
-	                                    { id: 'hint display', onClick: this.showHint },
-	                                    'Hint'
+	                                    'div',
+	                                    { id: 'hints' },
+	                                    React.createElement('div', { id: 'hint' })
 	                                )
+	                            ),
+	                            React.createElement(_reactBootstrap.FormControl, { id: 'answer', componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
+	                            React.createElement(
+	                                'div',
+	                                { id: 'result', style: { visibility: 'hidden' } },
+	                                'Incorrect'
 	                            )
 	                        )
 	                    ),
 	                    React.createElement(
-	                        _reactBootstrap.Button,
-	                        { onClick: function onClick() {
-	                                return _this3.changePage('home');
-	                            } },
-	                        'Home'
+	                        'div',
+	                        { id: 'buttons' },
+	                        React.createElement(
+	                            _reactBootstrap.ButtonToolbar,
+	                            null,
+	                            React.createElement(
+	                                _reactBootstrap.Button,
+	                                { id: 'next', style: { display: 'none' } },
+	                                'Next Question'
+	                            ),
+	                            React.createElement(
+	                                _reactBootstrap.Button,
+	                                { id: 'answer-submit', onClick: this.handleSubmit },
+	                                'Submit'
+	                            ),
+	                            React.createElement(
+	                                _reactBootstrap.Button,
+	                                { id: 'hint-submit', onClick: this.showHint },
+	                                'Hint'
+	                            ),
+	                            React.createElement(
+	                                _reactBootstrap.Button,
+	                                { onClick: function onClick() {
+	                                        return _this3.changePage('home');
+	                                    } },
+	                                'Home'
+	                            )
+	                        )
 	                    )
 	                )
 	            );
