@@ -23,28 +23,35 @@ export class Register extends React.Component {
               },
             }
         });
-        
         this.userdata = {
-            team_name: 'CQ',
-            email: 'coastalquest1337@gmail.com',
-            hunts_id: '1',
-            image: 'image.png'
+            team_name: '',
+            email: '',
+            hunts_id: '',
+            image: ''
         };
-        this.hunts = [[1,'Marco'],[2,'Polo']];
+        this.hunts = [];
         
         this.changePage = this.changePage.bind(this);
         this.setOutcome = this.setOutcome.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleNameChange = this.handleNameChange.bind(this);
+        this.handleHuntChange = this.handleHuntChange.bind(this);
+        this.handleEmailChange = this.handleEmailChange.bind(this);
+        this.handleCardChange = this.handleCardChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     
     componentDidMount() {
         // Add an instance of the card Element into the `card-element` <div>
         this.card.mount('#card-element');
+        var ongoingHunts = [];
         Socket.on('updateRegister', (data) => {
-            alert(data['ongoingHunts']);
+            for(var key in data) { //convert object to array, prep for mapping
+                var hunt = [data[key].id,data[key].name,data[key].h_type];
+                ongoingHunts.push(hunt);
+            }
+            this.hunts = ongoingHunts;
+            this.setState(); //DONT ASK ME WHY THIS WORKS BUT IT WORKS, DO NOT DELETE
         });
-        
     }
     
     handleSubmit(event) {
@@ -55,6 +62,10 @@ export class Register extends React.Component {
         // var errorElement = document.getElementById('stripe-error');
         
         var ud = this.userdata;
+        console.log(ud);
+        
+        //add checker to make sure no duplicate names 
+        //add email validity checker
         
         this.token = this.stripe.createToken(this.card).then(function(result) {
             if (result.error) {
@@ -69,9 +80,21 @@ export class Register extends React.Component {
                 Socket.emit('checkout', {'token':result.token.id, 'userdata':ud});
             }
         });
-        
     }
-    handleChange(event) {
+    
+    handleNameChange(event) {
+        event.preventDefault();
+        this.userdata.team_name = event.target.value;
+    }
+    handleEmailChange(event) {
+        event.preventDefault();
+        this.userdata.email = event.target.value;
+    }
+    handleHuntChange(event) {
+        event.preventDefault();
+        this.userdata.hunts_id = event.target.value;
+    }
+    handleCardChange(event) {
         event.preventDefault();
         this.setOutcome(event);
     }
@@ -89,7 +112,7 @@ export class Register extends React.Component {
     }
     render() {
         let hunts = this.hunts.map((n, index) => 
-            <option value={n[0]}>{n[1]}</option>
+            <option value={n[0]}>{n[1]}-{n[2]}</option>
         );
         return (
             <div>
@@ -100,20 +123,23 @@ export class Register extends React.Component {
                     <div className="group">
                       <label>
                         <span>Team</span>
-                        <input className="field" placeholder="MyTeamName" onChange={this.handleChange} />
+                        <input className="field" placeholder="MyTeamName" onChange={this.handleNameChange} />
                       </label>
                       <label>
                         <span>Email</span>
-                        <input className="field" placeholder="sample@email.com" type="email" onChange={this.handleChange}/>
+                        <input className="field" placeholder="sample@email.com" type="email" onChange={this.handleEmailChange}/>
                       </label>
                       <label>
                         <span>Card</span>
-                        <div id="card-element" className="field" onChange={this.handleChange}></div>
+                        <div id="card-element" className="field" onChange={this.handleCardChange}></div>
                       </label>
                     </div>
                     <div className="group full">
                         <label>Ongoing Scavenger Hunts</label>
-                        <select name="hunts" form='stripe-form'>{hunts}</select>
+                        <select name="hunts" form='stripe-form' onChange={this.handleHuntChange}>
+                            <option value=''>--</option>
+                            {hunts}
+                        </select>
                     </div>
                     <button type="submit">Register and Pay</button>
                     <div id="stripe-outcome"></div>

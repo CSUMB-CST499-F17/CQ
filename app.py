@@ -14,7 +14,6 @@ db = flask_sqlalchemy.SQLAlchemy(app)
 #FUNCTIONS
 @app.route('/')
 def hello():
-    dropDown()
     return flask.render_template('index.html')
 
 @socketio.on('play')
@@ -74,13 +73,11 @@ def updateLeaderboard():
 @socketio.on('register')
 def updateRegister():
     ongoingHunts = [];
-    sql = models.db.session.query(models.Hunts).filter(sqlalchemy.and_(models.Hunts.start_time <= datetime.datetime.now(),models.Hunts.end_time >= datetime.datetime.now())).order_by(models.Hunts.id.desc())
+    sql = models.db.session.query(models.Hunts.id,models.Hunts.name,models.Hunts.h_type).filter(sqlalchemy.and_(models.Hunts.start_time <= datetime.datetime.now(),models.Hunts.end_time >= datetime.datetime.now())).order_by(models.Hunts.id.desc())
     for row in sql:
-        ongoingHunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
-    #datetime to string, not json serializable
-    # socketio.emit('updateRegister', {
-    #     'ongoingHunts': ongoingHunts
-    # }) 
+        ongoingHunts.append({'id':row.id,'name':row.name,'h_type':row.h_type})
+    print(ongoingHunts)
+    socketio.emit('updateRegister', ongoingHunts) 
 
 @socketio.on('createHunt')
 def createHunt(data):
@@ -91,7 +88,7 @@ def createHunt(data):
     models.db.session.commit()
     
     questions = models.Questions(data['question'], data['answer'], data['image'], data['hint1'], data['hint2'], data[x])
-    models.db.session.add(questions)  
+    models.db.session.add(questions)
     models.db.session.commit()
     x += 1
     
