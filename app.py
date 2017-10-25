@@ -1,4 +1,4 @@
-import os, flask, flask_socketio, flask_sqlalchemy, time, stripe, datetime, sqlalchemy
+import os, flask, flask_socketio, flask_sqlalchemy, time, stripe, datetime, sqlalchemy, smtplib
 import models
 
 #GLOBAL VARS
@@ -97,26 +97,39 @@ def createHunt(data):
     
 @socketio.on('checkout')
 def checkout(data):
+    # charge client through stripe
     stripe.api_key = "sk_test_O6BW3ED77qHecdLRd832IdjW"
-    
     token = data['token']
-    #userInfo = data['userInfo']
-    
     charge = stripe.Charge.create(
       amount=50,
       currency="usd",
       description="Coastal Quest Scavenger Hunt",
       source=token['id'],
     )
-    
+   
     # create account
-    # will get team_name, email, hunt_id
-    
-    # access_code = "Wowzers"
-    # models.Participants.__init__(userInfo['email'],userInfo['team_name'], userInfo['image'], access_code, 0, 0, userInfo['hunts_id'])
-    # socketio.emit('access', {'access_code':access_code});
+    #userInfo = data['userInfo']
+    access_code = "Wowzers" # replace with something meaningful
+    #models.Participants(userInfo['email'],userInfo['team_name'], userInfo['image'], access_code, 0, 0, userInfo['hunts_id'])
     
     # send email
+    client_email = "coastalquest1337@gmail.com" #userInfo['email']
+    subject = "Coastal Quest Activation Code"
+    message = "Welcome to Coastal Quest Scavenger Hunts! Your access code is {}. Have fun on your journey!".format(access_code)
+    email_client(client_email,subject,message)
+    
+    #socketio.emit('access', {'access_code':access_code});
+    
+def email_client(client_email, subject, message):
+    recp_message  = 'Subject: {}\n\n{}'.format(subject, message)
+    email_address = "coastalquest1337@gmail.com"
+    email_pass = "CoastalQuestsAreFun"
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(email_address, email_pass)
+    server.sendmail(email_address, client_email, recp_message)
+    server.quit()
+    
 
 if __name__ == '__main__':
     socketio.run(
