@@ -20,7 +20,7 @@ export class Leaderboard extends React.Component {
         this.changePage = this.changePage.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    
+
     componentDidMount(){
         Socket.on('users', (data) => {
             this.setState({
@@ -38,24 +38,19 @@ export class Leaderboard extends React.Component {
         Socket.emit(page);
         document.getElementById(page).style.display = "block";
     }
-    
-    
+
+
 
     render() {
         let userlist = '';
-        if (this.state.userlist != null) { 
-            console.log('here');
-            userlist = this.state.userlist.map((n, index) => 
+        if (this.state.userlist != null) {
+            userlist = this.state.userlist.map((n, index) =>
                 <li key={index}>
-                    {n.name}
-                    {n.picture}
+                    {n.name} : {n.picture}
                 </li>
              );
-            
-            console.log(userlist);
-
         }
-        
+
         return (
             <div>
                 <div id = 'logo-small'>
@@ -75,9 +70,8 @@ export class Leaderboard extends React.Component {
                             </FormGroup>
                         </Form>
                     </div>
-                    <div>
+                    <div id='leaderboards'>
                         <ul>{userlist}</ul>
-                        <img src='https://upload.wikimedia.org/wikipedia/commons/8/87/Maplestory_Leaderboard_2015-10.PNG' width='30%'></img>
                     </div>
                 </div>
                 <div id='buttons'>

@@ -104,16 +104,18 @@ def checkout(data):
       amount=50,
       currency="usd",
       description="Coastal Quest Scavenger Hunt",
-      source=token['id'],
+      source=token,
     )
    
     # create account
-    #userInfo = data['userInfo']
+    userdata = data['userdata']
     access_code = "Wowzers" # replace with something meaningful
-    #models.Participants(userInfo['email'],userInfo['team_name'], userInfo['image'], access_code, 0, 0, userInfo['hunts_id'])
+    participants = models.Participants(userdata['email'],userdata['team_name'], userdata['image'], access_code, 0, 0, userdata['hunts_id'])
+    models.db.session.add(participants)  
+    models.db.session.commit()
     
     # send email
-    client_email = "coastalquest1337@gmail.com" #userInfo['email']
+    client_email = userdata['email']
     subject = "Coastal Quest Activation Code"
     message = "Welcome to Coastal Quest Scavenger Hunts! Your access code is {}. Have fun on your journey!".format(access_code)
     email_client(client_email,subject,message)
