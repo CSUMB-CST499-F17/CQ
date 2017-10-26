@@ -1,4 +1,5 @@
-import os, flask, flask_socketio, flask_sqlalchemy, time, stripe, datetime, sqlalchemy, smtplib
+import flask, flask_socketio, flask_sqlalchemy, stripe, sqlalchemy
+import os, time, datetime, smtplib, re, random
 import models
 
 #GLOBAL VARS
@@ -49,11 +50,15 @@ def getHunt():
 def dropDown():
     hunts = [];
     
-    recent = models.db.session.query(models.Hunts)
-    for row in recent:
-        hunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
-    print hunts
-#     socketio.emit('hunt-info', hunts)
+    try:
+        recent = models.db.session.query(models.Hunts)
+        for row in recent:
+            hunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
+        print hunts
+#       socketio.emit('hunt-info', hunts)
+    except:
+        print("Error: Database does not exist")
+
 
 @socketio.on('ready')
 def run():
@@ -74,13 +79,16 @@ def updateLeaderboard():
 @socketio.on('register')
 def updateRegister():
     ongoingHunts = [];
-    sql = models.db.session.query(models.Hunts).filter(sqlalchemy.and_(models.Hunts.start_time <= datetime.datetime.now(),models.Hunts.end_time >= datetime.datetime.now())).order_by(models.Hunts.id.desc())
-    for row in sql:
-        ongoingHunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
-    #datetime to string, not json serializable
-    # socketio.emit('updateRegister', {
-    #     'ongoingHunts': ongoingHunts
-    # }) 
+    try:
+        sql = models.db.session.query(models.Hunts).filter(sqlalchemy.and_(models.Hunts.start_time <= datetime.datetime.now(),models.Hunts.end_time >= datetime.datetime.now())).order_by(models.Hunts.id.desc())
+        for row in sql:
+            ongoingHunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
+        #datetime to string, not json serializable
+        # socketio.emit('updateRegister', {
+        #     'ongoingHunts': ongoingHunts
+        # }) 
+    except:
+        print("Error: Database does not exist")
 
 @socketio.on('createHunt')
 def createHunt(data):
@@ -97,30 +105,50 @@ def createHunt(data):
     
 @socketio.on('checkout')
 def checkout(data):
-    # charge client through stripe
+    
     stripe.api_key = "sk_test_O6BW3ED77qHecdLRd832IdjW"
     token = data['token']
-    charge = stripe.Charge.create(
-      amount=50,
-      currency="usd",
-      description="Coastal Quest Scavenger Hunt",
-      source=token,
-    )
-   
-    # create account
     userdata = data['userdata']
-    access_code = "Wowzers" # replace with something meaningful
-    participants = models.Participants(userdata['email'],userdata['team_name'], userdata['image'], access_code, 0, 0, userdata['hunts_id'])
-    models.db.session.add(participants)  
-    models.db.session.commit()
-    
-    # send email
     client_email = userdata['email']
-    subject = "Coastal Quest Activation Code"
-    message = "Welcome to Coastal Quest Scavenger Hunts! Your access code is {}. Have fun on your journey!".format(access_code)
-    email_client(client_email,subject,message)
+    hunt_id = userdata['hunts_id']
     
-    #socketio.emit('access', {'access_code':access_code});
+    # parse client_email to check if valid
+    # then query db to check if user has already done hunt
+    # if these checks are fine, go ahead and charge, create account, send email
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", client_email):
+        socketio.emit('rejection', {'message':"invalid email address"})
+    elif False: #query db using email and hunts_id to see whether the user already exists for that quest #SELECT id FROM participants WHERE email = client_email AND hunts_id = hid
+    #elif models.db.session.query(models.Participants).filter(models.Participants.email == client_email, models.Participants.hunts_id == hunt_id).count() > 0:
+        socketio.emit('rejection', {'message':"email address already registered for this hunt"})
+    else:
+        # charge client through stripe
+        charge = stripe.Charge.create(
+          amount=50,
+          currency="usd",
+          description="Coastal Quest Scavenger Hunt",
+          source=token,
+        )
+       
+        # create account
+        random.seed();
+        random_number = random.randint(0,9999)
+        hunt_name = "Sample Hunt" #query db to get name of hunt with hunt_id #SELECT name FROM hunts WHERE id = hunt_id
+        #hunt_name = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt_id).first().name
+        hunt_name = hunt_name.replace(" ", "")
+        access_code = hunt_name + "{:04d}".format(random_number)
+        try:
+            participants = models.Participants(userdata['email'],userdata['team_name'], userdata['image'], access_code, 0, 0, userdata['hunts_id'])
+            models.db.session.add(participants)  
+            models.db.session.commit()
+        except:
+            print("Error: Database does not exist")
+        
+        # send email
+        subject = "Coastal Quest Activation Code"
+        message = "Welcome to Coastal Quest Scavenger Hunts, {}! Your access code is {}. Have fun on your journey!".format(userdata['team_name'],access_code)
+        email_client(client_email,subject,message)
+        
+        socketio.emit('acceptance', {'access_code':access_code})
     
 def email_client(client_email, subject, message):
     recp_message  = 'Subject: {}\n\n{}'.format(subject, message)
@@ -131,7 +159,6 @@ def email_client(client_email, subject, message):
     server.login(email_address, email_pass)
     server.sendmail(email_address, client_email, recp_message)
     server.quit()
-    
 
 if __name__ == '__main__':
     socketio.run(

@@ -21892,27 +21892,27 @@
 
 	var _explore = __webpack_require__(494);
 
-	var _leaderboard = __webpack_require__(495);
+	var _leaderboard = __webpack_require__(496);
 
-	var _existingTeam = __webpack_require__(496);
+	var _existingTeam = __webpack_require__(497);
 
-	var _register = __webpack_require__(497);
+	var _register = __webpack_require__(498);
 
-	var _play = __webpack_require__(498);
+	var _play = __webpack_require__(499);
 
-	var _adminHome = __webpack_require__(499);
+	var _adminHome = __webpack_require__(500);
 
-	var _adminLeaderboard = __webpack_require__(501);
+	var _adminLeaderboard = __webpack_require__(502);
 
-	var _adminHunts = __webpack_require__(502);
+	var _adminHunts = __webpack_require__(503);
 
-	var _adminCreateHunt = __webpack_require__(503);
+	var _adminCreateHunt = __webpack_require__(504);
 
-	var _adminEditHunt = __webpack_require__(504);
+	var _adminEditHunt = __webpack_require__(505);
 
-	var _admins = __webpack_require__(505);
+	var _admins = __webpack_require__(506);
 
-	var _adminCreate = __webpack_require__(506);
+	var _adminCreate = __webpack_require__(507);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -50374,7 +50374,7 @@
 
 	var _Socket = __webpack_require__(440);
 
-	var _logoSmall = __webpack_require__(507);
+	var _logoSmall = __webpack_require__(495);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -50559,6 +50559,54 @@
 /* 495 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.LogoSmall = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var LogoSmall = exports.LogoSmall = function (_React$Component) {
+	    _inherits(LogoSmall, _React$Component);
+
+	    function LogoSmall(props) {
+	        _classCallCheck(this, LogoSmall);
+
+	        return _possibleConstructorReturn(this, (LogoSmall.__proto__ || Object.getPrototypeOf(LogoSmall)).call(this, props));
+	    }
+
+	    _createClass(LogoSmall, [{
+	        key: "render",
+	        value: function render() {
+	            return React.createElement(
+	                "div",
+	                null,
+	                React.createElement("img", { src: "../static/image/logo-small.png" })
+	            );
+	        }
+	    }]);
+
+	    return LogoSmall;
+	}(React.Component);
+
+/***/ },
+/* 496 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -50578,7 +50626,7 @@
 
 	var _Socket = __webpack_require__(440);
 
-	var _logoSmall = __webpack_require__(507);
+	var _logoSmall = __webpack_require__(495);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -50723,7 +50771,7 @@
 	}(React.Component);
 
 /***/ },
-/* 496 */
+/* 497 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50745,7 +50793,7 @@
 
 	var _Socket = __webpack_require__(440);
 
-	var _logoSmall = __webpack_require__(507);
+	var _logoSmall = __webpack_require__(495);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -50890,7 +50938,7 @@
 	// </form>
 
 /***/ },
-/* 497 */
+/* 498 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50967,6 +51015,18 @@
 	            this.card.mount('#card-element');
 	            _Socket.Socket.on('updateRegister', function (data) {
 	                alert(data['ongoingHunts']);
+	            });
+
+	            _Socket.Socket.on('acceptance', function (data) {
+	                var outcomeElement = document.getElementById('stripe-outcome');
+	                outcomeElement.textContent = "Your access code: " + data['access_code'];
+	                outcomeElement.style.color = "#00FF00";
+	            });
+
+	            _Socket.Socket.on('rejection', function (data) {
+	                var outcomeElement = document.getElementById('stripe-outcome');
+	                outcomeElement.textContent = "Error: " + data['message'];
+	                outcomeElement.style.color = "#E4584C";
 	            });
 	        }
 	    }, {
@@ -51113,7 +51173,7 @@
 	}(React.Component);
 
 /***/ },
-/* 498 */
+/* 499 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51135,7 +51195,7 @@
 
 	var _Socket = __webpack_require__(440);
 
-	var _logoSmall = __webpack_require__(507);
+	var _logoSmall = __webpack_require__(495);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -51356,7 +51416,7 @@
 	// </InputGroup>
 
 /***/ },
-/* 499 */
+/* 500 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51378,7 +51438,7 @@
 
 	var _Socket = __webpack_require__(440);
 
-	var _navBar = __webpack_require__(500);
+	var _navBar = __webpack_require__(501);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -51447,7 +51507,7 @@
 	}(React.Component);
 
 /***/ },
-/* 500 */
+/* 501 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51465,7 +51525,7 @@
 
 	var _Socket = __webpack_require__(440);
 
-	var _logoSmall = __webpack_require__(507);
+	var _logoSmall = __webpack_require__(495);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -51568,7 +51628,7 @@
 	}(React.Component);
 
 /***/ },
-/* 501 */
+/* 502 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51590,7 +51650,7 @@
 
 	var _Socket = __webpack_require__(440);
 
-	var _navBar = __webpack_require__(500);
+	var _navBar = __webpack_require__(501);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -51715,7 +51775,7 @@
 	}(React.Component);
 
 /***/ },
-/* 502 */
+/* 503 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51737,7 +51797,7 @@
 
 	var _Socket = __webpack_require__(440);
 
-	var _navBar = __webpack_require__(500);
+	var _navBar = __webpack_require__(501);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -51842,7 +51902,7 @@
 	}(React.Component);
 
 /***/ },
-/* 503 */
+/* 504 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51862,7 +51922,7 @@
 
 	var _reactBootstrap = __webpack_require__(186);
 
-	var _navBar = __webpack_require__(500);
+	var _navBar = __webpack_require__(501);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -52108,7 +52168,7 @@
 	}(React.Component);
 
 /***/ },
-/* 504 */
+/* 505 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52299,7 +52359,7 @@
 	}(React.Component);
 
 /***/ },
-/* 505 */
+/* 506 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52319,7 +52379,7 @@
 
 	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
 
-	var _navBar = __webpack_require__(500);
+	var _navBar = __webpack_require__(501);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -52422,7 +52482,7 @@
 	}(React.Component);
 
 /***/ },
-/* 506 */
+/* 507 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52442,7 +52502,7 @@
 
 	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
 
-	var _navBar = __webpack_require__(500);
+	var _navBar = __webpack_require__(501);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -52554,54 +52614,6 @@
 	    }]);
 
 	    return AdminCreate;
-	}(React.Component);
-
-/***/ },
-/* 507 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.LogoSmall = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var LogoSmall = exports.LogoSmall = function (_React$Component) {
-	    _inherits(LogoSmall, _React$Component);
-
-	    function LogoSmall(props) {
-	        _classCallCheck(this, LogoSmall);
-
-	        return _possibleConstructorReturn(this, (LogoSmall.__proto__ || Object.getPrototypeOf(LogoSmall)).call(this, props));
-	    }
-
-	    _createClass(LogoSmall, [{
-	        key: "render",
-	        value: function render() {
-	            return React.createElement(
-	                "div",
-	                null,
-	                React.createElement("img", { src: "../static/image/logo-small.png" })
-	            );
-	        }
-	    }]);
-
-	    return LogoSmall;
 	}(React.Component);
 
 /***/ }
