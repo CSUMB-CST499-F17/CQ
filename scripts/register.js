@@ -26,7 +26,7 @@ export class Register extends React.Component {
         this.userdata = {
             team_name: '',
             email: '',
-            hunts_id: '',
+            hunts_id: '1',
             image: ''
         };
         this.hunts = [];
