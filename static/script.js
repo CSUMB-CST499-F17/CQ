@@ -51724,25 +51724,13 @@
 	                    'div',
 	                    { id: 'search' },
 	                    React.createElement(
-	                        _reactBootstrap.Form,
-	                        { id: 'adminLeaderboard-form' },
+	                        'div',
+	                        { id: 'leaderboard-form' },
+	                        React.createElement('input', { id: 'leaderboard-search1', className: 'form-control ', placeholder: 'Search Hunts', size: '5' }),
 	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            null,
-	                            React.createElement(
-	                                _reactBootstrap.InputGroup,
-	                                null,
-	                                React.createElement(_reactBootstrap.FormControl, { id: 'adminLeaderboard-item', type: 'text', placeholder: 'Search Hunts' }),
-	                                React.createElement(
-	                                    _reactBootstrap.ButtonToolbar,
-	                                    null,
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { id: 'adminLeaderboard-item' },
-	                                        'Search'
-	                                    )
-	                                )
-	                            )
+	                            'button',
+	                            { id: 'leaderboard-search', className: 'btn' },
+	                            'Search'
 	                        )
 	                    )
 	                ),
