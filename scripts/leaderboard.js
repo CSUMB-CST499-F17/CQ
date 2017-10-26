@@ -6,7 +6,7 @@ import { InputGroup } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
 import { FormGroup } from 'react-bootstrap';
 import { ButtonToolbar } from 'react-bootstrap';
-import { ButtonGroup } from 'react-bootstrap';
+import { ControlLabel } from 'react-bootstrap';
 import { Form } from 'react-bootstrap';
 import { LogoSmall } from './logo-small';
 
@@ -60,16 +60,10 @@ export class Leaderboard extends React.Component {
                     <header>Leaderboard</header>
                 </div>
                 <div id='intro'>
-                    <div id='leaderboard-form'>
-                        <Form>
-                            <FormGroup>
-                                <InputGroup>
-                                        <FormControl id="leaderboard-item1" className='leaderboard-item' placeholder="Search Hunts" />
-                                        <Button id="leaderboard-item2" className='leaderboard-item'>Search</Button>
-                                </InputGroup>
-                            </FormGroup>
-                        </Form>
-                    </div>
+                        <div id='leaderboard-form'>
+                              <input  id = "leaderboard-search1" className="form-control " placeholder="Search Hunts" size="5" />
+                              <button id = "leaderboard-search" className="btn">Search</button>
+                        </div>
                     <div id='leaderboards'>
                         <ul>{userlist}</ul>
                     </div>

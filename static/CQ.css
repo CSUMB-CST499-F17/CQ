@@ -135,16 +135,16 @@ img {
 #leaderboard-form{
     justify-content: center;
     display:flex;
+    width:30%;
+    margin:auto;
 }
-#leaderboard-item1{
-    float: left;
-    width: 70%;
+#leaderboard-search{
+    display:inline;
 }
-#leaderboard-item2{
-    float: right;
-    width: 30%;
-}
+#leaderboard-search1{
+    display:inline;
 
+}
 #leaderboards{
     background: white;
     max-width: 30%;

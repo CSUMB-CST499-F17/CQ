@@ -50719,23 +50719,11 @@
 	                    React.createElement(
 	                        'div',
 	                        { id: 'leaderboard-form' },
+	                        React.createElement('input', { id: 'leaderboard-search1', className: 'form-control ', placeholder: 'Search Hunts', size: '5' }),
 	                        React.createElement(
-	                            _reactBootstrap.Form,
-	                            null,
-	                            React.createElement(
-	                                _reactBootstrap.FormGroup,
-	                                null,
-	                                React.createElement(
-	                                    _reactBootstrap.InputGroup,
-	                                    null,
-	                                    React.createElement(_reactBootstrap.FormControl, { id: 'leaderboard-item1', className: 'leaderboard-item', placeholder: 'Search Hunts' }),
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { id: 'leaderboard-item2', className: 'leaderboard-item' },
-	                                        'Search'
-	                                    )
-	                                )
-	                            )
+	                            'button',
+	                            { id: 'leaderboard-search', className: 'btn' },
+	                            'Search'
 	                        )
 	                    ),
 	                    React.createElement(
