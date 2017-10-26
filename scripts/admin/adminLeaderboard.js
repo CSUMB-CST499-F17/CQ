@@ -61,16 +61,10 @@ export class AdminLeaderboard extends React.Component {
                     <header>Admin Leaderboard Page</header>
                 </div>
                 <div id='search'>
-                    <Form id='adminLeaderboard-form'>
-                        <FormGroup>
-                            <InputGroup>
-                                <FormControl id='adminLeaderboard-item' type="text" placeholder="Search Hunts" />
-                                <ButtonToolbar>
-                                    <Button id='adminLeaderboard-item'>Search</Button>
-                                </ButtonToolbar>
-                            </InputGroup>
-                        </FormGroup>
-                    </Form>
+                    <div id='leaderboard-form'>
+                          <input  id = "leaderboard-search1" className="form-control " placeholder="Search Hunts" size="5" />
+                          <button id = "leaderboard-search" className="btn">Search</button>
+                    </div>
                 </div>
                 <div id='leaderboards'>
                     <ul>{userlist}</ul>

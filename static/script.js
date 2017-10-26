@@ -22092,32 +22092,32 @@
 	                    'div',
 	                    { id: 'buttons' },
 	                    React.createElement(
-	                        _reactBootstrap.ButtonToolbar,
-	                        null,
+	                        'div',
+	                        { className: 'tool' },
 	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: function onClick() {
+	                            'button',
+	                            { className: 'btn', onClick: function onClick() {
 	                                    return _this2.changePage('explore');
 	                                } },
 	                            'Let\'s Explore!'
 	                        ),
 	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: function onClick() {
+	                            'button',
+	                            { className: 'btn', onClick: function onClick() {
 	                                    return _this2.changePage('existingTeam');
 	                                } },
 	                            'Log into Existing Team'
 	                        ),
 	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: function onClick() {
+	                            'button',
+	                            { className: 'btn', onClick: function onClick() {
 	                                    return _this2.changePage('adminHome');
 	                                } },
 	                            'Temp Button to Admin Homepage'
 	                        ),
 	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: function onClick() {
+	                            'button',
+	                            { className: 'btn', onClick: function onClick() {
 	                                    return _this2.changePage('play');
 	                                } },
 	                            'Temp Button to Play Page'
@@ -50719,23 +50719,11 @@
 	                    React.createElement(
 	                        'div',
 	                        { id: 'leaderboard-form' },
+	                        React.createElement('input', { id: 'leaderboard-search1', className: 'form-control ', placeholder: 'Search Hunts', size: '5' }),
 	                        React.createElement(
-	                            _reactBootstrap.Form,
-	                            null,
-	                            React.createElement(
-	                                _reactBootstrap.FormGroup,
-	                                null,
-	                                React.createElement(
-	                                    _reactBootstrap.InputGroup,
-	                                    null,
-	                                    React.createElement(_reactBootstrap.FormControl, { id: 'leaderboard-item1', className: 'leaderboard-item', placeholder: 'Search Hunts' }),
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { id: 'leaderboard-item2', className: 'leaderboard-item' },
-	                                        'Search'
-	                                    )
-	                                )
-	                            )
+	                            'button',
+	                            { id: 'leaderboard-search', className: 'btn' },
+	                            'Search'
 	                        )
 	                    ),
 	                    React.createElement(
@@ -51027,6 +51015,18 @@
 	                _this2.hunts = ongoingHunts;
 	                _this2.setState(); //DONT ASK ME WHY THIS WORKS BUT IT WORKS, DO NOT DELETE
 	            });
+
+	            _Socket.Socket.on('acceptance', function (data) {
+	                var outcomeElement = document.getElementById('stripe-outcome');
+	                outcomeElement.textContent = "Your access code: " + data['access_code'];
+	                outcomeElement.style.color = "#00FF00";
+	            });
+
+	            _Socket.Socket.on('rejection', function (data) {
+	                var outcomeElement = document.getElementById('stripe-outcome');
+	                outcomeElement.textContent = "Error: " + data['message'];
+	                outcomeElement.style.color = "#E4584C";
+	            });
 	        }
 	    }, {
 	        key: 'handleSubmit',
@@ -51271,11 +51271,16 @@
 	            event.preventDefault();
 
 	            var result = document.getElementById('result');
-
+	            result.style.visibility = 'visible';
 	            if (this.state.userAnswer == this.state.correctAnswer) {
 	                result.textContent = 'Correct';
+	                result.style.color = "#9bf442";
+	                document.getElementById('answer-submit').style.display = "none";
+	                document.getElementById('hint-submit').style.display = "none";
+	                document.getElementById('next').style.display = "block";
 	            } else {
 	                result.textContent = 'Incorrect';
+	                result.style.color = "red";
 	            }
 	        }
 	        //changes the display of the pages when button is pressed
@@ -51299,15 +51304,15 @@
 	        value: function showHint(event) {
 	            this.state.x += 1;
 	            var hint = document.getElementById('hint');
-
+	            console.log(this.state.x);
 	            if (this.state.x == 1) {
-	                hint.textContent = this.state.hint1;
-	            } else if (this.state.x == 2) {
-
-	                hint.textContent = this.state.hint2;
-	                if (this.state.hint2 == "") {
-	                    hint.textContent = this.state.hint1;
-	                }
+	                hint.innerHTML = "Hint One: " + this.state.hint1;
+	            }
+	            if (this.state.x == 2 && this.state.hint2 != "") {
+	                hint.innerHTML = hint.innerHTML + ' <br/>' + "Hint Two: " + this.state.hint2;
+	            }
+	            if (this.state.x > 2 || this.state.x == 2 && this.state.hint2 == "") {
+	                alert("No more hints available");
 	            }
 	        }
 	    }, {
@@ -51325,6 +51330,7 @@
 	                    'questionNum': data['questionNum']
 	                });
 	            });
+	            console.log(this.state.hint2);
 	        }
 	    }, {
 	        key: 'render',
@@ -51354,56 +51360,73 @@
 	                ),
 	                React.createElement(
 	                    'div',
-	                    { id: 'intro' },
+	                    { id: 'play-container' },
 	                    React.createElement(
 	                        _reactBootstrap.Form,
 	                        null,
 	                        React.createElement(
-	                            'div',
-	                            { id: 'buttons' },
+	                            _reactBootstrap.FormGroup,
+	                            { id: 'play-form' },
 	                            React.createElement(
-	                                _reactBootstrap.FormGroup,
+	                                _reactBootstrap.ControlLabel,
+	                                null,
+	                                'Current Objective Intro.'
+	                            ),
+	                            React.createElement(
+	                                _reactBootstrap.FormControl.Static,
 	                                null,
 	                                React.createElement(
-	                                    _reactBootstrap.ControlLabel,
-	                                    null,
-	                                    'Current Objective Intro.'
-	                                ),
-	                                React.createElement(
-	                                    _reactBootstrap.FormControl.Static,
-	                                    null,
+	                                    'div',
+	                                    { id: 'play-question' },
 	                                    React.createElement(
-	                                        'div',
+	                                        'p',
 	                                        null,
-	                                        React.createElement(
-	                                            'p',
-	                                            null,
-	                                            prompt
-	                                        )
-	                                    ),
-	                                    React.createElement('div', { id: 'hint' }),
-	                                    React.createElement('div', { id: 'result' })
-	                                ),
-	                                React.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
-	                                React.createElement(
-	                                    _reactBootstrap.Button,
-	                                    { id: 'answerSubmit', onClick: this.handleSubmit },
-	                                    'Submit'
+	                                        prompt
+	                                    )
 	                                ),
 	                                React.createElement(
-	                                    _reactBootstrap.Button,
-	                                    { id: 'hint display', onClick: this.showHint },
-	                                    'Hint'
+	                                    'div',
+	                                    { id: 'hints' },
+	                                    React.createElement('div', { id: 'hint' })
 	                                )
+	                            ),
+	                            React.createElement(_reactBootstrap.FormControl, { id: 'answer', componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
+	                            React.createElement(
+	                                'div',
+	                                { id: 'result', style: { visibility: 'hidden' } },
+	                                'Incorrect'
 	                            )
 	                        )
 	                    ),
 	                    React.createElement(
-	                        _reactBootstrap.Button,
-	                        { onClick: function onClick() {
-	                                return _this3.changePage('home');
-	                            } },
-	                        'Home'
+	                        'div',
+	                        { id: 'buttons' },
+	                        React.createElement(
+	                            _reactBootstrap.ButtonToolbar,
+	                            null,
+	                            React.createElement(
+	                                _reactBootstrap.Button,
+	                                { id: 'next', style: { display: 'none' } },
+	                                'Next Question'
+	                            ),
+	                            React.createElement(
+	                                _reactBootstrap.Button,
+	                                { id: 'answer-submit', onClick: this.handleSubmit },
+	                                'Submit'
+	                            ),
+	                            React.createElement(
+	                                _reactBootstrap.Button,
+	                                { id: 'hint-submit', onClick: this.showHint },
+	                                'Hint'
+	                            ),
+	                            React.createElement(
+	                                _reactBootstrap.Button,
+	                                { onClick: function onClick() {
+	                                        return _this3.changePage('home');
+	                                    } },
+	                                'Home'
+	                            )
+	                        )
 	                    )
 	                )
 	            );
@@ -51530,6 +51553,8 @@
 
 	var _Socket = __webpack_require__(440);
 
+	var _logoSmall = __webpack_require__(495);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51616,6 +51641,11 @@
 	                                return _this2.changePage('home');
 	                            } },
 	                        'Logout'
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { id: 'logo-small-nav' },
+	                        React.createElement(_logoSmall.LogoSmall, null)
 	                    )
 	                )
 	            );
@@ -51734,25 +51764,13 @@
 	                    'div',
 	                    { id: 'search' },
 	                    React.createElement(
-	                        _reactBootstrap.Form,
-	                        { id: 'adminLeaderboard-form' },
+	                        'div',
+	                        { id: 'leaderboard-form' },
+	                        React.createElement('input', { id: 'leaderboard-search1', className: 'form-control ', placeholder: 'Search Hunts', size: '5' }),
 	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            null,
-	                            React.createElement(
-	                                _reactBootstrap.InputGroup,
-	                                null,
-	                                React.createElement(_reactBootstrap.FormControl, { id: 'adminLeaderboard-item', type: 'text', placeholder: 'Search Hunts' }),
-	                                React.createElement(
-	                                    _reactBootstrap.ButtonToolbar,
-	                                    null,
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { id: 'adminLeaderboard-item' },
-	                                        'Search'
-	                                    )
-	                                )
-	                            )
+	                            'button',
+	                            { id: 'leaderboard-search', className: 'btn' },
+	                            'Search'
 	                        )
 	                    )
 	                ),

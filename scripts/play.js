@@ -44,11 +44,17 @@ export class Play extends React.Component {
         event.preventDefault();
 
         var result = document.getElementById('result');
-
+        result.style.visibility = 'visible';
         if(this.state.userAnswer == this.state.correctAnswer){
             result.textContent = 'Correct';
+            result.style.color="#9bf442";
+            document.getElementById('answer-submit').style.display = "none";
+            document.getElementById('hint-submit').style.display = "none";
+            document.getElementById('next').style.display = "block";
         }else{
             result.textContent = 'Incorrect'
+            result.style.color="red";
+
         }
 
     }
@@ -69,15 +75,17 @@ export class Play extends React.Component {
     showHint(event){
         this.state.x += 1
         var hint = document.getElementById('hint');
-
-        if(this.state.x == 1 ){
-            hint.textContent = this.state.hint1;
-        }else if( this.state.x == 2){
-
-            hint.textContent = this.state.hint2;
-            if (this.state.hint2 == ""){
-                hint.textContent = this.state.hint1;
-            }
+        console.log(this.state.x)
+        if(this.state.x == 1 )
+        {
+            hint.innerHTML = "Hint One: " + this.state.hint1;
+        }
+        if(this.state.x == 2 && this.state.hint2 != "")
+        {
+            hint.innerHTML = hint.innerHTML +' <br/>' + "Hint Two: "+ this.state.hint2;
+        }
+        if(this.state.x > 2 || (this.state.x == 2 &&  this.state.hint2 == "")){
+            alert("No more hints available")
         }
     }
 
@@ -92,6 +100,7 @@ export class Play extends React.Component {
                 'questionNum' : data['questionNum']
             });
         });
+        console.log(this.state.hint2);
     }
 
 
@@ -112,39 +121,30 @@ export class Play extends React.Component {
                 <div id = 'header'>
                     <header>Game Name</header>
                 </div>
-                <div id='intro'>
+                <div id='play-container'>
                     <Form  >
-                            <div id='buttons'>
-                                <FormGroup>
-                                    <ControlLabel>Current Objective Intro.</ControlLabel>
-
-                                        <FormControl.Static>
-                                            <div>
-                                                <p>{prompt}</p>
-                                            </div>
-                                            <div id='hint'></div>
-                                            <div id='result'></div>
-                                        </FormControl.Static>
-
-                                        <FormControl componentClass="textarea" value={this.state.value} onChange={this.handleChange}  placeholder="Answer" />
-
-                                        <Button id= "answerSubmit" onClick={this.handleSubmit}  >
-                                            Submit
-                                        </Button>
-
-                                        <Button id= "hint display" onClick={this.showHint}  >
-                                            Hint
-                                        </Button>
-
-
-
-                                    </FormGroup>
-                            </div>
+                        <FormGroup id="play-form">
+                            <ControlLabel>Current Objective Intro.</ControlLabel>
+                                <FormControl.Static>
+                                    <div id="play-question">
+                                        <p>{prompt}</p>
+                                    </div>
+                                    <div id = 'hints'>
+                                    <div id='hint'></div>
+                                    </div>
+                                </FormControl.Static>
+                                <FormControl id = "answer" componentClass="textarea" value={this.state.value} onChange={this.handleChange}  placeholder="Answer" />
+                                <div id='result'style={{visibility:'hidden'}}>Incorrect</div>
+                        </FormGroup> 
                     </Form>
-
-                    <Button onClick={() => this.changePage('home')}>
-                            Home
-                    </Button>
+                    <div id='buttons'>
+                        <ButtonToolbar>
+                            <Button id="next" style={{display:'none'}} >Next Question</Button>
+                            <Button id="answer-submit" onClick={this.handleSubmit} >Submit</Button>
+                            <Button id="hint-submit" onClick={this.showHint}>Hint</Button>
+                            <Button onClick={() => this.changePage('home')}>Home</Button>
+                        </ButtonToolbar>
+                    </div>
 
                 </div>
             </div>

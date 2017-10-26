@@ -52,6 +52,18 @@ export class Register extends React.Component {
             this.hunts = ongoingHunts;
             this.setState(); //DONT ASK ME WHY THIS WORKS BUT IT WORKS, DO NOT DELETE
         });
+        
+        Socket.on('acceptance', (data) => {
+            var outcomeElement = document.getElementById('stripe-outcome');
+            outcomeElement.textContent = "Your access code: " + data['access_code'];
+            outcomeElement.style.color = "#00FF00";
+        });
+        
+        Socket.on('rejection', (data) => {
+            var outcomeElement = document.getElementById('stripe-outcome');
+            outcomeElement.textContent = "Error: " + data['message'];
+            outcomeElement.style.color = "#E4584C";
+        });
     }
     
     handleSubmit(event) {

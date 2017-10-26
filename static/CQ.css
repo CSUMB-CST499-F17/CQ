@@ -17,6 +17,11 @@ img {
     width:100px;
     float:left;
 }
+#logo-small-nav{
+    width:50px;
+    float:right;
+    margin-right:2%;
+}
 #content{
     display: flex;
     background-repeat: no-repeat;
@@ -39,10 +44,10 @@ img {
 }
 #header {
     color: white;
-    font-family: 'Trocchi',serif;
-    font-size: 70px;
-    margin:auto;
+    font-size: 64px;
+    font-weight:bold;
     margin-bottom:10px;
+    padding-right:100px;
     flex-direction: row;
     text-align:center;
     justify-content: center;
@@ -93,7 +98,34 @@ img {
     margin:5px;
     justify-content: center;
 }
-
+#play-container{
+    margin:20px;
+    width:50%;
+    justify-content: center;
+    margin:auto;
+    color:white;
+}
+#play-form{
+    justify-content: center;
+    margin:auto;
+    text-align: center;
+}
+#hint, #play-question, #answer{
+    margin:10px;
+}
+#play-question{
+    font-size: 42px
+}
+#result{
+    font-size: 24px;
+    font-weight: bold;
+}
+#hints{
+    justify-content: center;
+    margin:auto;
+    width:70%;
+    text-align:left;
+}
 #ET-form{
     position: static;
     display: flex;
@@ -103,16 +135,16 @@ img {
 #leaderboard-form{
     justify-content: center;
     display:flex;
+    width:30%;
+    margin:auto;
 }
-#leaderboard-item1{
-    float: left;
-    width: 70%;
+#leaderboard-search{
+    display:inline;
 }
-#leaderboard-item2{
-    float: right;
-    width: 30%;
-}
+#leaderboard-search1{
+    display:inline;
 
+}
 #leaderboards{
     background: white;
     max-width: 30%;
@@ -250,25 +282,53 @@ img {
 
   font-size: 13px;
 }
+.btn{
+    margin:3px;
+    color:black;
+    background-color: #E6E6E6
+}
 
 
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
     #header {
-        color: white;
-        font-family: 'Trocchi',serif;
         font-size: 2.5em;
         margin: 10px;
-        flex-direction: row;
-        text-align:center;
-        justify-content: center;
+    }
+    
+    #logo-big{
+        width:90%;
+        height:20%;
+    }
+    #logo-small{
+        max-width:20%;
+        max-height:20%;
+        float:left;
     }
 
     #intro{
         text-align:center;
         justify-content: center;
-        display: flex;
+        display: block;
         margin:auto;
         max-width: 100%;
+    }
+    
+    #buttons{
+        margin-top:10px;
+        margin: auto;
+        flex-direction: row;
+        justify-content: center;
+        padding: 20px;
+        max-width: 60%;
+        color: white;
+        font-size: 24pt;
+        color:red;
+    }
+    #logo-small-nav{
+        width:40px;
+        float:right;
+        margin-right:0%;
+        margin-top:3px;
     }
          /* Add a black background color to the top navigation */
     #topnav {
@@ -282,7 +342,7 @@ img {
         display: block;
         color: #f2f2f2;
         text-align: center;
-        padding: 14px 10px; /* first is top and bottom second is left and right*/
+        padding: 14px 7px; /* first is top and bottom second is left and right*/
         text-decoration: none;
         font-size: 14px;
     }
@@ -301,9 +361,7 @@ img {
 
     img
     {
-        max-width: 100%;
-        height: 70%;
+        max-width: 90%;
+        max-height: 90%;
     }
-
-
 }
