@@ -17,6 +17,11 @@ img {
     width:100px;
     float:left;
 }
+#logo-small-nav{
+    width:50px;
+    float:right;
+    margin-right:2%;
+}
 #content{
     display: flex;
     background-repeat: no-repeat;
@@ -39,8 +44,8 @@ img {
 }
 #header {
     color: white;
-    font-family: 'Trocchi',serif;
-    font-size: 70px;
+    font-size: 64px;
+    font-weight:bold;
     margin-bottom:10px;
     padding-right:100px;
     flex-direction: row;
@@ -286,13 +291,8 @@ img {
 
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
     #header {
-        color: white;
-        font-family: 'Trocchi',serif;
         font-size: 2.5em;
         margin: 10px;
-        flex-direction: row;
-        text-align:center;
-        justify-content: center;
     }
     
     #logo-big{
@@ -324,7 +324,12 @@ img {
         font-size: 24pt;
         color:red;
     }
-
+    #logo-small-nav{
+        width:40px;
+        float:right;
+        margin-right:0%;
+        margin-top:3px;
+    }
          /* Add a black background color to the top navigation */
     #topnav {
         background-color: #333;
@@ -337,7 +342,7 @@ img {
         display: block;
         color: #f2f2f2;
         text-align: center;
-        padding: 14px 10px; /* first is top and bottom second is left and right*/
+        padding: 14px 7px; /* first is top and bottom second is left and right*/
         text-decoration: none;
         font-size: 14px;
     }
