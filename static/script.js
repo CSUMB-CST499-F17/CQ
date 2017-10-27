@@ -51254,7 +51254,8 @@
 	            'questionNum': '',
 	            'userAnswer': '',
 	            'displayer': '',
-	            'x': 0
+	            'x': 0,
+	            'attempts': []
 
 	        };
 	        _this.changePage = _this.changePage.bind(_this);
@@ -51275,12 +51276,17 @@
 	            if (this.state.userAnswer == this.state.correctAnswer) {
 	                result.textContent = 'Correct';
 	                result.style.color = "#9bf442";
+	                this.setState({ attempts: [] });
 	                document.getElementById('answer-submit').style.display = "none";
 	                document.getElementById('hint-submit').style.display = "none";
 	                document.getElementById('next').style.display = "block";
 	            } else {
-	                result.textContent = 'Incorrect';
+	                var newArray = this.state.attempts.slice();
+	                newArray.push(" " + document.getElementById('answer').value);
+	                this.setState({ attempts: newArray });
+	                result.innerHTML = 'Incorrect <br/> Attempts: ' + newArray;
 	                result.style.color = "red";
+	                document.getElementById('answer').value = "";
 	            }
 	        }
 	        //changes the display of the pages when button is pressed
@@ -51307,12 +51313,13 @@
 	            console.log(this.state.x);
 	            if (this.state.x == 1) {
 	                hint.innerHTML = "Hint One: " + this.state.hint1;
+	                if (this.state.hint2 == "") {
+	                    document.getElementById('hint-submit').style.display = "none";
+	                }
 	            }
 	            if (this.state.x == 2 && this.state.hint2 != "") {
 	                hint.innerHTML = hint.innerHTML + ' <br/>' + "Hint Two: " + this.state.hint2;
-	            }
-	            if (this.state.x > 2 || this.state.x == 2 && this.state.hint2 == "") {
-	                alert("No more hints available");
+	                document.getElementById('hint-submit').style.display = "none";
 	            }
 	        }
 	    }, {
@@ -51368,11 +51375,6 @@
 	                            _reactBootstrap.FormGroup,
 	                            { id: 'play-form' },
 	                            React.createElement(
-	                                _reactBootstrap.ControlLabel,
-	                                null,
-	                                'Current Objective Intro.'
-	                            ),
-	                            React.createElement(
 	                                _reactBootstrap.FormControl.Static,
 	                                null,
 	                                React.createElement(
@@ -51394,7 +51396,9 @@
 	                            React.createElement(
 	                                'div',
 	                                { id: 'result', style: { visibility: 'hidden' } },
-	                                'Incorrect'
+	                                'Incorrect',
+	                                React.createElement('br', null),
+	                                'sd'
 	                            )
 	                        )
 	                    ),

@@ -29,7 +29,8 @@ export class Play extends React.Component {
             'questionNum' : '',
             'userAnswer' : '',
             'displayer' :'',
-            'x':0
+            'x':0,
+            'attempts':[]
 
         };
         this.changePage = this.changePage.bind(this);
@@ -48,12 +49,17 @@ export class Play extends React.Component {
         if(this.state.userAnswer == this.state.correctAnswer){
             result.textContent = 'Correct';
             result.style.color="#9bf442";
+            this.setState({attempts:[]})
             document.getElementById('answer-submit').style.display = "none";
             document.getElementById('hint-submit').style.display = "none";
             document.getElementById('next').style.display = "block";
         }else{
-            result.textContent = 'Incorrect'
+            var newArray = this.state.attempts.slice();    
+            newArray.push(" " + document.getElementById('answer').value);   
+            this.setState({attempts:newArray})
+            result.innerHTML = 'Incorrect <br/> Attempts: ' + newArray;
             result.style.color="red";
+            document.getElementById('answer').value = "";
 
         }
 
@@ -79,13 +85,14 @@ export class Play extends React.Component {
         if(this.state.x == 1 )
         {
             hint.innerHTML = "Hint One: " + this.state.hint1;
+            if((this.state.hint2 == "")){
+            document.getElementById('hint-submit').style.display = "none";
+            }
         }
         if(this.state.x == 2 && this.state.hint2 != "")
         {
             hint.innerHTML = hint.innerHTML +' <br/>' + "Hint Two: "+ this.state.hint2;
-        }
-        if(this.state.x > 2 || (this.state.x == 2 &&  this.state.hint2 == "")){
-            alert("No more hints available")
+            document.getElementById('hint-submit').style.display = "none";
         }
     }
 
@@ -124,7 +131,6 @@ export class Play extends React.Component {
                 <div id='play-container'>
                     <Form  >
                         <FormGroup id="play-form">
-                            <ControlLabel>Current Objective Intro.</ControlLabel>
                                 <FormControl.Static>
                                     <div id="play-question">
                                         <p>{prompt}</p>
@@ -134,7 +140,7 @@ export class Play extends React.Component {
                                     </div>
                                 </FormControl.Static>
                                 <FormControl id = "answer" componentClass="textarea" value={this.state.value} onChange={this.handleChange}  placeholder="Answer" />
-                                <div id='result'style={{visibility:'hidden'}}>Incorrect</div>
+                                <div id='result'style={{visibility:'hidden'}}>Incorrect<br/>sd</div>
                         </FormGroup> 
                     </Form>
                     <div id='buttons'>
