@@ -51270,10 +51270,9 @@
 	        key: 'handleSubmit',
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
-
 	            var result = document.getElementById('result');
-	            result.style.visibility = 'visible';
 	            if (this.state.userAnswer == this.state.correctAnswer) {
+	                result.style.visibility = 'visible';
 	                result.textContent = 'Correct';
 	                result.style.color = "#9bf442";
 	                this.setState({ attempts: [] });
@@ -51281,12 +51280,15 @@
 	                document.getElementById('hint-submit').style.display = "none";
 	                document.getElementById('next').style.display = "block";
 	            } else {
-	                var newArray = this.state.attempts.slice();
-	                newArray.push(" " + document.getElementById('answer').value);
-	                this.setState({ attempts: newArray });
-	                result.innerHTML = 'Incorrect <br/> Attempts: ' + newArray;
-	                result.style.color = "red";
-	                document.getElementById('answer').value = "";
+	                if (document.getElementById('answer').value != "") {
+	                    var newArray = this.state.attempts.slice();
+	                    newArray.push(" " + document.getElementById('answer').value);
+	                    this.setState({ attempts: newArray });
+	                    result.style.visibility = 'visible';
+	                    result.innerHTML = 'Incorrect <br/> Attempts: ' + newArray;
+	                    result.style.color = "red";
+	                    document.getElementById('answer').value = "";
+	                }
 	            }
 	        }
 	        //changes the display of the pages when button is pressed
