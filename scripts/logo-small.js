@@ -10,7 +10,7 @@ export class LogoSmall extends React.Component {
     render() {
         return (
             <div>
-                 <img src="../static/image/logo-small.png"/> 
+                 <img id="logo-small-img" src="../static/image/logo-small.png"/> 
             </div>
          
         );

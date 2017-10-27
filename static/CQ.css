@@ -6,20 +6,24 @@ body {
     background: #3E6F96;
     height: 100%;
 }
-img {
+#pageImage{
 	width:400;
 	max-width:100%;
 	height:auto;
+	margin:10px;
 }
 #logo-big{
     width:700px;
 }
-#logo-small{
+#logo-small img{
+    max-width:100px;
     width:100px;
     float:left;
 }
-#logo-small-nav{
-    width:50px;
+#logo-small-nav img{
+    max-width:60px;
+    width:60px;
+    height:60px;
     float:right;
     margin-right:2%;
 }
@@ -364,9 +368,7 @@ img {
     #topnav .icon {
         display: none;
     }
-
-
-    img
+    #pageImage
     {
         max-width: 90%;
         max-height: 90%;

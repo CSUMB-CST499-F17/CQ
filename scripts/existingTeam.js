@@ -60,7 +60,7 @@ export class ExistingTeam extends React.Component {
                     <header>EXISTING TEAMS</header>
                 </div>
                 <div id='intro'>
-                    <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Full_Spectrum_Team_Waving.jpg/1024px-Full_Spectrum_Team_Waving.jpg' width='100%'></img><br/>
+                    <img id = "pageImage" src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Full_Spectrum_Team_Waving.jpg/1024px-Full_Spectrum_Team_Waving.jpg' width='100%'></img><br/>
                     <Form id = "ET-form" >
                         <FormGroup>
                             <InputGroup>

@@ -22086,7 +22086,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'intro' },
-	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG/1200px-Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG', width: '40%' })
+	                    React.createElement('img', { id: 'pageImage', src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG/1200px-Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG', width: '40%' })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -50595,7 +50595,7 @@
 	            return React.createElement(
 	                "div",
 	                null,
-	                React.createElement("img", { src: "../static/image/logo-small.png" })
+	                React.createElement("img", { id: "logo-small-img", src: "../static/image/logo-small.png" })
 	            );
 	        }
 	    }]);
@@ -50861,7 +50861,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'intro' },
-	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Full_Spectrum_Team_Waving.jpg/1024px-Full_Spectrum_Team_Waving.jpg', width: '100%' }),
+	                    React.createElement('img', { id: 'pageImage', src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Full_Spectrum_Team_Waving.jpg/1024px-Full_Spectrum_Team_Waving.jpg', width: '100%' }),
 	                    React.createElement('br', null),
 	                    React.createElement(
 	                        _reactBootstrap.Form,
