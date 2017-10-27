@@ -50983,7 +50983,7 @@
 	        _this.userdata = {
 	            team_name: '',
 	            email: '',
-	            hunts_id: '',
+	            hunts_id: '1',
 	            image: ''
 	        };
 	        _this.hunts = [];

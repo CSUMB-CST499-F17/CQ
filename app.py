@@ -113,8 +113,7 @@ def checkout(data):
     # if these checks are fine, go ahead and charge, create account, send email
     if not re.match(r"[^@]+@[^@]+\.[^@]+", client_email):
         socketio.emit('rejection', {'message':"invalid email address"})
-    elif False: #query db using email and hunts_id to see whether the user already exists for that quest #SELECT id FROM participants WHERE email = client_email AND hunts_id = hid
-    #elif models.db.session.query(models.Participants).filter(models.Participants.email == client_email, models.Participants.hunts_id == hunt_id).count() > 0:
+    elif models.db.session.query(models.Participants).filter(models.Participants.email == client_email, models.Participants.hunts_id == hunt_id).count() > 0:
         socketio.emit('rejection', {'message':"email address already registered for this hunt"})
     else:
         # charge client through stripe
@@ -128,12 +127,12 @@ def checkout(data):
         # create account
         random.seed();
         random_number = random.randint(0,9999)
-        hunt_name = "Sample Hunt" #query db to get name of hunt with hunt_id #SELECT name FROM hunts WHERE id = hunt_id
-        #hunt_name = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt_id).first().name
+        #hunt_name = "Sample Hunt" #query db to get name of hunt with hunt_id #SELECT name FROM hunts WHERE id = hunt_id
+        hunt_name = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt_id).first().name
         hunt_name = hunt_name.replace(" ", "")
         access_code = hunt_name + "{:04d}".format(random_number)
         try:
-            participants = models.Participants(userdata['email'],userdata['team_name'], userdata['image'], access_code, 0, 0, userdata['hunts_id'])
+            participants = models.Participants(userdata['email'],userdata['team_name'], userdata['image'], access_code, 0, datetime.datetime.now(), userdata['hunts_id'])
             models.db.session.add(participants)  
             models.db.session.commit()
         except:
