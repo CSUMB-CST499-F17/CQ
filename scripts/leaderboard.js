@@ -42,12 +42,11 @@ export class Leaderboard extends React.Component {
 
 
     render() {
-        let userlist = '';
+        let userlist='';
         if (this.state.userlist != null) {
-            userlist = this.state.userlist.map((n, index) =>
-                <li key={index}>
-                    {n.name} : {n.picture}
-                </li>
+            userlist = this.state.userlist.map(
+                (n, index) =>
+                <tr key={index}><td></td><td>{n.name}</td><td>{n.picture}</td><td></td></tr>
              );
         }
 
@@ -59,15 +58,26 @@ export class Leaderboard extends React.Component {
                 <div id = 'header'>
                     <header>Leaderboard</header>
                 </div>
-                <div id='intro'>
+                    <div id='intro'>
                         <div id='leaderboard-form'>
-                              <input  id = "leaderboard-search1" className="form-control " placeholder="Search Hunts" size="5" />
-                              <button id = "leaderboard-search" className="btn">Search</button>
+                            <input  id = "leaderboard-search1" className="form-control " placeholder="Search Hunts" size="5" />
+                            <button id = "leaderboard-search" className="btn">Search</button>
                         </div>
-                    <div id='leaderboards'>
-                        <ul>{userlist}</ul>
+                        <div id='leaderboards'>
+                            <table id="leaderboard-table">
+                                <tr>
+                                    <td>Rank</td><td>Team</td><td>Score</td><td>Time</td>
+                                </tr>
+                            </table> 
+                            <div id="userList">
+                            <table id="leaderboard-table2">
+                                
+                                {userlist} 
+                                
+                            </table>
+                            </div>
+                        </div>
                     </div>
-                </div>
                 <div id='buttons'>
                     <form onSubmit = {this.handleSubmit}>
                         <Button onClick={() => this.changePage('home')}>Home</Button>

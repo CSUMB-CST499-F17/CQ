@@ -42,16 +42,15 @@ export class AdminLeaderboard extends React.Component {
     }
 
     render() {
-        let userlist = '';
+        let userlist='';
         if (this.state.userlist != null) {
-            userlist = this.state.userlist.map((n, index) =>
-                <li key={index}>
-                    {n.name}
-                    :
-                    {n.picture}
-                </li>
+            userlist = this.state.userlist.map(
+                (n, index) =>
+                <tr key={index}><td></td><td>{n.name}</td><td>{n.picture}</td><td></td></tr>
              );
         }
+        
+        
         return (
             <div>
                 <div id = 'nav-bar'>
@@ -67,8 +66,19 @@ export class AdminLeaderboard extends React.Component {
                     </div>
                 </div>
                 <div id='leaderboards'>
-                    <ul>{userlist}</ul>
-                </div>
+                            <table id="leaderboard-table">
+                                <tr>
+                                    <td>Rank</td><td>Team</td><td>Score</td><td>Time</td>
+                                </tr>
+                            </table> 
+                            <div id="userList">
+                            <table id="leaderboard-table2">
+                                
+                                {userlist} 
+                                
+                            </table>
+                            </div>
+                        </div>
             </div>
 
         );
