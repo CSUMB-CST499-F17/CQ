@@ -133,7 +133,7 @@ export class Play extends React.Component {
                                     </div>
                                 </FormControl.Static>
                                 <FormControl id = "answer" componentClass="textarea" value={this.state.value} onChange={this.handleChange}  placeholder="Answer" />
-                                <div id='result'style={{visibility:'hidden'}}>Incorrect<br/>sd</div>
+                                <div id='result'style={{visibility:'hidden'}}>Results Placeholder<br/>array</div>
                         </FormGroup> 
                     </Form>
                     <div id='buttons'>

@@ -16,31 +16,62 @@ export class ExistingTeam extends React.Component {
         super(props);
         this.state = {
             'teamName':'',
-            'accessCode':''
+            'accessCode':'',
+            'user':''
         };
         this.pageName = 'existingTeam';
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.validateCredentials = this.validateCredentials.bind(this);
     }
-
-    handleSubmit(event) {
-        event.preventDefault();
+    
+    validateCredentials(){
+        //checks if emais in valid email format before comparing to the emails in database
         function validateEmail(email) 
         {
             var re = /^[a-z][a-zA-Z0-9_.]*(\.[a-zA-Z][a-zA-Z0-9_.]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
             return re.test(email);
         }
-        var email = document.getElementById("emailbox").value;
+        var email = document.getElementById("email").value;
+        var access = document.getElementById("access").value;
         console.log(validateEmail(email));
-        if (validateEmail(email) === true)
+        var validate = validateEmail(email);
+        if (validate == true)
         {
-            Socket.emit('login', this.state);
+            document.getElementById("errorMessage").style.visibility = 'hidden';
+            var validation = false;
+            Socket.emit('validateCredentials',{'email':email,'access':access});
+            Socket.on('login', (data) => {
+                if(data['validation'] == false){
+                    validate = false;
+                }
+                else{
+                    if(data['user'] == 'participant'){
+                        this.props.changePage(this.pageName,'home');
+                    }
+                    else if(data['user'] == 'admin'){
+                        this.props.changePage(this.pageName,'adminHome');
+                    }
+                }
+
+            });
         }
-        else
+        if(validate == false && email == "")
         {
-            alert("Invalid email, message not sent!");
-            document.getElementById("emailbox").value = "";
+            document.getElementById("errorMessage").innerHTML = "Please Enter valid Email and Access Code";
+            document.getElementById("errorMessage").style.visibility = 'visible';
+            document.getElementById("errorMessage").style.color="red";
         }
-        
+        if(validate == false && email != "")
+        {
+            document.getElementById("errorMessage").innerHTML = "Invalid Email or Access Code";
+            document.getElementById("errorMessage").style.visibility = 'visible';
+            document.getElementById("errorMessage").style.color="red";
+            document.getElementById("access").value = "";
+        }
+    }
+    
+    handleSubmit(event) {
+        event.preventDefault();
     }
     render() {
         return (
@@ -56,23 +87,18 @@ export class ExistingTeam extends React.Component {
                     <Form id = "ET-form" >
                         <FormGroup>
                             <InputGroup>
-                                    <FormControl type="text" className="ET-field" placeholder="Enter email" />
-                                    <FormControl type="text" className="ET-field" placeholder="Enter access code" />
+                                    <FormControl type="email" id = "email" className="ET-field" placeholder="Enter email" />
+                                    <FormControl type="password" id = "access" className="ET-field" placeholder="Enter access code" />
+                                    <div id = "errorMessage" style={{visibility:'hidden'}}> Error Message Placeholder</div>
                             </InputGroup>
                         </FormGroup>
                     </Form>
                 </div>
                 <div id='buttons'>
-                    <Form>
-                        <FormGroup>
-                            <InputGroup>
-                                <ButtonToolbar>
-                                    <Button id= "ET-submit" onClick = {this.handleSubmit}>Enter!</Button>
-                                    <Button onClick={() => this.props.changePage(this.pageName,'home')}>Cancel</Button>
-                                </ButtonToolbar>
-                            </InputGroup>
-                        </FormGroup>
-                     </Form>
+                    <ButtonToolbar>
+                        <Button id= "ET-submit" onClick = {this.validateCredentials}>Enter!</Button>
+                        <Button onClick={() => this.props.changePage(this.pageName,'home')}>Cancel</Button>
+                    </ButtonToolbar>
                 </div>
             </div>
 

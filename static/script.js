@@ -50859,34 +50859,66 @@
 
 	        _this.state = {
 	            'teamName': '',
-	            'accessCode': ''
+	            'accessCode': '',
+	            'user': ''
 	        };
 	        _this.pageName = 'existingTeam';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.validateCredentials = _this.validateCredentials.bind(_this);
 	        return _this;
 	    }
 
 	    _createClass(ExistingTeam, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
+	        key: 'validateCredentials',
+	        value: function validateCredentials() {
+	            var _this2 = this;
+
+	            //checks if emais in valid email format before comparing to the emails in database
 	            function validateEmail(email) {
 	                var re = /^[a-z][a-zA-Z0-9_.]*(\.[a-zA-Z][a-zA-Z0-9_.]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
 	                return re.test(email);
 	            }
-	            var email = document.getElementById("emailbox").value;
+	            var email = document.getElementById("email").value;
+	            var access = document.getElementById("access").value;
 	            console.log(validateEmail(email));
-	            if (validateEmail(email) === true) {
-	                _Socket.Socket.emit('login', this.state);
-	            } else {
-	                alert("Invalid email, message not sent!");
-	                document.getElementById("emailbox").value = "";
+	            var validate = validateEmail(email);
+	            if (validate == true) {
+	                document.getElementById("errorMessage").style.visibility = 'hidden';
+	                var validation = false;
+	                _Socket.Socket.emit('validateCredentials', { 'email': email, 'access': access });
+	                _Socket.Socket.on('login', function (data) {
+	                    if (data['validation'] == false) {
+	                        validate = false;
+	                    } else {
+	                        if (data['user'] == 'participant') {
+	                            _this2.props.changePage(_this2.pageName, 'home');
+	                        } else if (data['user'] == 'admin') {
+	                            _this2.props.changePage(_this2.pageName, 'adminHome');
+	                        }
+	                    }
+	                });
 	            }
+	            if (validate == false && email == "") {
+	                document.getElementById("errorMessage").innerHTML = "Please Enter valid Email and Access Code";
+	                document.getElementById("errorMessage").style.visibility = 'visible';
+	                document.getElementById("errorMessage").style.color = "red";
+	            }
+	            if (validate == false && email != "") {
+	                document.getElementById("errorMessage").innerHTML = "Invalid Email or Access Code";
+	                document.getElementById("errorMessage").style.visibility = 'visible';
+	                document.getElementById("errorMessage").style.color = "red";
+	                document.getElementById("access").value = "";
+	            }
+	        }
+	    }, {
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
+	            var _this3 = this;
 
 	            return React.createElement(
 	                'div',
@@ -50919,8 +50951,13 @@
 	                            React.createElement(
 	                                _reactBootstrap.InputGroup,
 	                                null,
-	                                React.createElement(_reactBootstrap.FormControl, { type: 'text', className: 'ET-field', placeholder: 'Enter email' }),
-	                                React.createElement(_reactBootstrap.FormControl, { type: 'text', className: 'ET-field', placeholder: 'Enter access code' })
+	                                React.createElement(_reactBootstrap.FormControl, { type: 'email', id: 'email', className: 'ET-field', placeholder: 'Enter email' }),
+	                                React.createElement(_reactBootstrap.FormControl, { type: 'password', id: 'access', className: 'ET-field', placeholder: 'Enter access code' }),
+	                                React.createElement(
+	                                    'div',
+	                                    { id: 'errorMessage', style: { visibility: 'hidden' } },
+	                                    ' Error Message Placeholder'
+	                                )
 	                            )
 	                        )
 	                    )
@@ -50929,31 +50966,19 @@
 	                    'div',
 	                    { id: 'buttons' },
 	                    React.createElement(
-	                        _reactBootstrap.Form,
+	                        _reactBootstrap.ButtonToolbar,
 	                        null,
 	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            null,
-	                            React.createElement(
-	                                _reactBootstrap.InputGroup,
-	                                null,
-	                                React.createElement(
-	                                    _reactBootstrap.ButtonToolbar,
-	                                    null,
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { id: 'ET-submit', onClick: this.handleSubmit },
-	                                        'Enter!'
-	                                    ),
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { onClick: function onClick() {
-	                                                return _this2.props.changePage(_this2.pageName, 'home');
-	                                            } },
-	                                        'Cancel'
-	                                    )
-	                                )
-	                            )
+	                            _reactBootstrap.Button,
+	                            { id: 'ET-submit', onClick: this.validateCredentials },
+	                            'Enter!'
+	                        ),
+	                        React.createElement(
+	                            _reactBootstrap.Button,
+	                            { onClick: function onClick() {
+	                                    return _this3.props.changePage(_this3.pageName, 'home');
+	                                } },
+	                            'Cancel'
 	                        )
 	                    )
 	                )
@@ -51427,9 +51452,9 @@
 	                            React.createElement(
 	                                'div',
 	                                { id: 'result', style: { visibility: 'hidden' } },
-	                                'Incorrect',
+	                                'Results Placeholder',
 	                                React.createElement('br', null),
-	                                'sd'
+	                                'array'
 	                            )
 	                        )
 	                    ),
