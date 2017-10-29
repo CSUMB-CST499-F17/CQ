@@ -21888,6 +21888,8 @@
 
 	var React = _interopRequireWildcard(_react);
 
+	var _Socket = __webpack_require__(186);
+
 	var _home = __webpack_require__(185);
 
 	var _explore = __webpack_require__(240);
@@ -21928,13 +21930,47 @@
 	var Content = exports.Content = function (_React$Component) {
 	    _inherits(Content, _React$Component);
 
-	    function Content() {
+	    function Content(props) {
 	        _classCallCheck(this, Content);
 
-	        return _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
+
+	        _this.state = { //essentially session vars
+	            name: 'guest', //team name or admin user name
+	            loggedIn: 'no', //no,admin,superAdmin,team,teamLead
+	            lastPage: 'home' //last page loaded, set this dynamically
+	        };
+	        // this.start = this.start.bind(this);
+	        _this.handle = _this.handle.bind(_this);
+	        _this.changePage = _this.changePage.bind(_this);
+	        return _this;
 	    }
 
 	    _createClass(Content, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            _Socket.Socket.emit('home', this.state);
+	            // Socket.emit('home', this.state, Socket.callback=this.start);
+	        }
+	    }, {
+	        key: 'handle',
+	        value: function handle(callback) {
+	            console.log('returned!');
+	        }
+	        //changes the display of the pages when button is pressed
+
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(from, to) {
+	            this.state.lastPage = to;
+	            for (var n in this.state) {
+	                window.localStorage.setItem(n, this.state[n]);
+	            }
+	            _Socket.Socket.emit(to, this.state, _Socket.Socket.callback = this.handle);
+	            document.getElementById(from).style.display = "none";
+	            document.getElementById(to).style.display = "block";
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return React.createElement(
@@ -21942,68 +21978,68 @@
 	                null,
 	                React.createElement(
 	                    'div',
-	                    { id: 'home' },
-	                    React.createElement(_home.Home, null)
+	                    { id: 'home', style: { display: 'block' } },
+	                    React.createElement(_home.Home, { changePage: this.changePage })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'explore', style: { display: 'none' } },
-	                    React.createElement(_explore.Explore, null)
+	                    React.createElement(_explore.Explore, { changePage: this.changePage })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'leaderboard', style: { display: 'none' } },
-	                    React.createElement(_leaderboard.Leaderboard, null)
+	                    React.createElement(_leaderboard.Leaderboard, { changePage: this.changePage })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'existingTeam', style: { display: 'none' } },
-	                    React.createElement(_existingTeam.ExistingTeam, null)
+	                    React.createElement(_existingTeam.ExistingTeam, { changePage: this.changePage })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'register', style: { display: 'none' } },
-	                    React.createElement(_register.Register, null)
+	                    React.createElement(_register.Register, { changePage: this.changePage })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'play', style: { display: 'none' } },
-	                    React.createElement(_play.Play, null)
+	                    React.createElement(_play.Play, { changePage: this.changePage })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'adminHome', style: { display: 'none' } },
-	                    React.createElement(_adminHome.AdminHome, null)
+	                    React.createElement(_adminHome.AdminHome, { changePage: this.changePage })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'adminLeaderboard', style: { display: 'none' } },
-	                    React.createElement(_adminLeaderboard.AdminLeaderboard, null)
+	                    React.createElement(_adminLeaderboard.AdminLeaderboard, { changePage: this.changePage })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'adminHunts', style: { display: 'none' } },
-	                    React.createElement(_adminHunts.AdminHunts, null)
+	                    React.createElement(_adminHunts.AdminHunts, { changePage: this.changePage })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'adminCreateHunt', style: { display: 'none' } },
-	                    React.createElement(_adminCreateHunt.AdminCreateHunt, null)
+	                    React.createElement(_adminCreateHunt.AdminCreateHunt, { changePage: this.changePage })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'adminEditHunt', style: { display: 'none' } },
-	                    React.createElement(_adminEditHunt.AdminEditHunt, null)
+	                    React.createElement(_adminEditHunt.AdminEditHunt, { changePage: this.changePage })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'admins', style: { display: 'none' } },
-	                    React.createElement(_admins.Admins, null)
+	                    React.createElement(_admins.Admins, { changePage: this.changePage })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'adminCreate', style: { display: 'none' } },
-	                    React.createElement(_adminCreate.AdminCreate, null)
+	                    React.createElement(_adminCreate.AdminCreate, { changePage: this.changePage })
 	                )
 	            );
 	        }
@@ -22029,6 +22065,10 @@
 
 	var React = _interopRequireWildcard(_react);
 
+	var _reactBootstrap = __webpack_require__(241);
+
+	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
 	var _Socket = __webpack_require__(186);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -22047,29 +22087,35 @@
 
 	        var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
 
-	        _this.changePage = _this.changePage.bind(_this);
+	        _this.pageName = 'home';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
 	    }
 
 	    _createClass(Home, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _this2 = this;
+
+	            _Socket.Socket.on('updateHome', function (data) {
+	                try {
+	                    var savedPage = window.localStorage.getItem('lastPage');
+	                    console.log(savedPage);
+	                    if (savedPage != 'home') {
+	                        _this2.props.changePage(_this2.pageName, savedPage);
+	                    }
+	                } catch (e) {}
+	            });
+	        }
+	    }, {
 	        key: 'handleSubmit',
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
 	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('home').style.display = "none";
-	            _Socket.Socket.emit(page);
-	            document.getElementById(page).style.display = "block";
-	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
+	            var _this3 = this;
 
 	            return React.createElement(
 	                'div',
@@ -22093,28 +22139,28 @@
 	                        React.createElement(
 	                            'button',
 	                            { className: 'btn', onClick: function onClick() {
-	                                    return _this2.changePage('explore');
+	                                    return _this3.props.changePage(_this3.pageName, 'explore');
 	                                } },
 	                            'Let\'s Explore!'
 	                        ),
 	                        React.createElement(
 	                            'button',
 	                            { className: 'btn', onClick: function onClick() {
-	                                    return _this2.changePage('existingTeam');
+	                                    return _this3.props.changePage(_this3.pageName, 'existingTeam');
 	                                } },
 	                            'Log into Existing Team'
 	                        ),
 	                        React.createElement(
 	                            'button',
 	                            { className: 'btn', onClick: function onClick() {
-	                                    return _this2.changePage('adminHome');
+	                                    return _this3.props.changePage(_this3.pageName, 'adminHome');
 	                                } },
 	                            'Temp Button to Admin Homepage'
 	                        ),
 	                        React.createElement(
 	                            'button',
 	                            { className: 'btn', onClick: function onClick() {
-	                                    return _this2.changePage('play');
+	                                    return _this3.props.changePage(_this3.pageName, 'play');
 	                                } },
 	                            'Temp Button to Play Page'
 	                        )
@@ -30718,8 +30764,7 @@
 	            'end_time': [],
 	            'start_text': []
 	        };
-
-	        _this.changePage = _this.changePage.bind(_this);
+	        _this.pageName = 'explore';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
 	    }
@@ -30776,15 +30821,6 @@
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
 	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('explore').style.display = "none";
-	            _Socket.Socket.emit(page);
-	            document.getElementById(page).style.display = "block";
-	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
@@ -30821,21 +30857,21 @@
 	                        React.createElement(
 	                            _reactBootstrap.Button,
 	                            { onClick: function onClick() {
-	                                    return _this3.changePage('leaderboard');
+	                                    return _this3.props.changePage(_this3.pageName, 'leaderboard');
 	                                } },
 	                            'Leaderboard'
 	                        ),
 	                        React.createElement(
 	                            _reactBootstrap.Button,
 	                            { onClick: function onClick() {
-	                                    return _this3.changePage('register');
+	                                    return _this3.props.changePage(_this3.pageName, 'register');
 	                                } },
 	                            'Participate'
 	                        ),
 	                        React.createElement(
 	                            _reactBootstrap.Button,
 	                            { onClick: function onClick() {
-	                                    return _this3.changePage('home');
+	                                    return _this3.props.changePage(_this3.pageName, 'home');
 	                                } },
 	                            'Home'
 	                        )
@@ -50638,8 +50674,7 @@
 	        _this.state = {
 	            'userlist': []
 	        };
-
-	        _this.changePage = _this.changePage.bind(_this);
+	        _this.pageName = 'leaderboard';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
 	    }
@@ -50659,15 +50694,6 @@
 	        key: 'handleSubmit',
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
-	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('leaderboard').style.display = "none";
-	            _Socket.Socket.emit(page);
-	            document.getElementById(page).style.display = "block";
 	        }
 	    }, {
 	        key: 'render',
@@ -50777,7 +50803,7 @@
 	                        React.createElement(
 	                            _reactBootstrap.Button,
 	                            { onClick: function onClick() {
-	                                    return _this3.changePage('home');
+	                                    return _this3.props.changePage(_this3.pageName, 'home');
 	                                } },
 	                            'Home'
 	                        )
@@ -50835,8 +50861,7 @@
 	            'teamName': '',
 	            'accessCode': ''
 	        };
-
-	        _this.changePage = _this.changePage.bind(_this);
+	        _this.pageName = 'existingTeam';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
 	    }
@@ -50857,16 +50882,6 @@
 	                alert("Invalid email, message not sent!");
 	                document.getElementById("emailbox").value = "";
 	            }
-	        }
-
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('existingTeam').style.display = "none";
-	            _Socket.Socket.emit(page);
-	            document.getElementById(page).style.display = "block";
 	        }
 	    }, {
 	        key: 'render',
@@ -50933,7 +50948,7 @@
 	                                    React.createElement(
 	                                        _reactBootstrap.Button,
 	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('home');
+	                                                return _this2.props.changePage(_this2.pageName, 'home');
 	                                            } },
 	                                        'Cancel'
 	                                    )
@@ -50994,6 +51009,7 @@
 
 	        var _this = _possibleConstructorReturn(this, (Register.__proto__ || Object.getPrototypeOf(Register)).call(this, props));
 
+	        _this.pageName = 'register';
 	        _this.stripe = Stripe('pk_test_50M0ZvrdCP5uiJUU0yUCa6o8');
 	        _this.elements = _this.stripe.elements();
 	        _this.card = _this.elements.create('card', {
@@ -51020,7 +51036,6 @@
 	        };
 	        _this.hunts = [];
 
-	        _this.changePage = _this.changePage.bind(_this);
 	        _this.setOutcome = _this.setOutcome.bind(_this);
 	        _this.handleNameChange = _this.handleNameChange.bind(_this);
 	        _this.handleHuntChange = _this.handleHuntChange.bind(_this);
@@ -51121,14 +51136,6 @@
 	            }
 	        }
 	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            //changes the display of the pages when button is pressed
-	            document.getElementById('register').style.display = "none";
-	            _Socket.Socket.emit(page);
-	            document.getElementById(page).style.display = "block";
-	        }
-	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _this3 = this;
@@ -51221,7 +51228,7 @@
 	                React.createElement(
 	                    _reactBootstrap.Button,
 	                    { onClick: function onClick() {
-	                            return _this3.changePage('home');
+	                            return _this3.props.changePage(_this3.pageName, 'home');
 	                        } },
 	                    'Home'
 	                )
@@ -51277,6 +51284,7 @@
 
 	        var _this = _possibleConstructorReturn(this, (Play.__proto__ || Object.getPrototypeOf(Play)).call(this, props));
 
+	        _this.pageName = 'play';
 	        _this.state = {
 	            'prompt': '',
 	            'questions': '',
@@ -51290,11 +51298,9 @@
 	            'attempts': []
 
 	        };
-	        _this.changePage = _this.changePage.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        _this.handleChange = _this.handleChange.bind(_this);
 	        _this.showHint = _this.showHint.bind(_this);
-
 	        return _this;
 	    }
 
@@ -51322,15 +51328,6 @@
 	                    document.getElementById('answer').value = "";
 	                }
 	            }
-	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('play').style.display = "none";
-	            _Socket.Socket.emit(page);
-	            document.getElementById(page).style.display = "block";
 	        }
 	    }, {
 	        key: 'handleChange',
@@ -51460,7 +51457,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this3.changePage('home');
+	                                        return _this3.props.changePage(_this3.pageName, 'home');
 	                                    } },
 	                                'Home'
 	                            )

@@ -18,8 +18,7 @@ export class ExistingTeam extends React.Component {
             'teamName':'',
             'accessCode':''
         };
-
-        this.changePage = this.changePage.bind(this);
+        this.pageName = 'existingTeam';
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -42,13 +41,6 @@ export class ExistingTeam extends React.Component {
             document.getElementById("emailbox").value = "";
         }
         
-    }
-    
-    //changes the display of the pages when button is pressed
-    changePage(page){
-        document.getElementById('existingTeam').style.display = "none";
-        Socket.emit(page);
-        document.getElementById(page).style.display = "block";
     }
     render() {
         return (
@@ -76,7 +68,7 @@ export class ExistingTeam extends React.Component {
                             <InputGroup>
                                 <ButtonToolbar>
                                     <Button id= "ET-submit" onClick = {this.handleSubmit}>Enter!</Button>
-                                    <Button onClick={() => this.changePage('home')}>Cancel</Button>
+                                    <Button onClick={() => this.props.changePage(this.pageName,'home')}>Cancel</Button>
                                 </ButtonToolbar>
                             </InputGroup>
                         </FormGroup>
