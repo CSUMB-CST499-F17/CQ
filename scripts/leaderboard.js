@@ -16,8 +16,7 @@ export class Leaderboard extends React.Component {
         this.state = {
             'userlist': []
         };
-
-        this.changePage = this.changePage.bind(this);
+        this.pageName = 'leaderboard';
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -32,15 +31,6 @@ export class Leaderboard extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
     }
-    //changes the display of the pages when button is pressed
-    changePage(page){
-        document.getElementById('leaderboard').style.display = "none";
-        Socket.emit(page);
-        document.getElementById(page).style.display = "block";
-    }
-
-
-
     render() {
         let userlist = '';
         if (this.state.userlist != null) {
@@ -70,7 +60,7 @@ export class Leaderboard extends React.Component {
                 </div>
                 <div id='buttons'>
                     <form onSubmit = {this.handleSubmit}>
-                        <Button onClick={() => this.changePage('home')}>Home</Button>
+                        <Button onClick={() => this.props.changePage(this.pageName,'home')}>Home</Button>
                     </form>
                 </div>
             </div>

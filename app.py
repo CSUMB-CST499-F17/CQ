@@ -9,6 +9,8 @@ teams = []
 #REACT, FLASK, AND DB STUFF
 app = flask.Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
 socketio = flask_socketio.SocketIO(app)
 db = flask_sqlalchemy.SQLAlchemy(app)
 
@@ -18,7 +20,7 @@ def hello():
     return flask.render_template('index.html')
 
 @socketio.on('play')
-def getHunt():
+def getHunt(data):
     # huntsQuery = models.Hunts.query.all()
     # for i in range (0, len(huntsQuery)):
     #     questionsQuery = { 'message':huntsQuery[i].question,'name':huntsQuery[i].answer,'picture':huntsQuery[i].hint}
@@ -59,9 +61,17 @@ def dropDown():
         print("Error: Database does not exist")
 
 
-@socketio.on('ready')
-def run():
-    initData()
+@socketio.on('home')
+def updateHome(data):
+    loggedIn = data['loggedIn'].lower()
+    lastPage = data['lastPage']
+    superAdminPages = ['admins', 'adminCreate']
+    adminPages = ['adminHome', 'adminLeaderboard', 'adminHunts', 'adminCreateHunt', 'adminEditHunt'].extend(superAdminPages)
+    teamPages = ['play']
+    resetConditions = ('no' in loggedIn) or ((lastPage in adminPages) and ('admin' not in loggedIn)) or ((lastPage in teamPages) and ('team' not in loggedIn)) or ((lastPage in superAdminPages) and ('super' not in loggedIn))
+    if resetConditions:
+	    lastPage = 'home'
+    socketio.emit('updateHome', lastPage)
 
 @socketio.on('leaderboard')
 def updateLeaderboard():

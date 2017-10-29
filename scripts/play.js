@@ -20,6 +20,7 @@ import { LogoSmall } from './logo-small';
 export class Play extends React.Component {
     constructor(props) {
         super(props);
+        this.pageName = 'play';
         this.state = {
             'prompt': '',
             'questions': '',
@@ -33,11 +34,9 @@ export class Play extends React.Component {
             'attempts':[]
 
         };
-        this.changePage = this.changePage.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.showHint = this.showHint.bind(this);
-
     }
 
 
@@ -67,20 +66,11 @@ export class Play extends React.Component {
         }
 
     }
-    //changes the display of the pages when button is pressed
-    changePage(page){
-        document.getElementById('play').style.display = "none";
-        Socket.emit(page);
-        document.getElementById(page).style.display = "block";
-    }
-
-
     handleChange(event){
         this.setState({
             userAnswer : event.target.value
         });
     }
-
     showHint(event){
         this.state.x += 1
         var hint = document.getElementById('hint');
@@ -151,7 +141,7 @@ export class Play extends React.Component {
                             <Button id="next" style={{display:'none'}} >Next Question</Button>
                             <Button id="answer-submit" onClick={this.handleSubmit} >Submit</Button>
                             <Button id="hint-submit" onClick={this.showHint}>Hint</Button>
-                            <Button onClick={() => this.changePage('home')}>Home</Button>
+                            <Button onClick={() => this.props.changePage(this.pageName,'home')}>Home</Button>
                         </ButtonToolbar>
                     </div>
 

@@ -5,6 +5,7 @@ import { Socket } from './Socket';
 export class Register extends React.Component {
     constructor(props) {
         super(props);
+        this.pageName = 'register'
         this.stripe = Stripe('pk_test_50M0ZvrdCP5uiJUU0yUCa6o8');
         this.elements = this.stripe.elements();
         this.card = this.elements.create('card', {
@@ -31,7 +32,6 @@ export class Register extends React.Component {
         };
         this.hunts = [];
         
-        this.changePage = this.changePage.bind(this);
         this.setOutcome = this.setOutcome.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleHuntChange = this.handleHuntChange.bind(this);
@@ -93,7 +93,6 @@ export class Register extends React.Component {
             }
         });
     }
-    
     handleNameChange(event) {
         event.preventDefault();
         this.userdata.team_name = event.target.value;
@@ -115,12 +114,6 @@ export class Register extends React.Component {
         if (result.error) {
           outcomeElement.textContent = result.error.message;
         }
-    }
-    changePage(page){
-        //changes the display of the pages when button is pressed
-        document.getElementById('register').style.display = "none";
-        Socket.emit(page);
-        document.getElementById(page).style.display = "block";
     }
     render() {
         let hunts = this.hunts.map((n, index) => 
@@ -159,7 +152,7 @@ export class Register extends React.Component {
                 </form>
                 
                 
-                <Button onClick={() => this.changePage('home')}>Home</Button>
+                <Button onClick={() => this.props.changePage(this.pageName,'home')}>Home</Button>
             </div>
          
         );

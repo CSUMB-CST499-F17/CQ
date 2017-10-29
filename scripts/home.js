@@ -12,19 +12,22 @@ import { ButtonGroup } from 'react-bootstrap';
 export class Home extends React.Component {
     constructor(props) {
         super(props);
-
-        this.changePage = this.changePage.bind(this);
+        this.pageName = 'home';
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
+    componentDidMount(){
+        Socket.on('updateHome', (data) => {
+            try{
+                var savedPage = window.localStorage.getItem( 'lastPage' );
+                console.log(savedPage);
+                if (savedPage != 'home'){
+                    this.props.changePage(this.pageName,savedPage);
+                }
+            }catch(e){}
+        });
+    }
     handleSubmit(event) {
         event.preventDefault();
-    }
-    //changes the display of the pages when button is pressed
-    changePage(page){
-        document.getElementById('home').style.display = "none";
-        Socket.emit(page);
-        document.getElementById(page).style.display = "block";
     }
     render() {
 
@@ -38,10 +41,10 @@ export class Home extends React.Component {
                 </div>
                 <div id='buttons'>
                     <div className ="tool">
-                        <button className="btn" onClick={() => this.changePage('explore')}>Let's Explore!</button>
-                        <button className="btn" onClick={() => this.changePage('existingTeam')}>Log into Existing Team</button>
-                        <button className="btn" onClick={() => this.changePage('adminHome')}>Temp Button to Admin Homepage</button>
-                        <button className="btn" onClick={() => this.changePage('play')}>Temp Button to Play Page</button>
+                        <button className="btn" onClick={() => this.props.changePage(this.pageName,'explore')}>Let's Explore!</button>
+                        <button className="btn" onClick={() => this.props.changePage(this.pageName,'existingTeam')}>Log into Existing Team</button>
+                        <button className="btn" onClick={() => this.props.changePage(this.pageName,'adminHome')}>Temp Button to Admin Homepage</button>
+                        <button className="btn" onClick={() => this.props.changePage(this.pageName,'play')}>Temp Button to Play Page</button>
                     </div>
                 </div>
             </div>

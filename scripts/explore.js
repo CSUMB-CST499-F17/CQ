@@ -26,8 +26,7 @@ export class Explore extends React.Component {
             'end_time':[],
             'start_text':[]
         };
-        
-        this.changePage = this.changePage.bind(this);
+        this.pageName = 'explore';
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     
@@ -82,13 +81,6 @@ export class Explore extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
     }
-    //changes the display of the pages when button is pressed
-    changePage(page){
-        document.getElementById('explore').style.display = "none";
-        Socket.emit(page);
-        document.getElementById(page).style.display = "block";
-    }
-
     render() {
         return (
             <div>
@@ -104,9 +96,9 @@ export class Explore extends React.Component {
                 </div>
                 <div id='buttons'>
                     <ButtonToolbar>
-                        <Button onClick={() => this.changePage('leaderboard')}>Leaderboard</Button>
-                        <Button onClick={() => this.changePage('register')}>Participate</Button>
-                        <Button onClick={() => this.changePage('home')}>Home</Button>
+                        <Button onClick={() => this.props.changePage(this.pageName,'leaderboard')}>Leaderboard</Button>
+                        <Button onClick={() => this.props.changePage(this.pageName,'register')}>Participate</Button>
+                        <Button onClick={() => this.props.changePage(this.pageName,'home')}>Home</Button>
                     </ButtonToolbar>
                 </div>
                 <div id='buttons'>
