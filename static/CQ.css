@@ -51,6 +51,7 @@ body {
     color: white;
     font-size: 64px;
     font-weight:bold;
+    margin-top:10px;
     margin-bottom:10px;
     padding-right:100px;
     flex-direction: row;
@@ -141,7 +142,7 @@ body {
     position: static;
     display: flex;
     justify-content: center;
-    margin:10px;
+    margin-top:5px;
 }
 #leaderboard-form{
     justify-content: center;
@@ -157,12 +158,39 @@ body {
 
 }
 #leaderboards{
-    background: white;
     max-width: 30%;
     padding: 20px;
     justify-content: center;
     margin: auto;
 
+}
+#leaderboard-table, th, td {
+   border: 1px solid black;
+}
+#leaderboard-table{
+    width:100%;
+    justify-content: center;
+    margin: auto;
+    background-color:white;
+}
+#userList{
+    overflow: hidden;
+    max-height:400px;
+    max-width:100%;
+    width:100%;
+    background-color: red;
+}
+#userList:hover{
+overflow-y:scroll;
+}
+#leaderboard-table2{
+    width:100%;
+    justify-content: center;
+    background-color:white;
+}
+td{
+    width:25%;
+    padding:10px;
 }
 
  /* Add a black background color to the top navigation */
@@ -177,7 +205,7 @@ body {
     display: block;
     color: #f2f2f2;
     text-align: center;
-    padding: 14px 20px;
+    padding: 18px 20px;
     text-decoration: none;
     font-size: 17px;
 }

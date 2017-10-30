@@ -72,7 +72,19 @@ def updateHome(data):
     if resetConditions:
 	    lastPage = 'home'
     socketio.emit('updateHome', lastPage)
-
+    
+@socketio.on('validateCredentials')
+def validateCredentials(data):
+        try:
+            query = models.db.session.query(models.Participants).filter(models.Participants.email == data['email'], models.Participants.access_code == data['access']).first_or_404()
+            socketio.emit('login', {'validation': True, 'user':'participant'})
+        except:
+            try:
+                query = models.db.session.query(models.Admins).filter(models.Admins.email == data['email'], models.Participants.password == data['access']).first_or_404()
+                socketio.emit('login', {'validation': True, 'user':'admin'})
+            except:
+                socketio.emit('login', {'validation': False, 'user':''})
+        
 @socketio.on('leaderboard')
 def updateLeaderboard():
     global teams
@@ -108,7 +120,7 @@ def createHunt(data):
     models.db.session.add(questions)
     models.db.session.commit()
     x += 1
-    
+    # user = models.Participants("andramirez@csumb.edu", "Yo Mama", "image", "1234", "12", datetime.datetime.now().time(), "1")
 @socketio.on('checkout')
 def checkout(data):
     

@@ -2,12 +2,6 @@ import * as React from 'react';
 import * as ReactBootstrap from 'react-bootstrap';
 import { Socket } from './Socket';
 
-import { Button } from 'react-bootstrap';
-import { InputGroup } from 'react-bootstrap';
-import { FormControl } from 'react-bootstrap';
-import { FormGroup } from 'react-bootstrap';
-import { ButtonToolbar } from 'react-bootstrap';
-import { ButtonGroup } from 'react-bootstrap';
 
 export class Home extends React.Component {
     constructor(props) {

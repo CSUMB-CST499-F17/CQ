@@ -87,9 +87,8 @@ export class Explore extends React.Component {
                 <div id = 'logo-small'>
                     <LogoSmall/>
                 </div>
-              <span>Scavenger Hunt</span>
                 <div id ='header'>
-                    <header>EXPLORE THIS</header>
+                    <header>EXPLORE</header>
                 </div>
                 <div id='intro'>
                     <div id="info"></div>
