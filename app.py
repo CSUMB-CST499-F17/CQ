@@ -78,25 +78,24 @@ def updateHome(data):
 def validateCredentials(data):
         try:
             query = models.db.session.query(models.Participants).filter(models.Participants.email == data['email'], models.Participants.leader_code == data['access']).first_or_404()
-            user = {'user':'teamLead', 'status':query['progress'], 'name': query['team_name']}
-            return user
-            # socketio.emit('login', {'validation': True, 'user':'participant'})
+            return 'teamLead%' + query.team_name
         except:
-            try:
-                query = models.db.session.query(models.Participants).filter(models.Participants.email == data['email'], models.Participants.member_code == data['access']).first_or_404()
-                user = {'user':'team', 'status':query['progress'], 'name': query['team_name']}
-                return user
-                # socketio.emit('login', {'validation': True, 'user':'admin'})
-            except:
-                try:
-                    query = models.db.session.query(models.Admins).filter(models.Admins.email == data['email'], models.Participants.password == data['access']).first_or_404()
-                    user = {'user':'team', 'status': query['is_super'], 'name': query['username']}
-                    return user
-                    # socketio.emit('login', {'validation': True, 'user':'admin'})
-                except:
-                    user = {'user':'no'}
-                    return user
-                    # socketio.emit('login', {'validation': False, 'user':''})
+            pass
+        try:
+            query = models.db.session.query(models.Participants).filter(models.Participants.email == data['email'], models.Participants.member_code == data['access']).first_or_404()
+            return 'team%' + query.team_name
+        except:
+            print "Not Working"
+        try:
+            query = models.db.session.query(models.Admins).filter(models.Admins.email == data['email'], models.Admins.password == data['access'], models.Admins.is_super == True).first_or_404()
+            return 'superAdmin%' + query.username
+        except:
+            pass
+        try:
+            query = models.db.session.query(models.Admins).filter(models.Admins.email == data['email'], models.Admins.password == data['access'], models.Admins.is_super == False).first_or_404()
+            return 'admin%' + query.username
+        except:
+            return 'no%guest'
         
 @socketio.on('leaderboard')
 def updateLeaderboard():

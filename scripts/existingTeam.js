@@ -14,17 +14,13 @@ import { LogoSmall } from './logo-small';
 export class ExistingTeam extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            'teamName':'',
-            'accessCode':'',
-            'user':''
-        };
         this.pageName = 'existingTeam';
         this.handleSubmit = this.handleSubmit.bind(this);
         this.validateCredentials = this.validateCredentials.bind(this);
         this.errorMessage = this.errorMessage.bind(this);
         this.validateEmail = this.validateEmail.bind(this);
         this.email = "";
+        this.handle = this.handle.bind(this);
     }
     
     //checks if emais in valid email format before comparing to the emails in database
@@ -51,37 +47,29 @@ export class ExistingTeam extends React.Component {
     }
     
     handle(callback){
-           try{
-                switch(callback['user']) {
+        var res = callback.split('%');
+          try{
+                this.props.setProps(res[0], res[1]); //loggedIn, name
+                switch(res[0]) {
+                    case "teamLead":
+                    case "team":
+                        this.props.changePage(this.pageName,'play');
+                        
+                        break;
+                    case "superAdmin":
+                    case "admin":
+                        this.props.changePage(this.pageName,'adminHome');
+
+                        break;
                     case "no":
                         this.errorMessage(false);
-                        console.log("no");
+                        
                         break;
-                    case "teamLead":
-                        this.props.loggedIn = 'teamLead';
-                        this.props.name = callback['name'];
-                        console.log("LoggedIn = " + this.props.loggedIn);
-                        console.log("Name = " + this.props.name);
-                        console.log("teamLead");
-                        break;
-                    case "team":
-                        this.props.loggedIn = 'team';
-                        this.props.name = callback['name'];
-                        console.log("team");
-                        break;
-                    case "admin":
-                        console.log("admin");
-                        if(callback['status' == true]){ //if admin is a superAdmin
-                            this.props.loggedIn = 'superAdmin';
-                        }
-                        else{
-                            this.props.loggedIn = 'admin';
-                        }
-                        this.props.name = callback['name'];
-                        break;
+                    default:
+                            break;
                     } 
-           }
-           catch(err) {
+          }
+          catch(err) {
                 alert(err);
             } 
             

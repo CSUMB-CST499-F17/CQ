@@ -28,11 +28,18 @@ export class Content extends React.Component{
         // this.start = this.start.bind(this);
         this.handle = this.handle.bind(this);
         this.changePage = this.changePage.bind(this);
+        this.setProps = this.setProps.bind(this);
     }
     componentDidMount(){
         Socket.emit('home', this.state);
         // Socket.emit('home', this.state, Socket.callback=this.start);
         
+    }
+    setProps(loggedIn, name){
+        this.setState({
+            loggedIn: loggedIn,
+            name: name
+        })
     }
     handle(callback){
         console.log('returned!');
@@ -60,7 +67,7 @@ export class Content extends React.Component{
                     <Leaderboard changePage={this.changePage}/>
                 </div>
                 <div id = 'existingTeam' style={{display:'none'}}>
-                    <ExistingTeam changePage={this.changePage}/>
+                    <ExistingTeam changePage={this.changePage} setProps={this.setProps} loggedIn={this.state.loggedIn} name={this.state.name}/>
                 </div>
                 <div id = 'register' style={{display:'none'}}>
                     <Register changePage={this.changePage}/>

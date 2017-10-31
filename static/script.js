@@ -21943,6 +21943,7 @@
 	        // this.start = this.start.bind(this);
 	        _this.handle = _this.handle.bind(_this);
 	        _this.changePage = _this.changePage.bind(_this);
+	        _this.setProps = _this.setProps.bind(_this);
 	        return _this;
 	    }
 
@@ -21951,6 +21952,14 @@
 	        value: function componentDidMount() {
 	            _Socket.Socket.emit('home', this.state);
 	            // Socket.emit('home', this.state, Socket.callback=this.start);
+	        }
+	    }, {
+	        key: 'setProps',
+	        value: function setProps(loggedIn, name) {
+	            this.setState({
+	                loggedIn: loggedIn,
+	                name: name
+	            });
 	        }
 	    }, {
 	        key: 'handle',
@@ -21994,7 +22003,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'existingTeam', style: { display: 'none' } },
-	                    React.createElement(_existingTeam.ExistingTeam, { changePage: this.changePage })
+	                    React.createElement(_existingTeam.ExistingTeam, { changePage: this.changePage, setProps: this.setProps, loggedIn: this.state.loggedIn, name: this.state.name })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -50861,17 +50870,13 @@
 
 	        var _this = _possibleConstructorReturn(this, (ExistingTeam.__proto__ || Object.getPrototypeOf(ExistingTeam)).call(this, props));
 
-	        _this.state = {
-	            'teamName': '',
-	            'accessCode': '',
-	            'user': ''
-	        };
 	        _this.pageName = 'existingTeam';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        _this.validateCredentials = _this.validateCredentials.bind(_this);
 	        _this.errorMessage = _this.errorMessage.bind(_this);
 	        _this.validateEmail = _this.validateEmail.bind(_this);
 	        _this.email = "";
+	        _this.handle = _this.handle.bind(_this);
 	        return _this;
 	    }
 
@@ -50902,33 +50907,25 @@
 	    }, {
 	        key: 'handle',
 	        value: function handle(callback) {
+	            var res = callback.split('%');
 	            try {
-	                switch (callback['user']) {
+	                this.props.setProps(res[0], res[1]); //loggedIn, name
+	                switch (res[0]) {
+	                    case "teamLead":
+	                    case "team":
+	                        this.props.changePage(this.pageName, 'play');
+
+	                        break;
+	                    case "superAdmin":
+	                    case "admin":
+	                        this.props.changePage(this.pageName, 'adminHome');
+
+	                        break;
 	                    case "no":
 	                        this.errorMessage(false);
-	                        console.log("no");
+
 	                        break;
-	                    case "teamLead":
-	                        this.props.loggedIn = 'teamLead';
-	                        this.props.name = callback['name'];
-	                        console.log("LoggedIn = " + this.props.loggedIn);
-	                        console.log("Name = " + this.props.name);
-	                        console.log("teamLead");
-	                        break;
-	                    case "team":
-	                        this.props.loggedIn = 'team';
-	                        this.props.name = callback['name'];
-	                        console.log("team");
-	                        break;
-	                    case "admin":
-	                        console.log("admin");
-	                        if (callback['status' == true]) {
-	                            //if admin is a superAdmin
-	                            this.props.loggedIn = 'superAdmin';
-	                        } else {
-	                            this.props.loggedIn = 'admin';
-	                        }
-	                        this.props.name = callback['name'];
+	                    default:
 	                        break;
 	                }
 	            } catch (err) {
