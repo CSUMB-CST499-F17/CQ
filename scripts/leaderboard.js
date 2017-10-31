@@ -21,6 +21,7 @@ export class Leaderboard extends React.Component {
     }
 
     componentDidMount(){
+        //retrieves users from database who have completed the scavenger hunt
         Socket.on('users', (data) => {
             this.setState({
                 'userlist': data['userlist']

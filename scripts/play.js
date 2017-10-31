@@ -71,25 +71,28 @@ export class Play extends React.Component {
             userAnswer : event.target.value
         });
     }
+    //reveals the hint on hint button ciick
     showHint(event){
         this.state.x += 1
         var hint = document.getElementById('hint');
-        console.log(this.state.x)
-        if(this.state.x == 1 )
-        {
+        // console.log(this.state.x)
+        //condition when the button is clicked once
+        if(this.state.x == 1 ){
             hint.innerHTML = "Hint One: " + this.state.hint1;
+            //checks to see if there is a second hint, if not, the button disappears
             if((this.state.hint2 == "")){
-            document.getElementById('hint-submit').style.display = "none";
+                document.getElementById('hint-submit').style.display = "none";
             }
         }
-        if(this.state.x == 2 && this.state.hint2 != "")
-        {
+        //condition if the button is clicked twice and there is a second hint
+        if(this.state.x == 2 && this.state.hint2 != ""){
             hint.innerHTML = hint.innerHTML +' <br/>' + "Hint Two: "+ this.state.hint2;
             document.getElementById('hint-submit').style.display = "none";
         }
     }
 
     componentDidMount() {
+        //retireves the hunt question information
         Socket.on('hunt', (data) => {
             this.setState({
                 'prompt': data['questions'],
@@ -106,8 +109,8 @@ export class Play extends React.Component {
 
     render() {
         let prompt = this.state.prompt;
-        let hints = this.state.hints;
-        let questionNum = this.state.questionNum;
+        // let hints = this.state.hints;
+        // let questionNum = this.state.questionNum;
 
 
 

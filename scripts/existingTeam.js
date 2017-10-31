@@ -22,51 +22,84 @@ export class ExistingTeam extends React.Component {
         this.pageName = 'existingTeam';
         this.handleSubmit = this.handleSubmit.bind(this);
         this.validateCredentials = this.validateCredentials.bind(this);
+        this.errorMessage = this.errorMessage.bind(this);
+        this.validateEmail = this.validateEmail.bind(this);
+        this.email = "";
     }
     
-    validateCredentials(){
-        //checks if emais in valid email format before comparing to the emails in database
-        function validateEmail(email) 
-        {
-            var re = /^[a-z][a-zA-Z0-9_.]*(\.[a-zA-Z][a-zA-Z0-9_.]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
-            return re.test(email);
-        }
-        var email = document.getElementById("email").value;
-        var access = document.getElementById("access").value;
-        console.log(validateEmail(email));
-        var validate = validateEmail(email);
-        if (validate == true)
-        {
-            document.getElementById("errorMessage").style.visibility = 'hidden';
-            var validation = false;
-            Socket.emit('validateCredentials',{'email':email,'access':access});
-            Socket.on('login', (data) => {
-                if(data['validation'] == false){
-                    validate = false;
-                }
-                else{
-                    if(data['user'] == 'participant'){
-                        this.props.changePage(this.pageName,'home');
-                    }
-                    else if(data['user'] == 'admin'){
-                        this.props.changePage(this.pageName,'adminHome');
-                    }
-                }
+    //checks if emais in valid email format before comparing to the emails in database
+    validateEmail(email) 
+    {
+        var re = /^[a-z][a-zA-Z0-9_.]*(\.[a-zA-Z][a-zA-Z0-9_.]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
+        return re.test(email);
+    }
 
-            });
-        }
-        if(validate == false && email == "")
+    errorMessage(validate){
+        if(validate == false && this.email == "")
         {
             document.getElementById("errorMessage").innerHTML = "Please Enter valid Email and Access Code";
             document.getElementById("errorMessage").style.visibility = 'visible';
             document.getElementById("errorMessage").style.color="red";
         }
-        if(validate == false && email != "")
+        if(validate == false && this.email != ""){
+                document.getElementById("errorMessage").innerHTML = "Invalid Email or Access Code";
+                document.getElementById("errorMessage").style.visibility = 'visible';
+                document.getElementById("errorMessage").style.color="red";
+                document.getElementById("access").value = "";
+        }
+        
+    }
+    
+    handle(callback){
+           try{
+                switch(callback['user']) {
+                    case "no":
+                        this.errorMessage(false);
+                        console.log("no");
+                        break;
+                    case "teamLead":
+                        this.props.loggedIn = 'teamLead';
+                        this.props.name = callback['name'];
+                        console.log("LoggedIn = " + this.props.loggedIn);
+                        console.log("Name = " + this.props.name);
+                        console.log("teamLead");
+                        break;
+                    case "team":
+                        this.props.loggedIn = 'team';
+                        this.props.name = callback['name'];
+                        console.log("team");
+                        break;
+                    case "admin":
+                        console.log("admin");
+                        if(callback['status' == true]){ //if admin is a superAdmin
+                            this.props.loggedIn = 'superAdmin';
+                        }
+                        else{
+                            this.props.loggedIn = 'admin';
+                        }
+                        this.props.name = callback['name'];
+                        break;
+                    } 
+           }
+           catch(err) {
+                alert(err);
+            } 
+            
+    
+    }
+
+    validateCredentials(){
+        this.email = document.getElementById("email").value;
+        var access = document.getElementById("access").value;
+        console.log(this.validateEmail(this.email));
+        var validate = this.validateEmail(this.email);
+        if (validate == true)
         {
-            document.getElementById("errorMessage").innerHTML = "Invalid Email or Access Code";
-            document.getElementById("errorMessage").style.visibility = 'visible';
-            document.getElementById("errorMessage").style.color="red";
-            document.getElementById("access").value = "";
+            document.getElementById("errorMessage").style.visibility = 'hidden';
+            Socket.emit('validateCredentials',{'email':this.email,'access':access}, Socket.callback=this.handle);
+        }
+        else{
+            this.errorMessage(validate);
         }
     }
     

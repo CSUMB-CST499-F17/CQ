@@ -13,6 +13,9 @@ export class Home extends React.Component {
         Socket.on('updateHome', (data) => {
             try{
                 var savedPage = window.localStorage.getItem( 'lastPage' );
+                if(savedPage == 'null'){
+                    savedPage = 'home';
+                }
                 console.log(savedPage);
                 if (savedPage != 'home'){
                     this.props.changePage(this.pageName,savedPage);

@@ -72,18 +72,31 @@ def updateHome(data):
     if resetConditions:
 	    lastPage = 'home'
     socketio.emit('updateHome', lastPage)
+    return lastPage
     
 @socketio.on('validateCredentials')
 def validateCredentials(data):
         try:
-            query = models.db.session.query(models.Participants).filter(models.Participants.email == data['email'], models.Participants.access_code == data['access']).first_or_404()
-            socketio.emit('login', {'validation': True, 'user':'participant'})
+            query = models.db.session.query(models.Participants).filter(models.Participants.email == data['email'], models.Participants.leader_code == data['access']).first_or_404()
+            user = {'user':'teamLead', 'status':query['progress'], 'name': query['team_name']}
+            return user
+            # socketio.emit('login', {'validation': True, 'user':'participant'})
         except:
             try:
-                query = models.db.session.query(models.Admins).filter(models.Admins.email == data['email'], models.Participants.password == data['access']).first_or_404()
-                socketio.emit('login', {'validation': True, 'user':'admin'})
+                query = models.db.session.query(models.Participants).filter(models.Participants.email == data['email'], models.Participants.member_code == data['access']).first_or_404()
+                user = {'user':'team', 'status':query['progress'], 'name': query['team_name']}
+                return user
+                # socketio.emit('login', {'validation': True, 'user':'admin'})
             except:
-                socketio.emit('login', {'validation': False, 'user':''})
+                try:
+                    query = models.db.session.query(models.Admins).filter(models.Admins.email == data['email'], models.Participants.password == data['access']).first_or_404()
+                    user = {'user':'team', 'status': query['is_super'], 'name': query['username']}
+                    return user
+                    # socketio.emit('login', {'validation': True, 'user':'admin'})
+                except:
+                    user = {'user':'no'}
+                    return user
+                    # socketio.emit('login', {'validation': False, 'user':''})
         
 @socketio.on('leaderboard')
 def updateLeaderboard():
