@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Socket } from '../Socket';
+import { LogoSmall } from '../logo-small';
+
 
 export class NavBar extends React.Component {
     constructor(props) {
@@ -34,6 +36,9 @@ export class NavBar extends React.Component {
                     <a onClick={() => this.changePage('adminHunts')}>Hunts</a>
                     <a onClick={() => this.changePage('admins')}>Settings</a>
                     <a onClick={() => this.changePage('home')}>Logout</a>
+                    <div id = 'logo-small-nav'>
+                    <LogoSmall />
+                </div>
                 </div> 
             </div>
          
