@@ -28,7 +28,8 @@ export class Register extends React.Component {
             team_name: '',
             email: '',
             hunts_id: '1',
-            image: ''
+            image: '',
+            discount_code: ''
         };
         this.hunts = [];
         
@@ -124,6 +125,10 @@ export class Register extends React.Component {
         event.preventDefault();
         this.userdata.team_name = event.target.value;
     }
+    handleDiscountChange(event) {
+        event.preventDefault();
+        this.userdata.discount_code = event.target.value;
+    }
     handleEmailChange(event) {
         event.preventDefault();
         this.userdata.email = event.target.value;
@@ -155,7 +160,7 @@ export class Register extends React.Component {
                     <div className="group">
                       <label>
                         <span>Team</span>
-                        <input className="field" placeholder="MyTeamName" onChange={this.handleNameChange} />
+                        <input className="field" placeholder="My Team Name" onChange={this.handleNameChange} />
                       </label>
                       <label>
                         <span>Email</span>
@@ -164,6 +169,10 @@ export class Register extends React.Component {
                       <label>
                         <span>Card</span>
                         <div id="card-element" className="field" onChange={this.handleCardChange}></div>
+                      </label>
+                      <label>
+                        <span>Discount Code</span>
+                        <input className="field" placeholder="AAAA0000" onChange={this.handleDiscountChange}/>
                       </label>
                     </div>
                     <div className="group full">

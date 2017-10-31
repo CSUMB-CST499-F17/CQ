@@ -93,3 +93,15 @@ class Admins(db.Model):
     
     def __repr__(self): 
         return '<Question Data: %s %s %s %s>' % self.email % self.username % self.password % self.is_super
+        
+class Discounts(db.Model):
+    id = db.Column(db.Integer, primary_key=True) # key
+    code = db.Column(db.String(10))
+    percent = db.Column(db.Integer)
+    
+    def __init__(self, c, p):
+        self.code = c
+        self.percent = p
+    
+    def __repr__(self): 
+        return '<Discount Data: %s %s>' % self.code % self.percent

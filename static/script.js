@@ -51096,7 +51096,8 @@
 	            team_name: '',
 	            email: '',
 	            hunts_id: '1',
-	            image: ''
+	            image: '',
+	            discount_code: ''
 	        };
 	        _this.hunts = [];
 
@@ -51201,6 +51202,12 @@
 	            this.userdata.team_name = event.target.value;
 	        }
 	    }, {
+	        key: 'handleDiscountChange',
+	        value: function handleDiscountChange(event) {
+	            event.preventDefault();
+	            this.userdata.discount_code = event.target.value;
+	        }
+	    }, {
 	        key: 'handleEmailChange',
 	        value: function handleEmailChange(event) {
 	            event.preventDefault();
@@ -51266,7 +51273,7 @@
 	                                null,
 	                                'Team'
 	                            ),
-	                            React.createElement('input', { className: 'field', placeholder: 'MyTeamName', onChange: this.handleNameChange })
+	                            React.createElement('input', { className: 'field', placeholder: 'My Team Name', onChange: this.handleNameChange })
 	                        ),
 	                        React.createElement(
 	                            'label',
@@ -51287,6 +51294,16 @@
 	                                'Card'
 	                            ),
 	                            React.createElement('div', { id: 'card-element', className: 'field', onChange: this.handleCardChange })
+	                        ),
+	                        React.createElement(
+	                            'label',
+	                            null,
+	                            React.createElement(
+	                                'span',
+	                                null,
+	                                'Discount Code'
+	                            ),
+	                            React.createElement('input', { className: 'field', placeholder: 'AAAA0000', onChange: this.handleDiscountChange })
 	                        )
 	                    ),
 	                    React.createElement(

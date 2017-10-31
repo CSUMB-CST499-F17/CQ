@@ -134,6 +134,7 @@ def createHunt(data):
     models.db.session.commit()
     x += 1
     # user = models.Participants("andramirez@csumb.edu", "Yo Mama", "image", "1234", "12", datetime.datetime.now().time(), "1")
+
 @socketio.on('checkout')
 def checkout(data):
     
@@ -150,23 +151,6 @@ def checkout(data):
     elif models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name).count() > 0:
         socketio.emit('rejection', {'message':"team name already registered for this hunt"})
     else:
-        try:
-            charge = stripe.Charge.create(
-                amount=50,
-                currency="usd",
-                description="Coastal Quest Scavenger Hunt",
-                source=token,
-            )
-            pass
-        except stripe.error.CardError as e:
-            body = e.json_body
-            err  = body.get('error', {})
-            socketio.emit('rejection', {'message':err.get('code')})
-            return
-        except stripe.error.StripeError as e:
-            socketio.emit('rejection', {'message':'Stripe could not process the request'})
-            return
-       
         # create account
         random.seed();
         random_number = random.randint(0,9999)
@@ -178,13 +162,48 @@ def checkout(data):
         random_number = random.randint(0,9999)
         member_code = hunt_name + "{:04d}".format(random_number)
         
+        participants = None
         try:
-            #print("Error: code must be refactored")
-            participants = models.Participants(client_email,team_name, userdata['image'], leader_code, member_code, None,None, 0, 0, True, hunt_id)
+            participants = models.Participants(client_email, team_name, userdata['image'], leader_code, member_code, None,None, 0, 0, False, hunt_id)
             models.db.session.add(participants)  
             models.db.session.commit()
+            
+            participants = models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name)
         except:
-            print("Error: Database does not exist")
+            socketio.emit('rejection', {'message':'could not connect to database'})
+            return
+        
+        try:
+            price = 50
+            total_percent = 1
+            try:
+                discount_query = models.db.session.query(models.Discounts).filter(models.Discounts.code == userdata['discount_code'])
+                if discount_query.count() > 0:
+                    total_percent = discount_query.first().percent / 100.0
+            except:
+                print("Error: couldn't connect to discount table")
+                pass
+            price = price * total_percent
+            
+            charge = stripe.Charge.create(
+                amount=price,
+                currency="usd",
+                description="Coastal Quest Scavenger Hunt",
+                source=token,
+            )
+            
+            participants.has_paid = True
+            models.db.session.commit()
+
+            pass
+        except stripe.error.CardError as e:
+            body = e.json_body
+            err  = body.get('error', {})
+            socketio.emit('rejection', {'message':'account created, could not process payment; Access code: ' + leader_code + '; Error code: ' + err.get('code')})
+            return
+        except stripe.error.StripeError as e:
+            socketio.emit('rejection', {'message':'account created, could not process payment; Access code: ' + leader_code})
+            return
         
         # send email
         try:
@@ -192,11 +211,11 @@ def checkout(data):
             message = "Welcome to Coastal Quest Scavenger Hunts, {}! Your access code is {}. Have fun on your journey!".format(team_name,leader_code)
             email_client(client_email,subject,message)
         except:
-            # add something in here
+            print("Error: Could not send email")
             pass
         
         # emit access code back to JS app
-        socketio.emit('acceptance', {'access_code':leader_code})
+        socketio.emit('acceptance', {'access_code':leader_code, 'price':price})
     
 def email_client(client_email, subject, message):
     recp_message  = 'Subject: {}\n\n{}'.format(subject, message)
