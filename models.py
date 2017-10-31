@@ -28,7 +28,7 @@ class Hunts(db.Model):
         
 class Questions(db.Model):
     id = db.Column(db.Integer, primary_key=True) # key
-    question = db.Column(db.String(120))
+    question = db.Column(db.String(256))
     answer = db.Column(db.String(60))
     image = db.Column(db.String(512))
     hint_A = db.Column(db.String(120))
@@ -53,8 +53,8 @@ class Participants(db.Model):
     email = db.Column(db.String(512))
     team_name = db.Column(db.String(32))
     image = db.Column(db.String(512))
-    leader_code = db.Column(db.String(40))
-    member_code = db.Column(db.String(40))
+    leader_code = db.Column(db.String(64))
+    member_code = db.Column(db.String(64))
     start_time = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime)
     progress = db.Column(db.Integer)
@@ -96,12 +96,14 @@ class Admins(db.Model):
         
 class Discounts(db.Model):
     id = db.Column(db.Integer, primary_key=True) # key
-    code = db.Column(db.String(10))
+    code = db.Column(db.String(64))
     percent = db.Column(db.Integer)
+    uses = db.Column(db.Integer)
     
-    def __init__(self, c, p):
+    def __init__(self, c, p, u):
         self.code = c
         self.percent = p
+        self.uses = u
     
     def __repr__(self): 
-        return '<Discount Data: %s %s>' % self.code % self.percent
+        return '<Discount Data: %s %s %s>' % self.code % self.percent % self.uses
