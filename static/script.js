@@ -51093,7 +51093,8 @@
 	            team_name: '',
 	            email: '',
 	            hunts_id: '1',
-	            image: ''
+	            image: '',
+	            discount_code: ''
 	        };
 	        _this.hunts = [];
 
@@ -51103,6 +51104,7 @@
 	        _this.handleEmailChange = _this.handleEmailChange.bind(_this);
 	        _this.handleCardChange = _this.handleCardChange.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.handleFormReject = _this.handleFormReject.bind(_this);
 	        return _this;
 	    }
 
@@ -51125,15 +51127,13 @@
 	            });
 
 	            _Socket.Socket.on('acceptance', function (data) {
-	                var outcomeElement = document.getElementById('stripe-outcome');
+	                var outcomeElement = document.getElementById('form-outcome');
 	                outcomeElement.textContent = "Your access code: " + data['access_code'];
 	                outcomeElement.style.color = "#00FF00";
 	            });
 
 	            _Socket.Socket.on('rejection', function (data) {
-	                var outcomeElement = document.getElementById('stripe-outcome');
-	                outcomeElement.textContent = "Error: " + data['message'];
-	                outcomeElement.style.color = "#E4584C";
+	                _this2.handleFormReject(data['message']);
 	            });
 	        }
 	    }, {
@@ -51142,33 +51142,67 @@
 	            event.preventDefault();
 	            // Handle form submission
 	            var form = document.getElementById('payment-form');
-	            var outcomeElement = document.getElementById('stripe-outcome');
-	            // var errorElement = document.getElementById('stripe-error');
+	            var outcomeElement = document.getElementById('form-outcome');
 
-	            var ud = this.userdata;
-	            console.log(ud);
+	            var this_ = this;
 
-	            //add checker to make sure no duplicate names 
-	            //add email validity checker
+	            // check errors that regex can catch
+	            var re = /^.+$/;
+	            var OK = re.exec(this.userdata.team_name);
+	            if (!OK) {
+	                this.handleFormReject('no team name entered');
+	                return 0;
+	            }
+
+	            OK = re.exec(this.userdata.email);
+	            if (!OK) {
+	                this.handleFormReject('no email address entered');
+	                return 0;
+	            }
+
+	            OK = re.exec(this.userdata.hunts_id);
+	            if (!OK) {
+	                this.handleFormReject('no hunt selected');
+	                return 0;
+	            }
+
+	            re = /[^@]+@[^@]+\.[^@]+/;
+	            OK = re.exec(this.userdata.email);
+	            if (!OK) {
+	                this.handleFormReject('invalid email address');
+	                return 0;
+	            }
 
 	            this.token = this.stripe.createToken(this.card).then(function (result) {
 	                if (result.error) {
-	                    // Inform the user if there was an error
-	                    outcomeElement.textContent = result.error.message;
-	                    outcomeElement.style.color = "#E4584C";
+	                    this_.handleFormReject(result.error.message);
 	                    return 0;
 	                } else {
 	                    outcomeElement.textContent = "Success! Token generated: " + result.token.id;
 	                    outcomeElement.style.color = "#666EE8";
-	                    _Socket.Socket.emit('checkout', { 'token': result.token.id, 'userdata': ud });
+	                    _Socket.Socket.emit('checkout', { 'token': result.token.id, 'userdata': this_.userdata });
 	                }
 	            });
+	        }
+	    }, {
+	        key: 'handleFormReject',
+	        value: function handleFormReject(message) {
+	            var outcomeElement = document.getElementById('form-outcome');
+	            outcomeElement.textContent = "Error: " + message;
+	            outcomeElement.style.color = "#E4584C";
+	            outcomeElement.style.textAlign = "center";
 	        }
 	    }, {
 	        key: 'handleNameChange',
 	        value: function handleNameChange(event) {
 	            event.preventDefault();
 	            this.userdata.team_name = event.target.value;
+	        }
+	    }, {
+	        key: 'handleDiscountChange',
+	        value: function handleDiscountChange(event) {
+	            event.preventDefault();
+	            this.userdata.discount_code = event.target.value;
 	        }
 	    }, {
 	        key: 'handleEmailChange',
@@ -51191,7 +51225,7 @@
 	    }, {
 	        key: 'setOutcome',
 	        value: function setOutcome(result) {
-	            var outcomeElement = document.getElementById('stripe-outcome');
+	            var outcomeElement = document.getElementById('form-outcome');
 	            if (result.error) {
 	                outcomeElement.textContent = result.error.message;
 	            }
@@ -51236,7 +51270,7 @@
 	                                null,
 	                                'Team'
 	                            ),
-	                            React.createElement('input', { className: 'field', placeholder: 'MyTeamName', onChange: this.handleNameChange })
+	                            React.createElement('input', { className: 'field', placeholder: 'My Team Name', onChange: this.handleNameChange })
 	                        ),
 	                        React.createElement(
 	                            'label',
@@ -51257,6 +51291,16 @@
 	                                'Card'
 	                            ),
 	                            React.createElement('div', { id: 'card-element', className: 'field', onChange: this.handleCardChange })
+	                        ),
+	                        React.createElement(
+	                            'label',
+	                            null,
+	                            React.createElement(
+	                                'span',
+	                                null,
+	                                'Discount Code'
+	                            ),
+	                            React.createElement('input', { className: 'field', placeholder: 'AAAA0000', onChange: this.handleDiscountChange })
 	                        )
 	                    ),
 	                    React.createElement(
@@ -51283,7 +51327,7 @@
 	                        { type: 'submit' },
 	                        'Register and Pay'
 	                    ),
-	                    React.createElement('div', { id: 'stripe-outcome' }),
+	                    React.createElement('div', { id: 'form-outcome' }),
 	                    React.createElement('div', { className: 'clear' })
 	                ),
 	                React.createElement(

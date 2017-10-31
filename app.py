@@ -133,51 +133,88 @@ def createHunt(data):
     models.db.session.commit()
     x += 1
     # user = models.Participants("andramirez@csumb.edu", "Yo Mama", "image", "1234", "12", datetime.datetime.now().time(), "1")
+
 @socketio.on('checkout')
 def checkout(data):
     
     stripe.api_key = "sk_test_O6BW3ED77qHecdLRd832IdjW"
     token = data['token']
     userdata = data['userdata']
+    team_name = userdata['team_name']
     client_email = userdata['email']
     hunt_id = userdata['hunts_id']
     
-    # parse client_email to check if valid
-    # then query db to check if user has already done hunt
-    # if these checks are fine, go ahead and charge, create account, send email
-    if not re.match(r"[^@]+@[^@]+\.[^@]+", client_email):
-        socketio.emit('rejection', {'message':"invalid email address"})
-    elif models.db.session.query(models.Participants).filter(models.Participants.email == client_email, models.Participants.hunts_id == hunt_id).count() > 0:
+    # check errors that database can catch
+    if models.db.session.query(models.Participants).filter(models.Participants.email == client_email, models.Participants.hunts_id == hunt_id).count() > 0:
         socketio.emit('rejection', {'message':"email address already registered for this hunt"})
+    elif models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name).count() > 0:
+        socketio.emit('rejection', {'message':"team name already registered for this hunt"})
     else:
-        # charge client through stripe
-        charge = stripe.Charge.create(
-          amount=50,
-          currency="usd",
-          description="Coastal Quest Scavenger Hunt",
-          source=token,
-        )
-       
         # create account
         random.seed();
         random_number = random.randint(0,9999)
-        #hunt_name = "Sample Hunt" #query db to get name of hunt with hunt_id #SELECT name FROM hunts WHERE id = hunt_id
         hunt_name = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt_id).first().name
         hunt_name = hunt_name.replace(" ", "")
-        access_code = hunt_name + "{:04d}".format(random_number)
+        leader_code = hunt_name + "{:04d}".format(random_number)
+        
+        random.seed();
+        random_number = random.randint(0,9999)
+        member_code = hunt_name + "{:04d}".format(random_number)
+        
+        participants = None
         try:
-            participants = models.Participants(userdata['email'],userdata['team_name'], userdata['image'], access_code, 0, datetime.datetime.now(), userdata['hunts_id'])
+            participants = models.Participants(client_email, team_name, userdata['image'], leader_code, member_code, None,None, 0, 0, False, hunt_id)
             models.db.session.add(participants)  
             models.db.session.commit()
+            
+            participants = models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name)
         except:
-            print("Error: Database does not exist")
+            socketio.emit('rejection', {'message':'could not connect to database'})
+            return
+        
+        try:
+            price = 50
+            total_percent = 1
+            try:
+                discount_query = models.db.session.query(models.Discounts).filter(models.Discounts.code == userdata['discount_code'])
+                if discount_query.count() > 0:
+                    total_percent = discount_query.first().percent / 100.0
+            except:
+                print("Error: couldn't connect to discount table")
+                pass
+            price = price * total_percent
+            
+            charge = stripe.Charge.create(
+                amount=price,
+                currency="usd",
+                description="Coastal Quest Scavenger Hunt",
+                source=token,
+            )
+            
+            participants.has_paid = True
+            models.db.session.commit()
+
+            pass
+        except stripe.error.CardError as e:
+            body = e.json_body
+            err  = body.get('error', {})
+            socketio.emit('rejection', {'message':'account created, could not process payment; Access code: ' + leader_code + '; Error code: ' + err.get('code')})
+            return
+        except stripe.error.StripeError as e:
+            socketio.emit('rejection', {'message':'account created, could not process payment; Access code: ' + leader_code})
+            return
         
         # send email
-        subject = "Coastal Quest Activation Code"
-        message = "Welcome to Coastal Quest Scavenger Hunts, {}! Your access code is {}. Have fun on your journey!".format(userdata['team_name'],access_code)
-        email_client(client_email,subject,message)
+        try:
+            subject = "Coastal Quest Activation Code"
+            message = "Welcome to Coastal Quest Scavenger Hunts, {}! Your access code is {}. Have fun on your journey!".format(team_name,leader_code)
+            email_client(client_email,subject,message)
+        except:
+            print("Error: Could not send email")
+            pass
         
-        socketio.emit('acceptance', {'access_code':access_code})
+        # emit access code back to JS app
+        socketio.emit('acceptance', {'access_code':leader_code, 'price':price})
     
 def email_client(client_email, subject, message):
     recp_message  = 'Subject: {}\n\n{}'.format(subject, message)
