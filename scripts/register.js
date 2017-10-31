@@ -38,6 +38,7 @@ export class Register extends React.Component {
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handleCardChange = this.handleCardChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleFormReject = this.handleFormReject.bind(this);
     }
     
     componentDidMount() {
@@ -54,15 +55,13 @@ export class Register extends React.Component {
         });
         
         Socket.on('acceptance', (data) => {
-            var outcomeElement = document.getElementById('stripe-outcome');
+            var outcomeElement = document.getElementById('form-outcome');
             outcomeElement.textContent = "Your access code: " + data['access_code'];
             outcomeElement.style.color = "#00FF00";
         });
         
         Socket.on('rejection', (data) => {
-            var outcomeElement = document.getElementById('stripe-outcome');
-            outcomeElement.textContent = "Error: " + data['message'];
-            outcomeElement.style.color = "#E4584C";
+            this.handleFormReject(data['message']);
         });
     }
     
@@ -70,29 +69,57 @@ export class Register extends React.Component {
         event.preventDefault();
         // Handle form submission
         var form = document.getElementById('payment-form');
-        var outcomeElement = document.getElementById('stripe-outcome');
-        // var errorElement = document.getElementById('stripe-error');
+        var outcomeElement = document.getElementById('form-outcome');
         
-        var ud = this.userdata;
-        console.log(ud);
+        var this_ = this;
         
-        //add checker to make sure no duplicate names 
-        //add email validity checker
+        // check errors that regex can catch
+        var re = /^.+$/;
+        var OK = re.exec(this.userdata.team_name);
+        if(!OK) {
+            this.handleFormReject('no team name entered');
+            return 0;
+        }
+        
+        OK = re.exec(this.userdata.email);
+        if(!OK) {
+            this.handleFormReject('no email address entered');
+            return 0;
+        }
+        
+        OK = re.exec(this.userdata.hunts_id);
+        if(!OK) {
+            this.handleFormReject('no hunt selected');
+            return 0;
+        }
+        
+        re = /[^@]+@[^@]+\.[^@]+/;
+        OK = re.exec(this.userdata.email);
+        if(!OK) {
+            this.handleFormReject('invalid email address');
+            return 0;
+        }
         
         this.token = this.stripe.createToken(this.card).then(function(result) {
             if (result.error) {
-                // Inform the user if there was an error
-                outcomeElement.textContent = result.error.message;
-                outcomeElement.style.color = "#E4584C";
+                this_.handleFormReject(result.error.message);
                 return 0;
             } 
             else {
                 outcomeElement.textContent = "Success! Token generated: " + result.token.id;
                 outcomeElement.style.color = "#666EE8";
-                Socket.emit('checkout', {'token':result.token.id, 'userdata':ud});
+                Socket.emit('checkout', {'token':result.token.id, 'userdata':this_.userdata});
             }
         });
     }
+    
+    handleFormReject(message) {
+        var outcomeElement = document.getElementById('form-outcome');
+        outcomeElement.textContent = "Error: " + message;
+        outcomeElement.style.color = "#E4584C";
+        outcomeElement.style.textAlign = "center";
+    }
+    
     handleNameChange(event) {
         event.preventDefault();
         this.userdata.team_name = event.target.value;
@@ -110,7 +137,7 @@ export class Register extends React.Component {
         this.setOutcome(event);
     }
     setOutcome(result) {
-        var outcomeElement = document.getElementById('stripe-outcome');
+        var outcomeElement = document.getElementById('form-outcome');
         if (result.error) {
           outcomeElement.textContent = result.error.message;
         }
@@ -147,7 +174,7 @@ export class Register extends React.Component {
                         </select>
                     </div>
                     <button type="submit">Register and Pay</button>
-                    <div id="stripe-outcome"></div>
+                    <div id="form-outcome"></div>
                     <div className="clear"></div>
                 </form>
                 
