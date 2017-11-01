@@ -17,17 +17,9 @@ export class ExistingTeam extends React.Component {
         this.pageName = 'existingTeam';
         this.handleSubmit = this.handleSubmit.bind(this);
         this.validateCredentials = this.validateCredentials.bind(this);
-        this.errorMessage = this.errorMessage.bind(this);
         this.team = "";
         this.handle = this.handle.bind(this);
     }
-    
-    errorMessage(validate){
-        
-        
-        
-    }
-    
     handle(callback){
         var res = callback.split('%');
           try{
@@ -46,9 +38,9 @@ export class ExistingTeam extends React.Component {
 
                         break;
                     case "no":
-                        document.getElementById("errorMessage").innerHTML = "Invalid Team Name or Access Code";
+                        document.getElementById("errorMessage").innerHTML = "⚠ Invalid Team Name or Access Code ⚠";
                         document.getElementById("errorMessage").style.visibility = 'visible';
-                        document.getElementById("errorMessage").style.color="red";
+                        document.getElementById("errorMessage").style.color="#f2e537";
                         document.getElementById("access").value = "";
                         break;
                     default:
@@ -58,18 +50,15 @@ export class ExistingTeam extends React.Component {
           catch(err) {
                 alert(err);
             } 
-            
-    
     }
-
     validateCredentials(){
         this.team = document.getElementById("team_name").value;
         var access = document.getElementById("access").value;
         if(this.team == "")
         {
-            document.getElementById("errorMessage").innerHTML = "Please Enter valid Team Name and Access Code";
+            document.getElementById("errorMessage").innerHTML = "⚠ Please Enter valid Team Name and Access Code ⚠";
             document.getElementById("errorMessage").style.visibility = 'visible';
-            document.getElementById("errorMessage").style.color="red";
+            document.getElementById("errorMessage").style.color="#f2e537";
         }
         else
         {
@@ -84,41 +73,17 @@ export class ExistingTeam extends React.Component {
     render() {
         return (
             <div>
-                <div id = 'logo-small'>
-                    <LogoSmall/>
-                </div>
-                <div id='header'>
-                    <header>EXISTING TEAMS</header>
-                </div>
-                <div id='intro'>
-                    <img id = "pageImage" src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Full_Spectrum_Team_Waving.jpg/1024px-Full_Spectrum_Team_Waving.jpg' width='100%'></img><br/>
-                    <Form id = "ET-form" >
-                        <FormGroup>
-                            <InputGroup>
-                                    <FormControl type="text" id = "team_name" className="ET-field" placeholder="Enter Team Name" />
-                                    <FormControl type="password" id = "access" className="ET-field" placeholder="Enter access code" />
-                                    <div id = "errorMessage" style={{visibility:'hidden'}}> Error Message Placeholder</div>
-                            </InputGroup>
-                        </FormGroup>
-                    </Form>
-                </div>
-                <div id='buttons'>
-                    <ButtonToolbar>
-                        <Button id= "ET-submit" onClick = {this.validateCredentials}>Enter!</Button>
-                        <Button onClick={() => this.props.changePage('home')}>Cancel</Button>
-                    </ButtonToolbar>
+                <div id='login'>
+                    <input type="text" id = "team_name" placeholder="Team Name" />
+                    <input type="password" id = "access" placeholder="Access Code" />
+                    <div id = "errorMessage" style={{visibility:'hidden'}}> Error Message Placeholder</div>
+                    <div className='buttons'>
+                        <button className="btn" onClick={this.validateCredentials}>Enter!</button>
+                        <button className="btn" onClick={this.props.cancel}>Cancel</button>
+                    </div>
                 </div>
             </div>
 
         );
     }
 }
-
-
-//  <form onSubmit = {this.handleSubmit}>
-                    //     <InputGroup>
-                    //         <ButtonToolbar>
-                    //             <Button onClick={() => this.changePage('home')}>Home</Button>
-                    //         </ButtonToolbar>
-                    //     </InputGroup>
-                    // </form>

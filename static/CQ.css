@@ -14,13 +14,9 @@ body {
     flex-direction: column;
     height: 83.5%;
 }
-#buttons{
-    margin-top:10px;
+.buttons{
     margin: auto;
     text-align: center;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
     padding: 20px;
     max-width: 50%;
     color: white;
@@ -52,6 +48,16 @@ body {
     margin:auto;
     max-width: 100%;
     display:block;
+}
+#login input{
+    text-align: center;
+    display: inline-block;
+    color: black;
+    font-size: 16px;
+    margin: 4px 2px;
+}
+#errorMessage{
+    font-size: 16px;
 }
 
 /* Slideshow */
@@ -142,7 +148,7 @@ body {
     padding:20px 20px 0px 20px;
     width:100%;
 }
-.create-item, .ET-field{
+.create-item{
     margin:5px;
     justify-content: center;
     position:absolute;
@@ -175,12 +181,6 @@ body {
     margin:auto;
     width:70%;
     text-align:left;
-}
-#ET-form{
-    position: static;
-    display: flex;
-    justify-content: center;
-    margin-top:5px;
 }
 #leaderboard-form{
     justify-content: center;
@@ -389,7 +389,7 @@ td{
         max-width: 100%;
     }
     
-    #buttons{
+    .buttons{
         margin-top:10px;
         margin: auto;
         flex-direction: row;
