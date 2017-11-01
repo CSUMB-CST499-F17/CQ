@@ -78,7 +78,7 @@ export class Home extends React.Component {
                                 <button className="btn" onClick={this.login}>Log into Existing Team</button>
                             </div>
                             <div id = 'existingTeam' style={{display:'none'}}>
-                            	<ExistingTeam changePage={this.props.state.changePage} cancel={this.login} setProps={this.props.setProps} loggedIn={this.props.state.loggedIn} name={this.props.state.name}/>
+                            	<ExistingTeam changePage={this.props.changePage} cancel={this.login} setProps={this.props.setProps} loggedIn={this.props.state.loggedIn} name={this.props.state.name}/>
                             </div>
                             <button className="btn" onClick={() => this.props.changePage('adminHome')}>Temp Button to Admin Homepage</button>
                             <button className="btn" onClick={() => this.props.changePage('play')}>Temp Button to Play Page</button>

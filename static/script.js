@@ -21914,6 +21914,8 @@
 
 	var _adminCreate = __webpack_require__(645);
 
+	var _complete = __webpack_require__(647);
+
 	var _navBar = __webpack_require__(646);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -21988,29 +21990,6 @@
 	        value: function handle(callback) {
 	            console.log('returned!');
 	        }
-	        //changes the display of the pages when button is pressed
-	        // changePage(from,to){
-	        //     this.state.temp = this.state.lastPage;
-	        //     this.state.lastPage = to;
-	        //     for (var n in this.state){
-	        //         window.localStorage.setItem( n, this.state[n] );
-	        //     }
-	        //     Socket.emit(to, this.state, Socket.callback=this.handle);
-	        //     if(to.indexOf('admin') !== -1){
-	        //         document.getElementById(this.state.temp).style.display = "none";
-	        //         document.getElementById(to).style.display = "block";
-	        //         document.getElementById('nav-bar').style.display = "block";
-	        //         // Socket.emit('adminPage', this.state.temp);
-
-	        //     }
-	        //     if(to.indexOf('admin') == -1){
-	        //         document.getElementById(this.state.temp).style.display = "none";
-	        //         document.getElementById(to).style.display = "block";
-	        //         document.getElementById('nav-bar').style.display = "none";
-	        //     }
-	        // }
-
-
 	    }, {
 	        key: 'changePage',
 	        value: function changePage(to) {
@@ -22062,6 +22041,11 @@
 	                    'div',
 	                    { id: 'play', style: { display: 'none' } },
 	                    React.createElement(_play.Play, { changePage: this.changePage, loggedIn: this.state.loggedIn, hide: this.state.hide })
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'complete', style: { display: 'none' } },
+	                    React.createElement(_complete.Complete, { changePage: this.changePage, loggedIn: this.state.loggedIn, hide: this.state.hide })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -30799,7 +30783,7 @@
 	                            React.createElement(
 	                                'div',
 	                                { id: 'existingTeam', style: { display: 'none' } },
-	                                React.createElement(_existingTeam.ExistingTeam, { changePage: this.props.state.changePage, cancel: this.login, setProps: this.props.setProps, loggedIn: this.props.state.loggedIn, name: this.props.state.name })
+	                                React.createElement(_existingTeam.ExistingTeam, { changePage: this.props.changePage, cancel: this.login, setProps: this.props.setProps, loggedIn: this.props.state.loggedIn, name: this.props.state.name })
 	                            ),
 	                            React.createElement(
 	                                'button',
@@ -51462,9 +51446,14 @@
 	                if (this.state.playerQuestionOn + 2 == this.dataSize) {
 	                    document.getElementById('next').textContent = "Last Question";
 	                }
+	                if (this.state.playerQuestionOn + 1 == this.dataSize) {
+	                    document.getElementById('complete-button').style.display = "block";
+	                }
+	                if (this.state.playerQuestionOn < this.dataSize - 1) {
+	                    document.getElementById('next').style.display = "block";
+	                }
 	                document.getElementById('answer-submit').style.display = "none";
 	                document.getElementById('hint-submit').style.display = "none";
-	                document.getElementById('next').style.display = "block";
 	                document.getElementById('result').style.display = "block";
 	            } else {
 	                if (document.getElementById('answer').value != "") {
@@ -51645,6 +51634,13 @@
 	                                _reactBootstrap.Button,
 	                                { id: 'next', style: { display: 'none' }, onClick: this.nextQuestion },
 	                                'Next Question'
+	                            ),
+	                            React.createElement(
+	                                _reactBootstrap.Button,
+	                                { id: 'complete-button', style: { display: 'none' }, onClick: function onClick() {
+	                                        return _this3.props.changePage('complete');
+	                                    } },
+	                                'Finish'
 	                            ),
 	                            React.createElement(
 	                                _reactBootstrap.Button,
@@ -71860,6 +71856,102 @@
 	    }]);
 
 	    return NavBar;
+	}(React.Component);
+
+/***/ },
+/* 647 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.Complete = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _Socket = __webpack_require__(185);
+
+	var _reactBootstrap = __webpack_require__(240);
+
+	var _logoSmall = __webpack_require__(495);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Complete = exports.Complete = function (_React$Component) {
+	    _inherits(Complete, _React$Component);
+
+	    function Complete(props) {
+	        _classCallCheck(this, Complete);
+
+	        var _this = _possibleConstructorReturn(this, (Complete.__proto__ || Object.getPrototypeOf(Complete)).call(this, props));
+
+	        _this.state = {};
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Complete, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {}
+	    }, {
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'logo-small' },
+	                    React.createElement(_logoSmall.LogoSmall, null)
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        'Finished'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement(
+	                        'div',
+	                        { id: 'buttons' },
+	                        React.createElement(
+	                            _reactBootstrap.Button,
+	                            { onClick: function onClick() {
+	                                    return _this2.props.changePage('home');
+	                                } },
+	                            'Home'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Complete;
 	}(React.Component);
 
 /***/ }

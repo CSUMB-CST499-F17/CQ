@@ -56,9 +56,14 @@ export class Play extends React.Component {
             if(this.state.playerQuestionOn + 2 == this.dataSize){
                 document.getElementById('next').textContent = "Last Question";
             }
+            if(this.state.playerQuestionOn + 1 == this.dataSize){
+                document.getElementById('complete-button').style.display = "block";
+            }
+            if(this.state.playerQuestionOn < this.dataSize - 1){
+                document.getElementById('next').style.display = "block";
+            }
             document.getElementById('answer-submit').style.display = "none";
             document.getElementById('hint-submit').style.display = "none";
-            document.getElementById('next').style.display = "block";
             document.getElementById('result').style.display = "block";
         }
         else{
@@ -81,6 +86,7 @@ export class Play extends React.Component {
         }
 
     }
+    
     handleChange(event){
         this.setState({
             userAnswer : event.target.value
@@ -195,9 +201,10 @@ export class Play extends React.Component {
                     <div id='buttons'>
                         <ButtonToolbar>
                             <Button id="next" style={{display:'none'}} onClick={this.nextQuestion} >Next Question</Button>
+                            <Button id="complete-button" style={{display:'none'}} onClick={() => this.props.changePage('complete')}>Finish</Button>   
                             <Button id="answer-submit" style={{display:this.props.hide}} onClick={this.checkAnswer} >Submit</Button>
                             <Button id="hint-submit" style={{display:this.props.hide}} onClick={this.showHint}>Hint</Button>
-                            <Button onClick={() => this.props.changePage('home')}  >Home</Button>
+                            <Button onClick={() => this.props.changePage('home')}>Home</Button>
                         </ButtonToolbar>
                     </div>
 
