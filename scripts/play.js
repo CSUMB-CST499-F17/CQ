@@ -174,15 +174,15 @@ export class Play extends React.Component {
                                     <div id='hint'></div>
                                     </div>
                                 </FormControl.Static>
-                                <FormControl id = "answer"   componentClass="textarea" value={this.state.value} onChange={this.handleChange}  placeholder="Answer" />
+                                <FormControl id = "answer" style={{display:this.props.hide}} componentClass="textarea" value={this.state.value} onChange={this.handleChange}  placeholder="Answer" />
                                 <div id='result'style={{visibility:'hidden'}}>Results Placeholder<br/>array</div>
                         </FormGroup> 
                     </Form>
                     <div id='buttons'>
                         <ButtonToolbar>
                             <Button id="next" style={{display:'none'}} onClick={this.nextQuestion} >Next Question</Button>
-                            <Button id="answer-submit"  onClick={this.handleSubmit} >Submit</Button>
-                            <Button id="hint-submit"  onClick={this.showHint}>Hint</Button>
+                            <Button id="answer-submit" style={{display:this.props.hide}} onClick={this.handleSubmit} >Submit</Button>
+                            <Button id="hint-submit" style={{display:this.props.hide}} onClick={this.showHint}>Hint</Button>
                             <Button onClick={() => this.props.changePage('home')}  >Home</Button>
                         </ButtonToolbar>
                     </div>

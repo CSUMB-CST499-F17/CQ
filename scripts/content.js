@@ -25,11 +25,13 @@ export class Content extends React.Component{
             name: 'guest', //team name or admin user name
             loggedIn: 'no', //no,admin,superAdmin,team,teamLead
             lastPage: 'home', //last page loaded, set this dynamically
-            hide:'none', //determines whether or not buttons and inputs are visible
+            // hide:'none', //determines whether or not buttons and inputs are visible
+            hide:'block' //FOR TESTING ONLY. DELETE BEFORE BETA
         };
         this.handle = this.handle.bind(this);
         this.changePage = this.changePage.bind(this);
         this.setProps = this.setProps.bind(this);
+        this.logOutSetProps = this.logOutSetProps.bind(this);
     }
     componentDidMount(){
         Socket.emit('home', this.state);
@@ -41,16 +43,24 @@ export class Content extends React.Component{
             loggedIn: loggedIn,
             name: name
         });
-        if(this.state.loggedIn == 'teamLead' || this.state.loggedIn == 'superAdmin'){
-            this.setState({
-                hide:'block'
-            });
-        }
-        else{
-            this.setState({
-                hide:'none'
-            });
-        }
+        //UNHIDE BEFORE BETA
+        // if(this.state.loggedIn == 'teamLead' || this.state.loggedIn == 'superAdmin'){
+        //     this.setState({
+        //         hide:'block'
+        //     });
+        // }
+        // else{
+        //     this.setState({
+        //         hide:'none'
+        //     });
+        // }
+    }
+    logOutSetProps(loggedIn, name){
+        this.setState({
+            loggedIn: loggedIn,
+            name: name,
+            // hide:'none'  //UNHIDE BEFORE BETA
+        });
     }
     handle(callback){
         console.log('returned!');
@@ -102,7 +112,7 @@ export class Content extends React.Component{
                     <Play changePage={this.changePage} loggedIn={this.state.loggedIn} hide={this.state.hide}/>
                 </div>
                 <div id = 'nav-bar' style={{display:'none'}}>
-                    <NavBar changePage={this.changePage} hide={this.state.hide}/>
+                    <NavBar changePage={this.changePage} hide={this.state.hide} logOutSetProps={this.logOutSetProps}/>
                 </div>
                 <div id = 'adminHome' style={{display:'none'}}>
                     <AdminHome changePage={this.changePage}/>

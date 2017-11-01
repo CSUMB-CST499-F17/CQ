@@ -7,8 +7,8 @@ export class NavBar extends React.Component {
     constructor(props) {
     super(props);
 
-    this.changePage = this.changePage.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.logout
     }
 
     handleSubmit(event) {
@@ -18,17 +18,9 @@ export class NavBar extends React.Component {
         
     }
     
-    //changes the display of the pages when button is pressed
-    changePage(page){
-        //hides all pages then displays appropriate page to prevent multiple 
-                //pages from showing up
-        document.getElementById('adminHome').style.display = "none";
-        document.getElementById('adminLeaderboard').style.display = "none";
-        document.getElementById('adminHunts').style.display = "none";
-        document.getElementById('admins').style.display = "none";
-        document.getElementById('adminCreate').style.display = "none";
-        document.getElementById('adminCreateHunt').style.display = "none";
-        document.getElementById(page).style.display = "block";
+    logout(){
+        this.props.logOutSetProps('no', 'guest');
+        this.props.changePage('home');
     }
     
     render() {
@@ -39,7 +31,7 @@ export class NavBar extends React.Component {
                     <a onClick={() => this.props.changePage('adminLeaderboard')}>Leaderboard</a>
                     <a onClick={() => this.props.changePage('adminHunts')}>Hunts</a>
                     <a style={{display:this.props.hide}} onClick={() => this.props.changePage('admins')}>Settings</a>
-                    <a onClick={() => this.props.changePage('home')}>Logout</a>
+                    <a onClick={() => this.logout()}>Logout</a>
                     <div id = 'logo-small-nav'>
                     <LogoSmall />
                 </div>

@@ -21941,11 +21941,13 @@
 	            name: 'guest', //team name or admin user name
 	            loggedIn: 'no', //no,admin,superAdmin,team,teamLead
 	            lastPage: 'home', //last page loaded, set this dynamically
-	            hide: 'none' //determines whether or not buttons and inputs are visible
+	            // hide:'none', //determines whether or not buttons and inputs are visible
+	            hide: 'block' //FOR TESTING ONLY. DELETE BEFORE BETA
 	        };
 	        _this.handle = _this.handle.bind(_this);
 	        _this.changePage = _this.changePage.bind(_this);
 	        _this.setProps = _this.setProps.bind(_this);
+	        _this.logOutSetProps = _this.logOutSetProps.bind(_this);
 	        return _this;
 	    }
 
@@ -21962,15 +21964,26 @@
 	                loggedIn: loggedIn,
 	                name: name
 	            });
-	            if (this.state.loggedIn == 'teamLead' || this.state.loggedIn == 'superAdmin') {
-	                this.setState({
-	                    hide: 'block'
-	                });
-	            } else {
-	                this.setState({
-	                    hide: 'none'
-	                });
-	            }
+	            //UNHIDE BEFORE BETA
+	            // if(this.state.loggedIn == 'teamLead' || this.state.loggedIn == 'superAdmin'){
+	            //     this.setState({
+	            //         hide:'block'
+	            //     });
+	            // }
+	            // else{
+	            //     this.setState({
+	            //         hide:'none'
+	            //     });
+	            // }
+	        }
+	    }, {
+	        key: 'logOutSetProps',
+	        value: function logOutSetProps(loggedIn, name) {
+	            this.setState({
+	                loggedIn: loggedIn,
+	                name: name
+	                // hide:'none'  //UNHIDE BEFORE BETA
+	            });
 	        }
 	    }, {
 	        key: 'handle',
@@ -22036,7 +22049,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'nav-bar', style: { display: 'none' } },
-	                    React.createElement(_navBar.NavBar, { changePage: this.changePage, hide: this.state.hide })
+	                    React.createElement(_navBar.NavBar, { changePage: this.changePage, hide: this.state.hide, logOutSetProps: this.logOutSetProps })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -51623,7 +51636,7 @@
 	                                    React.createElement('div', { id: 'hint' })
 	                                )
 	                            ),
-	                            React.createElement(_reactBootstrap.FormControl, { id: 'answer', componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
+	                            React.createElement(_reactBootstrap.FormControl, { id: 'answer', style: { display: this.props.hide }, componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
 	                            React.createElement(
 	                                'div',
 	                                { id: 'result', style: { visibility: 'hidden' } },
@@ -51646,12 +51659,12 @@
 	                            ),
 	                            React.createElement(
 	                                _reactBootstrap.Button,
-	                                { id: 'answer-submit', onClick: this.handleSubmit },
+	                                { id: 'answer-submit', style: { display: this.props.hide }, onClick: this.handleSubmit },
 	                                'Submit'
 	                            ),
 	                            React.createElement(
 	                                _reactBootstrap.Button,
-	                                { id: 'hint-submit', onClick: this.showHint },
+	                                { id: 'hint-submit', style: { display: this.props.hide }, onClick: this.showHint },
 	                                'Hint'
 	                            ),
 	                            React.createElement(
@@ -71789,8 +71802,8 @@
 
 	        var _this = _possibleConstructorReturn(this, (NavBar.__proto__ || Object.getPrototypeOf(NavBar)).call(this, props));
 
-	        _this.changePage = _this.changePage.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.logout;
 	        return _this;
 	    }
 
@@ -71802,21 +71815,11 @@
 	    }, {
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {}
-
-	        //changes the display of the pages when button is pressed
-
 	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            //hides all pages then displays appropriate page to prevent multiple 
-	            //pages from showing up
-	            document.getElementById('adminHome').style.display = "none";
-	            document.getElementById('adminLeaderboard').style.display = "none";
-	            document.getElementById('adminHunts').style.display = "none";
-	            document.getElementById('admins').style.display = "none";
-	            document.getElementById('adminCreate').style.display = "none";
-	            document.getElementById('adminCreateHunt').style.display = "none";
-	            document.getElementById(page).style.display = "block";
+	        key: 'logout',
+	        value: function logout() {
+	            this.props.logOutSetProps('no', 'guest');
+	            this.props.changePage('home');
 	        }
 	    }, {
 	        key: 'render',
@@ -71860,7 +71863,7 @@
 	                    React.createElement(
 	                        'a',
 	                        { onClick: function onClick() {
-	                                return _this2.props.changePage('home');
+	                                return _this2.logout();
 	                            } },
 	                        'Logout'
 	                    ),
