@@ -1,9 +1,10 @@
 import flask, flask_socketio, flask_sqlalchemy, stripe, sqlalchemy
-import os, time, datetime, smtplib, re, random
+import os, time, datetime, smtplib, re, random, hashlib, uuid
 import models
 
 #GLOBAL VARS
 x = 1
+questionNum = 0
 teams = []
 
 #REACT, FLASK, AND DB STUFF
@@ -21,31 +22,18 @@ def hello():
 
 @socketio.on('play')
 def getHunt(data):
-    # huntsQuery = models.Hunts.query.all()
-    # for i in range (0, len(huntsQuery)):
-    #     questionsQuery = { 'message':huntsQuery[i].question,'name':huntsQuery[i].answer,'picture':huntsQuery[i].hint}
-    #     questions.append(questionsQuery)
-    
-    # question = {
-    #     'question': "Find California's first theatre.  On the front door, there is a poem.  Who is the poem about?",
-    #     'answer': "Miners",
-    #     'hint1': "You will find the theatre on the corner of Pacific and John Street.",
-    #     'hint2': "",
-    #     'questionNum': 1
-    # }
-    
-    question = "Find California's first theatre.  On the front door, there is a poem.  Who is the poem about?"
-    correctAnswer = "Miners"
-    hint1 = "You will find the theatre on the corner of Pacific and John Street."
-    hint2 = ""
-    questionNum = 1
-    socketio.emit('hunt', {
-        'questions': question,
-        'correctAnswer': correctAnswer,
-        'hint1': hint1,
-        'hint2': hint2,
-        'questionNum' : questionNum
-    })
+    global questionNum
+    questionsData = []
+
+    try:
+        questions = models.db.session.query(models.Questions)
+        for row in questions:
+            questionsData.append({'question':row.question, 'answer':row.answer,'hint1':row.hint_A,'hint2':row.hint_B,'hunts_id':row.hunts_id})
+    except:
+        print("Error: Database/table questions does not exist")
+        
+    socketio.emit('hunt', questionsData)
+    questionNum += questionNum
     print('Scavenger hunt data sent.')
     
 def dropDown():
@@ -77,26 +65,72 @@ def updateHome(data):
 @socketio.on('validateCredentials')
 def validateCredentials(data):
         try:
-            query = models.db.session.query(models.Participants).filter(models.Participants.email == data['email'], models.Participants.leader_code == data['access']).first_or_404()
+            
+            query = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'], models.Participants.leader_code == data['access']).first_or_404()
+            userData = []
+            userData.append({'email': query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress, 'score':query.score})
+            socketio.emit('user', userData)
             return 'teamLead%' + query.team_name
-        except:
-            pass
+        except Exception as e: 
+            print(e) 
         try:
-            query = models.db.session.query(models.Participants).filter(models.Participants.email == data['email'], models.Participants.member_code == data['access']).first_or_404()
+            query = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'], models.Participants.member_code == data['access']).first_or_404()
+            userData = []
+            userData.append({'email':query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress})
+            socketio.emit('user', userData)
             return 'team%' + query.team_name
-        except:
-            print "Not Working"
+        except Exception as e: 
+            print(e) 
         try:
-            query = models.db.session.query(models.Admins).filter(models.Admins.email == data['email'], models.Admins.password == data['access'], models.Admins.is_super == True).first_or_404()
+            query = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.password == data['access'], models.Admins.is_super == True).first_or_404()
             return 'superAdmin%' + query.username
-        except:
-            pass
+        except Exception as e: 
+            print(e) 
         try:
-            query = models.db.session.query(models.Admins).filter(models.Admins.email == data['email'], models.Admins.password == data['access'], models.Admins.is_super == False).first_or_404()
+            query = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.password == data['access'], models.Admins.is_super == False).first_or_404()
             return 'admin%' + query.username
         except:
             return 'no%guest'
+
+@socketio.on('progessUpdate')
+def updateProgress(data):
+    #update the progress and score of the user using data['user'][0]['team_name'] and data['user'][0]['hunt_id']
+    print "hi"
+    
+    print("validateCredentials")
+    # foreach obj where data['team_name'] = username
+    #   if check_password(obj.password, data['access']){
+    #     do stuff
+    #   }
+      
+    # try:
+    #     query = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'], models.Participants.leader_code == data['access']).first_or_404()
+    #     userData = []
+    #     userData.append({'email': query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress})
+    #     socketio.emit('user', userData)
+    #     return 'teamLead%' + query.team_name
+    # except:
+    #     pass
+    # try:
+    #     query = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'], models.Participants.member_code == data['access']).first_or_404()
+    #     userData = []
+    #     userData.append({'email':query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress})
+    #     socketio.emit('user', userData)
+    #     return 'team%' + query.team_name
+    # except:
+    #     pass
+    # try:
+    #     query = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.password == data['access'], models.Admins.is_super == True).first_or_404()
+    #     return 'superAdmin%' + query.username
+    # except:
+    #     pass
+    # try:
+    #     query = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.password == data['access'], models.Admins.is_super == False).first_or_404()
+    #     return 'admin%' + query.username
+    # except:
+    #     return 'no%guest'
         
+>>>>>>> 4ecb17f5de52c717d1148efa45420ff12caedbfa
 @socketio.on('leaderboard')
 def updateLeaderboard():
     global teams
@@ -163,7 +197,7 @@ def checkout(data):
         
         participants = None
         try:
-            participants = models.Participants(client_email, team_name, userdata['image'], leader_code, member_code, None,None, 0, 0, False, hunt_id)
+            participants = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None,None, 0, 0, False, hunt_id)
             models.db.session.add(participants)  
             models.db.session.commit()
             
@@ -225,6 +259,14 @@ def email_client(client_email, subject, message):
     server.login(email_address, email_pass)
     server.sendmail(email_address, client_email, recp_message)
     server.quit()
+    
+def hash_password(password):
+    salt = "You're too salty"
+    return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
+
+def check_password(hashed_password, user_password):
+    password, salt = hashed_password.split(':')
+    return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
 
 if __name__ == '__main__':
     socketio.run(

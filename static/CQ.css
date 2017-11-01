@@ -1,17 +1,88 @@
 @import url(https://fonts.googleapis.com/css?family=Merriweather+Sans);
 
-
 body {
+    overflow-x: none;
     font-family: Helvetica, sans-serif;
     background: #3E6F96;
     height: 100%;
 }
-#pageImage{
-	width:400;
-	max-width:100%;
-	height:auto;
-	margin:10px;
+#content{
+    display: flex;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    flex-direction: column;
+    height: 83.5%;
 }
+.buttons{
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+    max-width: 50%;
+    color: white;
+    font-size: 24pt;
+}
+.btn {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 5px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+/* Front Page */
+#front-header {
+    width: 100%;
+    background-color: white;
+    margin: auto;
+    text-align:center;
+}
+#intro{
+    text-align:center;
+    justify-content: center;
+    margin:auto;
+    max-width: 100%;
+    display:block;
+}
+#login input{
+    text-align: center;
+    display: inline-block;
+    color: black;
+    font-size: 16px;
+    margin: 4px 2px;
+}
+#errorMessage{
+    font-size: 16px;
+}
+
+/* Slideshow */
+#slideshow{
+    height:400px;
+    line-height: 400px;
+	margin: auto;
+	margin-top:20px;
+}
+.helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+#slideshow img{
+    max-width:100%;
+    max-height:100%;
+    display: inline-block;
+    vertical-align: middle;
+    border:solid;
+    border-width: 7;
+    border-color: #f2e537;
+}
+
+/* Logos */ 
 #logo-big{
     width:700px;
 }
@@ -27,26 +98,6 @@ body {
     float:right;
     margin-right:2%;
 }
-#content{
-    display: flex;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 100%;
-    flex-direction: column;
-    height: 83.5%;
-}
-
-#buttons{
-    margin-top:10px;
-    margin: auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    padding: 20px;
-    max-width: 50%;
-    color: white;
-    font-size: 24pt;
-}
 #header {
     color: white;
     font-size: 64px;
@@ -57,13 +108,6 @@ body {
     flex-direction: row;
     text-align:center;
     justify-content: center;
-}
-#intro{
-    text-align:center;
-    justify-content: center;
-    margin:auto;
-    max-width: 100%;
-    display:block;
 }
 #introhunts{
     text-align:center;
@@ -104,7 +148,7 @@ body {
     padding:20px 20px 0px 20px;
     width:100%;
 }
-.create-item, .ET-field{
+.create-item{
     margin:5px;
     justify-content: center;
     position:absolute;
@@ -137,12 +181,6 @@ body {
     margin:auto;
     width:70%;
     text-align:left;
-}
-#ET-form{
-    position: static;
-    display: flex;
-    justify-content: center;
-    margin-top:5px;
 }
 #leaderboard-form{
     justify-content: center;
@@ -224,6 +262,8 @@ td{
 .clear {
     clear: both;
 }
+
+
 
 /*STRIPE CSS, can be altered*/
 #stripe-form {
@@ -321,19 +361,16 @@ td{
 
   font-size: 13px;
 }
-.btn{
-    margin:3px;
-    color:black;
-    background-color: #E6E6E6
-}
-
 
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
     #header {
         font-size: 2.5em;
         margin: 10px;
     }
-    
+    #slideshow{
+        height:300px;
+        line-height: 300px;
+    }
     #logo-big{
         width:90%;
         height:20%;
@@ -352,7 +389,7 @@ td{
         max-width: 100%;
     }
     
-    #buttons{
+    .buttons{
         margin-top:10px;
         margin: auto;
         flex-direction: row;
@@ -361,7 +398,6 @@ td{
         max-width: 60%;
         color: white;
         font-size: 24pt;
-        color:red;
     }
     #logo-small-nav{
         width:40px;
@@ -395,10 +431,5 @@ td{
     /* Hide the link that should open and close the topnav on small screens */
     #topnav .icon {
         display: none;
-    }
-    #pageImage
-    {
-        max-width: 90%;
-        max-height: 90%;
     }
 }

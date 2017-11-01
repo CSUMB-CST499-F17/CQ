@@ -6,8 +6,6 @@ import { InputGroup } from 'react-bootstrap';
 import { FormGroup } from 'react-bootstrap';
 import { ButtonToolbar } from 'react-bootstrap';
 
-import { NavBar } from './nav-bar';
-
 import moment from 'moment';
 
 import DayPickerInput from 'react-day-picker/DayPickerInput';
@@ -34,8 +32,7 @@ export class AdminCreateHunt extends React.Component {
             'hint2':[],
             'image':[]
         };
-
-        this.changePage = this.changePage.bind(this);
+        
         this.addQuestion = this.addQuestion.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -76,11 +73,6 @@ export class AdminCreateHunt extends React.Component {
             'image':this.state.image
     	});
     	this.changePage('adminHome')
-    }
-    //changes the display of the pages when button is pressed
-    changePage(page){
-        document.getElementById('adminCreateHunt').style.display = "none";
-        document.getElementById(page).style.display = "block";
     }
     
     addQuestion(){
@@ -164,9 +156,6 @@ export class AdminCreateHunt extends React.Component {
     render() {
         return (
             <div >
-                <div id = 'nav-bar'>
-                    <NavBar/>
-                </div>
                 <div id = 'header'>
                     <header>Create Hunt</header>
                 </div>
