@@ -196,16 +196,15 @@ def checkout(data):
         member_code = hunt_name + "{:04d}".format(random_number)
         
         participants = None
-        #try:
-        salt = uuid.uuid4().hex + uuid.uuid4().hex
-        participants = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code, salt), hash_password(member_code, salt), None, None, 0, 0, 0, False, hunt_id)
-        models.db.session.add(participants)  
-        models.db.session.commit()
-        
-        participants = models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name)
-        #except:
-        #    socketio.emit('rejection', {'message':'could not connect to database'})
-        #    return
+        try:
+            participants = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None, None, 0, 0, 0, False, hunt_id)
+            models.db.session.add(participants)  
+            models.db.session.commit()
+            
+            participants = models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name)
+        except:
+            socketio.emit('rejection', {'message':'could not connect to database'})
+            return
         
         try:
             price = 50
@@ -261,7 +260,8 @@ def email_client(client_email, subject, message):
     server.sendmail(email_address, client_email, recp_message)
     server.quit()
     
-def hash_password(password, salt):
+def hash_password(password):
+    salt = uuid.uuid4().hex + uuid.uuid4().hex
     return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
 
 def check_password(hashed_password, user_password):
