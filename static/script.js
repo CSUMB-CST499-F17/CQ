@@ -51449,6 +51449,7 @@
 	            'user': []
 
 	        };
+	        _this.score = 0;
 	        _this.handleChange = _this.handleChange.bind(_this);
 	        _this.showHint = _this.showHint.bind(_this);
 	        _this.nextQuestion = _this.nextQuestion.bind(_this);
@@ -51518,15 +51519,17 @@
 	                _this2.setState({
 	                    'questionsData': data
 	                });
-	                console.log(data);
 	            });
 	            //retireves the hunt question information
 	            _Socket.Socket.on('user', function (data) {
 	                _this2.setState({
-	                    'user': data[0]
-	                    // 'playerQuestionOn': data[0]['progress'] - 1
+	                    'user': data[0],
+	                    'playerQuestionOn': data[0]['progress'] - 1
 	                });
+	                // this.score = data[0]['score'];
 	                console.log(data[0]['email']);
+	                console.log(data[0]['score']);
+	                console.log(1);
 	            });
 	        }
 	    }, {
@@ -51541,7 +51544,7 @@
 	            document.getElementById('answer').value = "";
 
 	            this.state.playerQuestionOn++;
-	            // Socket.emit('progessUpdate', {'user': this.state.user, 'progress':this.state.playerQuestionOn});
+	            _Socket.Socket.emit('progessUpdate', { 'user': this.state.user, 'progress': this.state.playerQuestionOn, 'score': this.score });
 
 	            var data = this.state.questionsData;
 	            for (var i = 0; i < data.length; i++) {
@@ -51555,8 +51558,6 @@
 	                    this.state.hint2 = obj.hint2;
 	                }
 	            }
-	            // this.state.hintCount = 0;
-
 	        }
 	    }, {
 	        key: 'render',

@@ -32,6 +32,8 @@ def getHunt(data):
     except:
         print("Error: Database/table questions does not exist")
     
+    num = questionsData[0]['score']
+    print num
     socketio.emit('hunt', questionsData)
     questionNum += questionNum
     print('Scavenger hunt data sent.')
@@ -67,7 +69,7 @@ def validateCredentials(data):
         try:
             query = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'], models.Participants.leader_code == data['access']).first_or_404()
             userData = []
-            userData.append({'email': query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress})
+            userData.append({'email': query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress, 'score':query.score})
             socketio.emit('user', userData)
             return 'teamLead%' + query.team_name
         except:

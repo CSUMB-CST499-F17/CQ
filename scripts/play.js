@@ -36,6 +36,7 @@ export class Play extends React.Component {
             'user':[]
 
         };
+        this.score = 0;
         this.handleChange = this.handleChange.bind(this);
         this.showHint = this.showHint.bind(this);
         this.nextQuestion = this.nextQuestion.bind(this);
@@ -98,15 +99,17 @@ export class Play extends React.Component {
             this.setState({
                 'questionsData': data
             });
-            console.log(data);
         });
         //retireves the hunt question information
         Socket.on('user', (data) => {
             this.setState({
                 'user': data[0],
-                // 'playerQuestionOn': data[0]['progress'] - 1
+                'playerQuestionOn': data[0]['progress'] - 1
             });
+            // this.score = data[0]['score'];
             console.log(data[0]['email']);
+            console.log(data[0]['score']);
+            console.log(1);
         });
     }
     
@@ -120,7 +123,7 @@ export class Play extends React.Component {
         document.getElementById('answer').value = "";
         
         this.state.playerQuestionOn++;
-        // Socket.emit('progessUpdate', {'user': this.state.user, 'progress':this.state.playerQuestionOn});
+        Socket.emit('progessUpdate', {'user': this.state.user, 'progress':this.state.playerQuestionOn, 'score':this.score});
 
         var data = this.state.questionsData;
         for(var i = 0; i < data.length; i++) {
@@ -134,9 +137,6 @@ export class Play extends React.Component {
                 this.state.hint2 = obj.hint2;
             }
         }
-        // this.state.hintCount = 0;
-        
-        
     }
 
 
