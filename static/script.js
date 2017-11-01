@@ -51122,6 +51122,7 @@
 	        _this.handleHuntChange = _this.handleHuntChange.bind(_this);
 	        _this.handleEmailChange = _this.handleEmailChange.bind(_this);
 	        _this.handleCardChange = _this.handleCardChange.bind(_this);
+	        _this.handleDiscountChange = _this.handleDiscountChange.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        _this.handleFormReject = _this.handleFormReject.bind(_this);
 	        return _this;
@@ -51221,6 +51222,7 @@
 	        key: 'handleDiscountChange',
 	        value: function handleDiscountChange(event) {
 	            event.preventDefault();
+	            console.log(event.target.value);
 	            this.userdata.discount_code = event.target.value;
 	        }
 	    }, {

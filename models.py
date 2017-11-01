@@ -24,7 +24,7 @@ class Hunts(db.Model):
         self.start_desc = st
     
     def __repr__(self): 
-        return '<Hunt Data: %s %s %s %s %s %s %s>' % self.name % self.type % self.desc % self.image % self.start_time % self.end_time % self.start_desc
+        return '<Hunt Data: {} {} {} {} {} {} {}>'.format(self.name, self.type, self.desc, self.image, self.start_time, self.end_time, self.start_desc)
         
 class Questions(db.Model):
     id = db.Column(db.Integer, primary_key=True) # key
@@ -46,7 +46,7 @@ class Questions(db.Model):
         self.hunts_id = hid
     
     def __repr__(self): 
-        return '<Question Data: %s %s %s %s %s %s %s>' % self.question % self.answer % self.image % self.hint_A % self.hint_B % self.answer_text % self.hunts_id
+        return '<Question Data: {} {} {} {} {} {} {}>'.format(self.question, self.answer, self.image, self.hint_A, self.hint_B, self.answer_text, self.hunts_id)
         
 class Participants(db.Model):
     id = db.Column(db.Integer, primary_key=True) # key
@@ -78,7 +78,7 @@ class Participants(db.Model):
         self.hunts_id = hid
     
     def __repr__(self): 
-        return '<Question Data: %s %s %s %s %s %s %s %s %s %s %s %s>' % self.email % self.team_name % self.image % self.leader_code % self.member_code % self.start_time % self.end_time % self.progress % self.attempts % self.score % self.has_paid % self.hunts_id
+        return '<Question Data: {} {} {} {} {} {} {} {} {} {} {} {}>'.format(self.email, self.team_name, self.image, self.leader_code, self.member_code, self.start_time, self.end_time, self.progress, self.attempts, self.score, self.has_paid, self.hunts_id)
         
 class Admins(db.Model):
     id = db.Column(db.Integer, primary_key=True) # key
@@ -94,7 +94,7 @@ class Admins(db.Model):
         self.is_super = iss
     
     def __repr__(self): 
-        return '<Question Data: %s %s %s %s>' % self.email % self.username % self.password  % self.is_super
+        return '<Question Data: {} {} {} {}>'.format(self.email, self.username, self.password , self.is_super)
         
 class Discounts(db.Model):
     id = db.Column(db.Integer, primary_key=True) # key
@@ -108,4 +108,4 @@ class Discounts(db.Model):
         self.uses = u
     
     def __repr__(self): 
-        return '<Discount Data: %s %s %s>' % self.code % self.percent % self.uses
+        return '<Discount Data: {} {} {}>'.format(self.code, self.percent, self.uses)

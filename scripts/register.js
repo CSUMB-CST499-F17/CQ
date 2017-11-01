@@ -38,6 +38,7 @@ export class Register extends React.Component {
         this.handleHuntChange = this.handleHuntChange.bind(this);
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handleCardChange = this.handleCardChange.bind(this);
+        this.handleDiscountChange = this.handleDiscountChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleFormReject = this.handleFormReject.bind(this);
     }
@@ -127,6 +128,7 @@ export class Register extends React.Component {
     }
     handleDiscountChange(event) {
         event.preventDefault();
+        console.log(event.target.value);
         this.userdata.discount_code = event.target.value;
     }
     handleEmailChange(event) {
