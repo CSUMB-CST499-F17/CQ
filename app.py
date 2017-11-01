@@ -216,22 +216,27 @@ def checkout(data):
         
         try:
             price = 50
-            total_percent = 1
+            total_percent = 100
             try:
                 discount_query = models.db.session.query(models.Discounts).filter(models.Discounts.code == userdata['discount_code'])
                 if discount_query.count() > 0:
-                    total_percent = discount_query.first().percent / 100.0
+                    total_percent = discount_query.first().percent
+                    discount_query.first().uses -= 1
+                    models.db.session.commit()
             except:
                 print("Error: couldn't connect to discount table")
                 pass
             price = price * total_percent
             
-            charge = stripe.Charge.create(
-                amount=price,
-                currency="usd",
-                description="Coastal Quest Scavenger Hunt",
-                source=token,
-            )
+            print("Price = " + str(price) + "; total percent = " + str(total_percent))
+            
+            if price != 0:
+                charge = stripe.Charge.create(
+                    amount=price,
+                    currency="usd",
+                    description="Coastal Quest Scavenger Hunt",
+                    source=token,
+                )
             
             participants.has_paid = True
             models.db.session.commit()
