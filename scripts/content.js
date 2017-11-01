@@ -108,7 +108,7 @@ export class Content extends React.Component{
         return (
             <div>
                 <div id = 'home' style={{display:'block'}}>
-                    <Home changePage={this.changePage}/>
+                    <Home changePage={this.changePage} lastPage={this.state.lastPage}/>
                 </div>
                 <div id = 'explore' style={{display:'none'}}>
                     <Explore changePage={this.changePage}/>

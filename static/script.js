@@ -22032,7 +22032,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'home', style: { display: 'block' } },
-	                    React.createElement(_home.Home, { changePage: this.changePage })
+	                    React.createElement(_home.Home, { changePage: this.changePage, lastPage: this.state.lastPage })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -30685,6 +30685,10 @@
 	        var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
 
 	        _this.pageName = 'home';
+	        _this.index = 0;
+	        _this.images = ['boats', 'bust', 'canneryrow', 'crossedarms', 'lighthousewide', 'montereycanningcompany', 'sistercitypark', 'swanboat', 'whale'];
+	        // IMAGES THAT SHOW UP SIDEWAYS: 'diversmemorial','lady','lighthousenarrow','shareabench','twowhales', 'yesterdaysdream'
+	        _this.showSlides = _this.showSlides.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
 	    }
@@ -30700,9 +30704,10 @@
 	                    if (savedPage == 'null') {
 	                        savedPage = 'home';
 	                    }
-	                    console.log(savedPage);
 	                    if (savedPage != 'home') {
 	                        _this2.props.changePage(_this2.pageName, savedPage);
+	                    } else {
+	                        _this2.showSlides();
 	                    }
 	                } catch (e) {}
 	            });
@@ -30711,6 +30716,22 @@
 	        key: 'handleSubmit',
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
+	        }
+	    }, {
+	        key: 'showSlides',
+	        value: function showSlides() {
+	            var image = document.getElementById("ss-image");
+	            if (this.index < this.images.length) {
+	                image.src = "../static/image/gallery/" + this.images[this.index] + ".jpg";
+	                this.index += 1;
+	            } else {
+	                this.index = 0;
+	            }
+	            // var index = Math.floor(Math.random() * this.images.length);
+	            // image.src="../static/image/gallery/"+this.images[index]+".jpg"; 
+	            if (this.props.lastPage == 'home') {
+	                setTimeout(this.showSlides, 10000); // Change image every 10 seconds
+	            }
 	        }
 	    }, {
 	        key: 'render',
@@ -30722,47 +30743,52 @@
 	                null,
 	                React.createElement(
 	                    'div',
-	                    { id: 'header' },
+	                    { id: 'front-header' },
 	                    React.createElement('img', { id: 'logo-big', src: '../static/image/logo-big.png' })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'intro' },
-	                    React.createElement('img', { id: 'pageImage', src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG/1200px-Lovers_Point_Park_-_Pacific_Grove%2C_CA_-_DSC06525.JPG', width: '40%' })
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'buttons' },
 	                    React.createElement(
 	                        'div',
-	                        { className: 'tool' },
+	                        { id: 'slideshow' },
+	                        React.createElement('div', { className: 'helper' }),
+	                        React.createElement('img', { id: 'ss-image', src: '../static/image/gallery/boats.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { id: 'buttons' },
 	                        React.createElement(
-	                            'button',
-	                            { className: 'btn', onClick: function onClick() {
-	                                    return _this3.props.changePage('explore');
-	                                } },
-	                            'Let\'s Explore!'
-	                        ),
-	                        React.createElement(
-	                            'button',
-	                            { className: 'btn', onClick: function onClick() {
-	                                    return _this3.props.changePage('existingTeam');
-	                                } },
-	                            'Log into Existing Team'
-	                        ),
-	                        React.createElement(
-	                            'button',
-	                            { className: 'btn', onClick: function onClick() {
-	                                    return _this3.props.changePage('adminHome');
-	                                } },
-	                            'Temp Button to Admin Homepage'
-	                        ),
-	                        React.createElement(
-	                            'button',
-	                            { className: 'btn', onClick: function onClick() {
-	                                    return _this3.props.changePage('play');
-	                                } },
-	                            'Temp Button to Play Page'
+	                            'div',
+	                            { className: 'tool' },
+	                            React.createElement(
+	                                'button',
+	                                { className: 'btn', onClick: function onClick() {
+	                                        return _this3.props.changePage('explore');
+	                                    } },
+	                                'Let\'s Explore!'
+	                            ),
+	                            React.createElement(
+	                                'button',
+	                                { className: 'btn', onClick: function onClick() {
+	                                        return _this3.props.changePage('existingTeam');
+	                                    } },
+	                                'Log into Existing Team'
+	                            ),
+	                            React.createElement(
+	                                'button',
+	                                { className: 'btn', onClick: function onClick() {
+	                                        return _this3.props.changePage('adminHome');
+	                                    } },
+	                                'Temp Button to Admin Homepage'
+	                            ),
+	                            React.createElement(
+	                                'button',
+	                                { className: 'btn', onClick: function onClick() {
+	                                        return _this3.props.changePage('play');
+	                                    } },
+	                                'Temp Button to Play Page'
+	                            )
 	                        )
 	                    )
 	                )
