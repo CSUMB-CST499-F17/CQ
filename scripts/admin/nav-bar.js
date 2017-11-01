@@ -8,7 +8,6 @@ export class NavBar extends React.Component {
     super(props);
 
     this.currentPage = this.props.lastPage;
-    alert(this.currentPage);
     this.changePage = this.changePage.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     }

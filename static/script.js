@@ -51791,7 +51791,6 @@
 	        var _this = _possibleConstructorReturn(this, (NavBar.__proto__ || Object.getPrototypeOf(NavBar)).call(this, props));
 
 	        _this.currentPage = _this.props.lastPage;
-	        alert(_this.currentPage);
 	        _this.changePage = _this.changePage.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
