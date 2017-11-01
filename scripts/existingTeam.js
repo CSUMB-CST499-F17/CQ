@@ -50,6 +50,8 @@ export class ExistingTeam extends React.Component {
         var res = callback.split('%');
           try{
                 this.props.setProps(res[0], res[1]); //loggedIn, name
+                document.getElementById("email").value = "";
+                document.getElementById("access").value = "";
                 switch(res[0]) {
                     case "teamLead":
                     case "team":

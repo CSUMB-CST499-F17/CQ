@@ -23,7 +23,8 @@ export class Content extends React.Component{
         this.state = { //essentially session vars
             name: 'guest', //team name or admin user name
             loggedIn: 'no', //no,admin,superAdmin,team,teamLead
-            lastPage: 'home' //last page loaded, set this dynamically
+            lastPage: 'home', //last page loaded, set this dynamically
+            hide:'none' //determines whether or not buttons and inputs are visible
         };
         // this.start = this.start.bind(this);
         this.handle = this.handle.bind(this);
@@ -40,6 +41,16 @@ export class Content extends React.Component{
             loggedIn: loggedIn,
             name: name
         })
+        if(this.state.loggedIn == 'teamLead'){
+            this.setState({
+                hide:'block'
+            })
+        }
+        else{
+            this.setState({
+                hide:'none'
+            })
+        }
     }
     handle(callback){
         console.log('returned!');
@@ -73,7 +84,7 @@ export class Content extends React.Component{
                     <Register changePage={this.changePage}/>
                 </div>
                 <div id = 'play' style={{display:'none'}}>
-                    <Play changePage={this.changePage}/>
+                    <Play changePage={this.changePage} loggedIn={this.state.loggedIn} hide={this.state.hide}/>
                 </div>
                 <div id = 'adminHome' style={{display:'none'}}>
                     <AdminHome changePage={this.changePage}/>

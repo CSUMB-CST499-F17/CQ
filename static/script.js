@@ -21938,7 +21938,8 @@
 	        _this.state = { //essentially session vars
 	            name: 'guest', //team name or admin user name
 	            loggedIn: 'no', //no,admin,superAdmin,team,teamLead
-	            lastPage: 'home' //last page loaded, set this dynamically
+	            lastPage: 'home', //last page loaded, set this dynamically
+	            hide: 'none' //determines whether or not buttons and inputs are visible
 	        };
 	        // this.start = this.start.bind(this);
 	        _this.handle = _this.handle.bind(_this);
@@ -21960,6 +21961,15 @@
 	                loggedIn: loggedIn,
 	                name: name
 	            });
+	            if (this.state.loggedIn == 'teamLead') {
+	                this.setState({
+	                    hide: 'block'
+	                });
+	            } else {
+	                this.setState({
+	                    hide: 'none'
+	                });
+	            }
 	        }
 	    }, {
 	        key: 'handle',
@@ -22013,7 +22023,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'play', style: { display: 'none' } },
-	                    React.createElement(_play.Play, { changePage: this.changePage })
+	                    React.createElement(_play.Play, { changePage: this.changePage, loggedIn: this.state.loggedIn, hide: this.state.hide })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -50910,6 +50920,8 @@
 	            var res = callback.split('%');
 	            try {
 	                this.props.setProps(res[0], res[1]); //loggedIn, name
+	                document.getElementById("email").value = "";
+	                document.getElementById("access").value = "";
 	                switch (res[0]) {
 	                    case "teamLead":
 	                    case "team":
@@ -51406,6 +51418,7 @@
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        _this.handleChange = _this.handleChange.bind(_this);
 	        _this.showHint = _this.showHint.bind(_this);
+
 	        return _this;
 	    }
 
@@ -51535,7 +51548,7 @@
 	                                    React.createElement('div', { id: 'hint' })
 	                                )
 	                            ),
-	                            React.createElement(_reactBootstrap.FormControl, { id: 'answer', componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
+	                            React.createElement(_reactBootstrap.FormControl, { id: 'answer', style: { display: this.props.hide }, componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
 	                            React.createElement(
 	                                'div',
 	                                { id: 'result', style: { visibility: 'hidden' } },
@@ -51558,12 +51571,12 @@
 	                            ),
 	                            React.createElement(
 	                                _reactBootstrap.Button,
-	                                { id: 'answer-submit', onClick: this.handleSubmit },
+	                                { id: 'answer-submit', style: { display: this.props.hide }, onClick: this.handleSubmit },
 	                                'Submit'
 	                            ),
 	                            React.createElement(
 	                                _reactBootstrap.Button,
-	                                { id: 'hint-submit', onClick: this.showHint },
+	                                { id: 'hint-submit', style: { display: this.props.hide }, onClick: this.showHint },
 	                                'Hint'
 	                            ),
 	                            React.createElement(
