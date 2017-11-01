@@ -21943,8 +21943,6 @@
 	            lastPage: 'home', //last page loaded, set this dynamically
 	            hide: 'none' //determines whether or not buttons and inputs are visible
 	        };
-	        // this.start = this.start.bind(this);
-	        _this.temp = '';
 	        _this.handle = _this.handle.bind(_this);
 	        _this.changePage = _this.changePage.bind(_this);
 	        _this.setProps = _this.setProps.bind(_this);
@@ -21979,29 +21977,6 @@
 	        value: function handle(callback) {
 	            console.log('returned!');
 	        }
-	        //changes the display of the pages when button is pressed
-	        // changePage(from,to){
-	        //     this.state.temp = this.state.lastPage;
-	        //     this.state.lastPage = to;
-	        //     for (var n in this.state){
-	        //         window.localStorage.setItem( n, this.state[n] );
-	        //     }
-	        //     Socket.emit(to, this.state, Socket.callback=this.handle);
-	        //     if(to.indexOf('admin') !== -1){
-	        //         document.getElementById(this.state.temp).style.display = "none";
-	        //         document.getElementById(to).style.display = "block";
-	        //         document.getElementById('nav-bar').style.display = "block";
-	        //         // Socket.emit('adminPage', this.state.temp);
-
-	        //     }
-	        //     if(to.indexOf('admin') == -1){
-	        //         document.getElementById(this.state.temp).style.display = "none";
-	        //         document.getElementById(to).style.display = "block";
-	        //         document.getElementById('nav-bar').style.display = "none";
-	        //     }
-	        // }
-
-
 	    }, {
 	        key: 'changePage',
 	        value: function changePage(to) {
@@ -22015,7 +21990,6 @@
 	                document.getElementById(this.state.temp).style.display = "none";
 	                document.getElementById(to).style.display = "block";
 	                document.getElementById('nav-bar').style.display = "block";
-	                // Socket.emit('adminPage', this.state.temp);
 	            }
 	            if (to.indexOf('admin') == -1) {
 	                document.getElementById(this.state.temp).style.display = "none";
@@ -22062,7 +22036,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'nav-bar', style: { display: 'none' } },
-	                    React.createElement(_navBar.NavBar, { changePage: this.changePage, lastPage: this.state.lastPage })
+	                    React.createElement(_navBar.NavBar, { changePage: this.changePage, hide: this.state.hide })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -71815,7 +71789,6 @@
 
 	        var _this = _possibleConstructorReturn(this, (NavBar.__proto__ || Object.getPrototypeOf(NavBar)).call(this, props));
 
-	        _this.currentPage = _this.props.lastPage;
 	        _this.changePage = _this.changePage.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
@@ -71850,11 +71823,6 @@
 	        value: function render() {
 	            var _this2 = this;
 
-	            _Socket.Socket.on('adminPage', function (data) {
-	                _this2.setState({
-	                    currentPage: data
-	                });
-	            });
 	            return React.createElement(
 	                'div',
 	                null,

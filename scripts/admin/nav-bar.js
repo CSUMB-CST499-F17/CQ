@@ -7,7 +7,6 @@ export class NavBar extends React.Component {
     constructor(props) {
     super(props);
 
-    this.currentPage = this.props.lastPage;
     this.changePage = this.changePage.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -33,11 +32,6 @@ export class NavBar extends React.Component {
     }
     
     render() {
-        Socket.on('adminPage', (data) => {
-            this.setState({
-                currentPage: data
-            });
-        });
         return (
             <div>
                 <div id="topnav">

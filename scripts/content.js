@@ -27,8 +27,6 @@ export class Content extends React.Component{
             lastPage: 'home', //last page loaded, set this dynamically
             hide:'none', //determines whether or not buttons and inputs are visible
         };
-        // this.start = this.start.bind(this);
-        this.temp = '';
         this.handle = this.handle.bind(this);
         this.changePage = this.changePage.bind(this);
         this.setProps = this.setProps.bind(this);
@@ -57,27 +55,6 @@ export class Content extends React.Component{
     handle(callback){
         console.log('returned!');
     }
-    //changes the display of the pages when button is pressed
-    // changePage(from,to){
-    //     this.state.temp = this.state.lastPage;
-    //     this.state.lastPage = to;
-    //     for (var n in this.state){
-    //         window.localStorage.setItem( n, this.state[n] );
-    //     }
-    //     Socket.emit(to, this.state, Socket.callback=this.handle);
-    //     if(to.indexOf('admin') !== -1){
-    //         document.getElementById(this.state.temp).style.display = "none";
-    //         document.getElementById(to).style.display = "block";
-    //         document.getElementById('nav-bar').style.display = "block";
-    //         // Socket.emit('adminPage', this.state.temp);
-
-    //     }
-    //     if(to.indexOf('admin') == -1){
-    //         document.getElementById(this.state.temp).style.display = "none";
-    //         document.getElementById(to).style.display = "block";
-    //         document.getElementById('nav-bar').style.display = "none";
-    //     }
-    // }
     
     
     changePage(to){
@@ -91,7 +68,6 @@ export class Content extends React.Component{
             document.getElementById(this.state.temp).style.display = "none";
             document.getElementById(to).style.display = "block";
             document.getElementById('nav-bar').style.display = "block";
-            // Socket.emit('adminPage', this.state.temp);
 
         }
         if(to.indexOf('admin') == -1){
@@ -126,7 +102,7 @@ export class Content extends React.Component{
                     <Play changePage={this.changePage} loggedIn={this.state.loggedIn} hide={this.state.hide}/>
                 </div>
                 <div id = 'nav-bar' style={{display:'none'}}>
-                    <NavBar changePage={this.changePage} lastPage={this.state.lastPage}/>
+                    <NavBar changePage={this.changePage} hide={this.state.hide}/>
                 </div>
                 <div id = 'adminHome' style={{display:'none'}}>
                     <AdminHome changePage={this.changePage}/>
