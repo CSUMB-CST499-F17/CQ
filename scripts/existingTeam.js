@@ -18,31 +18,13 @@ export class ExistingTeam extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.validateCredentials = this.validateCredentials.bind(this);
         this.errorMessage = this.errorMessage.bind(this);
-        this.validateEmail = this.validateEmail.bind(this);
-        this.email = "";
+        this.team = "";
         this.handle = this.handle.bind(this);
     }
     
-    //checks if emais in valid email format before comparing to the emails in database
-    validateEmail(email) 
-    {
-        var re = /^[a-z][a-zA-Z0-9_.]*(\.[a-zA-Z][a-zA-Z0-9_.]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
-        return re.test(email);
-    }
-
     errorMessage(validate){
-        if(validate == false && this.email == "")
-        {
-            document.getElementById("errorMessage").innerHTML = "Please Enter valid Email and Access Code";
-            document.getElementById("errorMessage").style.visibility = 'visible';
-            document.getElementById("errorMessage").style.color="red";
-        }
-        if(validate == false && this.email != ""){
-                document.getElementById("errorMessage").innerHTML = "Invalid Email or Access Code";
-                document.getElementById("errorMessage").style.visibility = 'visible';
-                document.getElementById("errorMessage").style.color="red";
-                document.getElementById("access").value = "";
-        }
+        
+        
         
     }
     
@@ -50,7 +32,7 @@ export class ExistingTeam extends React.Component {
         var res = callback.split('%');
           try{
                 this.props.setProps(res[0], res[1]); //loggedIn, name
-                document.getElementById("email").value = "";
+                document.getElementById("team_name").value = "";
                 document.getElementById("access").value = "";
                 switch(res[0]) {
                     case "teamLead":
@@ -64,8 +46,10 @@ export class ExistingTeam extends React.Component {
 
                         break;
                     case "no":
-                        this.errorMessage(false);
-                        
+                        document.getElementById("errorMessage").innerHTML = "Invalid Team Name or Access Code";
+                        document.getElementById("errorMessage").style.visibility = 'visible';
+                        document.getElementById("errorMessage").style.color="red";
+                        document.getElementById("access").value = "";
                         break;
                     default:
                             break;
@@ -79,17 +63,18 @@ export class ExistingTeam extends React.Component {
     }
 
     validateCredentials(){
-        this.email = document.getElementById("email").value;
+        this.team = document.getElementById("team_name").value;
         var access = document.getElementById("access").value;
-        console.log(this.validateEmail(this.email));
-        var validate = this.validateEmail(this.email);
-        if (validate == true)
+        if(this.team == "")
+        {
+            document.getElementById("errorMessage").innerHTML = "Please Enter valid Team Name and Access Code";
+            document.getElementById("errorMessage").style.visibility = 'visible';
+            document.getElementById("errorMessage").style.color="red";
+        }
+        else
         {
             document.getElementById("errorMessage").style.visibility = 'hidden';
-            Socket.emit('validateCredentials',{'email':this.email,'access':access}, Socket.callback=this.handle);
-        }
-        else{
-            this.errorMessage(validate);
+            Socket.emit('validateCredentials',{'team_name':this.team,'access':access}, Socket.callback=this.handle);
         }
     }
     
@@ -110,7 +95,7 @@ export class ExistingTeam extends React.Component {
                     <Form id = "ET-form" >
                         <FormGroup>
                             <InputGroup>
-                                    <FormControl type="email" id = "email" className="ET-field" placeholder="Enter email" />
+                                    <FormControl type="text" id = "team_name" className="ET-field" placeholder="Enter Team Name" />
                                     <FormControl type="password" id = "access" className="ET-field" placeholder="Enter access code" />
                                     <div id = "errorMessage" style={{visibility:'hidden'}}> Error Message Placeholder</div>
                             </InputGroup>

@@ -30692,7 +30692,7 @@
 	                        savedPage = 'home';
 	                    }
 	                    if (savedPage != 'home') {
-	                        _this2.props.changePage(_this2.pageName, savedPage);
+	                        _this2.props.changePage(savedPage);
 	                    } else {
 	                        _this2.showSlides();
 	                    }
@@ -50936,43 +50936,21 @@
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        _this.validateCredentials = _this.validateCredentials.bind(_this);
 	        _this.errorMessage = _this.errorMessage.bind(_this);
-	        _this.validateEmail = _this.validateEmail.bind(_this);
-	        _this.email = "";
+	        _this.team = "";
 	        _this.handle = _this.handle.bind(_this);
 	        return _this;
 	    }
 
-	    //checks if emais in valid email format before comparing to the emails in database
-
-
 	    _createClass(ExistingTeam, [{
-	        key: 'validateEmail',
-	        value: function validateEmail(email) {
-	            var re = /^[a-z][a-zA-Z0-9_.]*(\.[a-zA-Z][a-zA-Z0-9_.]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
-	            return re.test(email);
-	        }
-	    }, {
 	        key: 'errorMessage',
-	        value: function errorMessage(validate) {
-	            if (validate == false && this.email == "") {
-	                document.getElementById("errorMessage").innerHTML = "Please Enter valid Email and Access Code";
-	                document.getElementById("errorMessage").style.visibility = 'visible';
-	                document.getElementById("errorMessage").style.color = "red";
-	            }
-	            if (validate == false && this.email != "") {
-	                document.getElementById("errorMessage").innerHTML = "Invalid Email or Access Code";
-	                document.getElementById("errorMessage").style.visibility = 'visible';
-	                document.getElementById("errorMessage").style.color = "red";
-	                document.getElementById("access").value = "";
-	            }
-	        }
+	        value: function errorMessage(validate) {}
 	    }, {
 	        key: 'handle',
 	        value: function handle(callback) {
 	            var res = callback.split('%');
 	            try {
 	                this.props.setProps(res[0], res[1]); //loggedIn, name
-	                document.getElementById("email").value = "";
+	                document.getElementById("team_name").value = "";
 	                document.getElementById("access").value = "";
 	                switch (res[0]) {
 	                    case "teamLead":
@@ -50986,8 +50964,10 @@
 
 	                        break;
 	                    case "no":
-	                        this.errorMessage(false);
-
+	                        document.getElementById("errorMessage").innerHTML = "Invalid Team Name or Access Code";
+	                        document.getElementById("errorMessage").style.visibility = 'visible';
+	                        document.getElementById("errorMessage").style.color = "red";
+	                        document.getElementById("access").value = "";
 	                        break;
 	                    default:
 	                        break;
@@ -50999,15 +50979,15 @@
 	    }, {
 	        key: 'validateCredentials',
 	        value: function validateCredentials() {
-	            this.email = document.getElementById("email").value;
+	            this.team = document.getElementById("team_name").value;
 	            var access = document.getElementById("access").value;
-	            console.log(this.validateEmail(this.email));
-	            var validate = this.validateEmail(this.email);
-	            if (validate == true) {
-	                document.getElementById("errorMessage").style.visibility = 'hidden';
-	                _Socket.Socket.emit('validateCredentials', { 'email': this.email, 'access': access }, _Socket.Socket.callback = this.handle);
+	            if (this.team == "") {
+	                document.getElementById("errorMessage").innerHTML = "Please Enter valid Team Name and Access Code";
+	                document.getElementById("errorMessage").style.visibility = 'visible';
+	                document.getElementById("errorMessage").style.color = "red";
 	            } else {
-	                this.errorMessage(validate);
+	                document.getElementById("errorMessage").style.visibility = 'hidden';
+	                _Socket.Socket.emit('validateCredentials', { 'team_name': this.team, 'access': access }, _Socket.Socket.callback = this.handle);
 	            }
 	        }
 	    }, {
@@ -51051,7 +51031,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.InputGroup,
 	                                null,
-	                                React.createElement(_reactBootstrap.FormControl, { type: 'email', id: 'email', className: 'ET-field', placeholder: 'Enter email' }),
+	                                React.createElement(_reactBootstrap.FormControl, { type: 'text', id: 'team_name', className: 'ET-field', placeholder: 'Enter Team Name' }),
 	                                React.createElement(_reactBootstrap.FormControl, { type: 'password', id: 'access', className: 'ET-field', placeholder: 'Enter access code' }),
 	                                React.createElement(
 	                                    'div',
@@ -51435,8 +51415,6 @@
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -51456,9 +51434,8 @@
 	        var _this = _possibleConstructorReturn(this, (Play.__proto__ || Object.getPrototypeOf(Play)).call(this, props));
 
 	        _this.pageName = 'play';
-	        _this.state = _defineProperty({
+	        _this.state = {
 	            'questionsData': [],
-	            'userAnswer': '',
 	            'displayer': '',
 	            'hintCount': 0,
 	            'attempts': [],
@@ -51467,27 +51444,29 @@
 	            'correctAnswer': '',
 	            'hint1': '',
 	            'hint2': '',
-	            'questionNum': ''
-	        }, 'userAnswer', '');
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	            'questionNum': 0,
+	            'userAnswer': '',
+	            'user': []
+
+	        };
 	        _this.handleChange = _this.handleChange.bind(_this);
 	        _this.showHint = _this.showHint.bind(_this);
 	        _this.nextQuestion = _this.nextQuestion.bind(_this);
+	        _this.checkAnswer = _this.checkAnswer.bind(_this);
 	        return _this;
 	    }
 
 	    _createClass(Play, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
+	        key: 'checkAnswer',
+	        value: function checkAnswer() {
 	            var result = document.getElementById('result');
 	            if (this.state.userAnswer == this.state.correctAnswer) {
 	                result.style.visibility = 'visible';
 	                result.textContent = 'Correct';
 	                result.style.color = "#9bf442";
 	                this.setState({ attempts: [] });
-	                document.getElementById('answer-submit').style.display = "none";
-	                document.getElementById('hint-submit').style.display = "none";
+	                // document.getElementById('answer-submit').style.display = "none";
+	                // document.getElementById('hint-submit').style.display = "none";
 	                document.getElementById('next').style.display = "block";
 	                document.getElementById('result').style.display = "block";
 	            } else {
@@ -51515,29 +51494,17 @@
 	    }, {
 	        key: 'showHint',
 	        value: function showHint(event) {
-	            var data = this.state.questionsData;
-	            for (var i = 0; i < data.length; i++) {
-	                var obj = data[i];
-	                if (i == this.state.playerQuestionOn) {
-	                    this.state.hint1 = obj.hint1;
-	                    this.state.hint2 = obj.hint2;
-	                }
-	            }
 	            this.state.hintCount += 1;
-	            var hint = document.getElementById('hint');
-	            document.getElementById('hint').style.display = "block";
+	            document.getElementById('hint1').style.display = "block";
 	            // console.log(this.state.x)
 	            //condition when the button is clicked once
-	            if (this.state.hintCount == 1) {
-	                hint.innerHTML = "Hint One: " + this.state.hint1;
+	            if (this.state.hintCount == 1 && this.state.hint2 == "") {
 	                //checks to see if there is a second hint, if not, the button disappears
-	                if (this.state.hint2 == "") {
-	                    document.getElementById('hint-submit').style.display = "none";
-	                }
+	                document.getElementById('hint-submit').style.display = "none";
 	            }
 	            //condition if the button is clicked twice and there is a second hint
 	            if (this.state.hintCount == 2 && this.state.hint2 != "") {
-	                hint.innerHTML = hint.innerHTML + ' <br/>' + "Hint Two: " + this.state.hint2;
+	                document.getElementById('hint2').style.display = "block";
 	                document.getElementById('hint-submit').style.display = "none";
 	            }
 	        }
@@ -51549,32 +51516,47 @@
 	            //retireves the hunt question information
 	            _Socket.Socket.on('hunt', function (data) {
 	                _this2.setState({
-	                    'questionsData': data['questionsData']
+	                    'questionsData': data
 	                });
+	                console.log(data);
+	            });
+	            //retireves the hunt question information
+	            _Socket.Socket.on('user', function (data) {
+	                _this2.setState({
+	                    'user': data[0]
+	                    // 'playerQuestionOn': data[0]['progress'] - 1
+	                });
+	                console.log(data[0]['email']);
 	            });
 	        }
 	    }, {
 	        key: 'nextQuestion',
-	        value: function nextQuestion(event) {
+	        value: function nextQuestion() {
+	            document.getElementById('answer-submit').style.display = "block";
+	            document.getElementById('hint-submit').style.display = "block";
+	            document.getElementById('hint1').style.display = "none";
+	            document.getElementById('hint2').style.display = "none";
+	            document.getElementById('next').style.display = "none";
+	            document.getElementById('result').style.display = "none";
+	            document.getElementById('answer').value = "";
+
 	            this.state.playerQuestionOn++;
+	            // Socket.emit('progessUpdate', {'user': this.state.user, 'progress':this.state.playerQuestionOn});
 
 	            var data = this.state.questionsData;
 	            for (var i = 0; i < data.length; i++) {
 	                var obj = data[i];
 	                if (i == this.state.playerQuestionOn) {
-	                    this.state.question = obj.question;
+	                    document.getElementById('play-question').innerHTML = obj.question;
 	                    this.state.correctAnswer = obj.answer;
+	                    document.getElementById('hint1').innerHTML = "Hint One: " + obj.hint1;
+	                    document.getElementById('hint2').innerHTML = "Hint Two: " + obj.hint2;
 	                    this.state.hint1 = obj.hint1;
 	                    this.state.hint2 = obj.hint2;
 	                }
 	            }
+	            // this.state.hintCount = 0;
 
-	            document.getElementById('answer-submit').style.display = "block";
-	            document.getElementById('hint-submit').style.display = "block";
-	            document.getElementById('hint').style.display = "none";
-	            document.getElementById('next').style.display = "none";
-	            document.getElementById('result').style.display = "none";
-	            document.getElementById('answer').value = "";
 	        }
 	    }, {
 	        key: 'render',
@@ -51585,8 +51567,10 @@
 	            for (var i = 0; i < data.length; i++) {
 	                var obj = data[i];
 	                if (i == this.state.playerQuestionOn) {
-	                    this.state.question = obj.question;
+	                    document.getElementById('play-question').innerHTML = obj.question;
 	                    this.state.correctAnswer = obj.answer;
+	                    document.getElementById('hint1').innerHTML = "Hint One: " + obj.hint1;
+	                    document.getElementById('hint2').innerHTML = "Hint Two: " + obj.hint2;
 	                    this.state.hint1 = obj.hint1;
 	                    this.state.hint2 = obj.hint2;
 	                }
@@ -51621,19 +51605,16 @@
 	                            React.createElement(
 	                                _reactBootstrap.FormControl.Static,
 	                                null,
+	                                React.createElement('div', { id: 'play-question' }),
 	                                React.createElement(
 	                                    'div',
-	                                    { id: 'play-question' },
-	                                    React.createElement(
-	                                        'p',
-	                                        null,
-	                                        this.state.question
-	                                    )
+	                                    { id: 'hint1', style: { display: 'none' } },
+	                                    'Hint PlaceHolder'
 	                                ),
 	                                React.createElement(
 	                                    'div',
-	                                    { id: 'hints' },
-	                                    React.createElement('div', { id: 'hint' })
+	                                    { id: 'hint2', style: { display: 'none' } },
+	                                    'Hint PlaceHolder'
 	                                )
 	                            ),
 	                            React.createElement(_reactBootstrap.FormControl, { id: 'answer', style: { display: this.props.hide }, componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
@@ -51659,7 +51640,7 @@
 	                            ),
 	                            React.createElement(
 	                                _reactBootstrap.Button,
-	                                { id: 'answer-submit', style: { display: this.props.hide }, onClick: this.handleSubmit },
+	                                { id: 'answer-submit', style: { display: this.props.hide }, onClick: this.checkAnswer },
 	                                'Submit'
 	                            ),
 	                            React.createElement(
@@ -51683,13 +51664,6 @@
 
 	    return Play;
 	}(React.Component);
-
-	// <InputGroup>
-	//     <ButtonToolbar>
-	//         <input id='play-item' type="text" placeholder="Enter Answer" /><br/>
-	//         <Button>Submit</Button>
-	//     </ButtonToolbar>
-	// </InputGroup>
 
 /***/ },
 /* 500 */

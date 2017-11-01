@@ -23,47 +23,16 @@ def hello():
 @socketio.on('play')
 def getHunt(data):
     global questionNum
-    # huntsQuery = models.Hunts.query.all()
-    # for i in range (0, len(huntsQuery)):
-    #     questionsQuery = { 'message':huntsQuery[i].question,'name':huntsQuery[i].answer,'picture':huntsQuery[i].hint}
-    #     questions.append(questionsQuery)
-    
-    # question = {
-    #     'question': "Find California's first theatre.  On the front door, there is a poem.  Who is the poem about?",
-    #     'answer': "Miners",
-    #     'hint1': "You will find the theatre on the corner of Pacific and John Street.",
-    #     'hint2': "",
-    #     'questionNum': 1
-    # }
     questionsData = []
 
     try:
         questions = models.db.session.query(models.Questions)
         for row in questions:
             questionsData.append({'question':row.question, 'answer':row.answer,'hint1':row.hint_A,'hint2':row.hint_B,'hunts_id':row.hunts_id})
-        # print questionsData
     except:
         print("Error: Database/table questions does not exist")
     
-    # "Find California's first theatre.  On the front door, there is a poem.  Who is the poem about?"
-    
-    # question = questionsData[0][questionNum]
-    # print questionsData[questionNum + 1]
-    # question = questionsData
-    correctAnswer = "Miners"
-    hint1 = "You will find the theatre on the corner of Pacific and John Street."
-    hint2 = ""
-    questionNum = 1
-    # socketio.emit('hunt', {
-    #     'questions': question,
-    #     'correctAnswer': correctAnswer,
-    #     'hint1': hint1,
-    #     'hint2': hint2,
-    #     'questionNum' : questionNum
-    # })
-    socketio.emit('hunt', {
-        'questionsData': questionsData
-    })
+    socketio.emit('hunt', questionsData)
     questionNum += questionNum
     print('Scavenger hunt data sent.')
     
@@ -96,22 +65,28 @@ def updateHome(data):
 @socketio.on('validateCredentials')
 def validateCredentials(data):
         try:
-            query = models.db.session.query(models.Participants).filter(models.Participants.email == data['email'], models.Participants.leader_code == data['access']).first_or_404()
+            query = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'], models.Participants.leader_code == data['access']).first_or_404()
+            userData = []
+            userData.append({'email': query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress})
+            socketio.emit('user', userData)
             return 'teamLead%' + query.team_name
         except:
             pass
         try:
-            query = models.db.session.query(models.Participants).filter(models.Participants.email == data['email'], models.Participants.member_code == data['access']).first_or_404()
+            query = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'], models.Participants.member_code == data['access']).first_or_404()
+            userData = []
+            userData.append({'email':query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress})
+            socketio.emit('user', userData)
             return 'team%' + query.team_name
         except:
-            print "Not Working"
+            pass
         try:
-            query = models.db.session.query(models.Admins).filter(models.Admins.email == data['email'], models.Admins.password == data['access'], models.Admins.is_super == True).first_or_404()
+            query = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.password == data['access'], models.Admins.is_super == True).first_or_404()
             return 'superAdmin%' + query.username
         except:
             pass
         try:
-            query = models.db.session.query(models.Admins).filter(models.Admins.email == data['email'], models.Admins.password == data['access'], models.Admins.is_super == False).first_or_404()
+            query = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.password == data['access'], models.Admins.is_super == False).first_or_404()
             return 'admin%' + query.username
         except:
             return 'no%guest'

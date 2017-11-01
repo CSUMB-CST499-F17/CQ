@@ -21,7 +21,7 @@ export class Home extends React.Component {
                     savedPage = 'home';
                 }
                 if (savedPage != 'home'){
-                    this.props.changePage(this.pageName,savedPage);
+                    this.props.changePage(savedPage);
                 }
                 else{
                     this.showSlides();
