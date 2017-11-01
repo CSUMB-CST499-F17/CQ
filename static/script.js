@@ -51422,6 +51422,8 @@
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -51441,14 +51443,19 @@
 	        var _this = _possibleConstructorReturn(this, (Play.__proto__ || Object.getPrototypeOf(Play)).call(this, props));
 
 	        _this.pageName = 'play';
-	        _this.state = {
+	        _this.state = _defineProperty({
 	            'questionsData': [],
 	            'userAnswer': '',
 	            'displayer': '',
-	            'x': 0,
-	            'attempts': []
-
-	        };
+	            'hintCount': 0,
+	            'attempts': [],
+	            'playerQuestionOn': 0,
+	            'question': '',
+	            'correctAnswer': '',
+	            'hint1': '',
+	            'hint2': '',
+	            'questionNum': ''
+	        }, 'userAnswer', '');
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        _this.handleChange = _this.handleChange.bind(_this);
 	        _this.showHint = _this.showHint.bind(_this);
@@ -51469,6 +51476,7 @@
 	                document.getElementById('answer-submit').style.display = "none";
 	                document.getElementById('hint-submit').style.display = "none";
 	                document.getElementById('next').style.display = "block";
+	                document.getElementById('result').style.display = "block";
 	            } else {
 	                if (document.getElementById('answer').value != "") {
 	                    var newArray = this.state.attempts.slice();
@@ -51478,6 +51486,7 @@
 	                    result.innerHTML = 'Incorrect <br/> Attempts: ' + newArray;
 	                    result.style.color = "red";
 	                    document.getElementById('answer').value = "";
+	                    document.getElementById('result').style.display = "block";
 	                }
 	            }
 	        }
@@ -51493,11 +51502,20 @@
 	    }, {
 	        key: 'showHint',
 	        value: function showHint(event) {
-	            this.state.x += 1;
+	            var data = this.state.questionsData;
+	            for (var i = 0; i < data.length; i++) {
+	                var obj = data[i];
+	                if (i == this.state.playerQuestionOn) {
+	                    this.state.hint1 = obj.hint1;
+	                    this.state.hint2 = obj.hint2;
+	                }
+	            }
+	            this.state.hintCount += 1;
 	            var hint = document.getElementById('hint');
+	            document.getElementById('hint').style.display = "block";
 	            // console.log(this.state.x)
 	            //condition when the button is clicked once
-	            if (this.state.x == 1) {
+	            if (this.state.hintCount == 1) {
 	                hint.innerHTML = "Hint One: " + this.state.hint1;
 	                //checks to see if there is a second hint, if not, the button disappears
 	                if (this.state.hint2 == "") {
@@ -51505,7 +51523,7 @@
 	                }
 	            }
 	            //condition if the button is clicked twice and there is a second hint
-	            if (this.state.x == 2 && this.state.hint2 != "") {
+	            if (this.state.hintCount == 2 && this.state.hint2 != "") {
 	                hint.innerHTML = hint.innerHTML + ' <br/>' + "Hint Two: " + this.state.hint2;
 	                document.getElementById('hint-submit').style.display = "none";
 	            }
@@ -51521,27 +51539,44 @@
 	                    'questionsData': data['questionsData']
 	                });
 	            });
-	            console.log(this.state.hint2);
 	        }
 	    }, {
 	        key: 'nextQuestion',
 	        value: function nextQuestion(event) {
-	            console.log('next question');
+	            this.state.playerQuestionOn++;
+
+	            var data = this.state.questionsData;
+	            for (var i = 0; i < data.length; i++) {
+	                var obj = data[i];
+	                if (i == this.state.playerQuestionOn) {
+	                    this.state.question = obj.question;
+	                    this.state.correctAnswer = obj.answer;
+	                    this.state.hint1 = obj.hint1;
+	                    this.state.hint2 = obj.hint2;
+	                }
+	            }
+
+	            document.getElementById('answer-submit').style.display = "block";
+	            document.getElementById('hint-submit').style.display = "block";
+	            document.getElementById('hint').style.display = "none";
+	            document.getElementById('next').style.display = "none";
+	            document.getElementById('result').style.display = "none";
+	            document.getElementById('answer').value = "";
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _this3 = this;
 
-	            var question = '';
-	            var answer = '';
-
-	            console.log(this.state.questionsData);
-
-	            if (this.state.questionsData != null) {
-	                question = this.state.questionsData.map(function (n, index) {
-	                    return React.createElement(Question, { key: index, question: n.question });
-	                });
+	            var data = this.state.questionsData;
+	            for (var i = 0; i < data.length; i++) {
+	                var obj = data[i];
+	                if (i == this.state.playerQuestionOn) {
+	                    this.state.question = obj.question;
+	                    this.state.correctAnswer = obj.answer;
+	                    this.state.hint1 = obj.hint1;
+	                    this.state.hint2 = obj.hint2;
+	                }
 	            }
 
 	            return React.createElement(
@@ -51579,7 +51614,7 @@
 	                                    React.createElement(
 	                                        'p',
 	                                        null,
-	                                        question
+	                                        this.state.question
 	                                    )
 	                                ),
 	                                React.createElement(
@@ -51588,7 +51623,7 @@
 	                                    React.createElement('div', { id: 'hint' })
 	                                )
 	                            ),
-	                            React.createElement(_reactBootstrap.FormControl, { id: 'answer', style: { display: this.props.hide }, componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
+	                            React.createElement(_reactBootstrap.FormControl, { id: 'answer', componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
 	                            React.createElement(
 	                                'div',
 	                                { id: 'result', style: { visibility: 'hidden' } },
@@ -51611,12 +51646,12 @@
 	                            ),
 	                            React.createElement(
 	                                _reactBootstrap.Button,
-	                                { id: 'answer-submit', style: { display: this.props.hide }, onClick: this.handleSubmit },
+	                                { id: 'answer-submit', onClick: this.handleSubmit },
 	                                'Submit'
 	                            ),
 	                            React.createElement(
 	                                _reactBootstrap.Button,
-	                                { id: 'hint-submit', style: { display: this.props.hide }, onClick: this.showHint },
+	                                { id: 'hint-submit', onClick: this.showHint },
 	                                'Hint'
 	                            ),
 	                            React.createElement(
