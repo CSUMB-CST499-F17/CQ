@@ -104,18 +104,21 @@ export class Play extends React.Component {
 
     render() {
         let question = '';
-        let answer = '';
         
         console.log(this.state.questionsData);
         
-        if (this.state.questionsData != null) {
-            question = this.state.questionsData.map((n, index) => {
-                return <Question key={index} question={n.question} />;
-             });
+        let data = this.state.questionsData;
+     
+        // question = this.state.questionsData.map((n, index) => {
+        //     <li key= {index}><ul>{n.question}</ul></li>;
+        //  });
+        
+        for(var i = 0; i < data.length; i++) {
+            var obj = data[i];
+            console.log("Name: " + obj.question + ", " + obj.answer);
         }
 
-
-
+        
         return (
 
 

@@ -51799,14 +51799,18 @@
 	            var _this3 = this;
 
 	            var question = '';
-	            var answer = '';
 
 	            console.log(this.state.questionsData);
 
-	            if (this.state.questionsData != null) {
-	                question = this.state.questionsData.map(function (n, index) {
-	                    return React.createElement(Question, { key: index, question: n.question });
-	                });
+	            var data = this.state.questionsData;
+
+	            // question = this.state.questionsData.map((n, index) => {
+	            //     <li key= {index}><ul>{n.question}</ul></li>;
+	            //  });
+
+	            for (var i = 0; i < data.length; i++) {
+	                var obj = data[i];
+	                console.log("Name: " + obj.question + ", " + obj.answer);
 	            }
 
 	            return React.createElement(
