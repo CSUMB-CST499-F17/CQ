@@ -58,6 +58,7 @@ export class Play extends React.Component {
             }
             if(this.state.playerQuestionOn + 1 == this.dataSize){
                 document.getElementById('complete-button').style.display = "block";
+                Socket.emit('finalScore', {'user':this.state.user, 'score':this.score});//emits player's final score
             }
             if(this.state.playerQuestionOn < this.dataSize - 1){
                 document.getElementById('next').style.display = "block";
@@ -73,7 +74,6 @@ export class Play extends React.Component {
                     this.attempts --;
                     Socket.emit('progessUpdate', {'user': this.state.user, 'progress':this.state.playerQuestionOn, 'score':this.score, 'attempts': this.attempts});    
                 }
-                console.log(this.score);
                 var newArray = this.state.attempts.slice();    
                 newArray.push(" " + document.getElementById('answer').value);   
                 this.setState({attempts:newArray})
@@ -94,16 +94,13 @@ export class Play extends React.Component {
     }
     //reveals the hint on hint button ciick
     showHint(event){
-        console.log(this.score);
         if(this.attempts > 0){
             this.score -= 5;
             this.attempts --;
             Socket.emit('progessUpdate', {'user': this.state.user, 'progress':this.state.playerQuestionOn, 'score':this.score, 'attempts': this.attempts});    
         }
-        console.log(this.score);
         this.state.hintCount += 1;
         document.getElementById('hint1').style.display = "block";
-        // console.log(this.state.x)
         //condition when the button is clicked once
         if(this.state.hintCount == 1 && this.state.hint2 == ""){
             //checks to see if there is a second hint, if not, the button disappears
@@ -130,6 +127,7 @@ export class Play extends React.Component {
                 'playerQuestionOn': data[0]['progress'] - 1
             });
             this.score = data[0]['score'];
+            this.attempts = data[0]['attempts']
         });
     }
     
@@ -144,7 +142,7 @@ export class Play extends React.Component {
         document.getElementById('answer').value = "";
         
         this.state.playerQuestionOn++;
-        Socket.emit('progessUpdate', {'user': this.state.user, 'progress':this.state.playerQuestionOn, 'score':this.score});
+            Socket.emit('progessUpdate', {'user': this.state.user, 'progress':this.state.playerQuestionOn, 'score':this.score, 'attempts': this.attempts});    
 
         for(var i = 0; i < this.data.length; i++) {
             var obj = this.data[i];

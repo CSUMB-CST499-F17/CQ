@@ -8,12 +8,24 @@ export class Complete extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            'user': [],
+            'score':-1
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount(){
-
+        //retireves the hunt question information
+        Socket.on('finalScore', (data) => {
+            this.setState({
+                'user': data['user'][0], 
+                'score':data['score']
+            });
+            if(this.state.score > -1){
+                document.getElementById('team_name').innerHTML = this.state.user['team_name'];
+                document.getElementById('score').innerHTML = this.state.score;
+            }
+        });
     }
 
     handleSubmit(event) {
@@ -30,7 +42,12 @@ export class Complete extends React.Component {
                     <header>Finished</header>
                 </div>
                     <div id='intro'>
+                        <div id = 'results'>
+                            <div id = 'team_name'></div>
+                            <div id = 'score'></div>
+                        </div>
                         <div id='buttons'>
+                            <Button onClick={() => this.props.changePage('leaderboard')}>Leaderboard</Button>
                             <Button onClick={() => this.props.changePage('home')}>Home</Button>
                         </div>      
                     </div>

@@ -94,10 +94,18 @@ def validateCredentials(data):
 
 @socketio.on('progessUpdate')
 def updateProgress(data):
-    #update the progress and score of the user using data['user'][0]['team_name'] and data['user'][0]['hunt_id']
-    print "hi"
+    try:
+        user = data['user'][0]
+        #update the progress and score of the user using data['user'][0]['team_name'] and data['user'][0]['hunt_id']
+        query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id'])
+        query.progress = data['progress']
+        query.score = data['score']
+        query.attempts = data['attempts']
+        db.session.commit()
+    except Exception as e: 
+            print(e) 
     
-    print("validateCredentials")
+    # print("validateCredentials")
     # foreach obj where data['team_name'] = username
     #   if check_password(obj.password, data['access']){
     #     do stuff
