@@ -31,8 +31,8 @@ class Questions(db.Model):
     question = db.Column(db.String(256))
     answer = db.Column(db.String(60))
     image = db.Column(db.String(512))
-    hint_A = db.Column(db.String(120))
-    hint_B = db.Column(db.String(120))
+    hint_A = db.Column(db.String(256))
+    hint_B = db.Column(db.String(256))
     answer_text = db.Column(db.Text)
     hunts_id = db.Column(db.Integer, db.ForeignKey('hunts.id'), nullable=False)
     
@@ -53,8 +53,8 @@ class Participants(db.Model):
     email = db.Column(db.String(512))
     team_name = db.Column(db.String(32))
     image = db.Column(db.String(512))
-    leader_code = db.Column(db.String(64))
-    member_code = db.Column(db.String(64))
+    leader_code = db.Column(db.String(128))
+    member_code = db.Column(db.String(128))
     start_time = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime)
     progress = db.Column(db.Integer)
@@ -82,7 +82,7 @@ class Admins(db.Model):
     id = db.Column(db.Integer, primary_key=True) # key
     email = db.Column(db.String(512))
     username = db.Column(db.String(32))
-    password = db.Column(db.String(64))
+    password = db.Column(db.String(128))
     is_super = db.Column(db.Boolean, nullable=False, default=False)
     
     def __init__(self, e, u, p, s):
@@ -96,7 +96,7 @@ class Admins(db.Model):
         
 class Discounts(db.Model):
     id = db.Column(db.Integer, primary_key=True) # key
-    code = db.Column(db.String(64))
+    code = db.Column(db.String(128))
     percent = db.Column(db.Integer)
     uses = db.Column(db.Integer)
     

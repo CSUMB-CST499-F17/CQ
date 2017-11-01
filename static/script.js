@@ -50612,14 +50612,14 @@
 	                        React.createElement(
 	                            _reactBootstrap.Button,
 	                            { onClick: function onClick() {
-	                                    return _this3.props.changePage(_this3.pageName, 'leaderboard');
+	                                    return _this3.props.changePage('leaderboard');
 	                                } },
 	                            'Leaderboard'
 	                        ),
 	                        React.createElement(
 	                            _reactBootstrap.Button,
 	                            { onClick: function onClick() {
-	                                    return _this3.props.changePage(_this3.pageName, 'register');
+	                                    return _this3.props.changePage('register');
 	                                } },
 	                            'Participate'
 	                        ),
