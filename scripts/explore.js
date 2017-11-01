@@ -97,7 +97,7 @@ export class Explore extends React.Component {
                     <ButtonToolbar>
                         <Button onClick={() => this.props.changePage(this.pageName,'leaderboard')}>Leaderboard</Button>
                         <Button onClick={() => this.props.changePage(this.pageName,'register')}>Participate</Button>
-                        <Button onClick={() => this.props.changePage(this.pageName,'home')}>Home</Button>
+                        <Button onClick={() => this.props.changePage('home')}>Home</Button>
                     </ButtonToolbar>
                 </div>
                 <div id='buttons'>

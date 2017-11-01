@@ -11,8 +11,6 @@ import { ButtonGroup } from 'react-bootstrap';
 
 // import { Socket } from './Socket';
 
-import { NavBar } from './nav-bar';
-
 export class AdminLeaderboard extends React.Component {
     constructor(props) {
         super(props);
@@ -21,18 +19,12 @@ export class AdminLeaderboard extends React.Component {
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.changePage = this.changePage.bind(this);
     }
 
     handleSubmit(event) {
         event.preventDefault();
 
     }
-
-    changePage(page){
-        Socket.emit(page);
-    }
-
     componentDidMount(){
         Socket.on('users', (data) => {
             this.setState({
@@ -53,9 +45,6 @@ export class AdminLeaderboard extends React.Component {
         
         return (
             <div>
-                <div id = 'nav-bar'>
-                    <NavBar/>
-                </div>
                 <div id = 'header'>
                     <header>Admin Leaderboard Page</header>
                 </div>

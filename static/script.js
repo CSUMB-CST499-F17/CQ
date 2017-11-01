@@ -21916,6 +21916,8 @@
 
 	var _adminCreate = __webpack_require__(646);
 
+	var _navBar = __webpack_require__(501);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21942,6 +21944,7 @@
 	            hide: 'none' //determines whether or not buttons and inputs are visible
 	        };
 	        // this.start = this.start.bind(this);
+	        _this.temp = '';
 	        _this.handle = _this.handle.bind(_this);
 	        _this.changePage = _this.changePage.bind(_this);
 	        _this.setProps = _this.setProps.bind(_this);
@@ -21977,17 +21980,48 @@
 	            console.log('returned!');
 	        }
 	        //changes the display of the pages when button is pressed
+	        // changePage(from,to){
+	        //     this.state.temp = this.state.lastPage;
+	        //     this.state.lastPage = to;
+	        //     for (var n in this.state){
+	        //         window.localStorage.setItem( n, this.state[n] );
+	        //     }
+	        //     Socket.emit(to, this.state, Socket.callback=this.handle);
+	        //     if(to.indexOf('admin') !== -1){
+	        //         document.getElementById(this.state.temp).style.display = "none";
+	        //         document.getElementById(to).style.display = "block";
+	        //         document.getElementById('nav-bar').style.display = "block";
+	        //         // Socket.emit('adminPage', this.state.temp);
+
+	        //     }
+	        //     if(to.indexOf('admin') == -1){
+	        //         document.getElementById(this.state.temp).style.display = "none";
+	        //         document.getElementById(to).style.display = "block";
+	        //         document.getElementById('nav-bar').style.display = "none";
+	        //     }
+	        // }
+
 
 	    }, {
 	        key: 'changePage',
-	        value: function changePage(from, to) {
+	        value: function changePage(to) {
+	            this.state.temp = this.state.lastPage;
 	            this.state.lastPage = to;
 	            for (var n in this.state) {
 	                window.localStorage.setItem(n, this.state[n]);
 	            }
 	            _Socket.Socket.emit(to, this.state, _Socket.Socket.callback = this.handle);
-	            document.getElementById(from).style.display = "none";
-	            document.getElementById(to).style.display = "block";
+	            if (to.indexOf('admin') !== -1) {
+	                document.getElementById(this.state.temp).style.display = "none";
+	                document.getElementById(to).style.display = "block";
+	                document.getElementById('nav-bar').style.display = "block";
+	                // Socket.emit('adminPage', this.state.temp);
+	            }
+	            if (to.indexOf('admin') == -1) {
+	                document.getElementById(this.state.temp).style.display = "none";
+	                document.getElementById(to).style.display = "block";
+	                document.getElementById('nav-bar').style.display = "none";
+	            }
 	        }
 	    }, {
 	        key: 'render',
@@ -22024,6 +22058,11 @@
 	                    'div',
 	                    { id: 'play', style: { display: 'none' } },
 	                    React.createElement(_play.Play, { changePage: this.changePage, loggedIn: this.state.loggedIn, hide: this.state.hide })
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'nav-bar', style: { display: 'none' } },
+	                    React.createElement(_navBar.NavBar, { changePage: this.changePage, lastPage: this.state.lastPage })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -30700,28 +30739,28 @@
 	                        React.createElement(
 	                            'button',
 	                            { className: 'btn', onClick: function onClick() {
-	                                    return _this3.props.changePage(_this3.pageName, 'explore');
+	                                    return _this3.props.changePage('explore');
 	                                } },
 	                            'Let\'s Explore!'
 	                        ),
 	                        React.createElement(
 	                            'button',
 	                            { className: 'btn', onClick: function onClick() {
-	                                    return _this3.props.changePage(_this3.pageName, 'existingTeam');
+	                                    return _this3.props.changePage('existingTeam');
 	                                } },
 	                            'Log into Existing Team'
 	                        ),
 	                        React.createElement(
 	                            'button',
 	                            { className: 'btn', onClick: function onClick() {
-	                                    return _this3.props.changePage(_this3.pageName, 'adminHome');
+	                                    return _this3.props.changePage('adminHome');
 	                                } },
 	                            'Temp Button to Admin Homepage'
 	                        ),
 	                        React.createElement(
 	                            'button',
 	                            { className: 'btn', onClick: function onClick() {
-	                                    return _this3.props.changePage(_this3.pageName, 'play');
+	                                    return _this3.props.changePage('play');
 	                                } },
 	                            'Temp Button to Play Page'
 	                        )
@@ -50574,7 +50613,7 @@
 	                        React.createElement(
 	                            _reactBootstrap.Button,
 	                            { onClick: function onClick() {
-	                                    return _this3.props.changePage(_this3.pageName, 'home');
+	                                    return _this3.props.changePage('home');
 	                                } },
 	                            'Home'
 	                        )
@@ -50826,7 +50865,7 @@
 	                        React.createElement(
 	                            _reactBootstrap.Button,
 	                            { onClick: function onClick() {
-	                                    return _this3.props.changePage(_this3.pageName, 'home');
+	                                    return _this3.props.changePage('home');
 	                                } },
 	                            'Home'
 	                        )
@@ -51024,7 +51063,7 @@
 	                        React.createElement(
 	                            _reactBootstrap.Button,
 	                            { onClick: function onClick() {
-	                                    return _this2.props.changePage(_this2.pageName, 'home');
+	                                    return _this2.props.changePage('home');
 	                                } },
 	                            'Cancel'
 	                        )
@@ -51345,7 +51384,7 @@
 	                React.createElement(
 	                    _reactBootstrap.Button,
 	                    { onClick: function onClick() {
-	                            return _this3.props.changePage(_this3.pageName, 'home');
+	                            return _this3.props.changePage('home');
 	                        } },
 	                    'Home'
 	                )
@@ -51583,7 +51622,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this3.props.changePage(_this3.pageName, 'home');
+	                                        return _this3.props.changePage('home');
 	                                    } },
 	                                'Home'
 	                            )
@@ -51627,8 +51666,6 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _navBar = __webpack_require__(501);
-
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51645,7 +51682,6 @@
 
 	        var _this = _possibleConstructorReturn(this, (AdminHome.__proto__ || Object.getPrototypeOf(AdminHome)).call(this, props));
 
-	        _this.changePage = _this.changePage.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
 	    }
@@ -51655,25 +51691,12 @@
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
 	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('adminHome').style.display = "none";
-	            document.getElementById(page).style.display = "block";
-	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return React.createElement(
 	                'div',
 	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'nav-bar' },
-	                    React.createElement(_navBar.NavBar, null)
-	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'header' },
@@ -51732,6 +51755,8 @@
 
 	        var _this = _possibleConstructorReturn(this, (NavBar.__proto__ || Object.getPrototypeOf(NavBar)).call(this, props));
 
+	        _this.currentPage = _this.props.lastPage;
+	        alert(_this.currentPage);
 	        _this.changePage = _this.changePage.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
@@ -51742,6 +51767,10 @@
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
 	        }
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {}
+
 	        //changes the display of the pages when button is pressed
 
 	    }, {
@@ -51762,6 +51791,11 @@
 	        value: function render() {
 	            var _this2 = this;
 
+	            _Socket.Socket.on('adminPage', function (data) {
+	                _this2.setState({
+	                    currentPage: data
+	                });
+	            });
 	            return React.createElement(
 	                'div',
 	                null,
@@ -51771,35 +51805,35 @@
 	                    React.createElement(
 	                        'a',
 	                        { onClick: function onClick() {
-	                                return _this2.changePage('adminHome');
+	                                return _this2.props.changePage('adminHome');
 	                            } },
 	                        'Home'
 	                    ),
 	                    React.createElement(
 	                        'a',
 	                        { onClick: function onClick() {
-	                                return _this2.changePage('adminLeaderboard');
+	                                return _this2.props.changePage('adminLeaderboard');
 	                            } },
 	                        'Leaderboard'
 	                    ),
 	                    React.createElement(
 	                        'a',
 	                        { onClick: function onClick() {
-	                                return _this2.changePage('adminHunts');
+	                                return _this2.props.changePage('adminHunts');
 	                            } },
 	                        'Hunts'
 	                    ),
 	                    React.createElement(
 	                        'a',
 	                        { onClick: function onClick() {
-	                                return _this2.changePage('admins');
+	                                return _this2.props.changePage('admins');
 	                            } },
 	                        'Settings'
 	                    ),
 	                    React.createElement(
 	                        'a',
 	                        { onClick: function onClick() {
-	                                return _this2.changePage('home');
+	                                return _this2.props.changePage('home');
 	                            } },
 	                        'Logout'
 	                    ),
@@ -51839,8 +51873,6 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _navBar = __webpack_require__(501);
-
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51864,7 +51896,6 @@
 	        };
 
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        _this.changePage = _this.changePage.bind(_this);
 	        return _this;
 	    }
 
@@ -51872,11 +51903,6 @@
 	        key: 'handleSubmit',
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
-	        }
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            _Socket.Socket.emit(page);
 	        }
 	    }, {
 	        key: 'componentDidMount',
@@ -51917,11 +51943,6 @@
 	            return React.createElement(
 	                'div',
 	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'nav-bar' },
-	                    React.createElement(_navBar.NavBar, null)
-	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'header' },
@@ -52016,8 +52037,6 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _navBar = __webpack_require__(501);
-
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -52034,7 +52053,6 @@
 
 	        var _this = _possibleConstructorReturn(this, (AdminHunts.__proto__ || Object.getPrototypeOf(AdminHunts)).call(this, props));
 
-	        _this.changePage = _this.changePage.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
 	    }
@@ -52044,14 +52062,6 @@
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
 	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('adminHunts').style.display = "none";
-	            document.getElementById(page).style.display = "block";
-	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
@@ -52060,11 +52070,6 @@
 	            return React.createElement(
 	                'div',
 	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'nav-bar' },
-	                    React.createElement(_navBar.NavBar, null)
-	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'header' },
@@ -52097,14 +52102,14 @@
 	                                    React.createElement(
 	                                        _reactBootstrap.Button,
 	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('adminEditHunt');
+	                                                return _this2.props.changePage('adminEditHunt');
 	                                            } },
 	                                        'Edit'
 	                                    ),
 	                                    React.createElement(
 	                                        _reactBootstrap.Button,
 	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('adminCreateHunt');
+	                                                return _this2.props.changePage('adminCreateHunt');
 	                                            } },
 	                                        'Create'
 	                                    )
@@ -52140,8 +52145,6 @@
 	var _Socket = __webpack_require__(185);
 
 	var _reactBootstrap = __webpack_require__(240);
-
-	var _navBar = __webpack_require__(501);
 
 	var _moment = __webpack_require__(505);
 
@@ -52191,7 +52194,6 @@
 	            'image': []
 	        };
 
-	        _this.changePage = _this.changePage.bind(_this);
 	        _this.addQuestion = _this.addQuestion.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
@@ -52235,14 +52237,6 @@
 	                'image': this.state.image
 	            });
 	            this.changePage('adminHome');
-	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('adminCreateHunt').style.display = "none";
-	            document.getElementById(page).style.display = "block";
 	        }
 	    }, {
 	        key: 'addQuestion',
@@ -52327,11 +52321,6 @@
 	            return React.createElement(
 	                'div',
 	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'nav-bar' },
-	                    React.createElement(_navBar.NavBar, null)
-	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'header' },
@@ -71497,7 +71486,6 @@
 	            'limit': 25
 	        };
 
-	        _this.changePage = _this.changePage.bind(_this);
 	        _this.addQuestion = _this.addQuestion.bind(_this);
 	        _this.printQuestion = _this.printQuestion.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
@@ -71508,14 +71496,6 @@
 	        key: 'handleSubmit',
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
-	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('adminEditHunt').style.display = "none";
-	            document.getElementById(page).style.display = "block";
 	        }
 	    }, {
 	        key: 'addQuestion',
@@ -71627,7 +71607,7 @@
 	                                        React.createElement(
 	                                            _reactBootstrap.Button,
 	                                            { onClick: function onClick() {
-	                                                    return _this2.changePage('adminHunts');
+	                                                    return _this2.props.changePage('adminHunts');
 	                                                } },
 	                                            'Cancel'
 	                                        )
@@ -71665,8 +71645,6 @@
 
 	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
 
-	var _navBar = __webpack_require__(501);
-
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -71687,7 +71665,6 @@
 
 	        var _this = _possibleConstructorReturn(this, (Admins.__proto__ || Object.getPrototypeOf(Admins)).call(this, props));
 
-	        _this.changePage = _this.changePage.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
 	    }
@@ -71697,14 +71674,6 @@
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
 	        }
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('admins').style.display = "none";
-	            document.getElementById(page).style.display = "block";
-	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
@@ -71713,11 +71682,6 @@
 	            return React.createElement(
 	                'div',
 	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'nav-bar' },
-	                    React.createElement(_navBar.NavBar, null)
-	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'header' },
@@ -71751,7 +71715,7 @@
 	                                    React.createElement(
 	                                        _reactBootstrap.Button,
 	                                        { onClick: function onClick() {
-	                                                return _this2.changePage('adminCreate');
+	                                                return _this2.props.changePage('adminCreate');
 	                                            } },
 	                                        'Create New Admin'
 	                                    )
@@ -71788,8 +71752,6 @@
 
 	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
 
-	var _navBar = __webpack_require__(501);
-
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -71808,7 +71770,6 @@
 
 	        var _this = _possibleConstructorReturn(this, (AdminCreate.__proto__ || Object.getPrototypeOf(AdminCreate)).call(this, props));
 
-	        _this.changePage = _this.changePage.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
 	    }
@@ -71818,26 +71779,12 @@
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
 	        }
-
-	        //changes the display of the pages when button is pressed
-
-	    }, {
-	        key: 'changePage',
-	        value: function changePage(page) {
-	            document.getElementById('adminCreate').style.display = "none";
-	            document.getElementById(page).style.display = "block";
-	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return React.createElement(
 	                'div',
 	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'nav-bar' },
-	                    React.createElement(_navBar.NavBar, null)
-	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'header' },

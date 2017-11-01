@@ -188,7 +188,7 @@ export class Register extends React.Component {
                 </form>
                 
                 
-                <Button onClick={() => this.props.changePage(this.pageName,'home')}>Home</Button>
+                <Button onClick={() => this.props.changePage('home')}>Home</Button>
             </div>
          
         );

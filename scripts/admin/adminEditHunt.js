@@ -15,8 +15,7 @@ export class AdminEditHunt extends React.Component {
             'count':0,
             'limit':25
         };
-
-        this.changePage = this.changePage.bind(this);
+        
         this.addQuestion = this.addQuestion.bind(this);
         this.printQuestion = this.printQuestion.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,12 +24,6 @@ export class AdminEditHunt extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
     }
-    //changes the display of the pages when button is pressed
-    changePage(page){
-        document.getElementById('adminEditHunt').style.display = "none";
-        document.getElementById(page).style.display = "block";
-    }
-    
     addQuestion(){
         // Get the quiz form element
         var question = document.getElementById('questionEdit');
@@ -114,7 +107,7 @@ export class AdminEditHunt extends React.Component {
                                     <input type="button" value="Temp Print question(Checks to make sure values are being passed)" onClick={() => this.printQuestion()}/>
                                     <ButtonToolbar>
                                         <Button id='edit-item'>Save</Button>
-                                        <Button onClick={() => this.changePage('adminHunts')}>Cancel</Button>
+                                        <Button onClick={() => this.props.changePage('adminHunts')}>Cancel</Button>
                                     </ButtonToolbar>
                                 </InputGroup>
                             </FormGroup>

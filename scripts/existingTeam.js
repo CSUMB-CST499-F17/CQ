@@ -120,7 +120,7 @@ export class ExistingTeam extends React.Component {
                 <div id='buttons'>
                     <ButtonToolbar>
                         <Button id= "ET-submit" onClick = {this.validateCredentials}>Enter!</Button>
-                        <Button onClick={() => this.props.changePage(this.pageName,'home')}>Cancel</Button>
+                        <Button onClick={() => this.props.changePage('home')}>Cancel</Button>
                     </ButtonToolbar>
                 </div>
             </div>

@@ -38,10 +38,10 @@ export class Home extends React.Component {
                 </div>
                 <div id='buttons'>
                     <div className ="tool">
-                        <button className="btn" onClick={() => this.props.changePage(this.pageName,'explore')}>Let's Explore!</button>
-                        <button className="btn" onClick={() => this.props.changePage(this.pageName,'existingTeam')}>Log into Existing Team</button>
-                        <button className="btn" onClick={() => this.props.changePage(this.pageName,'adminHome')}>Temp Button to Admin Homepage</button>
-                        <button className="btn" onClick={() => this.props.changePage(this.pageName,'play')}>Temp Button to Play Page</button>
+                        <button className="btn" onClick={() => this.props.changePage('explore')}>Let's Explore!</button>
+                        <button className="btn" onClick={() => this.props.changePage('existingTeam')}>Log into Existing Team</button>
+                        <button className="btn" onClick={() => this.props.changePage('adminHome')}>Temp Button to Admin Homepage</button>
+                        <button className="btn" onClick={() => this.props.changePage('play')}>Temp Button to Play Page</button>
                     </div>
                 </div>
             </div>

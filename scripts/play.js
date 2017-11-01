@@ -145,7 +145,7 @@ export class Play extends React.Component {
                             <Button id="answer-submit"  style={{display:this.props.hide}} onClick={this.handleSubmit} >Submit</Button>
                             <Button id="hint-submit" style={{display:this.props.hide}} onClick={this.showHint}>Hint</Button>
 
-                            <Button onClick={() => this.props.changePage(this.pageName,'home')}>Home</Button>
+                            <Button onClick={() => this.props.changePage('home')}>Home</Button>
                         </ButtonToolbar>
                     </div>
 

@@ -7,6 +7,8 @@ export class NavBar extends React.Component {
     constructor(props) {
     super(props);
 
+    this.currentPage = this.props.lastPage;
+    alert(this.currentPage);
     this.changePage = this.changePage.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -14,6 +16,10 @@ export class NavBar extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
     }
+    componentDidMount(){
+        
+    }
+    
     //changes the display of the pages when button is pressed
     changePage(page){
         //hides all pages then displays appropriate page to prevent multiple 
@@ -28,14 +34,19 @@ export class NavBar extends React.Component {
     }
     
     render() {
+        Socket.on('adminPage', (data) => {
+            this.setState({
+                currentPage: data
+            });
+        });
         return (
             <div>
                 <div id="topnav">
-                    <a onClick={() => this.changePage('adminHome')}>Home</a>
-                    <a onClick={() => this.changePage('adminLeaderboard')}>Leaderboard</a>
-                    <a onClick={() => this.changePage('adminHunts')}>Hunts</a>
-                    <a onClick={() => this.changePage('admins')}>Settings</a>
-                    <a onClick={() => this.changePage('home')}>Logout</a>
+                    <a onClick={() => this.props.changePage('adminHome')}>Home</a>
+                    <a onClick={() => this.props.changePage('adminLeaderboard')}>Leaderboard</a>
+                    <a onClick={() => this.props.changePage('adminHunts')}>Hunts</a>
+                    <a onClick={() => this.props.changePage('admins')}>Settings</a>
+                    <a onClick={() => this.props.changePage('home')}>Logout</a>
                     <div id = 'logo-small-nav'>
                     <LogoSmall />
                 </div>

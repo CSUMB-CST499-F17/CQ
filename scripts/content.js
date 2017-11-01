@@ -15,6 +15,7 @@ import { AdminCreateHunt } from './admin/adminCreateHunt';
 import { AdminEditHunt } from './admin/adminEditHunt';
 import { Admins } from './admin/admins';
 import { AdminCreate } from './admin/adminCreate';
+import { NavBar } from './admin/nav-bar';
 
 
 export class Content extends React.Component{
@@ -24,9 +25,10 @@ export class Content extends React.Component{
             name: 'guest', //team name or admin user name
             loggedIn: 'no', //no,admin,superAdmin,team,teamLead
             lastPage: 'home', //last page loaded, set this dynamically
-            hide:'none' //determines whether or not buttons and inputs are visible
+            hide:'none', //determines whether or not buttons and inputs are visible
         };
         // this.start = this.start.bind(this);
+        this.temp = '';
         this.handle = this.handle.bind(this);
         this.changePage = this.changePage.bind(this);
         this.setProps = this.setProps.bind(this);
@@ -56,15 +58,52 @@ export class Content extends React.Component{
         console.log('returned!');
     }
     //changes the display of the pages when button is pressed
-    changePage(from,to){
+    // changePage(from,to){
+    //     this.state.temp = this.state.lastPage;
+    //     this.state.lastPage = to;
+    //     for (var n in this.state){
+    //         window.localStorage.setItem( n, this.state[n] );
+    //     }
+    //     Socket.emit(to, this.state, Socket.callback=this.handle);
+    //     if(to.indexOf('admin') !== -1){
+    //         document.getElementById(this.state.temp).style.display = "none";
+    //         document.getElementById(to).style.display = "block";
+    //         document.getElementById('nav-bar').style.display = "block";
+    //         // Socket.emit('adminPage', this.state.temp);
+
+    //     }
+    //     if(to.indexOf('admin') == -1){
+    //         document.getElementById(this.state.temp).style.display = "none";
+    //         document.getElementById(to).style.display = "block";
+    //         document.getElementById('nav-bar').style.display = "none";
+    //     }
+    // }
+    
+    
+    changePage(to){
+        this.state.temp = this.state.lastPage;
         this.state.lastPage = to;
         for (var n in this.state){
             window.localStorage.setItem( n, this.state[n] );
         }
         Socket.emit(to, this.state, Socket.callback=this.handle);
-        document.getElementById(from).style.display = "none";
-        document.getElementById(to).style.display = "block";
+        if(to.indexOf('admin') !== -1){
+            document.getElementById(this.state.temp).style.display = "none";
+            document.getElementById(to).style.display = "block";
+            document.getElementById('nav-bar').style.display = "block";
+            // Socket.emit('adminPage', this.state.temp);
+
+        }
+        if(to.indexOf('admin') == -1){
+            document.getElementById(this.state.temp).style.display = "none";
+            document.getElementById(to).style.display = "block";
+            document.getElementById('nav-bar').style.display = "none";
+        }
     }
+    
+    
+    
+    
     render(){
         return (
             <div>
@@ -85,6 +124,9 @@ export class Content extends React.Component{
                 </div>
                 <div id = 'play' style={{display:'none'}}>
                     <Play changePage={this.changePage} loggedIn={this.state.loggedIn} hide={this.state.hide}/>
+                </div>
+                <div id = 'nav-bar' style={{display:'none'}}>
+                    <NavBar changePage={this.changePage} lastPage={this.state.lastPage}/>
                 </div>
                 <div id = 'adminHome' style={{display:'none'}}>
                     <AdminHome changePage={this.changePage}/>
