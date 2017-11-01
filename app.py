@@ -129,8 +129,7 @@ def updateProgress(data):
     #     return 'admin%' + query.username
     # except:
     #     return 'no%guest'
-        
->>>>>>> 4ecb17f5de52c717d1148efa45420ff12caedbfa
+    
 @socketio.on('leaderboard')
 def updateLeaderboard():
     global teams
@@ -189,6 +188,7 @@ def checkout(data):
         random_number = random.randint(0,9999)
         hunt_name = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt_id).first().name
         hunt_name = hunt_name.replace(" ", "")
+        #strip all punctuation
         leader_code = hunt_name + "{:04d}".format(random_number)
         
         random.seed();
@@ -196,15 +196,16 @@ def checkout(data):
         member_code = hunt_name + "{:04d}".format(random_number)
         
         participants = None
-        try:
-            participants = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None,None, 0, 0, False, hunt_id)
-            models.db.session.add(participants)  
-            models.db.session.commit()
-            
-            participants = models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name)
-        except:
-            socketio.emit('rejection', {'message':'could not connect to database'})
-            return
+        #try:
+        salt = uuid.uuid4().hex + uuid.uuid4().hex
+        participants = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code, salt), hash_password(member_code, salt), None, None, 0, 0, 0, False, hunt_id)
+        models.db.session.add(participants)  
+        models.db.session.commit()
+        
+        participants = models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name)
+        #except:
+        #    socketio.emit('rejection', {'message':'could not connect to database'})
+        #    return
         
         try:
             price = 50
@@ -260,8 +261,7 @@ def email_client(client_email, subject, message):
     server.sendmail(email_address, client_email, recp_message)
     server.quit()
     
-def hash_password(password):
-    salt = "You're too salty"
+def hash_password(password, salt):
     return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
 
 def check_password(hashed_password, user_password):
