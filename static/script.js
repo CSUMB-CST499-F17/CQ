@@ -50964,12 +50964,12 @@
 	                switch (res[0]) {
 	                    case "teamLead":
 	                    case "team":
-	                        this.props.changePage(this.pageName, 'play');
+	                        this.props.changePage('play');
 
 	                        break;
 	                    case "superAdmin":
 	                    case "admin":
-	                        this.props.changePage(this.pageName, 'adminHome');
+	                        this.props.changePage('adminHome');
 
 	                        break;
 	                    case "no":
@@ -71852,7 +71852,7 @@
 	                    ),
 	                    React.createElement(
 	                        'a',
-	                        { onClick: function onClick() {
+	                        { style: { display: this.props.hide }, onClick: function onClick() {
 	                                return _this2.props.changePage('admins');
 	                            } },
 	                        'Settings'

@@ -38,7 +38,7 @@ export class NavBar extends React.Component {
                     <a onClick={() => this.props.changePage('adminHome')}>Home</a>
                     <a onClick={() => this.props.changePage('adminLeaderboard')}>Leaderboard</a>
                     <a onClick={() => this.props.changePage('adminHunts')}>Hunts</a>
-                    <a onClick={() => this.props.changePage('admins')}>Settings</a>
+                    <a style={{display:this.props.hide}} onClick={() => this.props.changePage('admins')}>Settings</a>
                     <a onClick={() => this.props.changePage('home')}>Logout</a>
                     <div id = 'logo-small-nav'>
                     <LogoSmall />

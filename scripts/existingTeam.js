@@ -55,12 +55,12 @@ export class ExistingTeam extends React.Component {
                 switch(res[0]) {
                     case "teamLead":
                     case "team":
-                        this.props.changePage(this.pageName,'play');
+                        this.props.changePage('play');
                         
                         break;
                     case "superAdmin":
                     case "admin":
-                        this.props.changePage(this.pageName,'adminHome');
+                        this.props.changePage('adminHome');
 
                         break;
                     case "no":
