@@ -21896,8 +21896,6 @@
 
 	var _leaderboard = __webpack_require__(496);
 
-	var _existingTeam = __webpack_require__(497);
-
 	var _register = __webpack_require__(498);
 
 	var _play = __webpack_require__(499);
@@ -21942,8 +21940,9 @@
 	            loggedIn: 'no', //no,admin,superAdmin,team,teamLead
 	            lastPage: 'home', //last page loaded, set this dynamically
 	            hide: 'none' //determines whether or not buttons and inputs are visible
-	            // hide:'block' //FOR TESTING ONLY. DELETE BEFORE BETA
 	        };
+	        // this.start = this.start.bind(this);
+	        _this.temp = '';
 	        _this.handle = _this.handle.bind(_this);
 	        _this.changePage = _this.changePage.bind(_this);
 	        _this.setProps = _this.setProps.bind(_this);
@@ -21989,6 +21988,29 @@
 	        value: function handle(callback) {
 	            console.log('returned!');
 	        }
+	        //changes the display of the pages when button is pressed
+	        // changePage(from,to){
+	        //     this.state.temp = this.state.lastPage;
+	        //     this.state.lastPage = to;
+	        //     for (var n in this.state){
+	        //         window.localStorage.setItem( n, this.state[n] );
+	        //     }
+	        //     Socket.emit(to, this.state, Socket.callback=this.handle);
+	        //     if(to.indexOf('admin') !== -1){
+	        //         document.getElementById(this.state.temp).style.display = "none";
+	        //         document.getElementById(to).style.display = "block";
+	        //         document.getElementById('nav-bar').style.display = "block";
+	        //         // Socket.emit('adminPage', this.state.temp);
+
+	        //     }
+	        //     if(to.indexOf('admin') == -1){
+	        //         document.getElementById(this.state.temp).style.display = "none";
+	        //         document.getElementById(to).style.display = "block";
+	        //         document.getElementById('nav-bar').style.display = "none";
+	        //     }
+	        // }
+
+
 	    }, {
 	        key: 'changePage',
 	        value: function changePage(to) {
@@ -22002,6 +22024,7 @@
 	                document.getElementById(this.state.temp).style.display = "none";
 	                document.getElementById(to).style.display = "block";
 	                document.getElementById('nav-bar').style.display = "block";
+	                // Socket.emit('adminPage', this.state.temp);
 	            }
 	            if (to.indexOf('admin') == -1) {
 	                document.getElementById(this.state.temp).style.display = "none";
@@ -22018,7 +22041,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'home', style: { display: 'block' } },
-	                    React.createElement(_home.Home, { changePage: this.changePage, lastPage: this.state.lastPage })
+	                    React.createElement(_home.Home, { changePage: this.changePage, state: this.state, setProps: this.setProps })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -22029,11 +22052,6 @@
 	                    'div',
 	                    { id: 'leaderboard', style: { display: 'none' } },
 	                    React.createElement(_leaderboard.Leaderboard, { changePage: this.changePage })
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'existingTeam', style: { display: 'none' } },
-	                    React.createElement(_existingTeam.ExistingTeam, { changePage: this.changePage, setProps: this.setProps, loggedIn: this.state.loggedIn, name: this.state.name })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -30654,6 +30672,8 @@
 
 	var _Socket = __webpack_require__(185);
 
+	var _existingTeam = __webpack_require__(497);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -30674,6 +30694,7 @@
 	        _this.index = 0;
 	        _this.images = ['boats', 'bust', 'canneryrow', 'crossedarms', 'lighthousewide', 'montereycanningcompany', 'sistercitypark', 'swanboat', 'whale'];
 	        // IMAGES THAT SHOW UP SIDEWAYS: 'diversmemorial','lady','lighthousenarrow','shareabench','twowhales', 'yesterdaysdream'
+	        _this.login = _this.login.bind(_this);
 	        _this.showSlides = _this.showSlides.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
@@ -30715,8 +30736,20 @@
 	            }
 	            // var index = Math.floor(Math.random() * this.images.length);
 	            // image.src="../static/image/gallery/"+this.images[index]+".jpg"; 
-	            if (this.props.lastPage == 'home') {
-	                setTimeout(this.showSlides, 10000); // Change image every 10 seconds
+	            if (this.props.state.lastPage == 'home') {
+	                setTimeout(this.showSlides, 7000); // Change image every 10 seconds
+	            }
+	        }
+	    }, {
+	        key: 'login',
+	        value: function login() {
+	            console.log('pressed');
+	            if (document.getElementById("existingTeam").style.display == "none") {
+	                document.getElementById("existingTeam").style.display = "block";
+	                document.getElementById("nav").style.display = "none";
+	            } else {
+	                document.getElementById("existingTeam").style.display = "none";
+	                document.getElementById("nav").style.display = "block";
 	            }
 	        }
 	    }, {
@@ -30743,23 +30776,30 @@
 	                    ),
 	                    React.createElement(
 	                        'div',
-	                        { id: 'buttons' },
+	                        { className: 'buttons' },
 	                        React.createElement(
 	                            'div',
 	                            { className: 'tool' },
 	                            React.createElement(
-	                                'button',
-	                                { className: 'btn', onClick: function onClick() {
-	                                        return _this3.props.changePage('explore');
-	                                    } },
-	                                'Let\'s Explore!'
+	                                'div',
+	                                { id: 'nav' },
+	                                React.createElement(
+	                                    'button',
+	                                    { className: 'btn', onClick: function onClick() {
+	                                            return _this3.props.changePage('explore');
+	                                        } },
+	                                    'Let\'s Explore!'
+	                                ),
+	                                React.createElement(
+	                                    'button',
+	                                    { className: 'btn', onClick: this.login },
+	                                    'Log into Existing Team'
+	                                )
 	                            ),
 	                            React.createElement(
-	                                'button',
-	                                { className: 'btn', onClick: function onClick() {
-	                                        return _this3.props.changePage('existingTeam');
-	                                    } },
-	                                'Log into Existing Team'
+	                                'div',
+	                                { id: 'existingTeam', style: { display: 'none' } },
+	                                React.createElement(_existingTeam.ExistingTeam, { changePage: this.props.state.changePage, cancel: this.login, setProps: this.props.setProps, loggedIn: this.props.state.loggedIn, name: this.props.state.name })
 	                            ),
 	                            React.createElement(
 	                                'button',
@@ -50934,16 +50974,12 @@
 	        _this.pageName = 'existingTeam';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        _this.validateCredentials = _this.validateCredentials.bind(_this);
-	        _this.errorMessage = _this.errorMessage.bind(_this);
 	        _this.team = "";
 	        _this.handle = _this.handle.bind(_this);
 	        return _this;
 	    }
 
 	    _createClass(ExistingTeam, [{
-	        key: 'errorMessage',
-	        value: function errorMessage(validate) {}
-	    }, {
 	        key: 'handle',
 	        value: function handle(callback) {
 	            var res = callback.split('%');
@@ -50963,9 +50999,9 @@
 
 	                        break;
 	                    case "no":
-	                        document.getElementById("errorMessage").innerHTML = "Invalid Team Name or Access Code";
+	                        document.getElementById("errorMessage").innerHTML = "⚠ Invalid Team Name or Access Code ⚠";
 	                        document.getElementById("errorMessage").style.visibility = 'visible';
-	                        document.getElementById("errorMessage").style.color = "red";
+	                        document.getElementById("errorMessage").style.color = "#f2e537";
 	                        document.getElementById("access").value = "";
 	                        break;
 	                    default:
@@ -50981,9 +51017,9 @@
 	            this.team = document.getElementById("team_name").value;
 	            var access = document.getElementById("access").value;
 	            if (this.team == "") {
-	                document.getElementById("errorMessage").innerHTML = "Please Enter valid Team Name and Access Code";
+	                document.getElementById("errorMessage").innerHTML = "⚠ Please Enter valid Team Name and Access Code ⚠";
 	                document.getElementById("errorMessage").style.visibility = 'visible';
-	                document.getElementById("errorMessage").style.color = "red";
+	                document.getElementById("errorMessage").style.color = "#f2e537";
 	            } else {
 	                document.getElementById("errorMessage").style.visibility = 'hidden';
 	                _Socket.Socket.emit('validateCredentials', { 'team_name': this.team, 'access': access }, _Socket.Socket.callback = this.handle);
@@ -50997,66 +51033,30 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
-
 	            return React.createElement(
 	                'div',
 	                null,
 	                React.createElement(
 	                    'div',
-	                    { id: 'logo-small' },
-	                    React.createElement(_logoSmall.LogoSmall, null)
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'header' },
+	                    { id: 'login' },
+	                    React.createElement('input', { type: 'text', id: 'team_name', placeholder: 'Team Name' }),
+	                    React.createElement('input', { type: 'password', id: 'access', placeholder: 'Access Code' }),
 	                    React.createElement(
-	                        'header',
-	                        null,
-	                        'EXISTING TEAMS'
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'intro' },
-	                    React.createElement('img', { id: 'pageImage', src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Full_Spectrum_Team_Waving.jpg/1024px-Full_Spectrum_Team_Waving.jpg', width: '100%' }),
-	                    React.createElement('br', null),
+	                        'div',
+	                        { id: 'errorMessage', style: { visibility: 'hidden' } },
+	                        ' Error Message Placeholder'
+	                    ),
 	                    React.createElement(
-	                        _reactBootstrap.Form,
-	                        { id: 'ET-form' },
+	                        'div',
+	                        { className: 'buttons' },
 	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            null,
-	                            React.createElement(
-	                                _reactBootstrap.InputGroup,
-	                                null,
-	                                React.createElement(_reactBootstrap.FormControl, { type: 'text', id: 'team_name', className: 'ET-field', placeholder: 'Enter Team Name' }),
-	                                React.createElement(_reactBootstrap.FormControl, { type: 'password', id: 'access', className: 'ET-field', placeholder: 'Enter access code' }),
-	                                React.createElement(
-	                                    'div',
-	                                    { id: 'errorMessage', style: { visibility: 'hidden' } },
-	                                    ' Error Message Placeholder'
-	                                )
-	                            )
-	                        )
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'buttons' },
-	                    React.createElement(
-	                        _reactBootstrap.ButtonToolbar,
-	                        null,
-	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { id: 'ET-submit', onClick: this.validateCredentials },
+	                            'button',
+	                            { className: 'btn', onClick: this.validateCredentials },
 	                            'Enter!'
 	                        ),
 	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: function onClick() {
-	                                    return _this2.props.changePage('home');
-	                                } },
+	                            'button',
+	                            { className: 'btn', onClick: this.props.cancel },
 	                            'Cancel'
 	                        )
 	                    )
@@ -51067,14 +51067,6 @@
 
 	    return ExistingTeam;
 	}(React.Component);
-
-	//  <form onSubmit = {this.handleSubmit}>
-	//     <InputGroup>
-	//         <ButtonToolbar>
-	//             <Button onClick={() => this.changePage('home')}>Home</Button>
-	//         </ButtonToolbar>
-	//     </InputGroup>
-	// </form>
 
 /***/ },
 /* 498 */
