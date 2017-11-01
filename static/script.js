@@ -21892,9 +21892,9 @@
 
 	var _home = __webpack_require__(239);
 
-	var _explore = __webpack_require__(494);
+	var _explore = __webpack_require__(496);
 
-	var _leaderboard = __webpack_require__(496);
+	var _leaderboard = __webpack_require__(497);
 
 	var _register = __webpack_require__(498);
 
@@ -30672,7 +30672,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _existingTeam = __webpack_require__(497);
+	var _existingTeam = __webpack_require__(494);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -50515,6 +50515,192 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.ExistingTeam = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _reactBootstrap = __webpack_require__(240);
+
+	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
+	var _Socket = __webpack_require__(185);
+
+	var _logoSmall = __webpack_require__(495);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ExistingTeam = exports.ExistingTeam = function (_React$Component) {
+	    _inherits(ExistingTeam, _React$Component);
+
+	    function ExistingTeam(props) {
+	        _classCallCheck(this, ExistingTeam);
+
+	        var _this = _possibleConstructorReturn(this, (ExistingTeam.__proto__ || Object.getPrototypeOf(ExistingTeam)).call(this, props));
+
+	        _this.pageName = 'existingTeam';
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.validateCredentials = _this.validateCredentials.bind(_this);
+	        _this.team = "";
+	        _this.handle = _this.handle.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(ExistingTeam, [{
+	        key: 'handle',
+	        value: function handle(callback) {
+	            var res = callback.split('%');
+	            try {
+	                this.props.setProps(res[0], res[1]); //loggedIn, name
+	                document.getElementById("team_name").value = "";
+	                document.getElementById("access").value = "";
+	                switch (res[0]) {
+	                    case "teamLead":
+	                    case "team":
+	                        this.props.changePage('play');
+
+	                        break;
+	                    case "superAdmin":
+	                    case "admin":
+	                        this.props.changePage('adminHome');
+
+	                        break;
+	                    case "no":
+	                        document.getElementById("errorMessage").innerHTML = "⚠ Invalid Team Name or Access Code ⚠";
+	                        document.getElementById("errorMessage").style.visibility = 'visible';
+	                        document.getElementById("errorMessage").style.color = "#f2e537";
+	                        document.getElementById("access").value = "";
+	                        break;
+	                    default:
+	                        break;
+	                }
+	            } catch (err) {
+	                alert(err);
+	            }
+	        }
+	    }, {
+	        key: 'validateCredentials',
+	        value: function validateCredentials() {
+	            this.team = document.getElementById("team_name").value;
+	            var access = document.getElementById("access").value;
+	            if (this.team == "") {
+	                document.getElementById("errorMessage").innerHTML = "⚠ Please Enter valid Team Name and Access Code ⚠";
+	                document.getElementById("errorMessage").style.visibility = 'visible';
+	                document.getElementById("errorMessage").style.color = "#f2e537";
+	            } else {
+	                document.getElementById("errorMessage").style.visibility = 'hidden';
+	                _Socket.Socket.emit('validateCredentials', { 'team_name': this.team, 'access': access }, _Socket.Socket.callback = this.handle);
+	            }
+	        }
+	    }, {
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'login' },
+	                    React.createElement('input', { type: 'text', id: 'team_name', placeholder: 'Team Name' }),
+	                    React.createElement('input', { type: 'password', id: 'access', placeholder: 'Access Code' }),
+	                    React.createElement(
+	                        'div',
+	                        { id: 'errorMessage', style: { visibility: 'hidden' } },
+	                        ' Error Message Placeholder'
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { className: 'buttons' },
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn', onClick: this.validateCredentials },
+	                            'Enter!'
+	                        ),
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn', onClick: this.props.cancel },
+	                            'Cancel'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return ExistingTeam;
+	}(React.Component);
+
+/***/ },
+/* 495 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.LogoSmall = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var LogoSmall = exports.LogoSmall = function (_React$Component) {
+	    _inherits(LogoSmall, _React$Component);
+
+	    function LogoSmall(props) {
+	        _classCallCheck(this, LogoSmall);
+
+	        return _possibleConstructorReturn(this, (LogoSmall.__proto__ || Object.getPrototypeOf(LogoSmall)).call(this, props));
+	    }
+
+	    _createClass(LogoSmall, [{
+	        key: "render",
+	        value: function render() {
+	            return React.createElement(
+	                "div",
+	                null,
+	                React.createElement("img", { id: "logo-small-img", src: "../static/image/logo-small.png" })
+	            );
+	        }
+	    }]);
+
+	    return LogoSmall;
+	}(React.Component);
+
+/***/ },
+/* 496 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 	exports.Explore = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -50696,55 +50882,7 @@
 	}(React.Component);
 
 /***/ },
-/* 495 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.LogoSmall = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var LogoSmall = exports.LogoSmall = function (_React$Component) {
-	    _inherits(LogoSmall, _React$Component);
-
-	    function LogoSmall(props) {
-	        _classCallCheck(this, LogoSmall);
-
-	        return _possibleConstructorReturn(this, (LogoSmall.__proto__ || Object.getPrototypeOf(LogoSmall)).call(this, props));
-	    }
-
-	    _createClass(LogoSmall, [{
-	        key: "render",
-	        value: function render() {
-	            return React.createElement(
-	                "div",
-	                null,
-	                React.createElement("img", { id: "logo-small-img", src: "../static/image/logo-small.png" })
-	            );
-	        }
-	    }]);
-
-	    return LogoSmall;
-	}(React.Component);
-
-/***/ },
-/* 496 */
+/* 497 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50928,144 +51066,6 @@
 	    }]);
 
 	    return Leaderboard;
-	}(React.Component);
-
-/***/ },
-/* 497 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.ExistingTeam = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _reactBootstrap = __webpack_require__(240);
-
-	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
-
-	var _Socket = __webpack_require__(185);
-
-	var _logoSmall = __webpack_require__(495);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ExistingTeam = exports.ExistingTeam = function (_React$Component) {
-	    _inherits(ExistingTeam, _React$Component);
-
-	    function ExistingTeam(props) {
-	        _classCallCheck(this, ExistingTeam);
-
-	        var _this = _possibleConstructorReturn(this, (ExistingTeam.__proto__ || Object.getPrototypeOf(ExistingTeam)).call(this, props));
-
-	        _this.pageName = 'existingTeam';
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        _this.validateCredentials = _this.validateCredentials.bind(_this);
-	        _this.team = "";
-	        _this.handle = _this.handle.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(ExistingTeam, [{
-	        key: 'handle',
-	        value: function handle(callback) {
-	            var res = callback.split('%');
-	            try {
-	                this.props.setProps(res[0], res[1]); //loggedIn, name
-	                document.getElementById("team_name").value = "";
-	                document.getElementById("access").value = "";
-	                switch (res[0]) {
-	                    case "teamLead":
-	                    case "team":
-	                        this.props.changePage('play');
-
-	                        break;
-	                    case "superAdmin":
-	                    case "admin":
-	                        this.props.changePage('adminHome');
-
-	                        break;
-	                    case "no":
-	                        document.getElementById("errorMessage").innerHTML = "⚠ Invalid Team Name or Access Code ⚠";
-	                        document.getElementById("errorMessage").style.visibility = 'visible';
-	                        document.getElementById("errorMessage").style.color = "#f2e537";
-	                        document.getElementById("access").value = "";
-	                        break;
-	                    default:
-	                        break;
-	                }
-	            } catch (err) {
-	                alert(err);
-	            }
-	        }
-	    }, {
-	        key: 'validateCredentials',
-	        value: function validateCredentials() {
-	            this.team = document.getElementById("team_name").value;
-	            var access = document.getElementById("access").value;
-	            if (this.team == "") {
-	                document.getElementById("errorMessage").innerHTML = "⚠ Please Enter valid Team Name and Access Code ⚠";
-	                document.getElementById("errorMessage").style.visibility = 'visible';
-	                document.getElementById("errorMessage").style.color = "#f2e537";
-	            } else {
-	                document.getElementById("errorMessage").style.visibility = 'hidden';
-	                _Socket.Socket.emit('validateCredentials', { 'team_name': this.team, 'access': access }, _Socket.Socket.callback = this.handle);
-	            }
-	        }
-	    }, {
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'login' },
-	                    React.createElement('input', { type: 'text', id: 'team_name', placeholder: 'Team Name' }),
-	                    React.createElement('input', { type: 'password', id: 'access', placeholder: 'Access Code' }),
-	                    React.createElement(
-	                        'div',
-	                        { id: 'errorMessage', style: { visibility: 'hidden' } },
-	                        ' Error Message Placeholder'
-	                    ),
-	                    React.createElement(
-	                        'div',
-	                        { className: 'buttons' },
-	                        React.createElement(
-	                            'button',
-	                            { className: 'btn', onClick: this.validateCredentials },
-	                            'Enter!'
-	                        ),
-	                        React.createElement(
-	                            'button',
-	                            { className: 'btn', onClick: this.props.cancel },
-	                            'Cancel'
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return ExistingTeam;
 	}(React.Component);
 
 /***/ },
