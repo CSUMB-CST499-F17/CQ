@@ -37,6 +37,9 @@ export class Play extends React.Component {
 
         };
         this.score = 0;
+        this.attempts = 5;
+        this.data = [];
+        this.dataSize = 0;
         this.handleChange = this.handleChange.bind(this);
         this.showHint = this.showHint.bind(this);
         this.nextQuestion = this.nextQuestion.bind(this);
@@ -50,15 +53,22 @@ export class Play extends React.Component {
             result.style.visibility = 'visible';
             result.textContent = 'Correct';
             result.style.color="#9bf442";
-            this.setState({attempts:[]})
-            // document.getElementById('answer-submit').style.display = "none";
-            // document.getElementById('hint-submit').style.display = "none";
+            if(this.state.playerQuestionOn + 2 == this.dataSize){
+                document.getElementById('next').textContent = "Last Question";
+            }
+            document.getElementById('answer-submit').style.display = "none";
+            document.getElementById('hint-submit').style.display = "none";
             document.getElementById('next').style.display = "block";
             document.getElementById('result').style.display = "block";
         }
         else{
-            if(document.getElementById('answer').value != "")
-            {
+            if(document.getElementById('answer').value != ""){
+                if(this.attempts > 0){
+                    this.score -= 5;
+                    this.attempts --;
+                    Socket.emit('progessUpdate', {'user': this.state.user, 'progress':this.state.playerQuestionOn, 'score':this.score, 'attempts': this.attempts});    
+                }
+                console.log(this.score);
                 var newArray = this.state.attempts.slice();    
                 newArray.push(" " + document.getElementById('answer').value);   
                 this.setState({attempts:newArray})
@@ -78,7 +88,14 @@ export class Play extends React.Component {
     }
     //reveals the hint on hint button ciick
     showHint(event){
-        this.state.hintCount += 1
+        console.log(this.score);
+        if(this.attempts > 0){
+            this.score -= 5;
+            this.attempts --;
+            Socket.emit('progessUpdate', {'user': this.state.user, 'progress':this.state.playerQuestionOn, 'score':this.score, 'attempts': this.attempts});    
+        }
+        console.log(this.score);
+        this.state.hintCount += 1;
         document.getElementById('hint1').style.display = "block";
         // console.log(this.state.x)
         //condition when the button is clicked once
@@ -100,20 +117,18 @@ export class Play extends React.Component {
                 'questionsData': data
             });
         });
-        //retireves the hunt question information
+        //retireves the user information
         Socket.on('user', (data) => {
             this.setState({
                 'user': data[0],
                 'playerQuestionOn': data[0]['progress'] - 1
             });
-            // this.score = data[0]['score'];
-            console.log(data[0]['email']);
-            console.log(data[0]['score']);
-            console.log(1);
+            this.score = data[0]['score'];
         });
     }
     
     nextQuestion(){
+        this.attempts = 5;
         document.getElementById('answer-submit').style.display = "block";
         document.getElementById('hint-submit').style.display = "block";
         document.getElementById('hint1').style.display = "none";
@@ -125,9 +140,8 @@ export class Play extends React.Component {
         this.state.playerQuestionOn++;
         Socket.emit('progessUpdate', {'user': this.state.user, 'progress':this.state.playerQuestionOn, 'score':this.score});
 
-        var data = this.state.questionsData;
-        for(var i = 0; i < data.length; i++) {
-            var obj = data[i];
+        for(var i = 0; i < this.data.length; i++) {
+            var obj = this.data[i];
             if(i == this.state.playerQuestionOn){
                 document.getElementById('play-question').innerHTML = obj.question;
                 this.state.correctAnswer = obj.answer;
@@ -142,9 +156,10 @@ export class Play extends React.Component {
 
     render() {
         
-        var data = this.state.questionsData;
-        for(var i = 0; i < data.length; i++) {
-            var obj = data[i];
+        this.data = this.state.questionsData;
+        this.dataSize = this.data.length;
+        for(var i = 0; i < this.data.length; i++) {
+            var obj = this.data[i];
             if(i == this.state.playerQuestionOn){
                 document.getElementById('play-question').innerHTML = obj.question;
                 this.state.correctAnswer = obj.answer;
@@ -154,8 +169,6 @@ export class Play extends React.Component {
                 this.state.hint2 = obj.hint2;
             }
     }
-
-
 
         return (
 

@@ -25,8 +25,8 @@ export class Content extends React.Component{
             name: 'guest', //team name or admin user name
             loggedIn: 'no', //no,admin,superAdmin,team,teamLead
             lastPage: 'home', //last page loaded, set this dynamically
-            // hide:'none', //determines whether or not buttons and inputs are visible
-            hide:'block' //FOR TESTING ONLY. DELETE BEFORE BETA
+            hide:'none', //determines whether or not buttons and inputs are visible
+            // hide:'block' //FOR TESTING ONLY. DELETE BEFORE BETA
         };
         this.handle = this.handle.bind(this);
         this.changePage = this.changePage.bind(this);
@@ -43,23 +43,23 @@ export class Content extends React.Component{
             loggedIn: loggedIn,
             name: name
         });
-        //UNHIDE BEFORE BETA
-        // if(this.state.loggedIn == 'teamLead' || this.state.loggedIn == 'superAdmin'){
-        //     this.setState({
-        //         hide:'block'
-        //     });
-        // }
-        // else{
-        //     this.setState({
-        //         hide:'none'
-        //     });
-        // }
+        // UNHIDE BEFORE BETA
+        if(this.state.loggedIn == 'teamLead' || this.state.loggedIn == 'superAdmin'){
+            this.setState({
+                hide:'block'
+            });
+        }
+        else{
+            this.setState({
+                hide:'none'
+            });
+        }
     }
     logOutSetProps(loggedIn, name){
         this.setState({
             loggedIn: loggedIn,
             name: name,
-            // hide:'none'  //UNHIDE BEFORE BETA
+            hide:'none'  //UNHIDE BEFORE BETA
         });
     }
     handle(callback){

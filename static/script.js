@@ -21941,8 +21941,8 @@
 	            name: 'guest', //team name or admin user name
 	            loggedIn: 'no', //no,admin,superAdmin,team,teamLead
 	            lastPage: 'home', //last page loaded, set this dynamically
-	            // hide:'none', //determines whether or not buttons and inputs are visible
-	            hide: 'block' //FOR TESTING ONLY. DELETE BEFORE BETA
+	            hide: 'none' //determines whether or not buttons and inputs are visible
+	            // hide:'block' //FOR TESTING ONLY. DELETE BEFORE BETA
 	        };
 	        _this.handle = _this.handle.bind(_this);
 	        _this.changePage = _this.changePage.bind(_this);
@@ -21964,25 +21964,24 @@
 	                loggedIn: loggedIn,
 	                name: name
 	            });
-	            //UNHIDE BEFORE BETA
-	            // if(this.state.loggedIn == 'teamLead' || this.state.loggedIn == 'superAdmin'){
-	            //     this.setState({
-	            //         hide:'block'
-	            //     });
-	            // }
-	            // else{
-	            //     this.setState({
-	            //         hide:'none'
-	            //     });
-	            // }
+	            // UNHIDE BEFORE BETA
+	            if (this.state.loggedIn == 'teamLead' || this.state.loggedIn == 'superAdmin') {
+	                this.setState({
+	                    hide: 'block'
+	                });
+	            } else {
+	                this.setState({
+	                    hide: 'none'
+	                });
+	            }
 	        }
 	    }, {
 	        key: 'logOutSetProps',
 	        value: function logOutSetProps(loggedIn, name) {
 	            this.setState({
 	                loggedIn: loggedIn,
-	                name: name
-	                // hide:'none'  //UNHIDE BEFORE BETA
+	                name: name,
+	                hide: 'none' //UNHIDE BEFORE BETA
 	            });
 	        }
 	    }, {
@@ -51450,6 +51449,9 @@
 
 	        };
 	        _this.score = 0;
+	        _this.attempts = 5;
+	        _this.data = [];
+	        _this.dataSize = 0;
 	        _this.handleChange = _this.handleChange.bind(_this);
 	        _this.showHint = _this.showHint.bind(_this);
 	        _this.nextQuestion = _this.nextQuestion.bind(_this);
@@ -51465,13 +51467,21 @@
 	                result.style.visibility = 'visible';
 	                result.textContent = 'Correct';
 	                result.style.color = "#9bf442";
-	                this.setState({ attempts: [] });
-	                // document.getElementById('answer-submit').style.display = "none";
-	                // document.getElementById('hint-submit').style.display = "none";
+	                if (this.state.playerQuestionOn + 2 == this.dataSize) {
+	                    document.getElementById('next').textContent = "Last Question";
+	                }
+	                document.getElementById('answer-submit').style.display = "none";
+	                document.getElementById('hint-submit').style.display = "none";
 	                document.getElementById('next').style.display = "block";
 	                document.getElementById('result').style.display = "block";
 	            } else {
 	                if (document.getElementById('answer').value != "") {
+	                    if (this.attempts > 0) {
+	                        this.score -= 5;
+	                        this.attempts--;
+	                        _Socket.Socket.emit('progessUpdate', { 'user': this.state.user, 'progress': this.state.playerQuestionOn, 'score': this.score, 'attempts': this.attempts });
+	                    }
+	                    console.log(this.score);
 	                    var newArray = this.state.attempts.slice();
 	                    newArray.push(" " + document.getElementById('answer').value);
 	                    this.setState({ attempts: newArray });
@@ -51495,6 +51505,13 @@
 	    }, {
 	        key: 'showHint',
 	        value: function showHint(event) {
+	            console.log(this.score);
+	            if (this.attempts > 0) {
+	                this.score -= 5;
+	                this.attempts--;
+	                _Socket.Socket.emit('progessUpdate', { 'user': this.state.user, 'progress': this.state.playerQuestionOn, 'score': this.score, 'attempts': this.attempts });
+	            }
+	            console.log(this.score);
 	            this.state.hintCount += 1;
 	            document.getElementById('hint1').style.display = "block";
 	            // console.log(this.state.x)
@@ -51520,21 +51537,19 @@
 	                    'questionsData': data
 	                });
 	            });
-	            //retireves the hunt question information
+	            //retireves the user information
 	            _Socket.Socket.on('user', function (data) {
 	                _this2.setState({
 	                    'user': data[0],
 	                    'playerQuestionOn': data[0]['progress'] - 1
 	                });
-	                // this.score = data[0]['score'];
-	                console.log(data[0]['email']);
-	                console.log(data[0]['score']);
-	                console.log(1);
+	                _this2.score = data[0]['score'];
 	            });
 	        }
 	    }, {
 	        key: 'nextQuestion',
 	        value: function nextQuestion() {
+	            this.attempts = 5;
 	            document.getElementById('answer-submit').style.display = "block";
 	            document.getElementById('hint-submit').style.display = "block";
 	            document.getElementById('hint1').style.display = "none";
@@ -51546,9 +51561,8 @@
 	            this.state.playerQuestionOn++;
 	            _Socket.Socket.emit('progessUpdate', { 'user': this.state.user, 'progress': this.state.playerQuestionOn, 'score': this.score });
 
-	            var data = this.state.questionsData;
-	            for (var i = 0; i < data.length; i++) {
-	                var obj = data[i];
+	            for (var i = 0; i < this.data.length; i++) {
+	                var obj = this.data[i];
 	                if (i == this.state.playerQuestionOn) {
 	                    document.getElementById('play-question').innerHTML = obj.question;
 	                    this.state.correctAnswer = obj.answer;
@@ -51564,9 +51578,10 @@
 	        value: function render() {
 	            var _this3 = this;
 
-	            var data = this.state.questionsData;
-	            for (var i = 0; i < data.length; i++) {
-	                var obj = data[i];
+	            this.data = this.state.questionsData;
+	            this.dataSize = this.data.length;
+	            for (var i = 0; i < this.data.length; i++) {
+	                var obj = this.data[i];
 	                if (i == this.state.playerQuestionOn) {
 	                    document.getElementById('play-question').innerHTML = obj.question;
 	                    this.state.correctAnswer = obj.answer;
