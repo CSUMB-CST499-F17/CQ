@@ -42,16 +42,16 @@ export class Content extends React.Component{
         this.setState({
             loggedIn: loggedIn,
             name: name
-        })
-        if(this.state.loggedIn == 'teamLead'){
+        });
+        if(this.state.loggedIn == 'teamLead' || this.state.loggedIn == 'superAdmin'){
             this.setState({
                 hide:'block'
-            })
+            });
         }
         else{
             this.setState({
                 hide:'none'
-            })
+            });
         }
     }
     handle(callback){
