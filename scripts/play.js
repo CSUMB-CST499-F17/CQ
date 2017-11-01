@@ -22,12 +22,7 @@ export class Play extends React.Component {
         super(props);
         this.pageName = 'play';
         this.state = {
-            'prompt': '',
-            'questions': '',
-            'correctAnswer': '',
-            'hint1': '',
-            'hint2': '',
-            'questionNum' : '',
+            'questionsData' : [],
             'userAnswer' : '',
             'displayer' :'',
             'x':0,
@@ -37,7 +32,11 @@ export class Play extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.showHint = this.showHint.bind(this);
+<<<<<<< HEAD
         
+=======
+        this.nextQuestion = this.nextQuestion.bind(this);
+>>>>>>> 525dc5dc24ffc377f71886dd811d43e1472bbab1
     }
     
     handleSubmit(event){
@@ -95,22 +94,28 @@ export class Play extends React.Component {
         //retireves the hunt question information
         Socket.on('hunt', (data) => {
             this.setState({
-                'prompt': data['questions'],
-                'questions': data['question'],
-                'correctAnswer': data['correctAnswer'],
-                'hint1': data['hint1'],
-                'hint2': data['hint2'],
-                'questionNum' : data['questionNum']
+                'questionsData': data['questionsData']
             });
         });
         console.log(this.state.hint2);
     }
+    
+    nextQuestion(event){
+      console.log('next question')
+    }
 
 
     render() {
-        let prompt = this.state.prompt;
-        // let hints = this.state.hints;
-        // let questionNum = this.state.questionNum;
+        let question = '';
+        let answer = '';
+        
+        console.log(this.state.questionsData);
+        
+        if (this.state.questionsData != null) {
+            question = this.state.questionsData.map((n, index) => {
+                return <Question key={index} question={n.question} />;
+             });
+        }
 
 
 
@@ -128,7 +133,7 @@ export class Play extends React.Component {
                         <FormGroup id="play-form">
                                 <FormControl.Static>
                                     <div id="play-question">
-                                        <p>{prompt}</p>
+                                        <p>{question}</p>
                                     </div>
                                     <div id = 'hints'>
                                     <div id='hint'></div>
@@ -140,9 +145,15 @@ export class Play extends React.Component {
                     </Form>
                     <div id='buttons'>
                         <ButtonToolbar>
+<<<<<<< HEAD
                             <Button id="next" style={{display:'none'}} >Next Question</Button>
                             <Button id="answer-submit"  style={{display:this.props.hide}} onClick={this.handleSubmit} >Submit</Button>
                             <Button id="hint-submit" style={{display:this.props.hide}} onClick={this.showHint}>Hint</Button>
+=======
+                            <Button id="next" style={{display:'none'}} onClick={this.nextQuestion} >Next Question</Button>
+                            <Button id="answer-submit" onClick={this.handleSubmit} >Submit</Button>
+                            <Button id="hint-submit" onClick={this.showHint}>Hint</Button>
+>>>>>>> 525dc5dc24ffc377f71886dd811d43e1472bbab1
                             <Button onClick={() => this.props.changePage(this.pageName,'home')}>Home</Button>
                         </ButtonToolbar>
                     </div>
