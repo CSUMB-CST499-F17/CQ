@@ -1,5 +1,5 @@
 import flask, flask_socketio, flask_sqlalchemy, stripe, sqlalchemy
-import os, time, datetime, smtplib, re, random
+import os, time, datetime, smtplib, re, random, hashlib, uuid
 import models
 
 #GLOBAL VARS
@@ -159,7 +159,7 @@ def checkout(data):
         
         participants = None
         try:
-            participants = models.Participants(client_email, team_name, userdata['image'], leader_code, member_code, None,None, 0, 0, False, hunt_id)
+            participants = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None,None, 0, 0, False, hunt_id)
             models.db.session.add(participants)  
             models.db.session.commit()
             
@@ -221,6 +221,15 @@ def email_client(client_email, subject, message):
     server.login(email_address, email_pass)
     server.sendmail(email_address, client_email, recp_message)
     server.quit()
+    
+def hash_password(password):
+    # uuid is used to generate a random number
+    salt = "You're too salty"
+    return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
+
+def check_password(hashed_password, user_password):
+    password, salt = hashed_password.split(':')
+    return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
 
 if __name__ == '__main__':
     socketio.run(
