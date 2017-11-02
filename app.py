@@ -1,6 +1,6 @@
 import flask, flask_socketio, flask_sqlalchemy, stripe, sqlalchemy
 import os, time, datetime, smtplib, re, random, hashlib, uuid
-import models, datetime
+import models
 
 #GLOBAL VARS
 x = 1
@@ -18,6 +18,7 @@ db = flask_sqlalchemy.SQLAlchemy(app)
 #FUNCTIONS
 @app.route('/')
 def hello():
+    print()
     return flask.render_template('index.html')
 
 @socketio.on('play')
@@ -36,18 +37,6 @@ def getHunt(data):
     socketio.emit('hunt', questionsData)
     questionNum += questionNum
     print('Scavenger hunt data sent.')
-    
-def dropDown():
-    hunts = [];
-    
-    try:
-        recent = models.db.session.query(models.Hunts)
-        for row in recent:
-            hunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
-#       socketio.emit('hunt-info', hunts)
-    except:
-        print("Error: Database does not exist")
-
 
 @socketio.on('home')
 def updateHome(data):
@@ -62,8 +51,36 @@ def updateHome(data):
     socketio.emit('updateHome', lastPage)
     return lastPage
     
+@socketio.on('explore')
+def updateExplore(data):
+    hunts = [];
+    types = [];
+    try:
+        t_list = models.db.session.query(models.Hunts.h_type).distinct()
+        for row in t_list:
+            types.append(row.h_type)
+        h_list = models.db.session.query(models.Hunts).filter(models.Hunts.h_type == "walking"); #default type
+        for row in h_list:
+            hunts.append({'id':row.id,'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time.strftime('%A %B %-d %-I:%M %p'),'end_time':row.end_time.strftime('%A %B %-d %-I:%M %p'),'start_text':row.start_text })
+        socketio.emit('updateExplore', {'hunts':hunts,'types':types})
+    except:
+        print("Error: Database does not exist")
+
+@socketio.on('changeType')
+def changeType(data):
+    hunts = [];
+    h_list = models.db.session.query(models.Hunts).filter(models.Hunts.h_type == data)
+    for row in h_list:
+        hunts.append({'id':row.id,'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time.strftime('%A %B %-d %-I:%M %p'),'end_time':row.end_time.strftime('%A %B %-d %-I:%M %p'),'start_text':row.start_text })
+    socketio.emit('updateType', hunts)
+
 @socketio.on('validateCredentials')
 def validateCredentials(data):
+        # foreach obj where data['team_name'] = username
+        #   if check_password(obj.password, data['access']){
+        #     do stuff
+        #   }
+        
         try:
             query = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'], models.Participants.leader_code == data['access']).first_or_404()
             userData = []
@@ -114,8 +131,8 @@ def updateProgress(data):
         socketio.emit('user', userData)
     except Exception as e: 
         print
-        
-@socketio.on('updateTime')
+    
+    @socketio.on('updateTime')
 def updateTime(data):
     user = data['user']
     if(data['start_time'] != ""):
@@ -136,40 +153,6 @@ def updateTime(data):
         
         except Exception as e: 
             print(e)
-    
-    
-    # print("validateCredentials")
-    # foreach obj where data['team_name'] = username
-    #   if check_password(obj.password, data['access']){
-    #     do stuff
-    #   }
-      
-    # try:
-    #     query = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'], models.Participants.leader_code == data['access']).first_or_404()
-    #     userData = []
-    #     userData.append({'email': query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress})
-    #     socketio.emit('user', userData)
-    #     return 'teamLead%' + query.team_name
-    # except:
-    #     pass
-    # try:
-    #     query = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'], models.Participants.member_code == data['access']).first_or_404()
-    #     userData = []
-    #     userData.append({'email':query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress})
-    #     socketio.emit('user', userData)
-    #     return 'team%' + query.team_name
-    # except:
-    #     pass
-    # try:
-    #     query = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.password == data['access'], models.Admins.is_super == True).first_or_404()
-    #     return 'superAdmin%' + query.username
-    # except:
-    #     pass
-    # try:
-    #     query = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.password == data['access'], models.Admins.is_super == False).first_or_404()
-    #     return 'admin%' + query.username
-    # except:
-    #     return 'no%guest'
     
 @socketio.on('leaderboard')
 def updateLeaderboard():

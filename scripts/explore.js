@@ -18,94 +18,94 @@ export class Explore extends React.Component {
         this.state = {
             'count':0,
             
-            'name':[],
-            'h_type':[],
-            'desc':[],
-            'image':[],
-            'start_time':[],
-            'end_time':[],
-            'start_text':[]
+            'hunts':[],
+            'types':[],
+            'chosentype':''
         };
         this.pageName = 'explore';
+        this.sort = this.sort.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     
     componentDidMount() {
-        Socket.on('hunt-info', (data) => { 
-            var name = this.state.name.slice();
-            var h_type = this.state.h_type.slice();
-            var desc = this.state.desc.slice();
-            var image = this.state.image.slice();
-            var start_time = this.state.start_time.slice();
-            var end_time = this.state.end_time.slice();
-            var start_text = this.state.start_text.slice();
-
-            for(var i = 0; i < data.size(); i++ )
+        Socket.on('updateExplore', (data) => { 
+            var d_types = data['types'];
+            var d_hunts = data['hunts'];
+            var types = [];
+            var hunts = [];
+            var first = "";
+            for(var i = 0; i < d_hunts.length; i++ )
             {
-                name.push(data['name'][i]);
-                this.setState({ 'name': name });
-                h_type.push(data['h_type'][i]);
-                this.setState({ 'h_type': h_type });
-                desc.push(data['desc'][i]);
-                this.setState({ 'desc': desc });
-                image.push(data['image'][i]);
-                this.setState({ 'image': image });
-                start_time.push(data['start_time'][i]);
-                this.setState({ 'start_time': start_time });
-                end_time.push(data['end_time'][i]);
-                this.setState({ 'end_time': end_time });
-                start_text.push(data['start_text'][i]);
-                this.setState({ 'start_text': start_text });
+                hunts.push([d_hunts[i].id,d_hunts[i].name,d_hunts[i].h_type,d_hunts[i].desc,d_hunts[i].image,d_hunts[i].start_time,d_hunts[i].end_time,d_hunts[i].start_text]); //convert to array for mapping
             }
-              // Get the quiz form element
-            var dropdown = document.getElementById('bg-nested-dropdown');
-        
-            // Good to do error checking, make sure we managed to get something
-            if (dropdown)
+            for(i = 0; i < d_types.length; i++ )
             {
-                    // Create a new <p> element
-                    var hunts = this.state.h_type;
-                    var item = document.createElement('MENUITEM');
-                    item.value = hunts[0];
-                    dropdown.appendChild(item);
-                    // for(var j = 0; j < hunts.size(); j++ )
-                    // {
- 
-                    // }
-    
+                var item = d_types[i].charAt(0).toUpperCase() + d_types[i].slice(1);
+                if(i==0){
+                    first = item;
+                }
+                else{
+                    types.push(item); //convert to array for mapping
+                }
             }
+            this.setState({'chosentype': first, 'types': types , 'hunts': hunts});
         });
-    
+        Socket.on('updateType', (data) => { 
+            var hunts = [];
+            for(var i = 0; i < data.length; i++ )
+            {
+                hunts.push([data[i].id,data[i].name,data[i].h_type,data[i].desc,data[i].image,data[i].start_time,data[i].end_time,data[i].start_text]); //convert to array for mapping
+            }
+            this.setState({'hunts': hunts});
+        });
     }
-
+    sort(type){
+        var types = this.state.types;
+        var index = types.indexOf(type);
+        if (index !== -1) {
+            types[index] = this.state.chosentype;
+        }
+        this.setState({'chosentype': type, 'types': types});
+        Socket.emit('changeType', type.toLowerCase());
+    }
     handleSubmit(event) {
         event.preventDefault();
     }
     render() {
+        let hunts = this.state.hunts.map((n, index) => 
+            <div id={n[0]} className="hunt-preview">
+                <header>{n[1]}</header>
+                <img src={n[4]}/>
+                <p>{n[5]} to {n[6]}</p>
+                <p>{n[3]}</p>
+            </div>
+        );
+        let types = this.state.types.map((n, index) => 
+            <MenuItem onClick={() => this.sort(n)}>{n}</MenuItem>
+        );
+        
         return (
             <div>
                 <div id = 'logo-small'>
                     <LogoSmall/>
                 </div>
+                
                 <div id ='header'>
-                    <header>EXPLORE</header>
-                </div>
-                <div id='intro'>
-                    <div id="info"></div>
-                </div>
-                <div id='buttons'>
-                    <ButtonToolbar>
-                        <Button onClick={() => this.props.changePage('leaderboard')}>Leaderboard</Button>
-                        <Button onClick={() => this.props.changePage('register')}>Participate</Button>
-                        <Button onClick={() => this.props.changePage('home')}>Home</Button>
-                    </ButtonToolbar>
-                </div>
-                <div id='buttons'>
-                    <ButtonGroup>
-                    <DropdownButton title="Select Hunt    " id="bg-nested-dropdown" >
-                        <MenuItem>no hunts yet my dog</MenuItem>
+                    <DropdownButton title={this.state.chosentype} id="bg-nested-dropdown" >
+                        {types}
                     </DropdownButton>
-                    </ButtonGroup>
+                    Scavenger Hunts
+                </div>
+                <div className="clear"></div>
+                <div id='intro'>
+                    {hunts}
+                    <div id='buttons'>
+                        <button className='btn' onClick={() => this.props.changePage('leaderboard')}>Leaderboard</button>
+                        <button className='btn' onClick={() => this.props.changePage('register')}>Participate</button>
+                    </div>
+                    <div id='buttons'>
+                        <button className='btn' onClick={() => this.props.changePage('home')}>Home</button>
+                    </div>
                 </div>
             </div>
 
