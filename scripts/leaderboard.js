@@ -33,11 +33,20 @@ export class Leaderboard extends React.Component {
         event.preventDefault();
     }
     render() {
+        
+        console.log(this.state.userlist);
         let userlist='';
+
+        var data = this.state.userlist;
+        for(var i = 0; i < data.length; i++) {
+            data[i].end_time = data[i].start_time - data[i].end_time;
+        }
+        
+
         if (this.state.userlist != null) {
             userlist = this.state.userlist.map(
                 (n, index) =>
-                <tr key={index}><td></td><td>{n.name}</td><td>{n.picture}</td><td></td></tr>
+                <tr key={index}><td>{n.score}</td> <td>{n.team_name}</td><td>{n.score}</td><td>{n.end_time}</td></tr>
              );
         }
 
@@ -59,12 +68,12 @@ export class Leaderboard extends React.Component {
                                 <tr>
                                     <td>Rank</td><td>Team</td><td>Score</td><td>Time</td>
                                 </tr>
-                            </table> 
+                            </table>
                             <div id="userList">
                             <table id="leaderboard-table2">
-                                
-                                {userlist} 
-                                
+
+                                {userlist}
+
                             </table>
                             </div>
                         </div>

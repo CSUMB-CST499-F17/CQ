@@ -45,3 +45,19 @@ questions = models.Questions(
     )
 models.db.session.add(questions)
 models.db.session.commit()
+
+participants = models.Participants(
+    "bob@csumb.edu",
+    "Bob's Bad Boys",
+    "image",
+    "4",
+    "5",
+    datetime.datetime.now(),
+    datetime.datetime.now(),
+    8,
+    9,
+    True,
+    1)
+
+models.db.session.add(participants)
+models.db.session.commit()

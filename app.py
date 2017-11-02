@@ -133,12 +133,16 @@ def updateProgress(data):
 @socketio.on('leaderboard')
 def updateLeaderboard():
     global teams
-    teams.append({
-      'name': 'jason',
-      'picture': 'me',
-    })
+    try:
+        sql = models.db.session.query(models.Participants.team_name, models.Participants.score, models.Participants.start_time,  models.Participants.end_time.filter(models.Participants.end_time != None)).order_by(models.Participants.score.desc())
+
+        print sql
+        leaderboardUser.append({'score':row.score,'team_name':row.team_name,'score':row.score, 'start_time':row.start_time,'end_time':row.end_time})
+    except:
+        print("Error: Database does not exist for populating leaderboard")
+
     socketio.emit('users', {
-        'userlist': teams
+        'userlist': leaderboardUser
     })
     print('Leaderboard data sent.')
 
