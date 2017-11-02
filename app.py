@@ -76,37 +76,39 @@ def changeType(data):
 
 @socketio.on('validateCredentials')
 def validateCredentials(data):
-        # foreach obj where data['team_name'] = username
-        #   if check_password(obj.password, data['access']){
-        #     do stuff
-        #   }
-        
+        userData = []
         try:
-            query = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'], models.Participants.leader_code == data['access']).first_or_404()
-            userData = []
-            userData.append({'email': query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress, 'score':query.score, 'attempts':query.attempts})
-            socketio.emit('user', userData)
-            return 'teamLead%' + query.team_name
+                
+            users = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'])
+            for query in users:
+                print query
+            for query in users:
+                print check_password(query.leader_code, data['access'])
+                if(check_password(query.leader_code, data['access'])):
+                    userData.append({'email': query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress, 'score':query.score, 'attempts':query.attempts})
+                    socketio.emit('user', userData)
+                    return 'teamLead%' + query.team_name
+
+            users = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'])
+            for query in users:    
+                if(check_password(query.member_code, data['access'])):
+                    userData.append({'email':query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress})
+                    socketio.emit('user', userData)
+                    return 'team%' + query.team_name
+                    
+            users = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.is_super == True)
+            for query in users:    
+                if(check_password(query.password, data['access'])):
+                    return 'superAdmin%' + query.username
+                    
+            users = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.is_super == False)
+            for query in users:
+                if(check_password(query.password, data['access'])):
+                    return 'admin%' + query.username
+                    
         except Exception as e: 
-            print(e) 
-        try:
-            query = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'], models.Participants.member_code == data['access']).first_or_404()
-            userData = []
-            userData.append({'email':query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress})
-            socketio.emit('user', userData)
-            return 'team%' + query.team_name
-        except Exception as e: 
-            print(e) 
-        try:
-            query = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.password == data['access'], models.Admins.is_super == True).first_or_404()
-            return 'superAdmin%' + query.username
-        except Exception as e: 
-            print(e) 
-        try:
-            query = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.password == data['access'], models.Admins.is_super == False).first_or_404()
-            return 'admin%' + query.username
-        except:
-            return 'no%guest'
+            print (e)
+            print 'no%guest'
 
 @socketio.on('progessUpdate')
 def updateProgress(data):
@@ -294,6 +296,7 @@ def email_client(client_email, subject, message):
     
 def hash_password(password):
     salt = uuid.uuid4().hex + uuid.uuid4().hex
+    print hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
     return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
 
 def check_password(hashed_password, user_password):
