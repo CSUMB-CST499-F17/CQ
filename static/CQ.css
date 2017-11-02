@@ -6,6 +6,14 @@ body {
     background: #3E6F96;
     height: 100%;
 }
+header{
+    color:white;
+    font-size: 32px;
+}
+p{
+    color:white;
+    font-size: 16px;
+}
 #content{
     display: flex;
     background-repeat: no-repeat;
@@ -49,6 +57,12 @@ body {
     max-width: 100%;
     display:block;
 }
+#input{
+	display:block;
+	text-align:center;
+	justify-content: center;
+	margin:auto;
+}
 #login input{
     text-align: center;
     display: inline-block;
@@ -82,6 +96,23 @@ body {
     border-color: #f2e537;
 }
 
+/* Explore */
+#explore #header{
+    font-size: 24px;
+}
+.hunt-preview{
+    
+}
+.hunt-preview img{
+    max-width:50%;
+    max-height:50%;
+    display: inline-block;
+    vertical-align: middle;
+    border:solid;
+    border-width: 7;
+    border-color: #f2e537;
+}
+
 /* Logos */ 
 #logo-big{
     width:700px;
@@ -89,7 +120,9 @@ body {
 #logo-small img{
     max-width:100px;
     width:100px;
-    float:left;
+    position: fixed;
+    top: 1em;
+    right: 1em;
 }
 #logo-small-nav img{
     max-width:60px;
@@ -100,14 +133,11 @@ body {
 }
 #header {
     color: white;
-    font-size: 64px;
+    font-size: 32px;
     font-weight:bold;
     margin-top:10px;
     margin-bottom:10px;
     padding-right:100px;
-    flex-direction: row;
-    text-align:center;
-    justify-content: center;
 }
 #introhunts{
     text-align:center;
@@ -405,7 +435,7 @@ td{
         margin-right:0%;
         margin-top:3px;
     }
-         /* Add a black background color to the top navigation */
+    /* Add a black background color to the top navigation */
     #topnav {
         background-color: #333;
         overflow: hidden;

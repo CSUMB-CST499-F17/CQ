@@ -18,9 +18,11 @@ db = flask_sqlalchemy.SQLAlchemy(app)
 #FUNCTIONS
 @app.route('/')
 def hello():
+    print()
     return flask.render_template('index.html')
 
 @socketio.on('play')
+@socketio.on('start')
 def getHunt(data):
     global questionNum
     questionsData = []
@@ -35,19 +37,6 @@ def getHunt(data):
     socketio.emit('hunt', questionsData)
     questionNum += questionNum
     print('Scavenger hunt data sent.')
-    
-def dropDown():
-    hunts = [];
-    
-    try:
-        recent = models.db.session.query(models.Hunts)
-        for row in recent:
-            hunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
-        print hunts
-#       socketio.emit('hunt-info', hunts)
-    except:
-        print("Error: Database does not exist")
-
 
 @socketio.on('home')
 def updateHome(data):
@@ -62,13 +51,40 @@ def updateHome(data):
     socketio.emit('updateHome', lastPage)
     return lastPage
     
+@socketio.on('explore')
+def updateExplore(data):
+    hunts = [];
+    types = [];
+    try:
+        t_list = models.db.session.query(models.Hunts.h_type).distinct()
+        for row in t_list:
+            types.append(row.h_type)
+        h_list = models.db.session.query(models.Hunts).filter(models.Hunts.h_type == "walking"); #default type
+        for row in h_list:
+            hunts.append({'id':row.id,'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time.strftime('%A %B %-d %-I:%M %p'),'end_time':row.end_time.strftime('%A %B %-d %-I:%M %p'),'start_text':row.start_text })
+        socketio.emit('updateExplore', {'hunts':hunts,'types':types})
+    except:
+        print("Error: Database does not exist")
+
+@socketio.on('changeType')
+def changeType(data):
+    hunts = [];
+    h_list = models.db.session.query(models.Hunts).filter(models.Hunts.h_type == data)
+    for row in h_list:
+        hunts.append({'id':row.id,'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time.strftime('%A %B %-d %-I:%M %p'),'end_time':row.end_time.strftime('%A %B %-d %-I:%M %p'),'start_text':row.start_text })
+    socketio.emit('updateType', hunts)
+
 @socketio.on('validateCredentials')
 def validateCredentials(data):
+        # foreach obj where data['team_name'] = username
+        #   if check_password(obj.password, data['access']){
+        #     do stuff
+        #   }
+        
         try:
-            
             query = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'], models.Participants.leader_code == data['access']).first_or_404()
             userData = []
-            userData.append({'email': query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress, 'score':query.score})
+            userData.append({'email': query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress, 'score':query.score, 'attempts':query.attempts})
             socketio.emit('user', userData)
             return 'teamLead%' + query.team_name
         except Exception as e: 
@@ -94,52 +110,63 @@ def validateCredentials(data):
 
 @socketio.on('progessUpdate')
 def updateProgress(data):
-    #update the progress and score of the user using data['user'][0]['team_name'] and data['user'][0]['hunt_id']
-    print "hi"
-    
-    print("validateCredentials")
-    # foreach obj where data['team_name'] = username
-    #   if check_password(obj.password, data['access']){
-    #     do stuff
-    #   }
-      
-    # try:
-    #     query = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'], models.Participants.leader_code == data['access']).first_or_404()
-    #     userData = []
-    #     userData.append({'email': query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress})
-    #     socketio.emit('user', userData)
-    #     return 'teamLead%' + query.team_name
-    # except:
-    #     pass
-    # try:
-    #     query = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'], models.Participants.member_code == data['access']).first_or_404()
-    #     userData = []
-    #     userData.append({'email':query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress})
-    #     socketio.emit('user', userData)
-    #     return 'team%' + query.team_name
-    # except:
-    #     pass
-    # try:
-    #     query = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.password == data['access'], models.Admins.is_super == True).first_or_404()
-    #     return 'superAdmin%' + query.username
-    # except:
-    #     pass
-    # try:
-    #     query = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.password == data['access'], models.Admins.is_super == False).first_or_404()
-    #     return 'admin%' + query.username
-    # except:
-    #     return 'no%guest'
+    try:
+        user = data['user']
+        #updates the progress
+        query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.progress: data['progress']})
+        models.db.session.commit()
+        #updates the attempts  
+        query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.attempts: data['attempts']})
+        models.db.session.commit()
+        #updates the score
+        query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.score: data['score']})
+        models.db.session.commit()
+        # #updates end_time
+        # query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.end_time: datetime.datetime.now()})
+        # models.db.session.commit()
         
->>>>>>> 4ecb17f5de52c717d1148efa45420ff12caedbfa
+        #sends updates back to play.js
+        userData = []
+        userData.append({'email':user['email'], 'team_name':user['team_name'], 'hunt':user['hunt'], 'progress':data['progress'], 'score':data['score'], 'attempts':data['attempts']})
+        socketio.emit('user', userData)
+    except Exception as e: 
+        print
+    
+@socketio.on('updateTime')
+def updateTime(data):
+    user = data['user']
+    if(data['start_time'] != ""):
+        print "Start Time"
+        try:
+            #updates end_time
+            query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.start_time: datetime.datetime.now()})
+            models.db.session.commit()
+        
+        except Exception as e: 
+            print(e)
+    if(data['end_time'] != ""):
+        print "End Time"
+        try:
+            #updates end_time
+            query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.end_time: datetime.datetime.now()})
+            models.db.session.commit()
+        
+        except Exception as e: 
+            print(e)
+    
 @socketio.on('leaderboard')
 def updateLeaderboard():
     global teams
-    teams.append({
-      'name': 'jason',
-      'picture': 'me',
-    })
+    try:
+        sql = models.db.session.query(models.Participants.team_name, models.Participants.score, models.Participants.start_time,  models.Participants.end_time.filter(models.Participants.end_time != None)).order_by(models.Participants.score.desc())
+
+        print sql
+        leaderboardUser.append({'score':row.score,'team_name':row.team_name,'score':row.score, 'start_time':row.start_time,'end_time':row.end_time})
+    except:
+        print("Error: Database does not exist for populating leaderboard")
+
     socketio.emit('users', {
-        'userlist': teams
+        'userlist': leaderboardUser
     })
     print('Leaderboard data sent.')
 
@@ -157,7 +184,6 @@ def updateRegister():
 @socketio.on('createHunt')
 def createHunt(data):
     global x
-    print(data)
     hunts = models.Hunts(data['name'], data['type'], data['desc'], data['image'], data['sDate'], data['eDate'], data['sDate'])
     models.db.session.add(hunts)  
     models.db.session.commit()
@@ -189,6 +215,7 @@ def checkout(data):
         random_number = random.randint(0,9999)
         hunt_name = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt_id).first().name
         hunt_name = hunt_name.replace(" ", "")
+        #strip all punctuation
         leader_code = hunt_name + "{:04d}".format(random_number)
         
         random.seed();
@@ -197,7 +224,7 @@ def checkout(data):
         
         participants = None
         try:
-            participants = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None,None, 0, 0, False, hunt_id)
+            participants = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None, None, 0, 0, 0, False, hunt_id)
             models.db.session.add(participants)  
             models.db.session.commit()
             
@@ -208,22 +235,27 @@ def checkout(data):
         
         try:
             price = 50
-            total_percent = 1
+            total_percent = 100
             try:
                 discount_query = models.db.session.query(models.Discounts).filter(models.Discounts.code == userdata['discount_code'])
                 if discount_query.count() > 0:
-                    total_percent = discount_query.first().percent / 100.0
+                    total_percent = discount_query.first().percent
+                    discount_query.first().uses -= 1
+                    models.db.session.commit()
             except:
                 print("Error: couldn't connect to discount table")
                 pass
             price = price * total_percent
             
-            charge = stripe.Charge.create(
-                amount=price,
-                currency="usd",
-                description="Coastal Quest Scavenger Hunt",
-                source=token,
-            )
+            print("Price = " + str(price) + "; total percent = " + str(total_percent))
+            
+            if price != 0:
+                charge = stripe.Charge.create(
+                    amount=price,
+                    currency="usd",
+                    description="Coastal Quest Scavenger Hunt",
+                    source=token,
+                )
             
             participants.has_paid = True
             models.db.session.commit()
@@ -261,7 +293,7 @@ def email_client(client_email, subject, message):
     server.quit()
     
 def hash_password(password):
-    salt = "You're too salty"
+    salt = uuid.uuid4().hex + uuid.uuid4().hex
     return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
 
 def check_password(hashed_password, user_password):

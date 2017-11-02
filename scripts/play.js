@@ -23,9 +23,8 @@ export class Play extends React.Component {
         this.pageName = 'play';
         this.state = {
             'questionsData' : [],
-            'displayer' :'',
-            'hintCount':0,
             'attempts':[],
+            'hintCount':0,
             'playerQuestionOn' :0,
             'question': '',
             'correctAnswer': '',
@@ -37,16 +36,45 @@ export class Play extends React.Component {
 
         };
         this.score = 0;
+        this.point = 20;
         this.attempts = 5;
         this.data = [];
         this.dataSize = 0;
-        this.handleChange = this.handleChange.bind(this);
-        this.showHint = this.showHint.bind(this);
-        this.nextQuestion = this.nextQuestion.bind(this);
+        
+        this.emit = this.emit.bind(this);
         this.checkAnswer = this.checkAnswer.bind(this);
+        this.completed = this.completed.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.nextQuestion = this.nextQuestion.bind(this);
+        this.skip = this.skip.bind(this);
+        this.showHint = this.showHint.bind(this);
+        
+        
+        //retireves the user information
+        Socket.on('user', (data) => {
+            this.setState({
+                'user': data[0],
+                'playerQuestionOn': data[0]['progress'] - 1
+            });
+            this.score = data[0]['score'];
+            this.attempts = data[0]['attempts'];
+            this.point = this.attempts * 5;
+            document.getElementById('points').innerHTML = "Points Avaiable For this Question: " + this.point;
+            if(this.state.hint1 == ""){
+                document.getElementById('hint-submit').style.display = "none";
+            }
+        });
     }
-
-
+    
+    emit(){
+        try{
+            Socket.emit('progessUpdate', {'user': this.state.user, 'progress':this.state.playerQuestionOn + 1, 'score':this.score, 'attempts': this.attempts});    
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+    
     checkAnswer(){
         var result = document.getElementById('result');
         if(this.state.userAnswer == this.state.correctAnswer){
@@ -56,9 +84,14 @@ export class Play extends React.Component {
             if(this.state.playerQuestionOn + 2 == this.dataSize){
                 document.getElementById('next').textContent = "Last Question";
             }
+            if(this.state.playerQuestionOn + 1 == this.dataSize){
+                document.getElementById('complete-button').style.display = "block";
+            }
+            if(this.state.playerQuestionOn < this.dataSize - 1){
+                document.getElementById('next').style.display = "block";
+            }
             document.getElementById('answer-submit').style.display = "none";
             document.getElementById('hint-submit').style.display = "none";
-            document.getElementById('next').style.display = "block";
             document.getElementById('result').style.display = "block";
         }
         else{
@@ -66,9 +99,9 @@ export class Play extends React.Component {
                 if(this.attempts > 0){
                     this.score -= 5;
                     this.attempts --;
-                    Socket.emit('progessUpdate', {'user': this.state.user, 'progress':this.state.playerQuestionOn, 'score':this.score, 'attempts': this.attempts});    
+                    this.emit();
                 }
-                console.log(this.score);
+                document.getElementById('skip').style.display = "block";
                 var newArray = this.state.attempts.slice();    
                 newArray.push(" " + document.getElementById('answer').value);   
                 this.setState({attempts:newArray})
@@ -81,35 +114,13 @@ export class Play extends React.Component {
         }
 
     }
-    handleChange(event){
-        this.setState({
-            userAnswer : event.target.value
-        });
+    
+    completed(){
+        this.emit();
+        Socket.emit('updateTime', {'user': this.state.user, 'start_time': "", 'end_time':'now'});
+        this.props.changePage('complete');
     }
-    //reveals the hint on hint button ciick
-    showHint(event){
-        console.log(this.score);
-        if(this.attempts > 0){
-            this.score -= 5;
-            this.attempts --;
-            Socket.emit('progessUpdate', {'user': this.state.user, 'progress':this.state.playerQuestionOn, 'score':this.score, 'attempts': this.attempts});    
-        }
-        console.log(this.score);
-        this.state.hintCount += 1;
-        document.getElementById('hint1').style.display = "block";
-        // console.log(this.state.x)
-        //condition when the button is clicked once
-        if(this.state.hintCount == 1 && this.state.hint2 == ""){
-            //checks to see if there is a second hint, if not, the button disappears
-            document.getElementById('hint-submit').style.display = "none";
-        }
-        //condition if the button is clicked twice and there is a second hint
-        if(this.state.hintCount == 2 && this.state.hint2 != ""){
-            document.getElementById('hint2').style.display = "block";
-            document.getElementById('hint-submit').style.display = "none";
-        }
-    }
-
+    
     componentDidMount() {
         //retireves the hunt question information
         Socket.on('hunt', (data) => {
@@ -117,13 +128,11 @@ export class Play extends React.Component {
                 'questionsData': data
             });
         });
-        //retireves the user information
-        Socket.on('user', (data) => {
-            this.setState({
-                'user': data[0],
-                'playerQuestionOn': data[0]['progress'] - 1
-            });
-            this.score = data[0]['score'];
+    }
+    
+    handleChange(event){
+        this.setState({
+            userAnswer : event.target.value
         });
     }
     
@@ -138,8 +147,7 @@ export class Play extends React.Component {
         document.getElementById('answer').value = "";
         
         this.state.playerQuestionOn++;
-        Socket.emit('progessUpdate', {'user': this.state.user, 'progress':this.state.playerQuestionOn, 'score':this.score});
-
+        this.emit();
         for(var i = 0; i < this.data.length; i++) {
             var obj = this.data[i];
             if(i == this.state.playerQuestionOn){
@@ -152,7 +160,33 @@ export class Play extends React.Component {
             }
         }
     }
-
+    //reveals the hint on hint button ciick
+    showHint(){
+        if(this.attempts > 0){
+            this.score -= 5;
+            this.attempts--;
+            this.emit();
+        }
+        document.getElementById('points').innerHTML = "Points Avaiable For this Question: " + this.point;
+        this.state.hintCount += 1;
+        document.getElementById('hint1').style.display = "block";
+        //condition when the button is clicked once
+        if(this.state.hintCount == 1 && this.state.hint2 == ""){
+            //checks to see if there is a second hint, if not, the button disappears
+            document.getElementById('hint-submit').style.display = "none";
+        }
+        //condition if the button is clicked twice and there is a second hint
+        if(this.state.hintCount == 2 && this.state.hint2 != ""){
+            document.getElementById('hint2').style.display = "block";
+            document.getElementById('hint-submit').style.display = "none";
+        }
+    }
+    
+    skip(){
+        this.score = this.score - this.point;
+        this.nextQuestion();
+    }
+    
 
     render() {
         
@@ -180,27 +214,27 @@ export class Play extends React.Component {
                     <header>Game Name</header>
                 </div>
                 <div id='play-container'>
-                    <Form  >
-                        <FormGroup id="play-form">
-                                <FormControl.Static>
-                                    <div id="play-question">
-                                    </div>
-                                    <div id='hint1' style={{display:'none'}}>Hint PlaceHolder</div>
-                                    <div id='hint2' style={{display:'none'}}>Hint PlaceHolder</div>
-                                </FormControl.Static>
-                                <FormControl id = "answer" style={{display:this.props.hide}} componentClass="textarea" value={this.state.value} onChange={this.handleChange}  placeholder="Answer" />
-                                <div id='result'style={{visibility:'hidden'}}>Results Placeholder<br/>array</div>
-                        </FormGroup> 
-                    </Form>
+                    <div id="play-form">
+                        <div id="play-question">
+                        </div>
+                        <div id='hint1' style={{display:'none'}}>Hint PlaceHolder</div>
+                        <div id='hint2' style={{display:'none'}}>Hint PlaceHolder</div>
+                    </div> 
+                    <div id = 'input'> 
+                            <label for="answer" id="points" style={{display:this.props.hide}}>Points Avaiable For this Question: </label>
+                            <FormControl id = "answer" style={{display:this.props.hide}} componentClass="textarea" value={this.state.value} onChange={this.handleChange}  placeholder="Answer" />
+                            <div id='result'style={{visibility:'hidden'}}>Results Placeholder<br/>array</div>
+                    </div>
                     <div id='buttons'>
                         <ButtonToolbar>
                             <Button id="next" style={{display:'none'}} onClick={this.nextQuestion} >Next Question</Button>
+                            <Button id="complete-button" style={{display:'none'}} onClick={this.completed}>Finish</Button>   
                             <Button id="answer-submit" style={{display:this.props.hide}} onClick={this.checkAnswer} >Submit</Button>
+                            <Button id="skip" style={{display:'none'}} onClick={this.skip} >Skip Question</Button>
                             <Button id="hint-submit" style={{display:this.props.hide}} onClick={this.showHint}>Hint</Button>
-                            <Button onClick={() => this.props.changePage('home')}  >Home</Button>
+                            <Button onClick={() => this.props.changePage('home')}>Home</Button>
                         </ButtonToolbar>
                     </div>
-
                 </div>
             </div>
 

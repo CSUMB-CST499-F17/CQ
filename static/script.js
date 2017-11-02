@@ -21892,9 +21892,9 @@
 
 	var _home = __webpack_require__(239);
 
-	var _explore = __webpack_require__(494);
+	var _explore = __webpack_require__(495);
 
-	var _leaderboard = __webpack_require__(496);
+	var _leaderboard = __webpack_require__(497);
 
 	var _register = __webpack_require__(498);
 
@@ -21914,7 +21914,11 @@
 
 	var _adminCreate = __webpack_require__(645);
 
-	var _navBar = __webpack_require__(646);
+	var _complete = __webpack_require__(646);
+
+	var _start = __webpack_require__(647);
+
+	var _navBar = __webpack_require__(648);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -21988,29 +21992,6 @@
 	        value: function handle(callback) {
 	            console.log('returned!');
 	        }
-	        //changes the display of the pages when button is pressed
-	        // changePage(from,to){
-	        //     this.state.temp = this.state.lastPage;
-	        //     this.state.lastPage = to;
-	        //     for (var n in this.state){
-	        //         window.localStorage.setItem( n, this.state[n] );
-	        //     }
-	        //     Socket.emit(to, this.state, Socket.callback=this.handle);
-	        //     if(to.indexOf('admin') !== -1){
-	        //         document.getElementById(this.state.temp).style.display = "none";
-	        //         document.getElementById(to).style.display = "block";
-	        //         document.getElementById('nav-bar').style.display = "block";
-	        //         // Socket.emit('adminPage', this.state.temp);
-
-	        //     }
-	        //     if(to.indexOf('admin') == -1){
-	        //         document.getElementById(this.state.temp).style.display = "none";
-	        //         document.getElementById(to).style.display = "block";
-	        //         document.getElementById('nav-bar').style.display = "none";
-	        //     }
-	        // }
-
-
 	    }, {
 	        key: 'changePage',
 	        value: function changePage(to) {
@@ -22062,6 +22043,16 @@
 	                    'div',
 	                    { id: 'play', style: { display: 'none' } },
 	                    React.createElement(_play.Play, { changePage: this.changePage, loggedIn: this.state.loggedIn, hide: this.state.hide })
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'complete', style: { display: 'none' } },
+	                    React.createElement(_complete.Complete, { changePage: this.changePage, loggedIn: this.state.loggedIn, hide: this.state.hide })
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'start', style: { display: 'none' } },
+	                    React.createElement(_start.Start, { changePage: this.changePage, loggedIn: this.state.loggedIn, hide: this.state.hide })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -30672,7 +30663,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _existingTeam = __webpack_require__(497);
+	var _existingTeam = __webpack_require__(494);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -30799,7 +30790,7 @@
 	                            React.createElement(
 	                                'div',
 	                                { id: 'existingTeam', style: { display: 'none' } },
-	                                React.createElement(_existingTeam.ExistingTeam, { changePage: this.props.state.changePage, cancel: this.login, setProps: this.props.setProps, loggedIn: this.props.state.loggedIn, name: this.props.state.name })
+	                                React.createElement(_existingTeam.ExistingTeam, { changePage: this.props.changePage, cancel: this.login, setProps: this.props.setProps, loggedIn: this.props.state.loggedIn, name: this.props.state.name })
 	                            ),
 	                            React.createElement(
 	                                'button',
@@ -50515,6 +50506,150 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.ExistingTeam = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _Socket = __webpack_require__(185);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ExistingTeam = exports.ExistingTeam = function (_React$Component) {
+	    _inherits(ExistingTeam, _React$Component);
+
+	    function ExistingTeam(props) {
+	        _classCallCheck(this, ExistingTeam);
+
+	        var _this = _possibleConstructorReturn(this, (ExistingTeam.__proto__ || Object.getPrototypeOf(ExistingTeam)).call(this, props));
+
+	        _this.team = "";
+	        _this.progress = 0;
+	        _this.pageName = 'existingTeam';
+
+	        _this.handle = _this.handle.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.validateCredentials = _this.validateCredentials.bind(_this);
+
+	        //retireves the user information
+	        _Socket.Socket.on('user', function (data) {
+	            _this.progress = data[0]['progress'];
+	        });
+
+	        return _this;
+	    }
+
+	    _createClass(ExistingTeam, [{
+	        key: 'handle',
+	        value: function handle(callback) {
+	            var res = callback.split('%');
+	            try {
+	                this.props.setProps(res[0], res[1]); //loggedIn, name
+	                document.getElementById("team_name").value = "";
+	                document.getElementById("access").value = "";
+	                switch (res[0]) {
+	                    case "teamLead":
+	                    case "team":
+	                        if (this.progress == 0) {
+	                            this.props.changePage('start');
+	                        } else {
+	                            this.props.changePage('play');
+	                        }
+
+	                        break;
+	                    case "superAdmin":
+	                    case "admin":
+	                        this.props.changePage('adminHome');
+
+	                        break;
+	                    case "no":
+	                        document.getElementById("errorMessage").innerHTML = "⚠ Invalid Team Name or Access Code ⚠";
+	                        document.getElementById("errorMessage").style.visibility = 'visible';
+	                        document.getElementById("errorMessage").style.color = "#f2e537";
+	                        document.getElementById("access").value = "";
+	                        break;
+	                    default:
+	                        break;
+	                }
+	            } catch (err) {
+	                console.log(err);
+	            }
+	        }
+	    }, {
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        key: 'validateCredentials',
+	        value: function validateCredentials() {
+	            this.team = document.getElementById("team_name").value;
+	            var access = document.getElementById("access").value;
+	            if (this.team == "") {
+	                document.getElementById("errorMessage").innerHTML = "⚠ Please Enter valid Team Name and Access Code ⚠";
+	                document.getElementById("errorMessage").style.visibility = 'visible';
+	                document.getElementById("errorMessage").style.color = "#f2e537";
+	            } else {
+	                document.getElementById("errorMessage").style.visibility = 'hidden';
+	                _Socket.Socket.emit('validateCredentials', { 'team_name': this.team, 'access': access }, _Socket.Socket.callback = this.handle);
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'login' },
+	                    React.createElement('input', { type: 'text', id: 'team_name', placeholder: 'Team Name' }),
+	                    React.createElement('input', { type: 'password', id: 'access', placeholder: 'Access Code' }),
+	                    React.createElement(
+	                        'div',
+	                        { id: 'errorMessage', style: { visibility: 'hidden' } },
+	                        ' Error Message Placeholder'
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { className: 'buttons' },
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn', onClick: this.validateCredentials },
+	                            'Enter!'
+	                        ),
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn', onClick: this.props.cancel },
+	                            'Cancel'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return ExistingTeam;
+	}(React.Component);
+
+/***/ },
+/* 495 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 	exports.Explore = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -50529,7 +50664,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(495);
+	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -50550,15 +50685,12 @@
 	        _this.state = {
 	            'count': 0,
 
-	            'name': [],
-	            'h_type': [],
-	            'desc': [],
-	            'image': [],
-	            'start_time': [],
-	            'end_time': [],
-	            'start_text': []
+	            'hunts': [],
+	            'types': [],
+	            'chosentype': ''
 	        };
 	        _this.pageName = 'explore';
+	        _this.sort = _this.sort.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
 	    }
@@ -50568,47 +50700,43 @@
 	        value: function componentDidMount() {
 	            var _this2 = this;
 
-	            _Socket.Socket.on('hunt-info', function (data) {
-	                var name = _this2.state.name.slice();
-	                var h_type = _this2.state.h_type.slice();
-	                var desc = _this2.state.desc.slice();
-	                var image = _this2.state.image.slice();
-	                var start_time = _this2.state.start_time.slice();
-	                var end_time = _this2.state.end_time.slice();
-	                var start_text = _this2.state.start_text.slice();
-
-	                for (var i = 0; i < data.size(); i++) {
-	                    name.push(data['name'][i]);
-	                    _this2.setState({ 'name': name });
-	                    h_type.push(data['h_type'][i]);
-	                    _this2.setState({ 'h_type': h_type });
-	                    desc.push(data['desc'][i]);
-	                    _this2.setState({ 'desc': desc });
-	                    image.push(data['image'][i]);
-	                    _this2.setState({ 'image': image });
-	                    start_time.push(data['start_time'][i]);
-	                    _this2.setState({ 'start_time': start_time });
-	                    end_time.push(data['end_time'][i]);
-	                    _this2.setState({ 'end_time': end_time });
-	                    start_text.push(data['start_text'][i]);
-	                    _this2.setState({ 'start_text': start_text });
+	            _Socket.Socket.on('updateExplore', function (data) {
+	                var d_types = data['types'];
+	                var d_hunts = data['hunts'];
+	                var types = [];
+	                var hunts = [];
+	                var first = "";
+	                for (var i = 0; i < d_hunts.length; i++) {
+	                    hunts.push([d_hunts[i].id, d_hunts[i].name, d_hunts[i].h_type, d_hunts[i].desc, d_hunts[i].image, d_hunts[i].start_time, d_hunts[i].end_time, d_hunts[i].start_text]); //convert to array for mapping
 	                }
-	                // Get the quiz form element
-	                var dropdown = document.getElementById('bg-nested-dropdown');
-
-	                // Good to do error checking, make sure we managed to get something
-	                if (dropdown) {
-	                    // Create a new <p> element
-	                    var hunts = _this2.state.h_type;
-	                    var item = document.createElement('MENUITEM');
-	                    item.value = hunts[0];
-	                    dropdown.appendChild(item);
-	                    // for(var j = 0; j < hunts.size(); j++ )
-	                    // {
-
-	                    // }
+	                for (i = 0; i < d_types.length; i++) {
+	                    var item = d_types[i].charAt(0).toUpperCase() + d_types[i].slice(1);
+	                    if (i == 0) {
+	                        first = item;
+	                    } else {
+	                        types.push(item); //convert to array for mapping
+	                    }
 	                }
+	                _this2.setState({ 'chosentype': first, 'types': types, 'hunts': hunts });
 	            });
+	            _Socket.Socket.on('updateType', function (data) {
+	                var hunts = [];
+	                for (var i = 0; i < data.length; i++) {
+	                    hunts.push([data[i].id, data[i].name, data[i].h_type, data[i].desc, data[i].image, data[i].start_time, data[i].end_time, data[i].start_text]); //convert to array for mapping
+	                }
+	                _this2.setState({ 'hunts': hunts });
+	            });
+	        }
+	    }, {
+	        key: 'sort',
+	        value: function sort(type) {
+	            var types = this.state.types;
+	            var index = types.indexOf(type);
+	            if (index !== -1) {
+	                types[index] = this.state.chosentype;
+	            }
+	            this.setState({ 'chosentype': type, 'types': types });
+	            _Socket.Socket.emit('changeType', type.toLowerCase());
 	        }
 	    }, {
 	        key: 'handleSubmit',
@@ -50619,6 +50747,40 @@
 	        key: 'render',
 	        value: function render() {
 	            var _this3 = this;
+
+	            var hunts = this.state.hunts.map(function (n, index) {
+	                return React.createElement(
+	                    'div',
+	                    { id: n[0], className: 'hunt-preview' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        n[1]
+	                    ),
+	                    React.createElement('img', { src: n[4] }),
+	                    React.createElement(
+	                        'p',
+	                        null,
+	                        n[5],
+	                        ' to ',
+	                        n[6]
+	                    ),
+	                    React.createElement(
+	                        'p',
+	                        null,
+	                        n[3]
+	                    )
+	                );
+	            });
+	            var types = this.state.types.map(function (n, index) {
+	                return React.createElement(
+	                    _reactBootstrap.MenuItem,
+	                    { onClick: function onClick() {
+	                            return _this3.sort(n);
+	                        } },
+	                    n
+	                );
+	            });
 
 	            return React.createElement(
 	                'div',
@@ -50632,59 +50794,44 @@
 	                    'div',
 	                    { id: 'header' },
 	                    React.createElement(
-	                        'header',
-	                        null,
-	                        'EXPLORE'
-	                    )
+	                        _reactBootstrap.DropdownButton,
+	                        { title: this.state.chosentype, id: 'bg-nested-dropdown' },
+	                        types
+	                    ),
+	                    'Scavenger Hunts'
 	                ),
+	                React.createElement('div', { className: 'clear' }),
 	                React.createElement(
 	                    'div',
 	                    { id: 'intro' },
-	                    React.createElement('div', { id: 'info' })
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'buttons' },
+	                    hunts,
 	                    React.createElement(
-	                        _reactBootstrap.ButtonToolbar,
-	                        null,
+	                        'div',
+	                        { id: 'buttons' },
 	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: function onClick() {
+	                            'button',
+	                            { className: 'btn', onClick: function onClick() {
 	                                    return _this3.props.changePage('leaderboard');
 	                                } },
 	                            'Leaderboard'
 	                        ),
 	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: function onClick() {
+	                            'button',
+	                            { className: 'btn', onClick: function onClick() {
 	                                    return _this3.props.changePage('register');
 	                                } },
 	                            'Participate'
-	                        ),
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { id: 'buttons' },
 	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: function onClick() {
+	                            'button',
+	                            { className: 'btn', onClick: function onClick() {
 	                                    return _this3.props.changePage('home');
 	                                } },
 	                            'Home'
-	                        )
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'buttons' },
-	                    React.createElement(
-	                        _reactBootstrap.ButtonGroup,
-	                        null,
-	                        React.createElement(
-	                            _reactBootstrap.DropdownButton,
-	                            { title: 'Select Hunt    ', id: 'bg-nested-dropdown' },
-	                            React.createElement(
-	                                _reactBootstrap.MenuItem,
-	                                null,
-	                                'no hunts yet my dog'
-	                            )
 	                        )
 	                    )
 	                )
@@ -50696,7 +50843,7 @@
 	}(React.Component);
 
 /***/ },
-/* 495 */
+/* 496 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -50744,7 +50891,7 @@
 	}(React.Component);
 
 /***/ },
-/* 496 */
+/* 497 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50766,7 +50913,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(495);
+	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -50814,24 +50961,40 @@
 	        value: function render() {
 	            var _this3 = this;
 
+	            console.log(this.state.userlist);
 	            var userlist = '';
+
+	            var data = this.state.userlist;
+	            for (var i = 0; i < data.length; i++) {
+	                data[i].end_time = data[i].start_time - data[i].end_time;
+	            }
+
 	            if (this.state.userlist != null) {
 	                userlist = this.state.userlist.map(function (n, index) {
 	                    return React.createElement(
 	                        'tr',
 	                        { key: index },
-	                        React.createElement('td', null),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.name
+	                            n.score
+	                        ),
+	                        ' ',
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n.team_name
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.picture
+	                            n.score
 	                        ),
-	                        React.createElement('td', null)
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n.end_time
+	                        )
 	                    );
 	                });
 	            }
@@ -50931,144 +51094,6 @@
 	}(React.Component);
 
 /***/ },
-/* 497 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.ExistingTeam = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _reactBootstrap = __webpack_require__(240);
-
-	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
-
-	var _Socket = __webpack_require__(185);
-
-	var _logoSmall = __webpack_require__(495);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ExistingTeam = exports.ExistingTeam = function (_React$Component) {
-	    _inherits(ExistingTeam, _React$Component);
-
-	    function ExistingTeam(props) {
-	        _classCallCheck(this, ExistingTeam);
-
-	        var _this = _possibleConstructorReturn(this, (ExistingTeam.__proto__ || Object.getPrototypeOf(ExistingTeam)).call(this, props));
-
-	        _this.pageName = 'existingTeam';
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        _this.validateCredentials = _this.validateCredentials.bind(_this);
-	        _this.team = "";
-	        _this.handle = _this.handle.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(ExistingTeam, [{
-	        key: 'handle',
-	        value: function handle(callback) {
-	            var res = callback.split('%');
-	            try {
-	                this.props.setProps(res[0], res[1]); //loggedIn, name
-	                document.getElementById("team_name").value = "";
-	                document.getElementById("access").value = "";
-	                switch (res[0]) {
-	                    case "teamLead":
-	                    case "team":
-	                        this.props.changePage('play');
-
-	                        break;
-	                    case "superAdmin":
-	                    case "admin":
-	                        this.props.changePage('adminHome');
-
-	                        break;
-	                    case "no":
-	                        document.getElementById("errorMessage").innerHTML = "⚠ Invalid Team Name or Access Code ⚠";
-	                        document.getElementById("errorMessage").style.visibility = 'visible';
-	                        document.getElementById("errorMessage").style.color = "#f2e537";
-	                        document.getElementById("access").value = "";
-	                        break;
-	                    default:
-	                        break;
-	                }
-	            } catch (err) {
-	                alert(err);
-	            }
-	        }
-	    }, {
-	        key: 'validateCredentials',
-	        value: function validateCredentials() {
-	            this.team = document.getElementById("team_name").value;
-	            var access = document.getElementById("access").value;
-	            if (this.team == "") {
-	                document.getElementById("errorMessage").innerHTML = "⚠ Please Enter valid Team Name and Access Code ⚠";
-	                document.getElementById("errorMessage").style.visibility = 'visible';
-	                document.getElementById("errorMessage").style.color = "#f2e537";
-	            } else {
-	                document.getElementById("errorMessage").style.visibility = 'hidden';
-	                _Socket.Socket.emit('validateCredentials', { 'team_name': this.team, 'access': access }, _Socket.Socket.callback = this.handle);
-	            }
-	        }
-	    }, {
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'login' },
-	                    React.createElement('input', { type: 'text', id: 'team_name', placeholder: 'Team Name' }),
-	                    React.createElement('input', { type: 'password', id: 'access', placeholder: 'Access Code' }),
-	                    React.createElement(
-	                        'div',
-	                        { id: 'errorMessage', style: { visibility: 'hidden' } },
-	                        ' Error Message Placeholder'
-	                    ),
-	                    React.createElement(
-	                        'div',
-	                        { className: 'buttons' },
-	                        React.createElement(
-	                            'button',
-	                            { className: 'btn', onClick: this.validateCredentials },
-	                            'Enter!'
-	                        ),
-	                        React.createElement(
-	                            'button',
-	                            { className: 'btn', onClick: this.props.cancel },
-	                            'Cancel'
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return ExistingTeam;
-	}(React.Component);
-
-/***/ },
 /* 498 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -51138,6 +51163,7 @@
 	        _this.handleHuntChange = _this.handleHuntChange.bind(_this);
 	        _this.handleEmailChange = _this.handleEmailChange.bind(_this);
 	        _this.handleCardChange = _this.handleCardChange.bind(_this);
+	        _this.handleDiscountChange = _this.handleDiscountChange.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        _this.handleFormReject = _this.handleFormReject.bind(_this);
 	        return _this;
@@ -51237,6 +51263,7 @@
 	        key: 'handleDiscountChange',
 	        value: function handleDiscountChange(event) {
 	            event.preventDefault();
+	            console.log(event.target.value);
 	            this.userdata.discount_code = event.target.value;
 	        }
 	    }, {
@@ -51402,7 +51429,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(495);
+	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -51427,9 +51454,8 @@
 	        _this.pageName = 'play';
 	        _this.state = {
 	            'questionsData': [],
-	            'displayer': '',
-	            'hintCount': 0,
 	            'attempts': [],
+	            'hintCount': 0,
 	            'playerQuestionOn': 0,
 	            'question': '',
 	            'correctAnswer': '',
@@ -51441,17 +51467,46 @@
 
 	        };
 	        _this.score = 0;
+	        _this.point = 20;
 	        _this.attempts = 5;
 	        _this.data = [];
 	        _this.dataSize = 0;
-	        _this.handleChange = _this.handleChange.bind(_this);
-	        _this.showHint = _this.showHint.bind(_this);
-	        _this.nextQuestion = _this.nextQuestion.bind(_this);
+
+	        _this.emit = _this.emit.bind(_this);
 	        _this.checkAnswer = _this.checkAnswer.bind(_this);
+	        _this.completed = _this.completed.bind(_this);
+	        _this.handleChange = _this.handleChange.bind(_this);
+	        _this.nextQuestion = _this.nextQuestion.bind(_this);
+	        _this.skip = _this.skip.bind(_this);
+	        _this.showHint = _this.showHint.bind(_this);
+
+	        //retireves the user information
+	        _Socket.Socket.on('user', function (data) {
+	            _this.setState({
+	                'user': data[0],
+	                'playerQuestionOn': data[0]['progress'] - 1
+	            });
+	            _this.score = data[0]['score'];
+	            _this.attempts = data[0]['attempts'];
+	            _this.point = _this.attempts * 5;
+	            document.getElementById('points').innerHTML = "Points Avaiable For this Question: " + _this.point;
+	            if (_this.state.hint1 == "") {
+	                document.getElementById('hint-submit').style.display = "none";
+	            }
+	        });
 	        return _this;
 	    }
 
 	    _createClass(Play, [{
+	        key: 'emit',
+	        value: function emit() {
+	            try {
+	                _Socket.Socket.emit('progessUpdate', { 'user': this.state.user, 'progress': this.state.playerQuestionOn + 1, 'score': this.score, 'attempts': this.attempts });
+	            } catch (err) {
+	                console.log(err);
+	            }
+	        }
+	    }, {
 	        key: 'checkAnswer',
 	        value: function checkAnswer() {
 	            var result = document.getElementById('result');
@@ -51462,18 +51517,23 @@
 	                if (this.state.playerQuestionOn + 2 == this.dataSize) {
 	                    document.getElementById('next').textContent = "Last Question";
 	                }
+	                if (this.state.playerQuestionOn + 1 == this.dataSize) {
+	                    document.getElementById('complete-button').style.display = "block";
+	                }
+	                if (this.state.playerQuestionOn < this.dataSize - 1) {
+	                    document.getElementById('next').style.display = "block";
+	                }
 	                document.getElementById('answer-submit').style.display = "none";
 	                document.getElementById('hint-submit').style.display = "none";
-	                document.getElementById('next').style.display = "block";
 	                document.getElementById('result').style.display = "block";
 	            } else {
 	                if (document.getElementById('answer').value != "") {
 	                    if (this.attempts > 0) {
 	                        this.score -= 5;
 	                        this.attempts--;
-	                        _Socket.Socket.emit('progessUpdate', { 'user': this.state.user, 'progress': this.state.playerQuestionOn, 'score': this.score, 'attempts': this.attempts });
+	                        this.emit();
 	                    }
-	                    console.log(this.score);
+	                    document.getElementById('skip').style.display = "block";
 	                    var newArray = this.state.attempts.slice();
 	                    newArray.push(" " + document.getElementById('answer').value);
 	                    this.setState({ attempts: newArray });
@@ -51486,37 +51546,11 @@
 	            }
 	        }
 	    }, {
-	        key: 'handleChange',
-	        value: function handleChange(event) {
-	            this.setState({
-	                userAnswer: event.target.value
-	            });
-	        }
-	        //reveals the hint on hint button ciick
-
-	    }, {
-	        key: 'showHint',
-	        value: function showHint(event) {
-	            console.log(this.score);
-	            if (this.attempts > 0) {
-	                this.score -= 5;
-	                this.attempts--;
-	                _Socket.Socket.emit('progessUpdate', { 'user': this.state.user, 'progress': this.state.playerQuestionOn, 'score': this.score, 'attempts': this.attempts });
-	            }
-	            console.log(this.score);
-	            this.state.hintCount += 1;
-	            document.getElementById('hint1').style.display = "block";
-	            // console.log(this.state.x)
-	            //condition when the button is clicked once
-	            if (this.state.hintCount == 1 && this.state.hint2 == "") {
-	                //checks to see if there is a second hint, if not, the button disappears
-	                document.getElementById('hint-submit').style.display = "none";
-	            }
-	            //condition if the button is clicked twice and there is a second hint
-	            if (this.state.hintCount == 2 && this.state.hint2 != "") {
-	                document.getElementById('hint2').style.display = "block";
-	                document.getElementById('hint-submit').style.display = "none";
-	            }
+	        key: 'completed',
+	        value: function completed() {
+	            this.emit();
+	            _Socket.Socket.emit('updateTime', { 'user': this.state.user, 'start_time': "", 'end_time': 'now' });
+	            this.props.changePage('complete');
 	        }
 	    }, {
 	        key: 'componentDidMount',
@@ -51529,13 +51563,12 @@
 	                    'questionsData': data
 	                });
 	            });
-	            //retireves the user information
-	            _Socket.Socket.on('user', function (data) {
-	                _this2.setState({
-	                    'user': data[0],
-	                    'playerQuestionOn': data[0]['progress'] - 1
-	                });
-	                _this2.score = data[0]['score'];
+	        }
+	    }, {
+	        key: 'handleChange',
+	        value: function handleChange(event) {
+	            this.setState({
+	                userAnswer: event.target.value
 	            });
 	        }
 	    }, {
@@ -51551,8 +51584,7 @@
 	            document.getElementById('answer').value = "";
 
 	            this.state.playerQuestionOn++;
-	            _Socket.Socket.emit('progessUpdate', { 'user': this.state.user, 'progress': this.state.playerQuestionOn, 'score': this.score });
-
+	            this.emit();
 	            for (var i = 0; i < this.data.length; i++) {
 	                var obj = this.data[i];
 	                if (i == this.state.playerQuestionOn) {
@@ -51564,6 +51596,36 @@
 	                    this.state.hint2 = obj.hint2;
 	                }
 	            }
+	        }
+	        //reveals the hint on hint button ciick
+
+	    }, {
+	        key: 'showHint',
+	        value: function showHint() {
+	            if (this.attempts > 0) {
+	                this.score -= 5;
+	                this.attempts--;
+	                this.emit();
+	            }
+	            document.getElementById('points').innerHTML = "Points Avaiable For this Question: " + this.point;
+	            this.state.hintCount += 1;
+	            document.getElementById('hint1').style.display = "block";
+	            //condition when the button is clicked once
+	            if (this.state.hintCount == 1 && this.state.hint2 == "") {
+	                //checks to see if there is a second hint, if not, the button disappears
+	                document.getElementById('hint-submit').style.display = "none";
+	            }
+	            //condition if the button is clicked twice and there is a second hint
+	            if (this.state.hintCount == 2 && this.state.hint2 != "") {
+	                document.getElementById('hint2').style.display = "block";
+	                document.getElementById('hint-submit').style.display = "none";
+	            }
+	        }
+	    }, {
+	        key: 'skip',
+	        value: function skip() {
+	            this.score = this.score - this.point;
+	            this.nextQuestion();
 	        }
 	    }, {
 	        key: 'render',
@@ -51605,34 +51667,35 @@
 	                    'div',
 	                    { id: 'play-container' },
 	                    React.createElement(
-	                        _reactBootstrap.Form,
-	                        null,
+	                        'div',
+	                        { id: 'play-form' },
+	                        React.createElement('div', { id: 'play-question' }),
 	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            { id: 'play-form' },
-	                            React.createElement(
-	                                _reactBootstrap.FormControl.Static,
-	                                null,
-	                                React.createElement('div', { id: 'play-question' }),
-	                                React.createElement(
-	                                    'div',
-	                                    { id: 'hint1', style: { display: 'none' } },
-	                                    'Hint PlaceHolder'
-	                                ),
-	                                React.createElement(
-	                                    'div',
-	                                    { id: 'hint2', style: { display: 'none' } },
-	                                    'Hint PlaceHolder'
-	                                )
-	                            ),
-	                            React.createElement(_reactBootstrap.FormControl, { id: 'answer', style: { display: this.props.hide }, componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
-	                            React.createElement(
-	                                'div',
-	                                { id: 'result', style: { visibility: 'hidden' } },
-	                                'Results Placeholder',
-	                                React.createElement('br', null),
-	                                'array'
-	                            )
+	                            'div',
+	                            { id: 'hint1', style: { display: 'none' } },
+	                            'Hint PlaceHolder'
+	                        ),
+	                        React.createElement(
+	                            'div',
+	                            { id: 'hint2', style: { display: 'none' } },
+	                            'Hint PlaceHolder'
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { id: 'input' },
+	                        React.createElement(
+	                            'label',
+	                            { 'for': 'answer', id: 'points', style: { display: this.props.hide } },
+	                            'Points Avaiable For this Question: '
+	                        ),
+	                        React.createElement(_reactBootstrap.FormControl, { id: 'answer', style: { display: this.props.hide }, componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
+	                        React.createElement(
+	                            'div',
+	                            { id: 'result', style: { visibility: 'hidden' } },
+	                            'Results Placeholder',
+	                            React.createElement('br', null),
+	                            'array'
 	                        )
 	                    ),
 	                    React.createElement(
@@ -51648,8 +51711,18 @@
 	                            ),
 	                            React.createElement(
 	                                _reactBootstrap.Button,
+	                                { id: 'complete-button', style: { display: 'none' }, onClick: this.completed },
+	                                'Finish'
+	                            ),
+	                            React.createElement(
+	                                _reactBootstrap.Button,
 	                                { id: 'answer-submit', style: { display: this.props.hide }, onClick: this.checkAnswer },
 	                                'Submit'
+	                            ),
+	                            React.createElement(
+	                                _reactBootstrap.Button,
+	                                { id: 'skip', style: { display: 'none' }, onClick: this.skip },
+	                                'Skip Question'
 	                            ),
 	                            React.createElement(
 	                                _reactBootstrap.Button,
@@ -71756,6 +71829,251 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.Complete = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _Socket = __webpack_require__(185);
+
+	var _reactBootstrap = __webpack_require__(240);
+
+	var _logoSmall = __webpack_require__(496);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Complete = exports.Complete = function (_React$Component) {
+	    _inherits(Complete, _React$Component);
+
+	    function Complete(props) {
+	        _classCallCheck(this, Complete);
+
+	        var _this = _possibleConstructorReturn(this, (Complete.__proto__ || Object.getPrototypeOf(Complete)).call(this, props));
+
+	        _this.state = {
+	            'user': [],
+	            'score': -1
+	        };
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Complete, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _this2 = this;
+
+	            //retireves the hunt question information
+	            _Socket.Socket.on('user', function (data) {
+	                _this2.setState({
+	                    'user': data[0]['team_name'],
+	                    'score': data[0]['score']
+	                });
+	                console.log(data[0]['team_name']);
+	                if (_this2.state.score > -1) {
+	                    document.getElementById('team').innerHTML = _this2.state.user;
+	                    document.getElementById('score').innerHTML = _this2.state.score;
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this3 = this;
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'logo-small' },
+	                    React.createElement(_logoSmall.LogoSmall, null)
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        'Finished'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement(
+	                        'div',
+	                        { id: 'results' },
+	                        React.createElement('div', { id: 'team' }),
+	                        React.createElement('div', { id: 'score' })
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { id: 'buttons' },
+	                        React.createElement(
+	                            _reactBootstrap.Button,
+	                            { onClick: function onClick() {
+	                                    return _this3.props.changePage('leaderboard');
+	                                } },
+	                            'Leaderboard'
+	                        ),
+	                        React.createElement(
+	                            _reactBootstrap.Button,
+	                            { onClick: function onClick() {
+	                                    return _this3.props.changePage('home');
+	                                } },
+	                            'Home'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Complete;
+	}(React.Component);
+
+/***/ },
+/* 647 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.Start = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _Socket = __webpack_require__(185);
+
+	var _reactBootstrap = __webpack_require__(240);
+
+	var _logoSmall = __webpack_require__(496);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Start = exports.Start = function (_React$Component) {
+	    _inherits(Start, _React$Component);
+
+	    function Start(props) {
+	        _classCallCheck(this, Start);
+
+	        var _this = _possibleConstructorReturn(this, (Start.__proto__ || Object.getPrototypeOf(Start)).call(this, props));
+
+	        _this.user = [];
+	        _this.hunt = [];
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.start = _this.start.bind(_this);
+
+	        //retireves the hunt question information
+	        _Socket.Socket.on('user', function (data) {
+	            _this.user = data[0];
+	        });
+	        return _this;
+	    }
+
+	    _createClass(Start, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _this2 = this;
+
+	            //retireves the hunt question information
+	            _Socket.Socket.on('hunt', function (data) {
+	                _this2.hunt = data;
+	            });
+	        }
+	    }, {
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        key: 'start',
+	        value: function start() {
+	            try {
+	                _Socket.Socket.emit('progessUpdate', { 'user': this.user, 'progress': 1, 'score': this.hunt.length * 25, 'attempts': 5 });
+	                _Socket.Socket.emit('updateTime', { 'user': this.user, 'start_time': 'now', 'end_time': "" });
+	            } catch (err) {
+	                console.log(err);
+	            }
+	            this.props.changePage('play');
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'logo-small' },
+	                    React.createElement(_logoSmall.LogoSmall, null)
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        'Start'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement(
+	                        'div',
+	                        { id: 'buttons' },
+	                        React.createElement(
+	                            _reactBootstrap.Button,
+	                            { onClick: this.start },
+	                            'Start Scavenger Hunt!'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Start;
+	}(React.Component);
+
+/***/ },
+/* 648 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 	exports.NavBar = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -71766,7 +72084,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(495);
+	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 

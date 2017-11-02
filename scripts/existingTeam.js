@@ -1,41 +1,45 @@
 import * as React from 'react';
-import * as ReactBootstrap from 'react-bootstrap';
 import { Socket } from './Socket';
-import { Button } from 'react-bootstrap';
-import { InputGroup } from 'react-bootstrap';
-import { Form } from 'react-bootstrap';
-import { FormControl } from 'react-bootstrap';
-import { FormGroup } from 'react-bootstrap';
-import { ButtonToolbar } from 'react-bootstrap';
-import { ButtonGroup } from 'react-bootstrap';
 
-import { LogoSmall } from './logo-small';
 
 export class ExistingTeam extends React.Component {
     constructor(props) {
         super(props);
+        this.team = "";
+        this.progress = 0;
         this.pageName = 'existingTeam';
+        
+        this.handle = this.handle.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.validateCredentials = this.validateCredentials.bind(this);
-        this.team = "";
-        this.handle = this.handle.bind(this);
+        
+        //retireves the user information
+        Socket.on('user', (data) => {
+                this.progress = data[0]['progress'];
+        });
+        
     }
     handle(callback){
         var res = callback.split('%');
-          try{
+            try{
                 this.props.setProps(res[0], res[1]); //loggedIn, name
                 document.getElementById("team_name").value = "";
                 document.getElementById("access").value = "";
                 switch(res[0]) {
                     case "teamLead":
                     case "team":
-                        this.props.changePage('play');
+                        if(this.progress == 0){
+                            this.props.changePage('start');
+                        }
+                        else{
+                            this.props.changePage('play');
+                        }
                         
                         break;
                     case "superAdmin":
                     case "admin":
                         this.props.changePage('adminHome');
-
+            
                         break;
                     case "no":
                         document.getElementById("errorMessage").innerHTML = "⚠ Invalid Team Name or Access Code ⚠";
@@ -46,10 +50,13 @@ export class ExistingTeam extends React.Component {
                     default:
                             break;
                     } 
-          }
-          catch(err) {
-                alert(err);
+            }
+            catch(err) {
+                console.log(err);
             } 
+    }
+    handleSubmit(event) {
+        event.preventDefault();
     }
     validateCredentials(){
         this.team = document.getElementById("team_name").value;
@@ -67,9 +74,6 @@ export class ExistingTeam extends React.Component {
         }
     }
     
-    handleSubmit(event) {
-        event.preventDefault();
-    }
     render() {
         return (
             <div>
