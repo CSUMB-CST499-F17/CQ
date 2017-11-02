@@ -388,6 +388,12 @@ td{
         margin:auto;
         max-width: 100%;
     }
+    #input{
+        display:block;
+        text-align:center;
+        justify-content: center;
+        margin:auto;
+    }
     
     .buttons{
         margin-top:10px;

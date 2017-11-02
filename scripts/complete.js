@@ -16,15 +16,14 @@ export class Complete extends React.Component {
 
     componentDidMount(){
         //retireves the hunt question information
-        console.log(this.state.score);
         Socket.on('user', (data) => {
             this.setState({
-                'user': data['user'], 
-                'score':data['score']
+                'user': data[0]['team_name'], 
+                'score':data[0]['score']
             });
-            console.log(this.state.score);
+            console.log(data[0]['team_name']);
             if(this.state.score > -1){
-                document.getElementById('team_name').innerHTML = this.state.user['team_name'];
+                document.getElementById('team').innerHTML = this.state.user;
                 document.getElementById('score').innerHTML = this.state.score;
             }
         });
@@ -45,7 +44,7 @@ export class Complete extends React.Component {
                 </div>
                     <div id='intro'>
                         <div id = 'results'>
-                            <div id = 'team_name'></div>
+                            <div id = 'team'></div>
                             <div id = 'score'></div>
                         </div>
                         <div id='buttons'>

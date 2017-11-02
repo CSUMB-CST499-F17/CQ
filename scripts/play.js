@@ -23,9 +23,8 @@ export class Play extends React.Component {
         this.pageName = 'play';
         this.state = {
             'questionsData' : [],
-            'displayer' :'',
-            'hintCount':0,
             'attempts':[],
+            'hintCount':0,
             'playerQuestionOn' :0,
             'question': '',
             'correctAnswer': '',
@@ -37,15 +36,19 @@ export class Play extends React.Component {
 
         };
         this.score = 0;
+        this.point = 20;
         this.attempts = 5;
         this.data = [];
         this.dataSize = 0;
-        this.handleChange = this.handleChange.bind(this);
-        this.showHint = this.showHint.bind(this);
-        this.nextQuestion = this.nextQuestion.bind(this);
+        
+        this.emit = this.emit.bind(this);
         this.checkAnswer = this.checkAnswer.bind(this);
         this.completed = this.completed.bind(this);
-        this.emit = this.emit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.nextQuestion = this.nextQuestion.bind(this);
+        this.skip = this.skip.bind(this);
+        this.showHint = this.showHint.bind(this);
+        
         
         //retireves the user information
         Socket.on('user', (data) => {
@@ -55,6 +58,11 @@ export class Play extends React.Component {
             });
             this.score = data[0]['score'];
             this.attempts = data[0]['attempts'];
+            this.point = this.attempts * 5;
+            document.getElementById('points').innerHTML = "Points Avaiable For this Question: " + this.point;
+            if(this.state.hint1 == ""){
+                document.getElementById('hint-submit').style.display = "none";
+            }
         });
     }
     
@@ -66,11 +74,7 @@ export class Play extends React.Component {
             console.log(err);
         }
     }
-    completed(){
-        this.emit();
-        this.props.changePage('complete');
-    }
-
+    
     checkAnswer(){
         var result = document.getElementById('result');
         if(this.state.userAnswer == this.state.correctAnswer){
@@ -97,6 +101,7 @@ export class Play extends React.Component {
                     this.attempts --;
                     this.emit();
                 }
+                document.getElementById('skip').style.display = "block";
                 var newArray = this.state.attempts.slice();    
                 newArray.push(" " + document.getElementById('answer').value);   
                 this.setState({attempts:newArray})
@@ -110,38 +115,23 @@ export class Play extends React.Component {
 
     }
     
-    handleChange(event){
-        this.setState({
-            userAnswer : event.target.value
-        });
+    completed(){
+        this.emit();
+        this.props.changePage('complete');
     }
-    //reveals the hint on hint button ciick
-    showHint(){
-        if(this.attempts > 0){
-            this.score -= 5;
-            this.attempts--;
-            this.emit();
-        }
-        this.state.hintCount += 1;
-        document.getElementById('hint1').style.display = "block";
-        //condition when the button is clicked once
-        if(this.state.hintCount == 1 && this.state.hint2 == ""){
-            //checks to see if there is a second hint, if not, the button disappears
-            document.getElementById('hint-submit').style.display = "none";
-        }
-        //condition if the button is clicked twice and there is a second hint
-        if(this.state.hintCount == 2 && this.state.hint2 != ""){
-            document.getElementById('hint2').style.display = "block";
-            document.getElementById('hint-submit').style.display = "none";
-        }
-    }
-
+    
     componentDidMount() {
         //retireves the hunt question information
         Socket.on('hunt', (data) => {
             this.setState({
                 'questionsData': data
             });
+        });
+    }
+    
+    handleChange(event){
+        this.setState({
+            userAnswer : event.target.value
         });
     }
     
@@ -169,6 +159,33 @@ export class Play extends React.Component {
             }
         }
     }
+    //reveals the hint on hint button ciick
+    showHint(){
+        if(this.attempts > 0){
+            this.score -= 5;
+            this.attempts--;
+            this.emit();
+        }
+        document.getElementById('points').innerHTML = "Points Avaiable For this Question: " + this.point;
+        this.state.hintCount += 1;
+        document.getElementById('hint1').style.display = "block";
+        //condition when the button is clicked once
+        if(this.state.hintCount == 1 && this.state.hint2 == ""){
+            //checks to see if there is a second hint, if not, the button disappears
+            document.getElementById('hint-submit').style.display = "none";
+        }
+        //condition if the button is clicked twice and there is a second hint
+        if(this.state.hintCount == 2 && this.state.hint2 != ""){
+            document.getElementById('hint2').style.display = "block";
+            document.getElementById('hint-submit').style.display = "none";
+        }
+    }
+    
+    skip(){
+        this.score = this.score - this.point;
+        this.nextQuestion();
+    }
+    
 
 
     render() {
@@ -204,6 +221,7 @@ export class Play extends React.Component {
                         <div id='hint2' style={{display:'none'}}>Hint PlaceHolder</div>
                     </div> 
                     <div id = 'input'> 
+                            <label for="answer" id="points" style={{display:this.props.hide}}>Points Avaiable For this Question: </label>
                             <FormControl id = "answer" style={{display:this.props.hide}} componentClass="textarea" value={this.state.value} onChange={this.handleChange}  placeholder="Answer" />
                             <div id='result'style={{visibility:'hidden'}}>Results Placeholder<br/>array</div>
                     </div>
@@ -212,6 +230,7 @@ export class Play extends React.Component {
                             <Button id="next" style={{display:'none'}} onClick={this.nextQuestion} >Next Question</Button>
                             <Button id="complete-button" style={{display:'none'}} onClick={this.completed}>Finish</Button>   
                             <Button id="answer-submit" style={{display:this.props.hide}} onClick={this.checkAnswer} >Submit</Button>
+                            <Button id="skip" style={{display:'none'}} onClick={this.skip} >Skip Question</Button>
                             <Button id="hint-submit" style={{display:this.props.hide}} onClick={this.showHint}>Hint</Button>
                             <Button onClick={() => this.props.changePage('home')}>Home</Button>
                         </ButtonToolbar>

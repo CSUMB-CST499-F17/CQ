@@ -51429,9 +51429,8 @@
 	        _this.pageName = 'play';
 	        _this.state = {
 	            'questionsData': [],
-	            'displayer': '',
-	            'hintCount': 0,
 	            'attempts': [],
+	            'hintCount': 0,
 	            'playerQuestionOn': 0,
 	            'question': '',
 	            'correctAnswer': '',
@@ -51443,15 +51442,18 @@
 
 	        };
 	        _this.score = 0;
+	        _this.point = 20;
 	        _this.attempts = 5;
 	        _this.data = [];
 	        _this.dataSize = 0;
-	        _this.handleChange = _this.handleChange.bind(_this);
-	        _this.showHint = _this.showHint.bind(_this);
-	        _this.nextQuestion = _this.nextQuestion.bind(_this);
+
+	        _this.emit = _this.emit.bind(_this);
 	        _this.checkAnswer = _this.checkAnswer.bind(_this);
 	        _this.completed = _this.completed.bind(_this);
-	        _this.emit = _this.emit.bind(_this);
+	        _this.handleChange = _this.handleChange.bind(_this);
+	        _this.nextQuestion = _this.nextQuestion.bind(_this);
+	        _this.skip = _this.skip.bind(_this);
+	        _this.showHint = _this.showHint.bind(_this);
 
 	        //retireves the user information
 	        _Socket.Socket.on('user', function (data) {
@@ -51461,6 +51463,11 @@
 	            });
 	            _this.score = data[0]['score'];
 	            _this.attempts = data[0]['attempts'];
+	            _this.point = _this.attempts * 5;
+	            document.getElementById('points').innerHTML = "Points Avaiable For this Question: " + _this.point;
+	            if (_this.state.hint1 == "") {
+	                document.getElementById('hint-submit').style.display = "none";
+	            }
 	        });
 	        return _this;
 	    }
@@ -51473,12 +51480,6 @@
 	            } catch (err) {
 	                console.log(err);
 	            }
-	        }
-	    }, {
-	        key: 'completed',
-	        value: function completed() {
-	            this.emit();
-	            this.props.changePage('complete');
 	        }
 	    }, {
 	        key: 'checkAnswer',
@@ -51507,6 +51508,7 @@
 	                        this.attempts--;
 	                        this.emit();
 	                    }
+	                    document.getElementById('skip').style.display = "block";
 	                    var newArray = this.state.attempts.slice();
 	                    newArray.push(" " + document.getElementById('answer').value);
 	                    this.setState({ attempts: newArray });
@@ -51519,34 +51521,10 @@
 	            }
 	        }
 	    }, {
-	        key: 'handleChange',
-	        value: function handleChange(event) {
-	            this.setState({
-	                userAnswer: event.target.value
-	            });
-	        }
-	        //reveals the hint on hint button ciick
-
-	    }, {
-	        key: 'showHint',
-	        value: function showHint() {
-	            if (this.attempts > 0) {
-	                this.score -= 5;
-	                this.attempts--;
-	                this.emit();
-	            }
-	            this.state.hintCount += 1;
-	            document.getElementById('hint1').style.display = "block";
-	            //condition when the button is clicked once
-	            if (this.state.hintCount == 1 && this.state.hint2 == "") {
-	                //checks to see if there is a second hint, if not, the button disappears
-	                document.getElementById('hint-submit').style.display = "none";
-	            }
-	            //condition if the button is clicked twice and there is a second hint
-	            if (this.state.hintCount == 2 && this.state.hint2 != "") {
-	                document.getElementById('hint2').style.display = "block";
-	                document.getElementById('hint-submit').style.display = "none";
-	            }
+	        key: 'completed',
+	        value: function completed() {
+	            this.emit();
+	            this.props.changePage('complete');
 	        }
 	    }, {
 	        key: 'componentDidMount',
@@ -51558,6 +51536,13 @@
 	                _this2.setState({
 	                    'questionsData': data
 	                });
+	            });
+	        }
+	    }, {
+	        key: 'handleChange',
+	        value: function handleChange(event) {
+	            this.setState({
+	                userAnswer: event.target.value
 	            });
 	        }
 	    }, {
@@ -51585,6 +51570,36 @@
 	                    this.state.hint2 = obj.hint2;
 	                }
 	            }
+	        }
+	        //reveals the hint on hint button ciick
+
+	    }, {
+	        key: 'showHint',
+	        value: function showHint() {
+	            if (this.attempts > 0) {
+	                this.score -= 5;
+	                this.attempts--;
+	                this.emit();
+	            }
+	            document.getElementById('points').innerHTML = "Points Avaiable For this Question: " + this.point;
+	            this.state.hintCount += 1;
+	            document.getElementById('hint1').style.display = "block";
+	            //condition when the button is clicked once
+	            if (this.state.hintCount == 1 && this.state.hint2 == "") {
+	                //checks to see if there is a second hint, if not, the button disappears
+	                document.getElementById('hint-submit').style.display = "none";
+	            }
+	            //condition if the button is clicked twice and there is a second hint
+	            if (this.state.hintCount == 2 && this.state.hint2 != "") {
+	                document.getElementById('hint2').style.display = "block";
+	                document.getElementById('hint-submit').style.display = "none";
+	            }
+	        }
+	    }, {
+	        key: 'skip',
+	        value: function skip() {
+	            this.score = this.score - this.point;
+	            this.nextQuestion();
 	        }
 	    }, {
 	        key: 'render',
@@ -51643,6 +51658,11 @@
 	                    React.createElement(
 	                        'div',
 	                        { id: 'input' },
+	                        React.createElement(
+	                            'label',
+	                            { 'for': 'answer', id: 'points', style: { display: this.props.hide } },
+	                            'Points Avaiable For this Question: '
+	                        ),
 	                        React.createElement(_reactBootstrap.FormControl, { id: 'answer', style: { display: this.props.hide }, componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
 	                        React.createElement(
 	                            'div',
@@ -51672,6 +51692,11 @@
 	                                _reactBootstrap.Button,
 	                                { id: 'answer-submit', style: { display: this.props.hide }, onClick: this.checkAnswer },
 	                                'Submit'
+	                            ),
+	                            React.createElement(
+	                                _reactBootstrap.Button,
+	                                { id: 'skip', style: { display: 'none' }, onClick: this.skip },
+	                                'Skip Question'
 	                            ),
 	                            React.createElement(
 	                                _reactBootstrap.Button,
@@ -71822,15 +71847,14 @@
 	            var _this2 = this;
 
 	            //retireves the hunt question information
-	            console.log(this.state.score);
 	            _Socket.Socket.on('user', function (data) {
 	                _this2.setState({
-	                    'user': data['user'],
-	                    'score': data['score']
+	                    'user': data[0]['team_name'],
+	                    'score': data[0]['score']
 	                });
-	                console.log(_this2.state.score);
+	                console.log(data[0]['team_name']);
 	                if (_this2.state.score > -1) {
-	                    document.getElementById('team_name').innerHTML = _this2.state.user['team_name'];
+	                    document.getElementById('team').innerHTML = _this2.state.user;
 	                    document.getElementById('score').innerHTML = _this2.state.score;
 	                }
 	            });
@@ -71868,7 +71892,7 @@
 	                    React.createElement(
 	                        'div',
 	                        { id: 'results' },
-	                        React.createElement('div', { id: 'team_name' }),
+	                        React.createElement('div', { id: 'team' }),
 	                        React.createElement('div', { id: 'score' })
 	                    ),
 	                    React.createElement(
