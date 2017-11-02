@@ -15,6 +15,7 @@ import { AdminEditHunt } from './admin/adminEditHunt';
 import { Admins } from './admin/admins';
 import { AdminCreate } from './admin/adminCreate';
 import { Complete } from './complete';
+import { Start } from './start';
 
 import { NavBar } from './admin/nav-bar';
 
@@ -109,6 +110,9 @@ export class Content extends React.Component{
                 </div>
                 <div id = 'complete' style={{display:'none'}}>
                     <Complete changePage={this.changePage} loggedIn={this.state.loggedIn} hide={this.state.hide}/>
+                </div>
+                <div id = 'start' style={{display:'none'}}>
+                    <Start changePage={this.changePage} loggedIn={this.state.loggedIn} hide={this.state.hide}/>
                 </div>
                 <div id = 'nav-bar' style={{display:'none'}}>
                     <NavBar changePage={this.changePage} hide={this.state.hide} logOutSetProps={this.logOutSetProps}/>

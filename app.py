@@ -21,6 +21,7 @@ def hello():
     return flask.render_template('index.html')
 
 @socketio.on('play')
+@socketio.on('start')
 def getHunt(data):
     global questionNum
     questionsData = []
@@ -92,7 +93,6 @@ def validateCredentials(data):
 
 @socketio.on('progessUpdate')
 def updateProgress(data):
-    print "emitted"
     try:
         user = data['user']
         #updates the progress
@@ -104,16 +104,39 @@ def updateProgress(data):
         #updates the score
         query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.score: data['score']})
         models.db.session.commit()
-        #updates end_time
-        query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.end_time: datetime.datetime.now()})
-        models.db.session.commit()
+        # #updates end_time
+        # query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.end_time: datetime.datetime.now()})
+        # models.db.session.commit()
         
         #sends updates back to play.js
         userData = []
         userData.append({'email':user['email'], 'team_name':user['team_name'], 'hunt':user['hunt'], 'progress':data['progress'], 'score':data['score'], 'attempts':data['attempts']})
         socketio.emit('user', userData)
     except Exception as e: 
-        print(e)
+        print
+        
+@socketio.on('updateTime')
+def updateTime(data):
+    user = data['user']
+    if(data['start_time'] != ""):
+        print "Start Time"
+        try:
+            #updates end_time
+            query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.start_time: datetime.datetime.now()})
+            models.db.session.commit()
+        
+        except Exception as e: 
+            print(e)
+    if(data['end_time'] != ""):
+        print "End Time"
+        try:
+            #updates end_time
+            query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.end_time: datetime.datetime.now()})
+            models.db.session.commit()
+        
+        except Exception as e: 
+            print(e)
+    
     
     # print("validateCredentials")
     # foreach obj where data['team_name'] = username

@@ -117,6 +117,7 @@ export class Play extends React.Component {
     
     completed(){
         this.emit();
+        Socket.emit('updateTime', {'user': this.state.user, 'start_time': "", 'end_time':'now'});
         this.props.changePage('complete');
     }
     
@@ -186,7 +187,6 @@ export class Play extends React.Component {
         this.nextQuestion();
     }
     
-
 
     render() {
         
