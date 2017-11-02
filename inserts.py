@@ -45,3 +45,10 @@ questions = models.Questions(
     )
 models.db.session.add(questions)
 models.db.session.commit()
+
+user = models.Participants("andramirez@csumb.edu", "Team One", "image", "1234", "4321", datetime.datetime.now(), datetime.datetime.now(), 1, 5, 500, True, 1)
+models.db.session.add(user)
+models.db.session.commit()
+admin = models.Admins("andramirez@csumb.edu", "admin", "4444", True)
+models.db.session.add(admin)
+models.db.session.commit()

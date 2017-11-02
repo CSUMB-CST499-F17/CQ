@@ -43,7 +43,6 @@ def dropDown():
         recent = models.db.session.query(models.Hunts)
         for row in recent:
             hunts.append({'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time,'end_time':row.end_time,'start_text':row.start_text })
-        print hunts
 #       socketio.emit('hunt-info', hunts)
     except:
         print("Error: Database does not exist")
@@ -65,10 +64,9 @@ def updateHome(data):
 @socketio.on('validateCredentials')
 def validateCredentials(data):
         try:
-            
             query = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'], models.Participants.leader_code == data['access']).first_or_404()
             userData = []
-            userData.append({'email': query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress, 'score':query.score})
+            userData.append({'email': query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress, 'score':query.score, 'attempts':query.attempts})
             socketio.emit('user', userData)
             return 'teamLead%' + query.team_name
         except Exception as e: 
@@ -94,16 +92,25 @@ def validateCredentials(data):
 
 @socketio.on('progessUpdate')
 def updateProgress(data):
+    print "emitted"
     try:
-        user = data['user'][0]
-        #update the progress and score of the user using data['user'][0]['team_name'] and data['user'][0]['hunt_id']
-        query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id'])
-        query.progress = data['progress']
-        query.score = data['score']
-        query.attempts = data['attempts']
-        db.session.commit()
+        user = data['user']
+        #updates the progress
+        query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.progress: data['progress']})
+        models.db.session.commit()
+        #updates the attempts  
+        query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.attempts: data['attempts']})
+        models.db.session.commit()
+        #updates the score
+        query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.score: data['score']})
+        models.db.session.commit()
+        
+        #sends updates back to play.js
+        userData = []
+        userData.append({'email':user['email'], 'team_name':user['team_name'], 'hunt':user['hunt'], 'progress':data['progress'], 'score':data['score'], 'attempts':data['attempts']})
+        socketio.emit('user', userData)
     except Exception as e: 
-            print(e) 
+        print(e)'
     
     # print("validateCredentials")
     # foreach obj where data['team_name'] = username
@@ -164,7 +171,6 @@ def updateRegister():
 @socketio.on('createHunt')
 def createHunt(data):
     global x
-    print(data)
     hunts = models.Hunts(data['name'], data['type'], data['desc'], data['image'], data['sDate'], data['eDate'], data['sDate'])
     models.db.session.add(hunts)  
     models.db.session.commit()

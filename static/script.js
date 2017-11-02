@@ -21892,9 +21892,9 @@
 
 	var _home = __webpack_require__(239);
 
-	var _explore = __webpack_require__(494);
+	var _explore = __webpack_require__(496);
 
-	var _leaderboard = __webpack_require__(496);
+	var _leaderboard = __webpack_require__(497);
 
 	var _register = __webpack_require__(498);
 
@@ -21914,9 +21914,9 @@
 
 	var _adminCreate = __webpack_require__(645);
 
-	var _complete = __webpack_require__(647);
+	var _complete = __webpack_require__(646);
 
-	var _navBar = __webpack_require__(646);
+	var _navBar = __webpack_require__(647);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -30656,7 +30656,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _existingTeam = __webpack_require__(497);
+	var _existingTeam = __webpack_require__(494);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -50499,6 +50499,192 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.ExistingTeam = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _reactBootstrap = __webpack_require__(240);
+
+	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
+	var _Socket = __webpack_require__(185);
+
+	var _logoSmall = __webpack_require__(495);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ExistingTeam = exports.ExistingTeam = function (_React$Component) {
+	    _inherits(ExistingTeam, _React$Component);
+
+	    function ExistingTeam(props) {
+	        _classCallCheck(this, ExistingTeam);
+
+	        var _this = _possibleConstructorReturn(this, (ExistingTeam.__proto__ || Object.getPrototypeOf(ExistingTeam)).call(this, props));
+
+	        _this.pageName = 'existingTeam';
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.validateCredentials = _this.validateCredentials.bind(_this);
+	        _this.team = "";
+	        _this.handle = _this.handle.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(ExistingTeam, [{
+	        key: 'handle',
+	        value: function handle(callback) {
+	            var res = callback.split('%');
+	            try {
+	                this.props.setProps(res[0], res[1]); //loggedIn, name
+	                document.getElementById("team_name").value = "";
+	                document.getElementById("access").value = "";
+	                switch (res[0]) {
+	                    case "teamLead":
+	                    case "team":
+	                        this.props.changePage('play');
+
+	                        break;
+	                    case "superAdmin":
+	                    case "admin":
+	                        this.props.changePage('adminHome');
+
+	                        break;
+	                    case "no":
+	                        document.getElementById("errorMessage").innerHTML = "⚠ Invalid Team Name or Access Code ⚠";
+	                        document.getElementById("errorMessage").style.visibility = 'visible';
+	                        document.getElementById("errorMessage").style.color = "#f2e537";
+	                        document.getElementById("access").value = "";
+	                        break;
+	                    default:
+	                        break;
+	                }
+	            } catch (err) {
+	                alert(err);
+	            }
+	        }
+	    }, {
+	        key: 'validateCredentials',
+	        value: function validateCredentials() {
+	            this.team = document.getElementById("team_name").value;
+	            var access = document.getElementById("access").value;
+	            if (this.team == "") {
+	                document.getElementById("errorMessage").innerHTML = "⚠ Please Enter valid Team Name and Access Code ⚠";
+	                document.getElementById("errorMessage").style.visibility = 'visible';
+	                document.getElementById("errorMessage").style.color = "#f2e537";
+	            } else {
+	                document.getElementById("errorMessage").style.visibility = 'hidden';
+	                _Socket.Socket.emit('validateCredentials', { 'team_name': this.team, 'access': access }, _Socket.Socket.callback = this.handle);
+	            }
+	        }
+	    }, {
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'login' },
+	                    React.createElement('input', { type: 'text', id: 'team_name', placeholder: 'Team Name' }),
+	                    React.createElement('input', { type: 'password', id: 'access', placeholder: 'Access Code' }),
+	                    React.createElement(
+	                        'div',
+	                        { id: 'errorMessage', style: { visibility: 'hidden' } },
+	                        ' Error Message Placeholder'
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { className: 'buttons' },
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn', onClick: this.validateCredentials },
+	                            'Enter!'
+	                        ),
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn', onClick: this.props.cancel },
+	                            'Cancel'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return ExistingTeam;
+	}(React.Component);
+
+/***/ },
+/* 495 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.LogoSmall = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var LogoSmall = exports.LogoSmall = function (_React$Component) {
+	    _inherits(LogoSmall, _React$Component);
+
+	    function LogoSmall(props) {
+	        _classCallCheck(this, LogoSmall);
+
+	        return _possibleConstructorReturn(this, (LogoSmall.__proto__ || Object.getPrototypeOf(LogoSmall)).call(this, props));
+	    }
+
+	    _createClass(LogoSmall, [{
+	        key: "render",
+	        value: function render() {
+	            return React.createElement(
+	                "div",
+	                null,
+	                React.createElement("img", { id: "logo-small-img", src: "../static/image/logo-small.png" })
+	            );
+	        }
+	    }]);
+
+	    return LogoSmall;
+	}(React.Component);
+
+/***/ },
+/* 496 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 	exports.Explore = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -50680,55 +50866,7 @@
 	}(React.Component);
 
 /***/ },
-/* 495 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.LogoSmall = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var LogoSmall = exports.LogoSmall = function (_React$Component) {
-	    _inherits(LogoSmall, _React$Component);
-
-	    function LogoSmall(props) {
-	        _classCallCheck(this, LogoSmall);
-
-	        return _possibleConstructorReturn(this, (LogoSmall.__proto__ || Object.getPrototypeOf(LogoSmall)).call(this, props));
-	    }
-
-	    _createClass(LogoSmall, [{
-	        key: "render",
-	        value: function render() {
-	            return React.createElement(
-	                "div",
-	                null,
-	                React.createElement("img", { id: "logo-small-img", src: "../static/image/logo-small.png" })
-	            );
-	        }
-	    }]);
-
-	    return LogoSmall;
-	}(React.Component);
-
-/***/ },
-/* 496 */
+/* 497 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50912,144 +51050,6 @@
 	    }]);
 
 	    return Leaderboard;
-	}(React.Component);
-
-/***/ },
-/* 497 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.ExistingTeam = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _reactBootstrap = __webpack_require__(240);
-
-	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
-
-	var _Socket = __webpack_require__(185);
-
-	var _logoSmall = __webpack_require__(495);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ExistingTeam = exports.ExistingTeam = function (_React$Component) {
-	    _inherits(ExistingTeam, _React$Component);
-
-	    function ExistingTeam(props) {
-	        _classCallCheck(this, ExistingTeam);
-
-	        var _this = _possibleConstructorReturn(this, (ExistingTeam.__proto__ || Object.getPrototypeOf(ExistingTeam)).call(this, props));
-
-	        _this.pageName = 'existingTeam';
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        _this.validateCredentials = _this.validateCredentials.bind(_this);
-	        _this.team = "";
-	        _this.handle = _this.handle.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(ExistingTeam, [{
-	        key: 'handle',
-	        value: function handle(callback) {
-	            var res = callback.split('%');
-	            try {
-	                this.props.setProps(res[0], res[1]); //loggedIn, name
-	                document.getElementById("team_name").value = "";
-	                document.getElementById("access").value = "";
-	                switch (res[0]) {
-	                    case "teamLead":
-	                    case "team":
-	                        this.props.changePage('play');
-
-	                        break;
-	                    case "superAdmin":
-	                    case "admin":
-	                        this.props.changePage('adminHome');
-
-	                        break;
-	                    case "no":
-	                        document.getElementById("errorMessage").innerHTML = "⚠ Invalid Team Name or Access Code ⚠";
-	                        document.getElementById("errorMessage").style.visibility = 'visible';
-	                        document.getElementById("errorMessage").style.color = "#f2e537";
-	                        document.getElementById("access").value = "";
-	                        break;
-	                    default:
-	                        break;
-	                }
-	            } catch (err) {
-	                alert(err);
-	            }
-	        }
-	    }, {
-	        key: 'validateCredentials',
-	        value: function validateCredentials() {
-	            this.team = document.getElementById("team_name").value;
-	            var access = document.getElementById("access").value;
-	            if (this.team == "") {
-	                document.getElementById("errorMessage").innerHTML = "⚠ Please Enter valid Team Name and Access Code ⚠";
-	                document.getElementById("errorMessage").style.visibility = 'visible';
-	                document.getElementById("errorMessage").style.color = "#f2e537";
-	            } else {
-	                document.getElementById("errorMessage").style.visibility = 'hidden';
-	                _Socket.Socket.emit('validateCredentials', { 'team_name': this.team, 'access': access }, _Socket.Socket.callback = this.handle);
-	            }
-	        }
-	    }, {
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'login' },
-	                    React.createElement('input', { type: 'text', id: 'team_name', placeholder: 'Team Name' }),
-	                    React.createElement('input', { type: 'password', id: 'access', placeholder: 'Access Code' }),
-	                    React.createElement(
-	                        'div',
-	                        { id: 'errorMessage', style: { visibility: 'hidden' } },
-	                        ' Error Message Placeholder'
-	                    ),
-	                    React.createElement(
-	                        'div',
-	                        { className: 'buttons' },
-	                        React.createElement(
-	                            'button',
-	                            { className: 'btn', onClick: this.validateCredentials },
-	                            'Enter!'
-	                        ),
-	                        React.createElement(
-	                            'button',
-	                            { className: 'btn', onClick: this.props.cancel },
-	                            'Cancel'
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return ExistingTeam;
 	}(React.Component);
 
 /***/ },
@@ -51434,10 +51434,37 @@
 	        _this.showHint = _this.showHint.bind(_this);
 	        _this.nextQuestion = _this.nextQuestion.bind(_this);
 	        _this.checkAnswer = _this.checkAnswer.bind(_this);
+	        _this.completed = _this.completed.bind(_this);
+	        _this.emit = _this.emit.bind(_this);
+
+	        //retireves the user information
+	        _Socket.Socket.on('user', function (data) {
+	            _this.setState({
+	                'user': data[0],
+	                'playerQuestionOn': data[0]['progress'] - 1
+	            });
+	            _this.score = data[0]['score'];
+	            _this.attempts = data[0]['attempts'];
+	        });
 	        return _this;
 	    }
 
 	    _createClass(Play, [{
+	        key: 'emit',
+	        value: function emit() {
+	            try {
+	                _Socket.Socket.emit('progessUpdate', { 'user': this.state.user, 'progress': this.state.playerQuestionOn + 1, 'score': this.score, 'attempts': this.attempts });
+	            } catch (err) {
+	                console.log(err);
+	            }
+	        }
+	    }, {
+	        key: 'completed',
+	        value: function completed() {
+	            this.emit();
+	            this.props.changePage('complete');
+	        }
+	    }, {
 	        key: 'checkAnswer',
 	        value: function checkAnswer() {
 	            var result = document.getElementById('result');
@@ -51450,7 +51477,6 @@
 	                }
 	                if (this.state.playerQuestionOn + 1 == this.dataSize) {
 	                    document.getElementById('complete-button').style.display = "block";
-	                    _Socket.Socket.emit('finalScore', { 'user': this.state.user, 'score': this.score }); //emits player's final score
 	                }
 	                if (this.state.playerQuestionOn < this.dataSize - 1) {
 	                    document.getElementById('next').style.display = "block";
@@ -51463,7 +51489,7 @@
 	                    if (this.attempts > 0) {
 	                        this.score -= 5;
 	                        this.attempts--;
-	                        _Socket.Socket.emit('progessUpdate', { 'user': this.state.user, 'progress': this.state.playerQuestionOn, 'score': this.score, 'attempts': this.attempts });
+	                        this.emit();
 	                    }
 	                    var newArray = this.state.attempts.slice();
 	                    newArray.push(" " + document.getElementById('answer').value);
@@ -51487,11 +51513,11 @@
 
 	    }, {
 	        key: 'showHint',
-	        value: function showHint(event) {
+	        value: function showHint() {
 	            if (this.attempts > 0) {
 	                this.score -= 5;
 	                this.attempts--;
-	                _Socket.Socket.emit('progessUpdate', { 'user': this.state.user, 'progress': this.state.playerQuestionOn, 'score': this.score, 'attempts': this.attempts });
+	                this.emit();
 	            }
 	            this.state.hintCount += 1;
 	            document.getElementById('hint1').style.display = "block";
@@ -51517,15 +51543,6 @@
 	                    'questionsData': data
 	                });
 	            });
-	            //retireves the user information
-	            _Socket.Socket.on('user', function (data) {
-	                _this2.setState({
-	                    'user': data[0],
-	                    'playerQuestionOn': data[0]['progress'] - 1
-	                });
-	                _this2.score = data[0]['score'];
-	                _this2.attempts = data[0]['attempts'];
-	            });
 	        }
 	    }, {
 	        key: 'nextQuestion',
@@ -51540,8 +51557,7 @@
 	            document.getElementById('answer').value = "";
 
 	            this.state.playerQuestionOn++;
-	            _Socket.Socket.emit('progessUpdate', { 'user': this.state.user, 'progress': this.state.playerQuestionOn, 'score': this.score, 'attempts': this.attempts });
-
+	            this.emit();
 	            for (var i = 0; i < this.data.length; i++) {
 	                var obj = this.data[i];
 	                if (i == this.state.playerQuestionOn) {
@@ -51594,34 +51610,30 @@
 	                    'div',
 	                    { id: 'play-container' },
 	                    React.createElement(
-	                        _reactBootstrap.Form,
-	                        null,
+	                        'div',
+	                        { id: 'play-form' },
+	                        React.createElement('div', { id: 'play-question' }),
 	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            { id: 'play-form' },
-	                            React.createElement(
-	                                _reactBootstrap.FormControl.Static,
-	                                null,
-	                                React.createElement('div', { id: 'play-question' }),
-	                                React.createElement(
-	                                    'div',
-	                                    { id: 'hint1', style: { display: 'none' } },
-	                                    'Hint PlaceHolder'
-	                                ),
-	                                React.createElement(
-	                                    'div',
-	                                    { id: 'hint2', style: { display: 'none' } },
-	                                    'Hint PlaceHolder'
-	                                )
-	                            ),
-	                            React.createElement(_reactBootstrap.FormControl, { id: 'answer', style: { display: this.props.hide }, componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
-	                            React.createElement(
-	                                'div',
-	                                { id: 'result', style: { visibility: 'hidden' } },
-	                                'Results Placeholder',
-	                                React.createElement('br', null),
-	                                'array'
-	                            )
+	                            'div',
+	                            { id: 'hint1', style: { display: 'none' } },
+	                            'Hint PlaceHolder'
+	                        ),
+	                        React.createElement(
+	                            'div',
+	                            { id: 'hint2', style: { display: 'none' } },
+	                            'Hint PlaceHolder'
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { id: 'input' },
+	                        React.createElement(_reactBootstrap.FormControl, { id: 'answer', style: { display: this.props.hide }, componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
+	                        React.createElement(
+	                            'div',
+	                            { id: 'result', style: { visibility: 'hidden' } },
+	                            'Results Placeholder',
+	                            React.createElement('br', null),
+	                            'array'
 	                        )
 	                    ),
 	                    React.createElement(
@@ -51637,9 +51649,7 @@
 	                            ),
 	                            React.createElement(
 	                                _reactBootstrap.Button,
-	                                { id: 'complete-button', style: { display: 'none' }, onClick: function onClick() {
-	                                        return _this3.props.changePage('complete');
-	                                    } },
+	                                { id: 'complete-button', style: { display: 'none' }, onClick: this.completed },
 	                                'Finish'
 	                            ),
 	                            React.createElement(
@@ -71752,6 +71762,133 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.Complete = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _Socket = __webpack_require__(185);
+
+	var _reactBootstrap = __webpack_require__(240);
+
+	var _logoSmall = __webpack_require__(495);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Complete = exports.Complete = function (_React$Component) {
+	    _inherits(Complete, _React$Component);
+
+	    function Complete(props) {
+	        _classCallCheck(this, Complete);
+
+	        var _this = _possibleConstructorReturn(this, (Complete.__proto__ || Object.getPrototypeOf(Complete)).call(this, props));
+
+	        _this.state = {
+	            'user': [],
+	            'score': -1
+	        };
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Complete, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _this2 = this;
+
+	            //retireves the hunt question information
+	            console.log(this.state.score);
+	            _Socket.Socket.on('user', function (data) {
+	                _this2.setState({
+	                    'user': data['user'],
+	                    'score': data['score']
+	                });
+	                if (_this2.state.score > -1) {
+	                    document.getElementById('team_name').innerHTML = _this2.state.user['team_name'];
+	                    document.getElementById('score').innerHTML = _this2.state.score;
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this3 = this;
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'logo-small' },
+	                    React.createElement(_logoSmall.LogoSmall, null)
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        'Finished'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement(
+	                        'div',
+	                        { id: 'results' },
+	                        React.createElement('div', { id: 'team_name' }),
+	                        React.createElement('div', { id: 'score' })
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { id: 'buttons' },
+	                        React.createElement(
+	                            _reactBootstrap.Button,
+	                            { onClick: function onClick() {
+	                                    return _this3.props.changePage('leaderboard');
+	                                } },
+	                            'Leaderboard'
+	                        ),
+	                        React.createElement(
+	                            _reactBootstrap.Button,
+	                            { onClick: function onClick() {
+	                                    return _this3.props.changePage('home');
+	                                } },
+	                            'Home'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Complete;
+	}(React.Component);
+
+/***/ },
+/* 647 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 	exports.NavBar = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -71856,132 +71993,6 @@
 	    }]);
 
 	    return NavBar;
-	}(React.Component);
-
-/***/ },
-/* 647 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Complete = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _Socket = __webpack_require__(185);
-
-	var _reactBootstrap = __webpack_require__(240);
-
-	var _logoSmall = __webpack_require__(495);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Complete = exports.Complete = function (_React$Component) {
-	    _inherits(Complete, _React$Component);
-
-	    function Complete(props) {
-	        _classCallCheck(this, Complete);
-
-	        var _this = _possibleConstructorReturn(this, (Complete.__proto__ || Object.getPrototypeOf(Complete)).call(this, props));
-
-	        _this.state = {
-	            'user': [],
-	            'score': -1
-	        };
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(Complete, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            var _this2 = this;
-
-	            //retireves the hunt question information
-	            _Socket.Socket.on('finalScore', function (data) {
-	                _this2.setState({
-	                    'user': data['user'][0],
-	                    'score': data['score']
-	                });
-	                if (_this2.state.score > -1) {
-	                    document.getElementById('team_name').innerHTML = _this2.state.user['team_name'];
-	                    document.getElementById('score').innerHTML = _this2.state.score;
-	                }
-	            });
-	        }
-	    }, {
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this3 = this;
-
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'logo-small' },
-	                    React.createElement(_logoSmall.LogoSmall, null)
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'header' },
-	                    React.createElement(
-	                        'header',
-	                        null,
-	                        'Finished'
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'intro' },
-	                    React.createElement(
-	                        'div',
-	                        { id: 'results' },
-	                        React.createElement('div', { id: 'team_name' }),
-	                        React.createElement('div', { id: 'score' })
-	                    ),
-	                    React.createElement(
-	                        'div',
-	                        { id: 'buttons' },
-	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: function onClick() {
-	                                    return _this3.props.changePage('leaderboard');
-	                                } },
-	                            'Leaderboard'
-	                        ),
-	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: function onClick() {
-	                                    return _this3.props.changePage('home');
-	                                } },
-	                            'Home'
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return Complete;
 	}(React.Component);
 
 /***/ }

@@ -16,9 +16,10 @@ export class Complete extends React.Component {
 
     componentDidMount(){
         //retireves the hunt question information
-        Socket.on('finalScore', (data) => {
+        console.log(this.state.score);
+        Socket.on('user', (data) => {
             this.setState({
-                'user': data['user'][0], 
+                'user': data['user'], 
                 'score':data['score']
             });
             if(this.state.score > -1){
