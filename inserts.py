@@ -46,14 +46,6 @@ questions = models.Questions(
 models.db.session.add(questions)
 models.db.session.commit()
 
-<<<<<<< HEAD
-user = models.Participants("andramirez@csumb.edu", "Team One", "image", "1234", "4321", datetime.datetime.now(), datetime.datetime.now(), 1, 5, 500, True, 1)
-models.db.session.add(user)
-models.db.session.commit()
-admin = models.Admins("andramirez@csumb.edu", "admin", "4444", True)
-models.db.session.add(admin)
-models.db.session.commit()
-=======
 participants = models.Participants(
     "bob@csumb.edu",
     "Bob's Bad Boys",
@@ -69,4 +61,3 @@ participants = models.Participants(
 
 models.db.session.add(participants)
 models.db.session.commit()
->>>>>>> 0b808770cf43dfa20c2033ca9c2c53287df28bf2

@@ -22,6 +22,7 @@ export class Complete extends React.Component {
                 'user': data['user'], 
                 'score':data['score']
             });
+            console.log(this.state.score);
             if(this.state.score > -1){
                 document.getElementById('team_name').innerHTML = this.state.user['team_name'];
                 document.getElementById('score').innerHTML = this.state.score;

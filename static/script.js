@@ -71828,6 +71828,7 @@
 	                    'user': data['user'],
 	                    'score': data['score']
 	                });
+	                console.log(_this2.state.score);
 	                if (_this2.state.score > -1) {
 	                    document.getElementById('team_name').innerHTML = _this2.state.user['team_name'];
 	                    document.getElementById('score').innerHTML = _this2.state.score;
