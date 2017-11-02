@@ -1,5 +1,5 @@
 import flask, flask_socketio, flask_sqlalchemy, stripe, sqlalchemy
-import os, time, datetime, smtplib, re, random, hashlib, uuid
+import os, time, datetime, smtplib, re, random, hashlib, uuid, json
 import models
 
 #GLOBAL VARS
@@ -53,26 +53,25 @@ def updateHome(data):
     
 @socketio.on('explore')
 def updateExplore(data):
+    socketio.emit('updateExplore')
+
+@socketio.on('changeType')
+def changeType(data):
+    choice = data;
+    if data == '':
+        choice = 'walking'
     hunts = [];
     types = [];
     try:
         t_list = models.db.session.query(models.Hunts.h_type).distinct()
         for row in t_list:
             types.append(row.h_type)
-        h_list = models.db.session.query(models.Hunts).filter(models.Hunts.h_type == "walking"); #default type
+        h_list = models.db.session.query(models.Hunts).filter(models.Hunts.h_type == choice); #default type
         for row in h_list:
             hunts.append({'id':row.id,'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time.strftime('%A %B %-d %-I:%M %p'),'end_time':row.end_time.strftime('%A %B %-d %-I:%M %p'),'start_text':row.start_text })
-        socketio.emit('updateExplore', {'hunts':hunts,'types':types})
+        return json.dumps({'choice':choice,'hunts':hunts,'types':types})
     except:
         print("Error: Database does not exist")
-
-@socketio.on('changeType')
-def changeType(data):
-    hunts = [];
-    h_list = models.db.session.query(models.Hunts).filter(models.Hunts.h_type == data)
-    for row in h_list:
-        hunts.append({'id':row.id,'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time.strftime('%A %B %-d %-I:%M %p'),'end_time':row.end_time.strftime('%A %B %-d %-I:%M %p'),'start_text':row.start_text })
-    socketio.emit('updateType', hunts)
 
 @socketio.on('validateCredentials')
 def validateCredentials(data):

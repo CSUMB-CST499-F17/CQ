@@ -118,11 +118,10 @@ p{
     width:700px;
 }
 #logo-small img{
-    max-width:100px;
-    width:100px;
+    width:15%;
     position: fixed;
-    top: 1em;
-    right: 1em;
+    top: 0.5em;
+    right: 0em;
 }
 #logo-small-nav img{
     max-width:60px;
@@ -196,12 +195,6 @@ p{
     margin:auto;
     text-align: center;
 }
-#edit-form{
-    justify-content: center;
-    margin:auto;
-    text-align: center;
-}
-
 #hint, #play-question, #answer{
     margin:10px;
 }
