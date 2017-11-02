@@ -72755,34 +72755,42 @@
 	                    'div',
 	                    { id: 'intro' },
 	                    React.createElement(
-	                        'div',
-	                        { id: 'edit' },
+	                        'form',
+	                        { id: 'edit-form' },
 	                        React.createElement(
-	                            'form',
-	                            { id: 'edit-form' },
+	                            _reactBootstrap.FormGroup,
+	                            null,
 	                            React.createElement(
-	                                _reactBootstrap.FormGroup,
+	                                _reactBootstrap.InputGroup,
 	                                null,
+	                                React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Game Name' }),
+	                                React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Start Date' }),
+	                                React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'End Date' }),
+	                                React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Image URL' }),
+	                                React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Description' }),
+	                                React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Hunt Type' }),
 	                                React.createElement(
-	                                    _reactBootstrap.InputGroup,
-	                                    null,
-	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Game Name' }),
-	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Start Date' }),
-	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'End Date' }),
-	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Image URL' }),
-	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Description' }),
-	                                    React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Hunt Type' }),
+	                                    'div',
+	                                    { id: 'questionEdit', action: '', method: 'POST' },
 	                                    React.createElement(
-	                                        'div',
-	                                        { id: 'questionEdit', action: '', method: 'POST' },
-	                                        React.createElement('input', { type: 'button', value: 'Add question', onClick: function onClick() {
+	                                        _reactBootstrap.Button,
+	                                        { onClick: function onClick() {
 	                                                return _this2.addQuestion();
-	                                            } }),
-	                                        React.createElement('div', null)
+	                                            } },
+	                                        'Add question'
 	                                    ),
-	                                    React.createElement('input', { type: 'button', value: 'Temp Print question(Checks to make sure values are being passed)', onClick: function onClick() {
+	                                    React.createElement('div', null)
+	                                ),
+	                                React.createElement(
+	                                    _reactBootstrap.Button,
+	                                    { onClick: function onClick() {
 	                                            return _this2.printQuestion();
-	                                        } }),
+	                                        } },
+	                                    'Temp Print question(Checks to make sure values are being passed)'
+	                                ),
+	                                React.createElement(
+	                                    'div',
+	                                    { className: 'buttons' },
 	                                    React.createElement(
 	                                        _reactBootstrap.ButtonToolbar,
 	                                        null,

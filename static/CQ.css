@@ -196,6 +196,12 @@ p{
     margin:auto;
     text-align: center;
 }
+#edit-form{
+    justify-content: center;
+    margin:auto;
+    text-align: center;
+}
+
 #hint, #play-question, #answer{
     margin:10px;
 }
