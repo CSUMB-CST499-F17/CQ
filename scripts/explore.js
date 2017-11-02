@@ -24,40 +24,34 @@ export class Explore extends React.Component {
         };
         this.pageName = 'explore';
         this.sort = this.sort.bind(this);
+        this.updateExplore = this.updateExplore.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     
     componentDidMount() {
-        Socket.on('updateExplore', (data) => { 
-            var d_types = data['types'];
-            var d_hunts = data['hunts'];
-            var types = [];
-            var hunts = [];
-            var first = "";
-            for(var i = 0; i < d_hunts.length; i++ )
-            {
-                hunts.push([d_hunts[i].id,d_hunts[i].name,d_hunts[i].h_type,d_hunts[i].desc,d_hunts[i].image,d_hunts[i].start_time,d_hunts[i].end_time,d_hunts[i].start_text]); //convert to array for mapping
-            }
-            for(i = 0; i < d_types.length; i++ )
-            {
-                var item = d_types[i].charAt(0).toUpperCase() + d_types[i].slice(1);
-                if(i==0){
-                    first = item;
-                }
-                else{
-                    types.push(item); //convert to array for mapping
-                }
-            }
-            this.setState({'chosentype': first, 'types': types , 'hunts': hunts});
+        Socket.on('updateExplore', (data) => {
+            
+            console.log('load');
+            Socket.emit('changeType', this.state.chosentype.toLowerCase(), Socket.callback=this.updateExplore);
         });
-        Socket.on('updateType', (data) => { 
-            var hunts = [];
-            for(var i = 0; i < data.length; i++ )
-            {
-                hunts.push([data[i].id,data[i].name,data[i].h_type,data[i].desc,data[i].image,data[i].start_time,data[i].end_time,data[i].start_text]); //convert to array for mapping
-            }
-            this.setState({'hunts': hunts});
-        });
+    }
+    updateExplore(callback){
+        var data = JSON.parse(callback);
+        var d_types = data['types'];
+        var d_hunts = data['hunts'];
+        var choice = data['choice'].charAt(0).toUpperCase() + data['choice'].slice(1);
+        var types = [];
+        var hunts = [];
+        for(var i = 0; i < d_hunts.length; i++ )
+        {
+            hunts.push([d_hunts[i].id,d_hunts[i].name,d_hunts[i].h_type,d_hunts[i].desc,d_hunts[i].image,d_hunts[i].start_time,d_hunts[i].end_time,d_hunts[i].start_text]); //convert to array for mapping
+        }
+        for(i = 0; i < d_types.length; i++ )
+        {
+            if(d_types != choice)
+                types.push(d_types[i].charAt(0).toUpperCase() + d_types[i].slice(1)); //convert to array for mapping
+        }
+        this.setState({'chosentype': choice, 'types': types , 'hunts': hunts});
     }
     sort(type){
         var types = this.state.types;
@@ -65,8 +59,8 @@ export class Explore extends React.Component {
         if (index !== -1) {
             types[index] = this.state.chosentype;
         }
-        this.setState({'chosentype': type, 'types': types});
-        Socket.emit('changeType', type.toLowerCase());
+        this.setState({'types': types});
+        Socket.emit('changeType', type.toLowerCase(), Socket.callback=this.updateExplore);
     }
     handleSubmit(event) {
         event.preventDefault();

@@ -225,7 +225,7 @@ export class Play extends React.Component {
                             <FormControl id = "answer" style={{display:this.props.hide}} componentClass="textarea" value={this.state.value} onChange={this.handleChange}  placeholder="Answer" />
                             <div id='result'style={{visibility:'hidden'}}>Results Placeholder<br/>array</div>
                     </div>
-                    <div id='buttons'>
+                    <div className='buttons'>
                         <ButtonToolbar>
                             <Button id="next" style={{display:'none'}} onClick={this.nextQuestion} >Next Question</Button>
                             <Button id="complete-button" style={{display:'none'}} onClick={this.completed}>Finish</Button>   

@@ -30,7 +30,7 @@ export class Admins extends React.Component {
                 <div id='intro'>
                     List of Admins and option to edit admins goes here<br/>
                 </div>
-                <div id='buttons'>
+                <div className='buttons'>
                     <form onSubmit = {this.handleSubmit}>
                         <FormGroup>
                             <InputGroup>

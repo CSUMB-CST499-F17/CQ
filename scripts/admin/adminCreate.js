@@ -36,7 +36,7 @@ export class AdminCreate extends React.Component {
                             </FormGroup>
                         </form>
                     </div>
-                <div id='buttons'>
+                <div className='buttons'>
                     <form onSubmit = {this.handleSubmit}>
                         <FormGroup>
                             <InputGroup>

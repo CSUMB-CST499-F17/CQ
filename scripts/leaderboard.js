@@ -78,7 +78,7 @@ export class Leaderboard extends React.Component {
                             </div>
                         </div>
                     </div>
-                <div id='buttons'>
+                <div className='buttons'>
                     <form onSubmit = {this.handleSubmit}>
                         <Button onClick={() => this.props.changePage('home')}>Home</Button>
                     </form>

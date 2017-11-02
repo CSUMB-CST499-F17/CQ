@@ -28,7 +28,7 @@ export class AdminHunts extends React.Component {
                 <div id='intro'>
                     <img src='https://upload.wikimedia.org/wikipedia/commons/8/87/Maplestory_Leaderboard_2015-10.PNG' width='30%'></img>
                 </div>
-                <div id='buttons'>
+                <div className='buttons'>
                     <form onSubmit = {this.handleSubmit}>
                         <FormGroup>
                             <InputGroup>
