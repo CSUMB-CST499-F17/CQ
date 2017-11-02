@@ -47,7 +47,7 @@ export class Complete extends React.Component {
                             <div id = 'team'></div>
                             <div id = 'score'></div>
                         </div>
-                        <div id='buttons'>
+                        <div className='buttons'>
                             <Button onClick={() => this.props.changePage('leaderboard')}>Leaderboard</Button>
                             <Button onClick={() => this.props.changePage('home')}>Home</Button>
                         </div>      

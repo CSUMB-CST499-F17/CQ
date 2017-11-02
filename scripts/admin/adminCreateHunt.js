@@ -181,7 +181,7 @@ export class AdminCreateHunt extends React.Component {
                         </Form>
                     </div>
                 </div>
-                <div id='buttons'>
+                <div className='buttons'>
                     <ButtonToolbar>
                         <Button onClick={this.handleSubmit}>Save</Button>
                     </ButtonToolbar>
