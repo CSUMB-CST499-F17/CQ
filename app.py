@@ -132,7 +132,7 @@ def updateProgress(data):
     except Exception as e: 
         print
     
-    @socketio.on('updateTime')
+@socketio.on('updateTime')
 def updateTime(data):
     user = data['user']
     if(data['start_time'] != ""):

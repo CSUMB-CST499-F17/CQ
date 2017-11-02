@@ -21892,7 +21892,7 @@
 
 	var _home = __webpack_require__(239);
 
-	var _explore = __webpack_require__(496);
+	var _explore = __webpack_require__(495);
 
 	var _leaderboard = __webpack_require__(497);
 
@@ -21916,9 +21916,9 @@
 
 	var _complete = __webpack_require__(646);
 
-	var _start = __webpack_require__(649);
+	var _start = __webpack_require__(647);
 
-	var _navBar = __webpack_require__(647);
+	var _navBar = __webpack_require__(648);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -50645,6 +50645,207 @@
 /* 495 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.Explore = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _reactBootstrap = __webpack_require__(240);
+
+	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
+	var _Socket = __webpack_require__(185);
+
+	var _logoSmall = __webpack_require__(496);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Explore = exports.Explore = function (_React$Component) {
+	    _inherits(Explore, _React$Component);
+
+	    function Explore(props) {
+	        _classCallCheck(this, Explore);
+
+	        var _this = _possibleConstructorReturn(this, (Explore.__proto__ || Object.getPrototypeOf(Explore)).call(this, props));
+
+	        _this.state = {
+	            'count': 0,
+
+	            'hunts': [],
+	            'types': [],
+	            'chosentype': ''
+	        };
+	        _this.pageName = 'explore';
+	        _this.sort = _this.sort.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Explore, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _this2 = this;
+
+	            _Socket.Socket.on('updateExplore', function (data) {
+	                var d_types = data['types'];
+	                var d_hunts = data['hunts'];
+	                var types = [];
+	                var hunts = [];
+	                var first = "";
+	                for (var i = 0; i < d_hunts.length; i++) {
+	                    hunts.push([d_hunts[i].id, d_hunts[i].name, d_hunts[i].h_type, d_hunts[i].desc, d_hunts[i].image, d_hunts[i].start_time, d_hunts[i].end_time, d_hunts[i].start_text]); //convert to array for mapping
+	                }
+	                for (i = 0; i < d_types.length; i++) {
+	                    var item = d_types[i].charAt(0).toUpperCase() + d_types[i].slice(1);
+	                    if (i == 0) {
+	                        first = item;
+	                    } else {
+	                        types.push(item); //convert to array for mapping
+	                    }
+	                }
+	                _this2.setState({ 'chosentype': first, 'types': types, 'hunts': hunts });
+	            });
+	            _Socket.Socket.on('updateType', function (data) {
+	                var hunts = [];
+	                for (var i = 0; i < data.length; i++) {
+	                    hunts.push([data[i].id, data[i].name, data[i].h_type, data[i].desc, data[i].image, data[i].start_time, data[i].end_time, data[i].start_text]); //convert to array for mapping
+	                }
+	                _this2.setState({ 'hunts': hunts });
+	            });
+	        }
+	    }, {
+	        key: 'sort',
+	        value: function sort(type) {
+	            var types = this.state.types;
+	            var index = types.indexOf(type);
+	            if (index !== -1) {
+	                types[index] = this.state.chosentype;
+	            }
+	            this.setState({ 'chosentype': type, 'types': types });
+	            _Socket.Socket.emit('changeType', type.toLowerCase());
+	        }
+	    }, {
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this3 = this;
+
+	            var hunts = this.state.hunts.map(function (n, index) {
+	                return React.createElement(
+	                    'div',
+	                    { id: n[0], className: 'hunt-preview' },
+	                    React.createElement(
+	                        'header',
+	                        null,
+	                        n[1]
+	                    ),
+	                    React.createElement('img', { src: n[4] }),
+	                    React.createElement(
+	                        'p',
+	                        null,
+	                        n[5],
+	                        ' to ',
+	                        n[6]
+	                    ),
+	                    React.createElement(
+	                        'p',
+	                        null,
+	                        n[3]
+	                    )
+	                );
+	            });
+	            var types = this.state.types.map(function (n, index) {
+	                return React.createElement(
+	                    _reactBootstrap.MenuItem,
+	                    { onClick: function onClick() {
+	                            return _this3.sort(n);
+	                        } },
+	                    n
+	                );
+	            });
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'logo-small' },
+	                    React.createElement(_logoSmall.LogoSmall, null)
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'header' },
+	                    React.createElement(
+	                        _reactBootstrap.DropdownButton,
+	                        { title: this.state.chosentype, id: 'bg-nested-dropdown' },
+	                        types
+	                    ),
+	                    'Scavenger Hunts'
+	                ),
+	                React.createElement('div', { className: 'clear' }),
+	                React.createElement(
+	                    'div',
+	                    { id: 'intro' },
+	                    hunts,
+	                    React.createElement(
+	                        'div',
+	                        { id: 'buttons' },
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn', onClick: function onClick() {
+	                                    return _this3.props.changePage('leaderboard');
+	                                } },
+	                            'Leaderboard'
+	                        ),
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn', onClick: function onClick() {
+	                                    return _this3.props.changePage('register');
+	                                } },
+	                            'Participate'
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { id: 'buttons' },
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn', onClick: function onClick() {
+	                                    return _this3.props.changePage('home');
+	                                } },
+	                            'Home'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Explore;
+	}(React.Component);
+
+/***/ },
+/* 496 */
+/***/ function(module, exports, __webpack_require__) {
+
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
@@ -50690,195 +50891,6 @@
 	}(React.Component);
 
 /***/ },
-/* 496 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Explore = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _reactBootstrap = __webpack_require__(240);
-
-	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
-
-	var _Socket = __webpack_require__(185);
-
-	var _logoSmall = __webpack_require__(495);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Explore = exports.Explore = function (_React$Component) {
-	    _inherits(Explore, _React$Component);
-
-	    function Explore(props) {
-	        _classCallCheck(this, Explore);
-
-	        var _this = _possibleConstructorReturn(this, (Explore.__proto__ || Object.getPrototypeOf(Explore)).call(this, props));
-
-	        _this.state = {
-	            'count': 0,
-
-	            'name': [],
-	            'h_type': [],
-	            'desc': [],
-	            'image': [],
-	            'start_time': [],
-	            'end_time': [],
-	            'start_text': []
-	        };
-	        _this.pageName = 'explore';
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(Explore, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            var _this2 = this;
-
-	            _Socket.Socket.on('hunt-info', function (data) {
-	                var name = _this2.state.name.slice();
-	                var h_type = _this2.state.h_type.slice();
-	                var desc = _this2.state.desc.slice();
-	                var image = _this2.state.image.slice();
-	                var start_time = _this2.state.start_time.slice();
-	                var end_time = _this2.state.end_time.slice();
-	                var start_text = _this2.state.start_text.slice();
-
-	                for (var i = 0; i < data.size(); i++) {
-	                    name.push(data['name'][i]);
-	                    _this2.setState({ 'name': name });
-	                    h_type.push(data['h_type'][i]);
-	                    _this2.setState({ 'h_type': h_type });
-	                    desc.push(data['desc'][i]);
-	                    _this2.setState({ 'desc': desc });
-	                    image.push(data['image'][i]);
-	                    _this2.setState({ 'image': image });
-	                    start_time.push(data['start_time'][i]);
-	                    _this2.setState({ 'start_time': start_time });
-	                    end_time.push(data['end_time'][i]);
-	                    _this2.setState({ 'end_time': end_time });
-	                    start_text.push(data['start_text'][i]);
-	                    _this2.setState({ 'start_text': start_text });
-	                }
-	                // Get the quiz form element
-	                var dropdown = document.getElementById('bg-nested-dropdown');
-
-	                // Good to do error checking, make sure we managed to get something
-	                if (dropdown) {
-	                    // Create a new <p> element
-	                    var hunts = _this2.state.h_type;
-	                    var item = document.createElement('MENUITEM');
-	                    item.value = hunts[0];
-	                    dropdown.appendChild(item);
-	                    // for(var j = 0; j < hunts.size(); j++ )
-	                    // {
-
-	                    // }
-	                }
-	            });
-	        }
-	    }, {
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this3 = this;
-
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'logo-small' },
-	                    React.createElement(_logoSmall.LogoSmall, null)
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'header' },
-	                    React.createElement(
-	                        'header',
-	                        null,
-	                        'EXPLORE'
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'intro' },
-	                    React.createElement('div', { id: 'info' })
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'buttons' },
-	                    React.createElement(
-	                        _reactBootstrap.ButtonToolbar,
-	                        null,
-	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: function onClick() {
-	                                    return _this3.props.changePage('leaderboard');
-	                                } },
-	                            'Leaderboard'
-	                        ),
-	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: function onClick() {
-	                                    return _this3.props.changePage('register');
-	                                } },
-	                            'Participate'
-	                        ),
-	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: function onClick() {
-	                                    return _this3.props.changePage('home');
-	                                } },
-	                            'Home'
-	                        )
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'buttons' },
-	                    React.createElement(
-	                        _reactBootstrap.ButtonGroup,
-	                        null,
-	                        React.createElement(
-	                            _reactBootstrap.DropdownButton,
-	                            { title: 'Select Hunt    ', id: 'bg-nested-dropdown' },
-	                            React.createElement(
-	                                _reactBootstrap.MenuItem,
-	                                null,
-	                                'no hunts yet my dog'
-	                            )
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return Explore;
-	}(React.Component);
-
-/***/ },
 /* 497 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -50901,7 +50913,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(495);
+	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -51417,7 +51429,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(495);
+	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -71829,7 +71841,7 @@
 
 	var _reactBootstrap = __webpack_require__(240);
 
-	var _logoSmall = __webpack_require__(495);
+	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -71944,122 +71956,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.NavBar = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _Socket = __webpack_require__(185);
-
-	var _logoSmall = __webpack_require__(495);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var NavBar = exports.NavBar = function (_React$Component) {
-	    _inherits(NavBar, _React$Component);
-
-	    function NavBar(props) {
-	        _classCallCheck(this, NavBar);
-
-	        var _this = _possibleConstructorReturn(this, (NavBar.__proto__ || Object.getPrototypeOf(NavBar)).call(this, props));
-
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        _this.logout;
-	        return _this;
-	    }
-
-	    _createClass(NavBar, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	    }, {
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {}
-	    }, {
-	        key: 'logout',
-	        value: function logout() {
-	            this.props.logOutSetProps('no', 'guest');
-	            this.props.changePage('home');
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
-
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'topnav' },
-	                    React.createElement(
-	                        'a',
-	                        { onClick: function onClick() {
-	                                return _this2.props.changePage('adminHome');
-	                            } },
-	                        'Home'
-	                    ),
-	                    React.createElement(
-	                        'a',
-	                        { onClick: function onClick() {
-	                                return _this2.props.changePage('adminLeaderboard');
-	                            } },
-	                        'Leaderboard'
-	                    ),
-	                    React.createElement(
-	                        'a',
-	                        { onClick: function onClick() {
-	                                return _this2.props.changePage('adminHunts');
-	                            } },
-	                        'Hunts'
-	                    ),
-	                    React.createElement(
-	                        'a',
-	                        { style: { display: this.props.hide }, onClick: function onClick() {
-	                                return _this2.props.changePage('admins');
-	                            } },
-	                        'Settings'
-	                    ),
-	                    React.createElement(
-	                        'a',
-	                        { onClick: function onClick() {
-	                                return _this2.logout();
-	                            } },
-	                        'Logout'
-	                    ),
-	                    React.createElement(
-	                        'div',
-	                        { id: 'logo-small-nav' },
-	                        React.createElement(_logoSmall.LogoSmall, null)
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return NavBar;
-	}(React.Component);
-
-/***/ },
-/* 648 */,
-/* 649 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
 	exports.Start = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -72072,7 +71968,7 @@
 
 	var _reactBootstrap = __webpack_require__(240);
 
-	var _logoSmall = __webpack_require__(495);
+	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -72167,6 +72063,121 @@
 	    }]);
 
 	    return Start;
+	}(React.Component);
+
+/***/ },
+/* 648 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.NavBar = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _Socket = __webpack_require__(185);
+
+	var _logoSmall = __webpack_require__(496);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var NavBar = exports.NavBar = function (_React$Component) {
+	    _inherits(NavBar, _React$Component);
+
+	    function NavBar(props) {
+	        _classCallCheck(this, NavBar);
+
+	        var _this = _possibleConstructorReturn(this, (NavBar.__proto__ || Object.getPrototypeOf(NavBar)).call(this, props));
+
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.logout;
+	        return _this;
+	    }
+
+	    _createClass(NavBar, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {}
+	    }, {
+	        key: 'logout',
+	        value: function logout() {
+	            this.props.logOutSetProps('no', 'guest');
+	            this.props.changePage('home');
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'topnav' },
+	                    React.createElement(
+	                        'a',
+	                        { onClick: function onClick() {
+	                                return _this2.props.changePage('adminHome');
+	                            } },
+	                        'Home'
+	                    ),
+	                    React.createElement(
+	                        'a',
+	                        { onClick: function onClick() {
+	                                return _this2.props.changePage('adminLeaderboard');
+	                            } },
+	                        'Leaderboard'
+	                    ),
+	                    React.createElement(
+	                        'a',
+	                        { onClick: function onClick() {
+	                                return _this2.props.changePage('adminHunts');
+	                            } },
+	                        'Hunts'
+	                    ),
+	                    React.createElement(
+	                        'a',
+	                        { style: { display: this.props.hide }, onClick: function onClick() {
+	                                return _this2.props.changePage('admins');
+	                            } },
+	                        'Settings'
+	                    ),
+	                    React.createElement(
+	                        'a',
+	                        { onClick: function onClick() {
+	                                return _this2.logout();
+	                            } },
+	                        'Logout'
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { id: 'logo-small-nav' },
+	                        React.createElement(_logoSmall.LogoSmall, null)
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return NavBar;
 	}(React.Component);
 
 /***/ }
