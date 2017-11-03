@@ -227,17 +227,19 @@ def calculatePrice(discount_code):
     price = 50
     total_percent = 100
     try:
-        discount_query = models.db.session.query(models.Discounts).filter(models.Discounts.code == discount_code)
-        if discount_query.count() > 0:
-            total_percent = discount_query.first().percent
-            discount_query.first().uses -= 1
-            models.db.session.commit()
+        discount_query = models.db.session.query(models.Discounts)
+        for row in discount_query:
+            if check_password(row.code, discount_code) and r.uses > 0:
+                total_percent = discount_query.first().percent
+                discount_query.first().uses -= 1
+                models.db.session.commit()
+                break
     except:
         print("Error: couldn't connect to discount table")
         pass
     
-    #price's base unit is one cent, so 100 = $1
-    price = price * total_percent
+    # price's base unit is one cent, so 100 = $1
+    price = price * (100 - total_percent)
     
     return price
 
