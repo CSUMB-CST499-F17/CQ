@@ -15,8 +15,7 @@ export class AdminEditHunt extends React.Component {
             'count':0,
             'limit':25
         };
-
-        this.changePage = this.changePage.bind(this);
+        
         this.addQuestion = this.addQuestion.bind(this);
         this.printQuestion = this.printQuestion.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,12 +24,6 @@ export class AdminEditHunt extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
     }
-    //changes the display of the pages when button is pressed
-    changePage(page){
-        document.getElementById('adminEditHunt').style.display = "none";
-        document.getElementById(page).style.display = "block";
-    }
-    
     addQuestion(){
         // Get the quiz form element
         var question = document.getElementById('questionEdit');
@@ -97,7 +90,6 @@ export class AdminEditHunt extends React.Component {
                     <header>Edit Hunt (Looks like Create Hunt Page for know until database is in place)</header>
                 </div>
                 <div id='intro'>
-                    <div id='edit'>
                         <form id='edit-form'>
                             <FormGroup>
                                 <InputGroup>
@@ -108,18 +100,20 @@ export class AdminEditHunt extends React.Component {
                                     <input id='edit-item' type="text" placeholder="Description" />
                                     <input id='edit-item' type="text" placeholder="Hunt Type" />
                                     <div id="questionEdit" action="" method="POST">
-                                        <input type="button" value="Add question" onClick={() => this.addQuestion()}/>
+                                        <Button onClick={() => this.addQuestion()}>Add question</Button>
                                         <div></div>
                                     </div>
-                                    <input type="button" value="Temp Print question(Checks to make sure values are being passed)" onClick={() => this.printQuestion()}/>
-                                    <ButtonToolbar>
-                                        <Button id='edit-item'>Save</Button>
-                                        <Button onClick={() => this.changePage('adminHunts')}>Cancel</Button>
-                                    </ButtonToolbar>
+                                    
+                                    <Button onClick={() => this.printQuestion()}>Temp Print question(Checks to make sure values are being passed)</Button>
+                                    <div className='buttons'>
+                                        <ButtonToolbar>
+                                            <Button id='edit-item'>Save</Button>
+                                            <Button onClick={() => this.props.changePage('adminHunts')}>Cancel</Button>
+                                        </ButtonToolbar>
+                                    </div>
                                 </InputGroup>
                             </FormGroup>
                         </form>
-                    </div>
                 </div>
             </div>
          

@@ -5,9 +5,11 @@ import { Button } from 'react-bootstrap';
 import { InputGroup } from 'react-bootstrap';
 import { FormGroup } from 'react-bootstrap';
 import { ButtonToolbar } from 'react-bootstrap';
-import { FormControl } from 'react-bootstrap';
 
-import { NavBar } from './nav-bar';
+import moment from 'moment';
+
+import DayPickerInput from 'react-day-picker/DayPickerInput';
+import 'react-day-picker/lib/style.css';
 
 
 export class AdminCreateHunt extends React.Component {
@@ -15,7 +17,7 @@ export class AdminCreateHunt extends React.Component {
         super(props);
         this.state = {
             'count':0,
-            'limit':25,
+            'limit':35,
             'name':'',
             'sDate':'',
             'eDate':'',
@@ -30,8 +32,7 @@ export class AdminCreateHunt extends React.Component {
             'hint2':[],
             'image':[]
         };
-
-        this.changePage = this.changePage.bind(this);
+        
         this.addQuestion = this.addQuestion.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -72,11 +73,6 @@ export class AdminCreateHunt extends React.Component {
             'image':this.state.image
     	});
     	this.changePage('adminHome')
-    }
-    //changes the display of the pages when button is pressed
-    changePage(page){
-        document.getElementById('adminCreateHunt').style.display = "none";
-        document.getElementById(page).style.display = "block";
     }
     
     addQuestion(){
@@ -123,7 +119,10 @@ export class AdminCreateHunt extends React.Component {
                 // Create a new <p> element
                 var newP = document.createElement('div');
                 newP.className = 'question-group';
-                newP.innerHTML = 'Question ' + (this.state.count + 1) + '<br/>';
+                var label = document.createElement('div');
+                label.textContent = 'Question ' + (this.state.count + 1);
+                label.id = 'question-label';
+                newP.appendChild(label);
                 newP.appendChild(newQuestion);
                 newP.innerHTML = newP.innerHTML + '<br/>';
                 newP.appendChild(newAnswer);
@@ -157,33 +156,32 @@ export class AdminCreateHunt extends React.Component {
     render() {
         return (
             <div >
-                <div id = 'nav-bar'>
-                    <NavBar/>
-                </div>
                 <div id = 'header'>
                     <header>Create Hunt</header>
                 </div>
                 <div id='introhunts'>
-                    <Form id = 'create-form'>
-                            <FormGroup>
-                                <InputGroup>
-                                    <div id='create-form1'>
-                                        <FormControl id='name' className='create-item' type="text" placeholder="Game Name" /><br/>
-                                        <FormControl id='sDate' className='create-item' type="text" placeholder="Start Date" />
-                                        <FormControl id='eDate' className='create-item' type="text" placeholder="End Date" /><br/>
-                                        <FormControl id='url' className='create-item' type="text" placeholder="Image URL" /><br/>
-                                        <FormControl id='type' className='create-item' type="text" placeholder="Hunt Type" />
-                                        <FormControl id='desc' className='create-item' type="text" placeholder="Description" /><br/>
-                                    </div>
-                                    <div id='create-form2'>
-                                        <Button id='create-item' onClick={() => this.addQuestion()}>Add question</Button>
-                                        <div id="question" action="" method="POST"></div>
-                                    </div>
-                                </InputGroup>
-                            </FormGroup>
-                    </Form>
+                    <div id="create-form-container">
+                        <Form id = 'create-form'>
+                                <FormGroup>
+                                    <InputGroup>
+                                        <div id='create-form1'>
+                                            <input type='text' id='name' className='form-control create-item' type="text" placeholder="Game Name" /><br/>
+                                            <input type='text' id='url' className='form-control create-item' type="text" placeholder="Image URL" /><br/>
+                                            <input type='text' id='type' className='form-control create-item' type="text" placeholder="Hunt Type" />
+                                            <input type='text' id='desc' className='form-control create-item' type="text" placeholder="Description" /><br/>
+                                            <DayPickerInput className='form-control create-item' placeholder='Start Date'/>
+                                            <DayPickerInput className='form-control create-item' placeholder='End Date'/>
+                                        </div>
+                                        <div id='create-form2'>
+                                            <Button id='create-item' onClick={() => this.addQuestion()}>Add question</Button>
+                                            <div id="question" action="" method="POST"></div>
+                                        </div>
+                                    </InputGroup>
+                                </FormGroup>
+                        </Form>
+                    </div>
                 </div>
-                <div id='buttons'>
+                <div className='buttons'>
                     <ButtonToolbar>
                         <Button onClick={this.handleSubmit}>Save</Button>
                     </ButtonToolbar>

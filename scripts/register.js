@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
 import { Socket } from './Socket';
+import { LogoSmall } from './logo-small';
 
 export class Register extends React.Component {
     constructor(props) {
         super(props);
+        this.pageName = 'register';
         this.stripe = Stripe('pk_test_50M0ZvrdCP5uiJUU0yUCa6o8');
         this.elements = this.stripe.elements();
         this.card = this.elements.create('card', {
@@ -23,68 +25,139 @@ export class Register extends React.Component {
               },
             }
         });
-        this.token;
         this.userdata = {
-            'team_name': '',
-            'email': '',
-            'hunt_id': ''
+            team_name: '',
+            email: '',
+            hunts_id: '1',
+            image: '',
+            discount_code: ''
         };
-        this.hunts = [[1,'Marco'],[2,'Polo']];
+        this.hunts = [];
         
-        this.changePage = this.changePage.bind(this);
         this.setOutcome = this.setOutcome.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleNameChange = this.handleNameChange.bind(this);
+        this.handleHuntChange = this.handleHuntChange.bind(this);
+        this.handleEmailChange = this.handleEmailChange.bind(this);
+        this.handleCardChange = this.handleCardChange.bind(this);
+        this.handleDiscountChange = this.handleDiscountChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleFormReject = this.handleFormReject.bind(this);
+        this.handleCallback = this.handleCallback.bind(this);
     }
     
     componentDidMount() {
         // Add an instance of the card Element into the `card-element` <div>
         this.card.mount('#card-element');
+        var ongoingHunts = [];
+        Socket.on('updateRegister', (data) => {
+            for(var key in data) { //convert object to array, prep for mapping
+                var hunt = [data[key].id,data[key].name,data[key].h_type];
+                ongoingHunts.push(hunt);
+            }
+            this.hunts = ongoingHunts;
+            this.setState(); //DONT ASK ME WHY THIS WORKS BUT IT WORKS, DO NOT DELETE
+        });
     }
     
     handleSubmit(event) {
         event.preventDefault();
         // Handle form submission
         var form = document.getElementById('payment-form');
-        var outcomeElement = document.getElementById('stripe-outcome');
-        // var errorElement = document.getElementById('stripe-error');
+        var outcomeElement = document.getElementById('form-outcome');
         
-        this.stripe.createToken(this.card).then(function(result) {
+        var this_ = this;
+        
+        // check errors that regex can catch
+        var re = /^.+$/;
+        var OK = re.exec(this.userdata.team_name);
+        if(!OK) {
+            this.handleFormReject('No team name entered.');
+            return 0;
+        }
+        
+        OK = re.exec(this.userdata.email);
+        if(!OK) {
+            this.handleFormReject('No email address entered.');
+            return 0;
+        }
+        
+        OK = re.exec(this.userdata.hunts_id);
+        if(!OK) {
+            this.handleFormReject('No hunt selected.');
+            return 0;
+        }
+        
+        re = /[^@]+@[^@]+\.[^@]+/;
+        OK = re.exec(this.userdata.email);
+        if(!OK) {
+            this.handleFormReject('Invalid email address.');
+            return 0;
+        }
+        
+        this.token = this.stripe.createToken(this.card).then(function(result) {
             if (result.error) {
-                // Inform the user if there was an error
-                outcomeElement.textContent = result.error.message;
-                outcomeElement.style.color = "#E4584C";
+                this_.handleFormReject(result.error.message);
+                return 0;
             } 
             else {
-                outcomeElement.textContent = "Success! Token generated: " + result.token.id;
-                outcomeElement.style.color = "#666EE8";
-                Socket.emit('checkout', {'token':result.token});
-                // Send the token to your server
-                console.log();
+                // outcomeElement.textContent = "Success! Token generated: " + result.token.id;
+                // outcomeElement.style.color = "#666EE8";
+                Socket.emit('checkout', {'token':result.token.id, 'userdata':this_.userdata}, Socket.callback=this_.handleCallback);
             }
         });
     }
-    handleChange(event) {
+    handleCallback(callback){
+        var data = JSON.parse(callback);
+        var outcomeElement = document.getElementById('form-outcome');
+        if (data['condition'] == 'accept'){
+            outcomeElement.textContent = "Your access code: " + data['leader_code'] + " Your teams code: " + data['member_code'];
+            outcomeElement.style.color = "#00FF00";
+        }
+        else if (data['condition'] == 'reject'){
+            this.handleFormReject(data['message']);
+        }
+    }
+    handleFormReject(message){
+        var outcomeElement = document.getElementById('form-outcome');
+        outcomeElement.textContent = "Error: " + message;
+        outcomeElement.style.color = "#E4584C";
+        outcomeElement.style.textAlign = "center";
+    }
+    handleNameChange(event) {
+        event.preventDefault();
+        this.userdata.team_name = event.target.value;
+    }
+    handleDiscountChange(event) {
+        event.preventDefault();
+        this.userdata.discount_code = event.target.value;
+    }
+    handleEmailChange(event) {
+        event.preventDefault();
+        this.userdata.email = event.target.value;
+    }
+    handleHuntChange(event) {
+        event.preventDefault();
+        this.userdata.hunts_id = event.target.value;
+    }
+    handleCardChange(event) {
         event.preventDefault();
         this.setOutcome(event);
     }
     setOutcome(result) {
-        var outcomeElement = document.getElementById('stripe-outcome');
+        var outcomeElement = document.getElementById('form-outcome');
         if (result.error) {
           outcomeElement.textContent = result.error.message;
         }
     }
-    changePage(page){
-        //changes the display of the pages when button is pressed
-        document.getElementById('register').style.display = "none";
-        document.getElementById(page).style.display = "block";
-    }
     render() {
         let hunts = this.hunts.map((n, index) => 
-            <option value={n[0]}>{n[1]}</option>
+            <option value={n[0]}>{n[1]} - {n[2].charAt(0).toUpperCase() + n[2].slice(1)}</option>
         );
         return (
             <div>
+                <div id = 'logo-small'>
+                    <LogoSmall/>
+                </div>
                 <div id = 'header'>
                     <header>Register</header>
                 </div>
@@ -92,28 +165,35 @@ export class Register extends React.Component {
                     <div className="group">
                       <label>
                         <span>Team</span>
-                        <input className="field" placeholder="MyTeamName" onChange={this.handleChange} />
+                        <input className="field" placeholder="My Team Name" onChange={this.handleNameChange} />
                       </label>
                       <label>
                         <span>Email</span>
-                        <input className="field" placeholder="sample@email.com" type="email" onChange={this.handleChange}/>
+                        <input className="field" placeholder="sample@email.com" type="email" onChange={this.handleEmailChange}/>
                       </label>
                       <label>
                         <span>Card</span>
-                        <div id="card-element" className="field" onChange={this.handleChange}></div>
+                        <div id="card-element" className="field" onChange={this.handleCardChange}></div>
+                      </label>
+                      <label>
+                        <span>Code</span>
+                        <input className="field" placeholder="PromoCode1234" onChange={this.handleDiscountChange}/>
                       </label>
                     </div>
                     <div className="group full">
                         <label>Ongoing Scavenger Hunts</label>
-                        <select name="hunts" form='stripe-form'>{hunts}</select>
+                        <select name="hunts" form='stripe-form' onChange={this.handleHuntChange}>
+                            <option value=''>--</option>
+                            {hunts}
+                        </select>
                     </div>
                     <button type="submit">Register and Pay</button>
-                    <div id="stripe-outcome"></div>
+                    <div id="form-outcome"></div>
                     <div className="clear"></div>
                 </form>
                 
                 
-                <Button onClick={() => this.changePage('home')}>Home</Button>
+                <Button onClick={() => this.props.changePage('home')}>Home</Button>
             </div>
          
         );

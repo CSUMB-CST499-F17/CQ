@@ -24,15 +24,15 @@ class Hunts(db.Model):
         self.start_desc = st
     
     def __repr__(self): 
-        return '<Hunt Data: %s %s %s %s %s %s %s>' % self.name % self.type % self.desc % self.image % self.start_time % self.end_time % self.start_desc
+        return '<Hunt Data: {} {} {} {} {} {} {}>'.format(self.name, self.type, self.desc, self.image, self.start_time, self.end_time, self.start_desc)
         
 class Questions(db.Model):
     id = db.Column(db.Integer, primary_key=True) # key
-    question = db.Column(db.String(120))
+    question = db.Column(db.String(256))
     answer = db.Column(db.String(60))
     image = db.Column(db.String(512))
-    hint_A = db.Column(db.String(120))
-    hint_B = db.Column(db.String(120))
+    hint_A = db.Column(db.String(256))
+    hint_B = db.Column(db.String(256))
     answer_text = db.Column(db.Text)
     hunts_id = db.Column(db.Integer, db.ForeignKey('hunts.id'), nullable=False)
     
@@ -46,42 +46,66 @@ class Questions(db.Model):
         self.hunts_id = hid
     
     def __repr__(self): 
-        return '<Question Data: %s %s %s %s %s %s %s>' % self.question % self.answer % self.image % self.hint_A % self.hint_B % self.answer_text % self.hunts_id
+        return '<Question Data: {} {} {} {} {} {} {}>'.format(self.question, self.answer, self.image, self.hint_A, self.hint_B, self.answer_text, self.hunts_id)
         
 class Participants(db.Model):
     id = db.Column(db.Integer, primary_key=True) # key
     email = db.Column(db.String(512))
     team_name = db.Column(db.String(32))
     image = db.Column(db.String(512))
-    access_code = db.Column(db.String(40))
-    question_score = db.Column(db.Integer)
-    time_taken = db.Column(db.Time)
+    leader_code = db.Column(db.String(129))
+    member_code = db.Column(db.String(129))
+    start_time = db.Column(db.DateTime)
+    end_time = db.Column(db.DateTime)
+    progress = db.Column(db.Integer)
+    attempts = db.Column(db.Integer)
+    score = db.Column(db.Integer)
+    has_paid = db.Column(db.Boolean, nullable=False, default=False)
     hunts_id = db.Column(db.Integer, db.ForeignKey('hunts.id'), nullable=False)
     
-    def __init__(self, e, tn, i, ac, qs, tt, hid):
+    def __init__(self, e, tn, i, lc, mc, st, et, p, a, sc, hp, hid):
         self.email = e
         self.team_name = tn
         self.image = i
-        self.access_code = ac
-        self.question_score = qs
-        self.time_taken = tt
+        self.leader_code = lc
+        self.member_code = mc
+        self.start_time = st
+        self.end_time = et
+        self.progress = p
+        self.attempts = a
+        self.score = sc
+        self.has_paid = hp
         self.hunts_id = hid
     
     def __repr__(self): 
-        return '<Question Data: %s %s %s %s %s %s %s>' % self.email % self.team_name % self.image % self.access_code % self.question_score % self.time_taken % self.hunts_id
+        return '<Question Data: {} {} {} {} {} {} {} {} {} {} {} {}>'.format(self.email, self.team_name, self.image, self.leader_code, self.member_code, self.start_time, self.end_time, self.progress, self.attempts, self.score, self.has_paid, self.hunts_id)
         
 class Admins(db.Model):
     id = db.Column(db.Integer, primary_key=True) # key
     email = db.Column(db.String(512))
     username = db.Column(db.String(32))
-    password = db.Column(db.String(40))
-    isSuper = db.Column(db.Boolean, nullable=False)
+    password = db.Column(db.String(129))
+    is_super = db.Column(db.Boolean, nullable=False, default=False)
     
-    def __init__(self, e, u, p, s):
+    def __init__(self, e, u, p, iss):
         self.email = e
         self.username = u
         self.password = p
-        self.isSuper = s
+        self.is_super = iss
     
     def __repr__(self): 
-        return '<Question Data: %s %s %s %s>' % self.email % self.username % self.password % self.isSuper
+        return '<Question Data: {} {} {} {}>'.format(self.email, self.username, self.password , self.is_super)
+        
+class Discounts(db.Model):
+    id = db.Column(db.Integer, primary_key=True) # key
+    code = db.Column(db.String(129))
+    percent = db.Column(db.Integer)
+    uses = db.Column(db.Integer)
+    
+    def __init__(self, c, p, u):
+        self.code = c
+        self.percent = p
+        self.uses = u
+    
+    def __repr__(self): 
+        return '<Discount Data: {} {} {}>'.format(self.code, self.percent, self.uses)
