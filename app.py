@@ -215,8 +215,7 @@ def checkout(data):
         random.seed();
         random_number = random.randint(0,9999)
         hunt_name = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt_id).first().name
-        hunt_name = hunt_name.replace(" ", "")
-        #strip all punctuation
+        hunt_name = re.sub(r'[^\w]','',hunt_name)
         leader_code = hunt_name + "{:04d}".format(random_number)
         
         random.seed();
