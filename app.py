@@ -49,7 +49,10 @@ def updateHome(data):
     if resetConditions:
 	    lastPage = 'home'
     socketio.emit('updateHome', lastPage)
-    return lastPage
+
+@socketio.on('slideshow')
+def updateSlideshow(data):
+    return
     
 @socketio.on('explore')
 def updateExplore(data):
@@ -195,6 +198,38 @@ def createHunt(data):
     models.db.session.commit()
     x += 1
     # user = models.Participants("andramirez@csumb.edu", "Yo Mama", "image", "1234", "12", datetime.datetime.now().time(), "1")
+    
+@socketio.on('checkUserInfo')
+def checkUserInfo(data):
+    userdata = data['userdata']
+    
+    if models.db.session.query(models.Participants).filter(models.Participants.email == userdata['email'], models.Participants.hunts_id == userdata['hunts_id']).count() > 0:
+        return json.dumps({'condition':'reject','message':"Email address already registered for this hunt."})
+    elif models.db.session.query(models.Participants).filter(models.Participants.team_name == userdata['team_name']).count() > 0:
+        return json.dumps({'condition':'reject','message':"Team name already registered for this hunt."})
+    else:
+        price = calculatePrice(userdata['discount_code'])
+        print(price)
+        return json.dumps({'condition':'accept','price':price})
+    
+def calculatePrice(discount_code):
+    
+    price = 50
+    total_percent = 100
+    try:
+        discount_query = models.db.session.query(models.Discounts).filter(models.Discounts.code == discount_code)
+        if discount_query.count() > 0:
+            total_percent = discount_query.first().percent
+            discount_query.first().uses -= 1
+            models.db.session.commit()
+    except:
+        print("Error: couldn't connect to discount table")
+        pass
+    
+    #price's base unit is one cent, so 100 = $1
+    price = price * total_percent
+    
+    return price
 
 @socketio.on('checkout')
 def checkout(data):
@@ -205,80 +240,60 @@ def checkout(data):
     team_name = userdata['team_name']
     client_email = userdata['email']
     hunt_id = userdata['hunts_id']
+    price = data['price']
     
-    # check errors that database can catch
-    if models.db.session.query(models.Participants).filter(models.Participants.email == client_email, models.Participants.hunts_id == hunt_id).count() > 0:
-        return json.dumps({'condition':'reject','message':"Email address already registered for this hunt."})
-    elif models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name).count() > 0:
-        return json.dumps({'condition':'reject','message':"Team name already registered for this hunt."})
-    else:
-        # create account
-        random.seed();
-        random_number = random.randint(0,9999)
-        hunt_name = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt_id).first().name
-        hunt_name = ''.join(e for e in hunt_name if e.isalnum())
-        leader_code = hunt_name + "{:04d}".format(random_number)
+    # create account
+    random.seed();
+    random_number = random.randint(0,9999)
+    hunt_name = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt_id).first().name
+    hunt_name = ''.join(e for e in hunt_name if e.isalnum())
+    leader_code = hunt_name + "{:04d}".format(random_number)
+    
+    random.seed();
+    random_number = random.randint(0,9999)
+    member_code = hunt_name + "{:04d}".format(random_number)
+    
+    participants = None
+    try:
+        participants = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None, None, 0, 0, 0, False, hunt_id)
+        models.db.session.add(participants)  
+        models.db.session.commit()
         
-        random.seed();
-        random_number = random.randint(0,9999)
-        member_code = hunt_name + "{:04d}".format(random_number)
+        participants = models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name)
+    except:
+        return json.dumps({'condition':'reject','message':'Could not connect to database.'})
+    
+    try:
+        if price != 0:
+            charge = stripe.Charge.create(
+                amount=price,
+                currency="usd",
+                description="Coastal Quest Scavenger Hunt",
+                source=token,
+            )
         
-        participants = None
-        try:
-            participants = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None, None, 0, 0, 0, False, hunt_id)
-            models.db.session.add(participants)  
-            models.db.session.commit()
-            
-            participants = models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name)
-        except:
-            return json.dumps({'condition':'reject','message':'Could not connect to database.'})
-        
-        try:
-            price = 50
-            total_percent = 100
-            try:
-                discount_query = models.db.session.query(models.Discounts).filter(models.Discounts.code == userdata['discount_code'])
-                if discount_query.count() > 0:
-                    total_percent = discount_query.first().percent
-                    discount_query.first().uses -= 1
-                    models.db.session.commit()
-            except:
-                print("Error: couldn't connect to discount table")
-                pass
-            price = price * total_percent/100
-            
-            print("Price = " + str(price) + "; total percent = " + str(total_percent))
-            
-            if price != 0:
-                charge = stripe.Charge.create(
-                    amount=price,
-                    currency="usd",
-                    description="Coastal Quest Scavenger Hunt",
-                    source=token,
-                )
-            
-            participants.has_paid = True
-            models.db.session.commit()
+        participants.has_paid = True
+        models.db.session.commit()
 
-            pass
-        except stripe.error.CardError as e:
-            body = e.json_body
-            err  = body.get('error', {})
-            return json.dumps({'condition':'reject','message':'Account created, could not process payment; Access code: ' + leader_code + '; Error code: ' + err.get('code')})
-        except stripe.error.StripeError as e:
-            return json.dumps({'condition':'reject','message':'Account created, could not process payment; Access code: ' + leader_code})
-        
-        # send email
-        try:
-            subject = "Coastal Quest Activation Code"
-            message = "Welcome to Coastal Quest Scavenger Hunts, {}! Your access code is {}. Have fun on your journey!".format(team_name,leader_code)
-            email_client(client_email,subject,message)
-        except:
-            print("Error: Could not send email")
-            pass
-        
-        # send access code back to JS app
-        return json.dumps({'condition':'accept','leader_code':leader_code, 'member_code':member_code, 'price':price})
+        pass
+    except stripe.error.CardError as e:
+        body = e.json_body
+        err  = body.get('error', {})
+        return json.dumps({'condition':'not_paid','leader_code':leader_code, 'member_code':member_code, 'error_code':err.get('code')})
+    except stripe.error.StripeError as e:
+        return json.dumps({'condition':'not_paid','leader_code':leader_code, 'member_code':member_code, 'error_code':None})
+    
+    # send email
+    try:
+        subject = "Coastal Quest Activation Code"
+        message = "Welcome to Coastal Quest Scavenger Hunts, {}! Your access codes are Team Leader: {} Team Members: {}. Have fun on your journey!".format(team_name,leader_code,member_code)
+        email_client(client_email,subject,message)
+    except:
+        print("Error: Could not send email")
+        pass
+    
+    # send access code back to JS app
+    return json.dumps({'condition':'confirm','leader_code':leader_code, 'member_code':member_code})
     
 def email_client(client_email, subject, message):
     recp_message  = 'Subject: {}\n\n{}'.format(subject, message)

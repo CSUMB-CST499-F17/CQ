@@ -66,37 +66,39 @@ export class Content extends React.Component{
         });
     }
     handle(callback){
+        //handle returns from any page sockets
     }
-
-    changePage(to){
-        this.state.temp = this.state.lastPage;
-        this.state.lastPage = to;
-        for (var n in this.state){
-            window.localStorage.setItem( n, this.state[n] );
-        }
-        Socket.emit(to, this.state, Socket.callback=this.handle);
-        if(to.indexOf('admin') !== -1){
-            document.getElementById(this.state.temp).style.display = "none";
-            document.getElementById(to).style.display = "block";
-            document.getElementById('nav-bar').style.display = "block";
-            // Socket.emit('adminPage', this.state.temp);
-
-        }
-        if(to.indexOf('admin') == -1){
-            document.getElementById(this.state.temp).style.display = "none";
-            document.getElementById(to).style.display = "block";
-            document.getElementById('nav-bar').style.display = "none";
+    changePage(location){
+        try{
+            console.log(location)
+            Socket.emit(location, this.state, Socket.callback=this.handle);
+            if(location.indexOf('admin') != -1){ //it is admin page
+                document.getElementById(this.state.lastPage).style.display = "none";
+                document.getElementById(location).style.display = "block";
+                document.getElementById('nav-bar').style.display = "block";
+            }
+            else if(location.indexOf('admin') == -1){
+                document.getElementById(this.state.lastPage).style.display = "none";
+                document.getElementById(location).style.display = "block";
+                document.getElementById('nav-bar').style.display = "none";
+            }
+            this.state.lastPage = location;
+            for (var n in this.state){
+                window.localStorage.setItem( n, this.state[n] );
+            }
+        }catch(e){
+            console.log(e);
         }
     }
     
     render(){
         return (
             <div>
-                <div id = 'home' style={{display:'block'}}>
-                    <Home changePage={this.changePage} state={this.state} setProps={this.setProps}/>
+                <div id = 'home' style={{display:'none'}}>
+                    <Home changePage={this.changePage} state={this.state} setProps={this.setProps} />
                 </div>
                 <div id = 'explore' style={{display:'none'}}>
-                    <Explore changePage={this.changePage}/>
+                    <Explore changePage={this.changePage} key="explore"/>
                 </div>
                 <div id = 'leaderboard' style={{display:'none'}}>
                     <Leaderboard changePage={this.changePage}/>

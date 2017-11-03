@@ -65,7 +65,7 @@ export class Explore extends React.Component {
     }
     render() {
         let hunts = this.state.hunts.map((n, index) => 
-            <div id={n[0]} className="hunt-preview">
+            <div id={n[0]} key={n[0]} className="hunt-preview">
                 <header>{n[1]}</header>
                 <img src={n[4]}/>
                 <p>{n[5]} to {n[6]}</p>
@@ -73,7 +73,7 @@ export class Explore extends React.Component {
             </div>
         );
         let types = this.state.types.map((n, index) => 
-            <MenuItem onClick={() => this.sort(n)}>{n}</MenuItem>
+            <MenuItem onClick={() => this.sort(n)} key={index}>{n}</MenuItem>
         );
         
         return (

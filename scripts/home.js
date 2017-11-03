@@ -8,26 +8,31 @@ export class Home extends React.Component {
         super(props);
         this.pageName = 'home';
         this.index = 0;
+        this.timer;
         this.images = ['boats','bust','canneryrow','crossedarms','lighthousewide','montereycanningcompany','sistercitypark','swanboat','whale'];
         // IMAGES THAT SHOW UP SIDEWAYS: 'diversmemorial','lady','lighthousenarrow','shareabench','twowhales', 'yesterdaysdream'
         this.login = this.login.bind(this);
         this.showSlides = this.showSlides.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+       
     }
     componentDidMount(){
         Socket.on('updateHome', (data) => {
+            var savedPage = window.localStorage.getItem( 'lastPage' );
             try{
-                var savedPage = window.localStorage.getItem( 'lastPage' );
-                if(savedPage == 'null'){
-                    savedPage = 'home';
-                }
-                if (savedPage != 'home'){
-                    this.props.changePage(savedPage);
+                if(savedPage.includes("home")){
+                    Socket.emit('slideshow', '', Socket.callback=this.showSlides);
+                    document.getElementById("home").style.display = "block";
                 }
                 else{
-                    this.showSlides();
+                    this.props.changePage(savedPage);
                 }
-            }catch(e){}
+            }
+            catch(e){ //first connect, no last page
+                window.localStorage.setItem( 'lastPage', 'home' );
+                Socket.emit('slideshow', '', Socket.callback=this.showSlides);
+                document.getElementById("home").style.display = "block";
+            }
         });
     }
     handleSubmit(event) {
@@ -45,11 +50,10 @@ export class Home extends React.Component {
         // var index = Math.floor(Math.random() * this.images.length);
         // image.src="../static/image/gallery/"+this.images[index]+".jpg"; 
         if(this.props.state.lastPage == 'home'){
-            setTimeout(this.showSlides, 7000); // Change image every 10 seconds
+            setTimeout(this.showSlides, 7000); // Change image every 7 seconds
         }
     }
     login(){
-        console.log('pressed');
         if (document.getElementById("existingTeam").style.display == "none"){
             document.getElementById("existingTeam").style.display = "block";
             document.getElementById("nav").style.display = "none";
@@ -58,7 +62,6 @@ export class Home extends React.Component {
             document.getElementById("existingTeam").style.display = "none";
             document.getElementById("nav").style.display = "block";
         }
-        
     }
     render() {
         return (
@@ -80,8 +83,6 @@ export class Home extends React.Component {
                             <div id = 'existingTeam' style={{display:'none'}}>
                             	<ExistingTeam changePage={this.props.changePage} cancel={this.login} setProps={this.props.setProps} loggedIn={this.props.state.loggedIn} name={this.props.state.name}/>
                             </div>
-                            <button className="btn" onClick={() => this.props.changePage('adminHome')}>Temp Button to Admin Homepage</button>
-                            <button className="btn" onClick={() => this.props.changePage('play')}>Temp Button to Play Page</button>
                         </div>
                     </div>
                     
@@ -91,3 +92,6 @@ export class Home extends React.Component {
         );
     }
 }
+
+//<button className="btn" onClick={() => this.props.changePage('play')}>Temp Button to Play Page</button>
+//<button className="btn" onClick={() => this.props.changePage('adminHome')}>Temp Button to Admin Homepage</button>

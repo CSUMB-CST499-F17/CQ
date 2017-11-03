@@ -21892,7 +21892,7 @@
 
 	var _home = __webpack_require__(239);
 
-	var _explore = __webpack_require__(496);
+	var _explore = __webpack_require__(495);
 
 	var _leaderboard = __webpack_require__(497);
 
@@ -21916,9 +21916,9 @@
 
 	var _complete = __webpack_require__(646);
 
-	var _start = __webpack_require__(649);
+	var _start = __webpack_require__(647);
 
-	var _navBar = __webpack_require__(647);
+	var _navBar = __webpack_require__(648);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -21989,26 +21989,31 @@
 	        }
 	    }, {
 	        key: 'handle',
-	        value: function handle(callback) {}
+	        value: function handle(callback) {
+	            //handle returns from any page sockets
+	        }
 	    }, {
 	        key: 'changePage',
-	        value: function changePage(to) {
-	            this.state.temp = this.state.lastPage;
-	            this.state.lastPage = to;
-	            for (var n in this.state) {
-	                window.localStorage.setItem(n, this.state[n]);
-	            }
-	            _Socket.Socket.emit(to, this.state, _Socket.Socket.callback = this.handle);
-	            if (to.indexOf('admin') !== -1) {
-	                document.getElementById(this.state.temp).style.display = "none";
-	                document.getElementById(to).style.display = "block";
-	                document.getElementById('nav-bar').style.display = "block";
-	                // Socket.emit('adminPage', this.state.temp);
-	            }
-	            if (to.indexOf('admin') == -1) {
-	                document.getElementById(this.state.temp).style.display = "none";
-	                document.getElementById(to).style.display = "block";
-	                document.getElementById('nav-bar').style.display = "none";
+	        value: function changePage(location) {
+	            try {
+	                console.log(location);
+	                _Socket.Socket.emit(location, this.state, _Socket.Socket.callback = this.handle);
+	                if (location.indexOf('admin') != -1) {
+	                    //it is admin page
+	                    document.getElementById(this.state.lastPage).style.display = "none";
+	                    document.getElementById(location).style.display = "block";
+	                    document.getElementById('nav-bar').style.display = "block";
+	                } else if (location.indexOf('admin') == -1) {
+	                    document.getElementById(this.state.lastPage).style.display = "none";
+	                    document.getElementById(location).style.display = "block";
+	                    document.getElementById('nav-bar').style.display = "none";
+	                }
+	                this.state.lastPage = location;
+	                for (var n in this.state) {
+	                    window.localStorage.setItem(n, this.state[n]);
+	                }
+	            } catch (e) {
+	                console.log(e);
 	            }
 	        }
 	    }, {
@@ -22019,13 +22024,13 @@
 	                null,
 	                React.createElement(
 	                    'div',
-	                    { id: 'home', style: { display: 'block' } },
+	                    { id: 'home', style: { display: 'none' } },
 	                    React.createElement(_home.Home, { changePage: this.changePage, state: this.state, setProps: this.setProps })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'explore', style: { display: 'none' } },
-	                    React.createElement(_explore.Explore, { changePage: this.changePage })
+	                    React.createElement(_explore.Explore, { changePage: this.changePage, key: 'explore' })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -30681,11 +30686,13 @@
 
 	        _this.pageName = 'home';
 	        _this.index = 0;
+	        _this.timer;
 	        _this.images = ['boats', 'bust', 'canneryrow', 'crossedarms', 'lighthousewide', 'montereycanningcompany', 'sistercitypark', 'swanboat', 'whale'];
 	        // IMAGES THAT SHOW UP SIDEWAYS: 'diversmemorial','lady','lighthousenarrow','shareabench','twowhales', 'yesterdaysdream'
 	        _this.login = _this.login.bind(_this);
 	        _this.showSlides = _this.showSlides.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+
 	        return _this;
 	    }
 
@@ -30695,17 +30702,20 @@
 	            var _this2 = this;
 
 	            _Socket.Socket.on('updateHome', function (data) {
+	                var savedPage = window.localStorage.getItem('lastPage');
 	                try {
-	                    var savedPage = window.localStorage.getItem('lastPage');
-	                    if (savedPage == 'null') {
-	                        savedPage = 'home';
-	                    }
-	                    if (savedPage != 'home') {
-	                        _this2.props.changePage(savedPage);
+	                    if (savedPage.includes("home")) {
+	                        _Socket.Socket.emit('slideshow', '', _Socket.Socket.callback = _this2.showSlides);
+	                        document.getElementById("home").style.display = "block";
 	                    } else {
-	                        _this2.showSlides();
+	                        _this2.props.changePage(savedPage);
 	                    }
-	                } catch (e) {}
+	                } catch (e) {
+	                    //first connect, no last page
+	                    window.localStorage.setItem('lastPage', 'home');
+	                    _Socket.Socket.emit('slideshow', '', _Socket.Socket.callback = _this2.showSlides);
+	                    document.getElementById("home").style.display = "block";
+	                }
 	            });
 	        }
 	    }, {
@@ -30726,13 +30736,12 @@
 	            // var index = Math.floor(Math.random() * this.images.length);
 	            // image.src="../static/image/gallery/"+this.images[index]+".jpg"; 
 	            if (this.props.state.lastPage == 'home') {
-	                setTimeout(this.showSlides, 7000); // Change image every 10 seconds
+	                setTimeout(this.showSlides, 7000); // Change image every 7 seconds
 	            }
 	        }
 	    }, {
 	        key: 'login',
 	        value: function login() {
-	            console.log('pressed');
 	            if (document.getElementById("existingTeam").style.display == "none") {
 	                document.getElementById("existingTeam").style.display = "block";
 	                document.getElementById("nav").style.display = "none";
@@ -30789,20 +30798,6 @@
 	                                'div',
 	                                { id: 'existingTeam', style: { display: 'none' } },
 	                                React.createElement(_existingTeam.ExistingTeam, { changePage: this.props.changePage, cancel: this.login, setProps: this.props.setProps, loggedIn: this.props.state.loggedIn, name: this.props.state.name })
-	                            ),
-	                            React.createElement(
-	                                'button',
-	                                { className: 'btn', onClick: function onClick() {
-	                                        return _this3.props.changePage('adminHome');
-	                                    } },
-	                                'Temp Button to Admin Homepage'
-	                            ),
-	                            React.createElement(
-	                                'button',
-	                                { className: 'btn', onClick: function onClick() {
-	                                        return _this3.props.changePage('play');
-	                                    } },
-	                                'Temp Button to Play Page'
 	                            )
 	                        )
 	                    )
@@ -30813,6 +30808,9 @@
 
 	    return Home;
 	}(React.Component);
+
+	//<button className="btn" onClick={() => this.props.changePage('play')}>Temp Button to Play Page</button>
+	//<button className="btn" onClick={() => this.props.changePage('adminHome')}>Temp Button to Admin Homepage</button>
 
 /***/ },
 /* 240 */
@@ -50648,54 +50646,6 @@
 /* 495 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.LogoSmall = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var LogoSmall = exports.LogoSmall = function (_React$Component) {
-	    _inherits(LogoSmall, _React$Component);
-
-	    function LogoSmall(props) {
-	        _classCallCheck(this, LogoSmall);
-
-	        return _possibleConstructorReturn(this, (LogoSmall.__proto__ || Object.getPrototypeOf(LogoSmall)).call(this, props));
-	    }
-
-	    _createClass(LogoSmall, [{
-	        key: "render",
-	        value: function render() {
-	            return React.createElement(
-	                "div",
-	                null,
-	                React.createElement("img", { id: "logo-small-img", src: "../static/image/logo-small.png" })
-	            );
-	        }
-	    }]);
-
-	    return LogoSmall;
-	}(React.Component);
-
-/***/ },
-/* 496 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -50715,7 +50665,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(495);
+	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -50797,7 +50747,7 @@
 	            var hunts = this.state.hunts.map(function (n, index) {
 	                return React.createElement(
 	                    'div',
-	                    { id: n[0], className: 'hunt-preview' },
+	                    { id: n[0], key: n[0], className: 'hunt-preview' },
 	                    React.createElement(
 	                        'header',
 	                        null,
@@ -50823,7 +50773,7 @@
 	                    _reactBootstrap.MenuItem,
 	                    { onClick: function onClick() {
 	                            return _this3.sort(n);
-	                        } },
+	                        }, key: index },
 	                    n
 	                );
 	            });
@@ -50889,6 +50839,54 @@
 	}(React.Component);
 
 /***/ },
+/* 496 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.LogoSmall = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var LogoSmall = exports.LogoSmall = function (_React$Component) {
+	    _inherits(LogoSmall, _React$Component);
+
+	    function LogoSmall(props) {
+	        _classCallCheck(this, LogoSmall);
+
+	        return _possibleConstructorReturn(this, (LogoSmall.__proto__ || Object.getPrototypeOf(LogoSmall)).call(this, props));
+	    }
+
+	    _createClass(LogoSmall, [{
+	        key: "render",
+	        value: function render() {
+	            return React.createElement(
+	                "div",
+	                null,
+	                React.createElement("img", { id: "logo-small-img", src: "../static/image/logo-small.png" })
+	            );
+	        }
+	    }]);
+
+	    return LogoSmall;
+	}(React.Component);
+
+/***/ },
 /* 497 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -50911,7 +50909,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(495);
+	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -51034,27 +51032,31 @@
 	                            'table',
 	                            { id: 'leaderboard-table' },
 	                            React.createElement(
-	                                'tr',
+	                                'tbody',
 	                                null,
 	                                React.createElement(
-	                                    'td',
+	                                    'tr',
 	                                    null,
-	                                    'Rank'
-	                                ),
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    'Team'
-	                                ),
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    'Score'
-	                                ),
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    'Time'
+	                                    React.createElement(
+	                                        'td',
+	                                        null,
+	                                        'Rank'
+	                                    ),
+	                                    React.createElement(
+	                                        'td',
+	                                        null,
+	                                        'Team'
+	                                    ),
+	                                    React.createElement(
+	                                        'td',
+	                                        null,
+	                                        'Score'
+	                                    ),
+	                                    React.createElement(
+	                                        'td',
+	                                        null,
+	                                        'Time'
+	                                    )
 	                                )
 	                            )
 	                        ),
@@ -51064,7 +51066,11 @@
 	                            React.createElement(
 	                                'table',
 	                                { id: 'leaderboard-table2' },
-	                                userlist
+	                                React.createElement(
+	                                    'tbody',
+	                                    null,
+	                                    userlist
+	                                )
 	                            )
 	                        )
 	                    )
@@ -51112,6 +51118,8 @@
 
 	var _Socket = __webpack_require__(185);
 
+	var _logoSmall = __webpack_require__(496);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51156,6 +51164,8 @@
 	        };
 	        _this.hunts = [];
 
+	        _this.token = null;
+
 	        _this.setOutcome = _this.setOutcome.bind(_this);
 	        _this.handleNameChange = _this.handleNameChange.bind(_this);
 	        _this.handleHuntChange = _this.handleHuntChange.bind(_this);
@@ -51163,6 +51173,9 @@
 	        _this.handleCardChange = _this.handleCardChange.bind(_this);
 	        _this.handleDiscountChange = _this.handleDiscountChange.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.handleConfirm = _this.handleConfirm.bind(_this);
+	        _this.handleBack = _this.handleBack.bind(_this);
+	        _this.handleExit = _this.handleExit.bind(_this);
 	        _this.handleFormReject = _this.handleFormReject.bind(_this);
 	        _this.handleCallback = _this.handleCallback.bind(_this);
 	        return _this;
@@ -51183,7 +51196,7 @@
 	                    ongoingHunts.push(hunt);
 	                }
 	                _this2.hunts = ongoingHunts;
-	                _this2.setState(); //DONT ASK ME WHY THIS WORKS BUT IT WORKS, DO NOT DELETE
+	                _this2.forceUpdate(); //DONT ASK ME WHY THIS WORKS BUT IT WORKS, DO NOT DELETE
 	            });
 	        }
 	    }, {
@@ -51191,8 +51204,8 @@
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
 	            // Handle form submission
-	            var form = document.getElementById('payment-form');
 	            var outcomeElement = document.getElementById('form-outcome');
+	            outcomeElement.textContent = '';
 
 	            var this_ = this;
 
@@ -51226,24 +51239,74 @@
 	            this.token = this.stripe.createToken(this.card).then(function (result) {
 	                if (result.error) {
 	                    this_.handleFormReject(result.error.message);
-	                    return 0;
+	                    return null;
 	                } else {
-	                    // outcomeElement.textContent = "Success! Token generated: " + result.token.id;
-	                    // outcomeElement.style.color = "#666EE8";
-	                    _Socket.Socket.emit('checkout', { 'token': result.token.id, 'userdata': this_.userdata }, _Socket.Socket.callback = this_.handleCallback);
+	                    _Socket.Socket.emit('checkUserInfo', { 'userdata': this_.userdata }, _Socket.Socket.callback = this_.handleCallback);
+	                    return result.token.id;
 	                }
 	            });
+	        }
+	    }, {
+	        key: 'handleConfirm',
+	        value: function handleConfirm(event) {
+	            var this_ = this;
+
+	            this.token.then(function (token) {
+	                _Socket.Socket.emit('checkout', { 'token': token, 'userdata': this_.userdata, 'price': this_.price }, _Socket.Socket.callback = this_.handleCallback);
+	            });
+
+	            document.getElementById('stripe-confirm').style.display = 'none';
+	            document.getElementById('stripe-process').style.display = 'block';
+	        }
+	    }, {
+	        key: 'handleBack',
+	        value: function handleBack(event) {
+	            document.getElementById('stripe-confirm').style.display = 'none';
+	            document.getElementById('stripe-form').style.display = 'block';
+	        }
+	    }, {
+	        key: 'handleExit',
+	        value: function handleExit(event) {
+	            document.getElementById('stripe-form').style.display = 'block';
+	            document.getElementById('stripe-confirm').style.display = 'none';
+	            document.getElementById('stripe-process').style.display = 'none';
+	            document.getElementById('stripe-success').style.display = 'none';
+
+	            document.getElementById("stripe-form").reset();
+	            this.userdata.discount_code = '';
+	            this.userdata.email = '';
+	            this.userdata.hunts_id = '1';
+	            this.userdata.image = '';
+	            this.userdata.team_name = '';
+	            this.token = null;
+	            this.card.clear();
+
+	            this.props.changePage('home');
 	        }
 	    }, {
 	        key: 'handleCallback',
 	        value: function handleCallback(callback) {
 	            var data = JSON.parse(callback);
-	            var outcomeElement = document.getElementById('form-outcome');
-	            if (data['condition'] == 'accept') {
-	                outcomeElement.textContent = "Your access code: " + data['leader_code'] + " Your teams code: " + data['member_code'];
-	                outcomeElement.style.color = "#00FF00";
-	            } else if (data['condition'] == 'reject') {
+
+	            if (data['condition'] == 'reject') {
 	                this.handleFormReject(data['message']);
+	            } else if (data['condition'] == 'accept') {
+	                this.price = data['price'];
+	                document.getElementById('stripe-form').style.display = 'none';
+	                document.getElementById('stripe-confirm').style.display = 'block';
+	                document.getElementById('price-slot').textContent = this.price / 100;
+	            } else if (data['condition'] == 'confirm') {
+	                document.getElementById('stripe-process').style.display = 'none';
+	                document.getElementById('stripe-success').style.display = 'block';
+	                document.getElementById('success-text').textContent = "Thank you for your purchase!";
+	                document.getElementById('leader-code-slot').textContent = data['leader_code'];
+	                document.getElementById('member-code-slot').textContent = data['member_code'];
+	            } else if (data['condition'] == 'not_paid') {
+	                document.getElementById('stripe-process').style.display = 'none';
+	                document.getElementById('stripe-success').style.display = 'block';
+	                document.getElementById('success-text').textContent = "Your account was created, but we couldn't process your payment. " + (data['error_code'] != null ? "Error code: " + data['error_code'] + " " : "") + "Please login to re-attempt payment.";
+	                document.getElementById('leader-code-slot').textContent = data['leader_code'];
+	                document.getElementById('member-code-slot').textContent = data['member_code'];
 	            }
 	        }
 	    }, {
@@ -51295,8 +51358,6 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this3 = this;
-
 	            var hunts = this.hunts.map(function (n, index) {
 	                return React.createElement(
 	                    'option',
@@ -51309,6 +51370,11 @@
 	            return React.createElement(
 	                'div',
 	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'logo-small' },
+	                    React.createElement(_logoSmall.LogoSmall, null)
+	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'header' },
@@ -51360,9 +51426,9 @@
 	                            React.createElement(
 	                                'span',
 	                                null,
-	                                'Discount Code'
+	                                'Code'
 	                            ),
-	                            React.createElement('input', { className: 'field', placeholder: 'CODE1234', onChange: this.handleDiscountChange })
+	                            React.createElement('input', { className: 'field', placeholder: 'PromoCode1234', onChange: this.handleDiscountChange })
 	                        )
 	                    ),
 	                    React.createElement(
@@ -51389,14 +51455,106 @@
 	                        { type: 'submit' },
 	                        'Register and Pay'
 	                    ),
-	                    React.createElement('div', { id: 'form-outcome' }),
 	                    React.createElement('div', { className: 'clear' })
 	                ),
 	                React.createElement(
+	                    'div',
+	                    { id: 'stripe-confirm', style: { display: 'none' } },
+	                    React.createElement(
+	                        'div',
+	                        { className: 'group' },
+	                        React.createElement(
+	                            'div',
+	                            null,
+	                            React.createElement(
+	                                'span',
+	                                null,
+	                                'Your total is $'
+	                            ),
+	                            React.createElement('span', { id: 'price-slot' }),
+	                            React.createElement(
+	                                'span',
+	                                null,
+	                                '. Please confirm to purchase this scavenger hunt.'
+	                            )
+	                        ),
+	                        React.createElement(
+	                            'button',
+	                            { id: 'confirm-button', onClick: this.handleConfirm },
+	                            'Confirm'
+	                        ),
+	                        React.createElement(
+	                            'button',
+	                            { onClick: this.handleBack },
+	                            'Back'
+	                        )
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'stripe-process', style: { display: 'none' } },
+	                    React.createElement(
+	                        'div',
+	                        { className: 'group' },
+	                        React.createElement(
+	                            'div',
+	                            null,
+	                            'Processing...'
+	                        )
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'stripe-success', style: { display: 'none' } },
+	                    React.createElement(
+	                        'div',
+	                        { className: 'group' },
+	                        React.createElement(
+	                            'div',
+	                            { style: { display: 'block' } },
+	                            React.createElement(
+	                                'div',
+	                                { id: 'success-text' },
+	                                'Thank you for your purchase!'
+	                            ),
+	                            React.createElement(
+	                                'div',
+	                                null,
+	                                React.createElement(
+	                                    'span',
+	                                    null,
+	                                    ' Your leader\'s access code is '
+	                                ),
+	                                React.createElement('span', { id: 'leader-code-slot' }),
+	                                React.createElement(
+	                                    'span',
+	                                    null,
+	                                    ' and your team\'s access code is '
+	                                ),
+	                                React.createElement('span', { id: 'member-code-slot' }),
+	                                React.createElement(
+	                                    'span',
+	                                    null,
+	                                    '.'
+	                                )
+	                            )
+	                        ),
+	                        React.createElement('div', { id: 'notpaid-text', style: { display: 'block' } }),
+	                        React.createElement(
+	                            'button',
+	                            { onClick: this.handleExit },
+	                            'Confirm'
+	                        )
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { style: { textAlign: 'center' }, id: 'form-outcome' },
+	                    'center'
+	                ),
+	                React.createElement(
 	                    _reactBootstrap.Button,
-	                    { onClick: function onClick() {
-	                            return _this3.props.changePage('home');
-	                        } },
+	                    { onClick: this.handleExit },
 	                    'Home'
 	                )
 	            );
@@ -51429,7 +51587,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(495);
+	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -51961,27 +52119,31 @@
 	                        'table',
 	                        { id: 'leaderboard-table' },
 	                        React.createElement(
-	                            'tr',
+	                            'tbody',
 	                            null,
 	                            React.createElement(
-	                                'td',
+	                                'tr',
 	                                null,
-	                                'Rank'
-	                            ),
-	                            React.createElement(
-	                                'td',
-	                                null,
-	                                'Team'
-	                            ),
-	                            React.createElement(
-	                                'td',
-	                                null,
-	                                'Score'
-	                            ),
-	                            React.createElement(
-	                                'td',
-	                                null,
-	                                'Time'
+	                                React.createElement(
+	                                    'td',
+	                                    null,
+	                                    'Rank'
+	                                ),
+	                                React.createElement(
+	                                    'td',
+	                                    null,
+	                                    'Team'
+	                                ),
+	                                React.createElement(
+	                                    'td',
+	                                    null,
+	                                    'Score'
+	                                ),
+	                                React.createElement(
+	                                    'td',
+	                                    null,
+	                                    'Time'
+	                                )
 	                            )
 	                        )
 	                    ),
@@ -51991,7 +52153,11 @@
 	                        React.createElement(
 	                            'table',
 	                            { id: 'leaderboard-table2' },
-	                            userlist
+	                            React.createElement(
+	                                'tbody',
+	                                null,
+	                                userlist
+	                            )
 	                        )
 	                    )
 	                )
@@ -71866,7 +72032,7 @@
 
 	var _reactBootstrap = __webpack_require__(240);
 
-	var _logoSmall = __webpack_require__(495);
+	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -71981,122 +72147,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.NavBar = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _Socket = __webpack_require__(185);
-
-	var _logoSmall = __webpack_require__(495);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var NavBar = exports.NavBar = function (_React$Component) {
-	    _inherits(NavBar, _React$Component);
-
-	    function NavBar(props) {
-	        _classCallCheck(this, NavBar);
-
-	        var _this = _possibleConstructorReturn(this, (NavBar.__proto__ || Object.getPrototypeOf(NavBar)).call(this, props));
-
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        _this.logout;
-	        return _this;
-	    }
-
-	    _createClass(NavBar, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	    }, {
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {}
-	    }, {
-	        key: 'logout',
-	        value: function logout() {
-	            this.props.logOutSetProps('no', 'guest');
-	            this.props.changePage('home');
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
-
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'topnav' },
-	                    React.createElement(
-	                        'a',
-	                        { onClick: function onClick() {
-	                                return _this2.props.changePage('adminHome');
-	                            } },
-	                        'Home'
-	                    ),
-	                    React.createElement(
-	                        'a',
-	                        { onClick: function onClick() {
-	                                return _this2.props.changePage('adminLeaderboard');
-	                            } },
-	                        'Leaderboard'
-	                    ),
-	                    React.createElement(
-	                        'a',
-	                        { onClick: function onClick() {
-	                                return _this2.props.changePage('adminHunts');
-	                            } },
-	                        'Hunts'
-	                    ),
-	                    React.createElement(
-	                        'a',
-	                        { style: { display: this.props.hide }, onClick: function onClick() {
-	                                return _this2.props.changePage('admins');
-	                            } },
-	                        'Settings'
-	                    ),
-	                    React.createElement(
-	                        'a',
-	                        { onClick: function onClick() {
-	                                return _this2.logout();
-	                            } },
-	                        'Logout'
-	                    ),
-	                    React.createElement(
-	                        'div',
-	                        { id: 'logo-small-nav' },
-	                        React.createElement(_logoSmall.LogoSmall, null)
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return NavBar;
-	}(React.Component);
-
-/***/ },
-/* 648 */,
-/* 649 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
 	exports.Start = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -72109,7 +72159,7 @@
 
 	var _reactBootstrap = __webpack_require__(240);
 
-	var _logoSmall = __webpack_require__(495);
+	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -72216,6 +72266,121 @@
 	    }]);
 
 	    return Start;
+	}(React.Component);
+
+/***/ },
+/* 648 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.NavBar = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	var _Socket = __webpack_require__(185);
+
+	var _logoSmall = __webpack_require__(496);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var NavBar = exports.NavBar = function (_React$Component) {
+	    _inherits(NavBar, _React$Component);
+
+	    function NavBar(props) {
+	        _classCallCheck(this, NavBar);
+
+	        var _this = _possibleConstructorReturn(this, (NavBar.__proto__ || Object.getPrototypeOf(NavBar)).call(this, props));
+
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.logout;
+	        return _this;
+	    }
+
+	    _createClass(NavBar, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            event.preventDefault();
+	        }
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {}
+	    }, {
+	        key: 'logout',
+	        value: function logout() {
+	            this.props.logOutSetProps('no', 'guest');
+	            this.props.changePage('home');
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            return React.createElement(
+	                'div',
+	                null,
+	                React.createElement(
+	                    'div',
+	                    { id: 'topnav' },
+	                    React.createElement(
+	                        'a',
+	                        { onClick: function onClick() {
+	                                return _this2.props.changePage('adminHome');
+	                            } },
+	                        'Home'
+	                    ),
+	                    React.createElement(
+	                        'a',
+	                        { onClick: function onClick() {
+	                                return _this2.props.changePage('adminLeaderboard');
+	                            } },
+	                        'Leaderboard'
+	                    ),
+	                    React.createElement(
+	                        'a',
+	                        { onClick: function onClick() {
+	                                return _this2.props.changePage('adminHunts');
+	                            } },
+	                        'Hunts'
+	                    ),
+	                    React.createElement(
+	                        'a',
+	                        { style: { display: this.props.hide }, onClick: function onClick() {
+	                                return _this2.props.changePage('admins');
+	                            } },
+	                        'Settings'
+	                    ),
+	                    React.createElement(
+	                        'a',
+	                        { onClick: function onClick() {
+	                                return _this2.logout();
+	                            } },
+	                        'Logout'
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { id: 'logo-small-nav' },
+	                        React.createElement(_logoSmall.LogoSmall, null)
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return NavBar;
 	}(React.Component);
 
 /***/ }

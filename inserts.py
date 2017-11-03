@@ -5,6 +5,8 @@ import datetime
 
 models.db.create_all()
 
+models.db.session.add(models.Admins("katjones@csumb.edu", "SuperAdmin", "2466d01e6903125458ad26828cca9f90ea0a2af1b637012c0bb71f4bc3cb3144:3a42a5bef15c47e7bc00cd2a3b57b0ce78e58d2424fa4e6e9c452acc16a0b361", True))
+models.db.session.commit()
 
 hunts = models.Hunts(
     "Walking Tour #1",
