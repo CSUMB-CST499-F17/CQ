@@ -8,12 +8,18 @@ models.db.create_all()
 models.db.session.add(models.Admins("katjones@csumb.edu", "SuperAdmin", "2466d01e6903125458ad26828cca9f90ea0a2af1b637012c0bb71f4bc3cb3144:3a42a5bef15c47e7bc00cd2a3b57b0ce78e58d2424fa4e6e9c452acc16a0b361", True))
 models.db.session.commit()
 
+models.db.session.add(models.Discounts("c5d0d951dd579674d44b137c69ad592ca63fdd6b24e276e7c2b78d113e0dff7a:e38b1f5d8b0b4051a62c0452eb20f95da46d1e6edeb04972aff7d68385d577a9", 100, 1000))
+models.db.session.commit()
+
+models.db.session.add(models.Participants("katjones@csumb.edu","CQ","static/image/logo-small.png","12557a0701bb6d32c946e583885baa8094d1b3da1338e96e52b58823a18515c9:c96a3ea7786d423ab1bc7d8316a15990d3054cd6ece64c9181e9648cff046b19","230080283465983fdffc13798dc678de35b966819b5a1db1646f371a04c045e6:a403cbbcf5b741b7887d14ffc78c8607864fa42ed66449b7b11ec53c0628441b",datetime.datetime(2017, 11, 2, 13),datetime.datetime(2017, 11, 2, 15),-1,5,1325,True,1))
+models.db.session.commit()
+
 hunts = models.Hunts(
     "Walking Tour #1",
     "walking",
     "This Scavenger Hunt Begins at the Monterey Custom House Plaza and Ends in Pacific Grove",
     "boats.jpg",
-    datetime.datetime(2017, 11, 2, 6),
+    datetime.datetime(2017, 11, 2, 12),
     datetime.datetime(2017, 11, 26, 12),
     "Start in the Custom House Plaza Park, near Fisherman's Wharf.")
 models.db.session.add(hunts)
