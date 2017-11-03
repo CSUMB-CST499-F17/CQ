@@ -50700,6 +50700,7 @@
 	            var _this2 = this;
 
 	            _Socket.Socket.on('updateExplore', function (data) {
+
 	                _Socket.Socket.emit('changeType', _this2.state.chosentype.toLowerCase(), _Socket.Socket.callback = _this2.updateExplore);
 	            });
 	        }
