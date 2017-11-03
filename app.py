@@ -118,10 +118,11 @@ def validateCredentials(data):
             for query in users:
                 if(check_password(query.password, data['access'])):
                     return 'admin%' + query.username
-                    
+            
+            return 'no%guest'
         except Exception as e: 
             print (e)
-            return 'no%guest'
+            
 
 @socketio.on('progessUpdate')
 def updateProgress(data):
