@@ -108,8 +108,8 @@ p{
     
 }
 .hunt-preview img{
-    max-width:50%;
-    max-height:50%;
+    max-width:45%;
+    max-height:45%;
     display: inline-block;
     vertical-align: middle;
     border:solid;
@@ -120,8 +120,8 @@ p{
 /* Start */
 #h_image{
     margin:15px;
-    max-width:50%;
-    max-height:50%;
+    max-width:45%;
+    max-height:45%;
     display: inline-block;
     vertical-align: middle;
     border:solid;
@@ -226,11 +226,11 @@ p{
     width:100%;
 }
 #hint1, #hint2{
-    margin:15px;
+    margin:15 0 15 0;
     font-size:18px;
 }
 #play-question{
-    font-size: 40px
+    font-size: 36px
 }
 #result{
     font-size: 24px;
@@ -426,12 +426,17 @@ td{
     #header {
         font-size: 2.5em;
         margin: 10px;
+        padding-left:2px;
+    }
+    header, h1{
+        color:white;
+        font-size: 20px;
     }
     #explore #header{
         font-size: 16px;
     }
     #slideshow{
-        height:300px;
+        height:350px;
         line-height: 300px;
     }
     #logo-big{

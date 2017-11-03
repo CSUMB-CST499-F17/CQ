@@ -34,6 +34,8 @@ export class ExistingTeam extends React.Component {
                             this.props.changePage('start');
                         }
                         else{
+                            Socket.emit('startPlay', this.hunt_id);
+                            Socket.emit('huntPlay', {'id':this.hunt_id});
                             this.props.changePage('play');
                         }
                         

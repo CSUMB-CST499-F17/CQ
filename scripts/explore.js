@@ -67,7 +67,7 @@ export class Explore extends React.Component {
         let hunts = this.state.hunts.map((n, index) => 
             <div id={n[0]} key={n[0]} className="hunt-preview">
                 <header>{n[1]}</header>
-                <img src={n[4]}/>
+                <img src={"../static/image/gallery/" + n[4]}/>
                 <p>{n[5]} to {n[6]}</p>
                 <p>{n[3]}</p>
             </div>
