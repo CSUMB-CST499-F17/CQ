@@ -16,6 +16,7 @@ export class ExistingTeam extends React.Component {
         //retireves the user information
         Socket.on('user', (data) => {
                 this.progress = data[0]['progress'];
+                this.hunt_id = data[0]['hunt']
         });
         
     }
@@ -29,6 +30,7 @@ export class ExistingTeam extends React.Component {
                     case "teamLead":
                     case "team":
                         if(this.progress == 0){
+                            Socket.emit('startPlay', this.hunt_id);
                             this.props.changePage('start');
                         }
                         else{
@@ -47,8 +49,8 @@ export class ExistingTeam extends React.Component {
                         document.getElementById("errorMessage").style.color="#f2e537";
                         document.getElementById("access").value = "";
                         break;
-                    case "finished":
-                        document.getElementById("errorMessage").innerHTML = "⚠ Scavenger Hunt Completed By This Team ⚠" +  <br/> +  " ⚠ Please Create New Team and Explore Other Hunts!⚠"
+                    case "finished": 
+                        document.getElementById("errorMessage").innerHTML = "⚠ Scavenger Hunt Completed By This Team ⚠  <br/> ⚠ Please Create New Team and Explore Other Hunts!⚠";
                         document.getElementById("errorMessage").style.visibility = 'visible';
                         document.getElementById("errorMessage").style.color="#f2e537";
                         document.getElementById("access").value = "";

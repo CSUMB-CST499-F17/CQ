@@ -178,8 +178,9 @@ export class Register extends React.Component {
     
     handleFormReject(message){
         var outcomeElement = document.getElementById('form-outcome');
+        outcomeElement.style.visibility = 'visible';
         outcomeElement.textContent = "Error: " + message;
-        outcomeElement.style.color = "#E4584C";
+        outcomeElement.style.color = "#f2e537";
         outcomeElement.style.textAlign = "center";
     }
     
@@ -289,7 +290,7 @@ export class Register extends React.Component {
                     </div>
                 </div>
                 
-                <div style={{textAlign:'center'}} id="form-outcome">center</div>
+                <div style={{textAlign:'center'}} id="form-outcome" style={{visibility:'hidden'}}>center</div>
                 
                 <Button onClick={this.handleExit}>Home</Button>
             </div>

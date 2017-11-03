@@ -22,8 +22,7 @@ def hello():
     return flask.render_template('index.html')
 
 @socketio.on('play')
-@socketio.on('start')
-def getHunt(data):
+def getQuestions(data):
     global questionNum
     questionsData = []
 
@@ -37,6 +36,21 @@ def getHunt(data):
     socketio.emit('hunt', questionsData)
     questionNum += questionNum
     print('Scavenger hunt data sent.')
+
+@socketio.on('startPlay')
+def getHunt(data):
+    huntData = []
+
+    try:
+        hunt = models.db.session.query(models.Hunts).filter(models.Hunts.id == data)
+        for row in hunt:
+            print "Hello"
+            huntData.append({'name': row.name, 'image':row.image, 'start_text':row.start_text})
+    except Exception as e: 
+        print "Help"
+        
+    socketio.emit('playStart', huntData)
+    print('Hunt Data.')
 
 @socketio.on('home')
 def updateHome(data):
@@ -73,8 +87,8 @@ def changeType(data):
         for row in h_list:
             hunts.append({'id':row.id,'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time.strftime('%A %B %-d %-I:%M %p'),'end_time':row.end_time.strftime('%A %B %-d %-I:%M %p'),'start_text':row.start_text })
         return json.dumps({'choice':choice,'hunts':hunts,'types':types})
-    except:
-        print("Error: Database does not exist")
+    except Exception as e: 
+        print (e)
 
 @socketio.on('validateCredentials')
 def validateCredentials(data):
@@ -95,7 +109,7 @@ def validateCredentials(data):
                 if(check_password(query.member_code, data['access'])):
                     userData.append({'email':query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress})
                     socketio.emit('user', userData)
-                    if query.progres == -1:
+                    if query.progress == -1:
                         return 'finished'
                     return 'team%' + query.team_name
                     
@@ -255,7 +269,7 @@ def checkout(data):
     
     participants = None
     try:
-        participants = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None, None, 0, 0, 0, False, hunt_id)
+        participants = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None, None, 0, 0, -1, False, hunt_id)
         models.db.session.add(participants)  
         models.db.session.commit()
         

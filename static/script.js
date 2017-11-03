@@ -50539,6 +50539,7 @@
 	        //retireves the user information
 	        _Socket.Socket.on('user', function (data) {
 	            _this.progress = data[0]['progress'];
+	            _this.hunt_id = data[0]['hunt'];
 	        });
 
 	        return _this;
@@ -50556,6 +50557,7 @@
 	                    case "teamLead":
 	                    case "team":
 	                        if (this.progress == 0) {
+	                            _Socket.Socket.emit('startPlay', this.hunt_id);
 	                            this.props.changePage('start');
 	                        } else {
 	                            this.props.changePage('play');
@@ -50574,7 +50576,7 @@
 	                        document.getElementById("access").value = "";
 	                        break;
 	                    case "finished":
-	                        document.getElementById("errorMessage").innerHTML = "⚠ Scavenger Hunt Completed By This Team ⚠" + React.createElement('br', null) + " ⚠ Please Create New Team and Explore Other Hunts!⚠";
+	                        document.getElementById("errorMessage").innerHTML = "⚠ Scavenger Hunt Completed By This Team ⚠  <br/> ⚠ Please Create New Team and Explore Other Hunts!⚠";
 	                        document.getElementById("errorMessage").style.visibility = 'visible';
 	                        document.getElementById("errorMessage").style.color = "#f2e537";
 	                        document.getElementById("access").value = "";
@@ -50957,7 +50959,6 @@
 	        value: function render() {
 	            var _this3 = this;
 
-	            console.log(this.state.userlist);
 	            var userlist = '';
 
 	            var data = this.state.userlist;
@@ -51121,6 +51122,8 @@
 	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -51313,8 +51316,9 @@
 	        key: 'handleFormReject',
 	        value: function handleFormReject(message) {
 	            var outcomeElement = document.getElementById('form-outcome');
+	            outcomeElement.style.visibility = 'visible';
 	            outcomeElement.textContent = "Error: " + message;
-	            outcomeElement.style.color = "#E4584C";
+	            outcomeElement.style.color = "#f2e537";
 	            outcomeElement.style.textAlign = "center";
 	        }
 	    }, {
@@ -51549,7 +51553,7 @@
 	                ),
 	                React.createElement(
 	                    'div',
-	                    { style: { textAlign: 'center' }, id: 'form-outcome' },
+	                    _defineProperty({ style: { textAlign: 'center' }, id: 'form-outcome' }, 'style', { visibility: 'hidden' }),
 	                    'center'
 	                ),
 	                React.createElement(
@@ -51645,6 +51649,9 @@
 	                'playerQuestionOn': data[0]['progress'] - 1
 	            });
 	            _this.score = data[0]['score'];
+	            if (_this.score == -1 || _this.score == null) {
+	                _this.score = _this.dataSize * 25;
+	            }
 	            _this.attempts = data[0]['attempts'];
 	            _this.point = _this.attempts * 5;
 	            document.getElementById('points').innerHTML = "Points Avaiable For this Question: " + _this.point;
@@ -51672,7 +51679,6 @@
 	                result.style.visibility = 'visible';
 	                result.textContent = 'Correct';
 	                result.style.color = "#9bf442";
-	                console.log(this.dataSize);
 	                if (this.state.playerQuestionOn + 2 == this.dataSize) {
 	                    document.getElementById('next').textContent = "Last Question";
 	                }
@@ -51726,7 +51732,8 @@
 	                _this2.setState({
 	                    'questionsData': data
 	                });
-	                _this2.dataSize = data.length;
+	                _this2.dataSize = _this2.state.questionsData.length;
+	                _this2.emit();
 	            });
 	        }
 	    }, {
@@ -51840,77 +51847,81 @@
 	                ),
 	                React.createElement(
 	                    'div',
-	                    { id: 'play-container' },
+	                    { id: 'intro' },
 	                    React.createElement(
 	                        'div',
-	                        { id: 'play-form' },
-	                        React.createElement('div', { id: 'play-question' }),
+	                        { id: 'play-container' },
 	                        React.createElement(
 	                            'div',
-	                            { id: 'hint1', style: { display: 'none' } },
-	                            'Hint PlaceHolder'
+	                            { id: 'play-form' },
+	                            React.createElement('div', { id: 'play-question' }),
+	                            React.createElement(
+	                                'div',
+	                                { id: 'hints' },
+	                                React.createElement(
+	                                    'div',
+	                                    { id: 'hint1', style: { display: 'none' } },
+	                                    'Hint PlaceHolder'
+	                                ),
+	                                React.createElement(
+	                                    'div',
+	                                    { id: 'hint2', style: { display: 'none' } },
+	                                    'Hint PlaceHolder'
+	                                )
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'div',
-	                            { id: 'hint2', style: { display: 'none' } },
-	                            'Hint PlaceHolder'
-	                        )
-	                    ),
-	                    React.createElement(
-	                        'div',
-	                        { id: 'input' },
-	                        React.createElement(
-	                            'label',
-	                            { 'for': 'answer', id: 'points', style: { display: this.props.hide } },
-	                            'Points Avaiable For this Question: '
-	                        ),
-	                        React.createElement(_reactBootstrap.FormControl, { id: 'answer', style: { display: this.props.hide }, componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
-	                        React.createElement(
-	                            'div',
-	                            { id: 'result', style: { visibility: 'hidden' } },
-	                            'Results Placeholder',
-	                            React.createElement('br', null),
-	                            'array'
+	                            { id: 'input' },
+	                            React.createElement(
+	                                'label',
+	                                { 'for': 'answer', id: 'points', style: { display: this.props.hide, color: '#f2e537' } },
+	                                'Points Avaiable For this Question: '
+	                            ),
+	                            React.createElement(_reactBootstrap.FormControl, { id: 'answer', style: { display: this.props.hide }, componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
+	                            React.createElement(
+	                                'div',
+	                                { id: 'result', style: { visibility: 'hidden' } },
+	                                'Results Placeholder',
+	                                React.createElement('br', null),
+	                                'array'
+	                            )
 	                        )
 	                    ),
 	                    React.createElement(
 	                        'div',
 	                        { className: 'buttons' },
 	                        React.createElement(
-	                            _reactBootstrap.ButtonToolbar,
-	                            null,
-	                            React.createElement(
-	                                _reactBootstrap.Button,
-	                                { id: 'next', style: { display: 'none' }, onClick: this.nextQuestion },
-	                                'Next Question'
-	                            ),
-	                            React.createElement(
-	                                _reactBootstrap.Button,
-	                                { id: 'complete-button', style: { display: 'none' }, onClick: this.completed },
-	                                'Finish'
-	                            ),
-	                            React.createElement(
-	                                _reactBootstrap.Button,
-	                                { id: 'answer-submit', style: { display: this.props.hide }, onClick: this.checkAnswer },
-	                                'Submit'
-	                            ),
-	                            React.createElement(
-	                                _reactBootstrap.Button,
-	                                { id: 'skip', style: { display: 'none' }, onClick: this.skip },
-	                                'Skip Question'
-	                            ),
-	                            React.createElement(
-	                                _reactBootstrap.Button,
-	                                { id: 'hint-submit', style: { display: this.props.hide }, onClick: this.showHint },
-	                                'Hint'
-	                            ),
-	                            React.createElement(
-	                                _reactBootstrap.Button,
-	                                { onClick: function onClick() {
-	                                        return _this3.props.changePage('home');
-	                                    } },
-	                                'Home'
-	                            )
+	                            'button',
+	                            { className: 'btn', id: 'next', style: { display: 'none' }, onClick: this.nextQuestion },
+	                            'Next Question'
+	                        ),
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn', id: 'complete-button', style: { display: 'none' }, onClick: this.completed },
+	                            'Finish'
+	                        ),
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn', id: 'answer-submit', style: { display: this.props.hide }, onClick: this.checkAnswer },
+	                            'Submit'
+	                        ),
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn', id: 'hint-submit', style: { display: this.props.hide }, onClick: this.showHint },
+	                            'Hint'
+	                        ),
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn', id: 'skip', style: { display: 'none' }, onClick: this.skip },
+	                            'Skip Question'
+	                        ),
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn', onClick: function onClick() {
+	                                    return _this3.props.changePage('home');
+	                                } },
+	                            'Home'
 	                        )
 	                    )
 	                )
@@ -72069,7 +72080,6 @@
 	                    'user': data[0]['team_name'],
 	                    'score': data[0]['score']
 	                });
-	                console.log(data[0]['team_name']);
 	                if (_this2.state.score > -1) {
 	                    document.getElementById('team').innerHTML = _this2.state.user;
 	                    document.getElementById('score').innerHTML = _this2.state.score;
@@ -72196,10 +72206,11 @@
 	            var _this2 = this;
 
 	            //retireves the hunt question information
-	            _Socket.Socket.on('hunt', function (data) {
+	            _Socket.Socket.on('playStart', function (data) {
 	                _this2.hunt = data[0];
-	                _this2.start_text = data[0]['start_text'];
-	                document.getElementById('start_text').textContent = _this2.start.text;
+	                document.getElementById('h_name').innerHTML = _this2.hunt['name'];
+	                document.getElementById('h_image').src = "../static/image/gallery/" + _this2.hunt['image'];
+	                document.getElementById('h_start_text').innerHTML = _this2.hunt['start_text'];
 	            });
 	        }
 	    }, {
@@ -72243,18 +72254,25 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'intro' },
-	                    React.createElement('div', { id: 'start_text' }),
+	                    React.createElement('h1', { id: 'h_name' }),
+	                    React.createElement('h4', { id: 'h_start_text' }),
+	                    React.createElement('img', { id: 'h_image', src: '' }),
+	                    React.createElement(
+	                        'p',
+	                        { style: { display: this.props.hide } },
+	                        'Once you are ready to begin, Start Scavenger Hunt!'
+	                    ),
 	                    React.createElement(
 	                        'div',
 	                        { id: 'buttons' },
 	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: this.start },
+	                            'button',
+	                            { className: 'btn', onClick: this.start, style: { display: this.props.hide } },
 	                            'Start Scavenger Hunt!'
 	                        ),
 	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: function onClick() {
+	                            'button',
+	                            { className: 'btn', onClick: function onClick() {
 	                                    return _this3.props.changePage('home');
 	                                } },
 	                            'Home'
