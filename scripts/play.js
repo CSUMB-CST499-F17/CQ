@@ -112,6 +112,7 @@ export class Play extends React.Component {
     }
     
     completed(){
+        console.log(this.score);
         try{
             Socket.emit('progessUpdate', {'user': this.state.user, 'progress':-1, 'score':this.score, 'attempts': this.attempts});    
         }
@@ -197,6 +198,7 @@ export class Play extends React.Component {
     
     skip(){
         this.score = this.score - this.point;
+        this.emit();
         if(this.state.playerQuestionOn + 1 == this.dataSize){
             document.getElementById('complete-button').style.display = "block";
             document.getElementById('skip').style.display = "none";

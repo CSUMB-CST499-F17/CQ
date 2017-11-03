@@ -51719,6 +51719,7 @@
 	    }, {
 	        key: 'completed',
 	        value: function completed() {
+	            console.log(this.score);
 	            try {
 	                _Socket.Socket.emit('progessUpdate', { 'user': this.state.user, 'progress': -1, 'score': this.score, 'attempts': this.attempts });
 	            } catch (err) {
@@ -51812,6 +51813,7 @@
 	        key: 'skip',
 	        value: function skip() {
 	            this.score = this.score - this.point;
+	            this.emit();
 	            if (this.state.playerQuestionOn + 1 == this.dataSize) {
 	                document.getElementById('complete-button').style.display = "block";
 	                document.getElementById('skip').style.display = "none";
@@ -72095,6 +72097,7 @@
 	                    'user': data[0]['team_name'],
 	                    'score': data[0]['score']
 	                });
+	                console.log(_this2.state.score);
 	                if (_this2.state.score > -1) {
 	                    document.getElementById('team').innerHTML = _this2.state.user;
 	                    document.getElementById('score').innerHTML = _this2.state.score;
