@@ -135,6 +135,12 @@ p{
     margin:15px;
 }
 
+/* Complete */ 
+#team, #score{
+    color: white;
+    font-size:32px;
+}
+
 /* Logos */ 
 #logo-big{
     width:700px;

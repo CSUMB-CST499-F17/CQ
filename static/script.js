@@ -51658,9 +51658,9 @@
 	            _this.setState({
 	                'user': data[0],
 	                'playerQuestionOn': data[0]['progress'] - 1
+
 	            });
 	            _this.score = data[0]['score'];
-	            console.log(_this.score);
 	            if ((_this.score == null || _this.score <= 0) && data[0]['progress'] >= 0) {
 	                _this.score = _this.dataSize * 25;
 	            }
@@ -72095,8 +72095,13 @@
 	            _Socket.Socket.on('user', function (data) {
 	                _this2.setState({
 	                    'user': data[0]['team_name'],
-	                    'score': data[0]['score']
+	                    'score': data[0]['score'] + data[0]['time']
 	                });
+	                try {
+	                    _Socket.Socket.emit('progessUpdate', { 'user': _this2.state.user, 'progress': -1, 'score': _this2.state.score, 'attempts': 5 });
+	                } catch (err) {
+	                    console.log(err);
+	                }
 	                console.log(_this2.state.score);
 	                if (_this2.state.score > -1) {
 	                    document.getElementById('team').innerHTML = _this2.state.user;
@@ -72139,24 +72144,24 @@
 	                        { id: 'results' },
 	                        React.createElement('div', { id: 'team' }),
 	                        React.createElement('div', { id: 'score' })
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { className: 'buttons' },
+	                    React.createElement(
+	                        'button',
+	                        { className: 'btn', onClick: function onClick() {
+	                                return _this3.props.changePage('leaderboard');
+	                            } },
+	                        'Leaderboard'
 	                    ),
 	                    React.createElement(
-	                        'div',
-	                        { className: 'buttons' },
-	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: function onClick() {
-	                                    return _this3.props.changePage('leaderboard');
-	                                } },
-	                            'Leaderboard'
-	                        ),
-	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: function onClick() {
-	                                    return _this3.props.changePage('home');
-	                                } },
-	                            'Home'
-	                        )
+	                        'button',
+	                        { className: 'btn', onClick: function onClick() {
+	                                return _this3.props.changePage('home');
+	                            } },
+	                        'Home'
 	                    )
 	                )
 	            );

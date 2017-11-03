@@ -19,8 +19,14 @@ export class Complete extends React.Component {
         Socket.on('user', (data) => {
             this.setState({
                 'user': data[0]['team_name'], 
-                'score':data[0]['score']
+                'score':data[0]['score'] + data[0]['time']
             });
+            try{
+            Socket.emit('progessUpdate', {'user': this.state.user, 'progress':-1, 'score':this.state.score, 'attempts': 5});    
+            }
+            catch(err){
+                console.log(err);
+            }
             console.log(this.state.score);
             if(this.state.score > -1){
                 document.getElementById('team').innerHTML = this.state.user;
@@ -47,11 +53,11 @@ export class Complete extends React.Component {
                             <div id = 'team'></div>
                             <div id = 'score'></div>
                         </div>
-                        <div className='buttons'>
-                            <Button onClick={() => this.props.changePage('leaderboard')}>Leaderboard</Button>
-                            <Button onClick={() => this.props.changePage('home')}>Home</Button>
-                        </div>      
                     </div>
+                    <div className='buttons'>
+                        <button className="btn" onClick={() => this.props.changePage('leaderboard')}>Leaderboard</button>
+                        <button className="btn" onClick={() => this.props.changePage('home')}>Home</button>
+                    </div>  
             </div>
 
         );

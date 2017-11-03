@@ -50,9 +50,9 @@ export class Play extends React.Component {
             this.setState({
                 'user': data[0],
                 'playerQuestionOn': data[0]['progress'] - 1
+                
             });
             this.score = data[0]['score'];
-            console.log(this.score);
             if((this.score == null || this.score <= 0) && data[0]['progress'] >= 0 ){
                 this.score = this.dataSize * 25;
             }
