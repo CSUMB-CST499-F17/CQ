@@ -28,7 +28,7 @@ export class Register extends React.Component {
         this.userdata = {
             team_name: '',
             email: '',
-            hunts_id: '1',
+            hunts_id: '',
             image: '',
             discount_code: ''
         };
@@ -136,7 +136,7 @@ export class Register extends React.Component {
         document.getElementById("stripe-form").reset();
         this.userdata.discount_code = '';
         this.userdata.email = '';
-        this.userdata.hunts_id = '1';
+        this.userdata.hunts_id = '';
         this.userdata.image = '';
         this.userdata.team_name = '';
         this.token = null;
