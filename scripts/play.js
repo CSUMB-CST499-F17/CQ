@@ -52,7 +52,8 @@ export class Play extends React.Component {
                 'playerQuestionOn': data[0]['progress'] - 1
             });
             this.score = data[0]['score'];
-            if(this.score == -1 || this.score == null){
+            console.log(this.score);
+            if((this.score == null || this.score <= 0) && data[0]['progress'] >= 0 ){
                 this.score = this.dataSize * 25;
             }
             this.attempts = data[0]['attempts'];
@@ -92,7 +93,7 @@ export class Play extends React.Component {
         }
         else{
             if(document.getElementById('answer').value != ""){
-                if(this.attempts > 0){
+                if(this.attempts > 0 && this.score > 0){
                     this.score -= 5;
                     this.attempts --;
                     this.emit();
@@ -112,7 +113,6 @@ export class Play extends React.Component {
     }
     
     completed(){
-        console.log(this.score);
         try{
             Socket.emit('progessUpdate', {'user': this.state.user, 'progress':-1, 'score':this.score, 'attempts': this.attempts});    
         }
@@ -176,7 +176,7 @@ export class Play extends React.Component {
     }
     //reveals the hint on hint button ciick
     showHint(){
-        if(this.attempts > 0){
+        if(this.attempts > 0 && this.score > 0){
             this.score -= 5;
             this.attempts--;
             this.emit();
@@ -211,16 +211,14 @@ export class Play extends React.Component {
     
 
     render() {
-        // if(this.props.loggedIn == 'no'){
-        //         this.props.changePage('home');
-        // }
         
         this.data = this.state.questionsData;
         this.dataSize = this.data.length;
         for(var i = 0; i < this.data.length; i++) {
             var obj = this.data[i];
             if(i == this.state.playerQuestionOn){
-                document.getElementById('play-question').innerHTML = obj.question;
+                var num = i + 1;
+                document.getElementById('play-question').innerHTML = "#"  + num + " - "  + obj.question;
                 this.state.correctAnswer = obj.answer;
                 document.getElementById('hint1').innerHTML = "Hint One: " + obj.hint1;
                 document.getElementById('hint2').innerHTML = "Hint Two: " + obj.hint2;
