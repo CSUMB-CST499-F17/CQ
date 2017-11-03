@@ -51285,6 +51285,9 @@
 	            this.userdata.team_name = '';
 	            this.token = null;
 	            this.card.clear();
+	            while (this.hunts.length) {
+	                this.hunts.pop();
+	            }
 
 	            this.props.changePage('home');
 	        }
