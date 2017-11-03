@@ -46,7 +46,7 @@ questions = models.Questions(
 models.db.session.add(questions)
 models.db.session.commit()
 
-models.db.session.add(models.Hunts("Walking Tour #1", "walking", "This is a sample walking scavenger hunt.", "https://upload.wikimedia.org/wikipedia/commons/7/7c/Fisherman%27s_Wharf_Monterey3.JPG", datetime.datetime(2017, 10, 01, 00, 00, 00, 000000), datetime.datetime(2017, 11, 01, 00, 00, 00, 000000), "This is the starting text! Please go to LOCATION and click start to begin!"))
+models.db.session.add(models.Hunts("Walking Tour #1", "walking", "This is a sample walking scavenger hunt.", "https://upload.wikimedia.org/wikipedia/commons/7/7c/Fisherman%27s_Wharf_Monterey3.JPG", datetime.datetime(2017, 10, 01, 00, 00, 00, 000000), datetime.datetime(2017, 11, 04, 00, 00, 00, 000000), "This is the starting text! Please go to LOCATION and click start to begin!"))
 models.db.session.commit()
 
 models.db.session.add(models.Hunts("Biking Tour #1", "biking", "This is a sample biking scavenger hunt.", "https://upload.wikimedia.org/wikipedia/commons/7/7c/Fisherman%27s_librWharf_Monterey3.JPG", datetime.datetime(2017, 12, 01, 00, 00, 00, 000000), datetime.datetime(2017, 12, 24, 00, 00, 00, 000000), "This is the starting text! Please go to LOCATION and click start to begin!"))

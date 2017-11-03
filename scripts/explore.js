@@ -30,8 +30,6 @@ export class Explore extends React.Component {
     
     componentDidMount() {
         Socket.on('updateExplore', (data) => {
-            
-            console.log('load');
             Socket.emit('changeType', this.state.chosentype.toLowerCase(), Socket.callback=this.updateExplore);
         });
     }
@@ -51,7 +49,7 @@ export class Explore extends React.Component {
             if(d_types != choice)
                 types.push(d_types[i].charAt(0).toUpperCase() + d_types[i].slice(1)); //convert to array for mapping
         }
-        this.setState({'chosentype': choice, 'types': types , 'hunts': hunts});
+        this.setState({'chosentype': choice, 'types': types , 'hunts': hunts}); 
     }
     sort(type){
         var types = this.state.types;

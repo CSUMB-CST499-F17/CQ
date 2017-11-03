@@ -66,7 +66,6 @@ export class Content extends React.Component{
         });
     }
     handle(callback){
-        console.log('returned!');
     }
 
     changePage(to){
