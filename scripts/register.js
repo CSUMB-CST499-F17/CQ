@@ -224,75 +224,78 @@ export class Register extends React.Component {
                 <div id = 'header'>
                     <header>Register</header>
                 </div>
-                <form id = 'stripe-form' onSubmit={this.handleSubmit}>
-                    <div className="group">
-                      <label>
-                        <span>Team</span>
-                        <input className="field" placeholder="My Team Name" onChange={this.handleNameChange} />
-                      </label>
-                      <label>
-                        <span>Email</span>
-                        <input className="field" placeholder="sample@email.com" type="email" onChange={this.handleEmailChange}/>
-                      </label>
-                      <label>
-                        <span>Card</span>
-                        <div id="card-element" className="field" onChange={this.handleCardChange}></div>
-                      </label>
-                      <label>
-                        <span>Code</span>
-                        <input className="field" placeholder="PromoCode1234" onChange={this.handleDiscountChange}/>
-                      </label>
-                    </div>
-                    <div className="group full">
-                        <label>Ongoing Scavenger Hunts</label>
-                        <select name="hunts" form='stripe-form' onChange={this.handleHuntChange}>
-                            <option value=''>--</option>
-                            {hunts}
-                        </select>
-                    </div>
-                    <button type="submit">Register and Pay</button>
+                <div id="intro">
+                    <form id = 'stripe-form' onSubmit={this.handleSubmit}>
+                        <div className="group">
+                          <label>
+                            <span>Team</span>
+                            <input className="field" placeholder="My Team Name" onChange={this.handleNameChange} />
+                          </label>
+                          <label>
+                            <span>Email</span>
+                            <input className="field" placeholder="sample@email.com" type="email" onChange={this.handleEmailChange}/>
+                          </label>
+                          <label>
+                            <span>Card</span>
+                            <div id="card-element" className="field" onChange={this.handleCardChange}></div>
+                          </label>
+                          <label>
+                            <span>Code</span>
+                            <input className="field" placeholder="PromoCode1234" onChange={this.handleDiscountChange}/>
+                          </label>
+                        </div>
+                        <div className="group full">
+                            <label>Ongoing Scavenger Hunts</label>
+                            <select name="hunts" form='stripe-form' onChange={this.handleHuntChange}>
+                                <option value=''>--</option>
+                                {hunts}
+                            </select>
+                        </div>
+                        <button type="submit">Register and Pay</button>
+                        
+                        <div className="clear"></div>
+                    </form>
                     
-                    <div className="clear"></div>
-                </form>
-                
-                <div id = 'stripe-confirm' style={{display:'none'}}>
-                    <div className="group">
-                        <div>
-                            <span>Your total is $</span>
-                            <span id="price-slot"></span>
-                            <span>. Please confirm to purchase this scavenger hunt.</span>
-                        </div>
-                        <button id="confirm-button" onClick={this.handleConfirm}>Confirm</button>
-                        <button onClick={this.handleBack}>Back</button>
-                    </div>
-                </div>
-                
-                <div id = 'stripe-process' style={{display:'none'}}>
-                    <div className="group">
-                        <div>Processing...</div>
-                    </div>
-                </div>
-                
-                <div id = 'stripe-success' style={{display:'none'}} >
-                    <div className="group">
-                        <div style={{display:'block'}}>
-                            <div id = 'success-text'>Thank you for your purchase!</div>
+                    <div id = 'stripe-confirm' style={{display:'none'}}>
+                        <div className="group">
                             <div>
-                                <span> Your leader's access code is </span>
-                                <span id="leader-code-slot"></span>
-                                <span> and your team's access code is </span>
-                                <span id="member-code-slot"></span>
-                                <span>.</span>
+                                <span>Your total is $</span>
+                                <span id="price-slot"></span>
+                                <span>. Please confirm to purchase this scavenger hunt.</span>
                             </div>
+                            <button id="confirm-button" onClick={this.handleConfirm}>Confirm</button>
+                            <button onClick={this.handleBack}>Back</button>
                         </div>
-                        <div id = 'notpaid-text' style={{display:'block'}}></div>
-                        <button onClick={this.handleExit}>Confirm</button>
                     </div>
+                    
+                    <div id = 'stripe-process' style={{display:'none'}}>
+                        <div className="group">
+                            <div>Processing...</div>
+                        </div>
+                    </div>
+                    
+                    <div id = 'stripe-success' style={{display:'none'}} >
+                        <div className="group">
+                            <div style={{display:'block'}}>
+                                <div id = 'success-text'>Thank you for your purchase!</div>
+                                <div>
+                                    <span> Your leader's access code is </span>
+                                    <span id="leader-code-slot"></span>
+                                    <span> and your team's access code is </span>
+                                    <span id="member-code-slot"></span>
+                                    <span>.</span>
+                                </div>
+                            </div>
+                            <div id = 'notpaid-text' style={{display:'block'}}></div>
+                            <button onClick={this.handleExit}>Confirm</button>
+                        </div>
+                    </div>
+                    
+                    <div style={{textAlign:'center'}} id="form-outcome" style={{visibility:'hidden'}}>center</div>
                 </div>
-                
-                <div style={{textAlign:'center'}} id="form-outcome" style={{visibility:'hidden'}}>center</div>
-                
-                <Button onClick={this.handleExit}>Home</Button>
+                <div className="buttons">
+                    <button className="btn" onClick={this.handleExit}>Home</button>
+                </div>
             </div>
          
         );

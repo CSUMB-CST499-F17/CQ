@@ -5,16 +5,11 @@ Hint options
 */
 
 import * as React from 'react';
-import * as ReactBootstrap from 'react-bootstrap';
+
 import { Socket } from './Socket';
-import { Form } from 'react-bootstrap';
-import { Button } from 'react-bootstrap';
-import { InputGroup } from 'react-bootstrap';
+
 import { FormControl } from 'react-bootstrap';
-import { FormGroup } from 'react-bootstrap';
-import { ButtonToolbar } from 'react-bootstrap';
-import { ButtonGroup } from 'react-bootstrap';
-import { ControlLabel } from 'react-bootstrap';
+
 import { LogoSmall } from './logo-small';
 
 export class Play extends React.Component {
@@ -63,9 +58,6 @@ export class Play extends React.Component {
             this.attempts = data[0]['attempts'];
             this.point = this.attempts * 5;
             document.getElementById('points').innerHTML = "Points Avaiable For this Question: " + this.point;
-            if(this.state.hint1 == ""){
-                document.getElementById('hint-submit').style.display = "none";
-            }
         });
     }
     
@@ -108,7 +100,7 @@ export class Play extends React.Component {
                 document.getElementById('skip').style.display = "block";
                 var newArray = this.state.attempts.slice();    
                 newArray.push(" " + document.getElementById('answer').value);   
-                this.setState({attempts:newArray})
+                this.setState({attempts:newArray});
                 result.style.visibility = 'visible';
                 result.innerHTML = 'Incorrect <br/> Attempts: ' + newArray;
                 result.style.color="red";
@@ -138,6 +130,12 @@ export class Play extends React.Component {
             });
             this.dataSize = this.state.questionsData.length;
             this.emit();
+            if(this.state.hint1 == ""){
+                document.getElementById('hint-submit').style.display = "none";
+            }
+        });
+        Socket.on('playStart', (data) => {
+            document.getElementById('game').innerText = data[0]['name'];
         });
     }
     
@@ -159,7 +157,7 @@ export class Play extends React.Component {
         document.getElementById('answer').value = "";
         this.setState({
             'attempts':[]
-        })
+        });
         
         this.state.playerQuestionOn++;
         this.emit();
@@ -211,6 +209,9 @@ export class Play extends React.Component {
     
 
     render() {
+        // if(this.props.loggedIn == 'no'){
+        //         this.props.changePage('home');
+        // }
         
         this.data = this.state.questionsData;
         this.dataSize = this.data.length;
@@ -233,7 +234,7 @@ export class Play extends React.Component {
                     <LogoSmall/>
                 </div>
                 <div id = 'header'>
-                    <header>Game Name</header>
+                    <header id="game">Game Name</header>
                 </div>
                 <div id = 'intro'>
                     <div id='play-container'>
@@ -245,7 +246,7 @@ export class Play extends React.Component {
                             </div>
                         </div> 
                         <div id = 'input'> 
-                                <label for="answer" id="points" style={{display:this.props.hide, color:'#f2e537'}}>Points Avaiable For this Question: </label>
+                                <label id="points" style={{display:this.props.hide, color:'#f2e537'}}>Points Avaiable For this Question: </label>
                                 <FormControl id = "answer" style={{display:this.props.hide}} componentClass="textarea" value={this.state.value} onChange={this.handleChange}  placeholder="Answer" />
                                 <div id='result'style={{visibility:'hidden'}}>Results Placeholder<br/>array</div>
                         </div>

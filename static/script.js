@@ -50560,6 +50560,8 @@
 	                            _Socket.Socket.emit('startPlay', this.hunt_id);
 	                            this.props.changePage('start');
 	                        } else {
+	                            _Socket.Socket.emit('startPlay', this.hunt_id);
+	                            _Socket.Socket.emit('huntPlay', { 'id': this.hunt_id });
 	                            this.props.changePage('play');
 	                        }
 
@@ -50755,7 +50757,7 @@
 	                        null,
 	                        n[1]
 	                    ),
-	                    React.createElement('img', { src: n[4] }),
+	                    React.createElement('img', { src: "../static/image/gallery/" + n[4] }),
 	                    React.createElement(
 	                        'p',
 	                        null,
@@ -51389,177 +51391,185 @@
 	                    )
 	                ),
 	                React.createElement(
-	                    'form',
-	                    { id: 'stripe-form', onSubmit: this.handleSubmit },
+	                    'div',
+	                    { id: 'intro' },
+	                    React.createElement(
+	                        'form',
+	                        { id: 'stripe-form', onSubmit: this.handleSubmit },
+	                        React.createElement(
+	                            'div',
+	                            { className: 'group' },
+	                            React.createElement(
+	                                'label',
+	                                null,
+	                                React.createElement(
+	                                    'span',
+	                                    null,
+	                                    'Team'
+	                                ),
+	                                React.createElement('input', { className: 'field', placeholder: 'My Team Name', onChange: this.handleNameChange })
+	                            ),
+	                            React.createElement(
+	                                'label',
+	                                null,
+	                                React.createElement(
+	                                    'span',
+	                                    null,
+	                                    'Email'
+	                                ),
+	                                React.createElement('input', { className: 'field', placeholder: 'sample@email.com', type: 'email', onChange: this.handleEmailChange })
+	                            ),
+	                            React.createElement(
+	                                'label',
+	                                null,
+	                                React.createElement(
+	                                    'span',
+	                                    null,
+	                                    'Card'
+	                                ),
+	                                React.createElement('div', { id: 'card-element', className: 'field', onChange: this.handleCardChange })
+	                            ),
+	                            React.createElement(
+	                                'label',
+	                                null,
+	                                React.createElement(
+	                                    'span',
+	                                    null,
+	                                    'Code'
+	                                ),
+	                                React.createElement('input', { className: 'field', placeholder: 'PromoCode1234', onChange: this.handleDiscountChange })
+	                            )
+	                        ),
+	                        React.createElement(
+	                            'div',
+	                            { className: 'group full' },
+	                            React.createElement(
+	                                'label',
+	                                null,
+	                                'Ongoing Scavenger Hunts'
+	                            ),
+	                            React.createElement(
+	                                'select',
+	                                { name: 'hunts', form: 'stripe-form', onChange: this.handleHuntChange },
+	                                React.createElement(
+	                                    'option',
+	                                    { value: '' },
+	                                    '--'
+	                                ),
+	                                hunts
+	                            )
+	                        ),
+	                        React.createElement(
+	                            'button',
+	                            { type: 'submit' },
+	                            'Register and Pay'
+	                        ),
+	                        React.createElement('div', { className: 'clear' })
+	                    ),
 	                    React.createElement(
 	                        'div',
-	                        { className: 'group' },
+	                        { id: 'stripe-confirm', style: { display: 'none' } },
 	                        React.createElement(
-	                            'label',
-	                            null,
+	                            'div',
+	                            { className: 'group' },
 	                            React.createElement(
-	                                'span',
+	                                'div',
 	                                null,
-	                                'Team'
+	                                React.createElement(
+	                                    'span',
+	                                    null,
+	                                    'Your total is $'
+	                                ),
+	                                React.createElement('span', { id: 'price-slot' }),
+	                                React.createElement(
+	                                    'span',
+	                                    null,
+	                                    '. Please confirm to purchase this scavenger hunt.'
+	                                )
 	                            ),
-	                            React.createElement('input', { className: 'field', placeholder: 'My Team Name', onChange: this.handleNameChange })
-	                        ),
-	                        React.createElement(
-	                            'label',
-	                            null,
 	                            React.createElement(
-	                                'span',
-	                                null,
-	                                'Email'
+	                                'button',
+	                                { id: 'confirm-button', onClick: this.handleConfirm },
+	                                'Confirm'
 	                            ),
-	                            React.createElement('input', { className: 'field', placeholder: 'sample@email.com', type: 'email', onChange: this.handleEmailChange })
-	                        ),
-	                        React.createElement(
-	                            'label',
-	                            null,
 	                            React.createElement(
-	                                'span',
-	                                null,
-	                                'Card'
-	                            ),
-	                            React.createElement('div', { id: 'card-element', className: 'field', onChange: this.handleCardChange })
-	                        ),
-	                        React.createElement(
-	                            'label',
-	                            null,
-	                            React.createElement(
-	                                'span',
-	                                null,
-	                                'Code'
-	                            ),
-	                            React.createElement('input', { className: 'field', placeholder: 'PromoCode1234', onChange: this.handleDiscountChange })
+	                                'button',
+	                                { onClick: this.handleBack },
+	                                'Back'
+	                            )
 	                        )
 	                    ),
 	                    React.createElement(
 	                        'div',
-	                        { className: 'group full' },
+	                        { id: 'stripe-process', style: { display: 'none' } },
 	                        React.createElement(
-	                            'label',
-	                            null,
-	                            'Ongoing Scavenger Hunts'
-	                        ),
-	                        React.createElement(
-	                            'select',
-	                            { name: 'hunts', form: 'stripe-form', onChange: this.handleHuntChange },
+	                            'div',
+	                            { className: 'group' },
 	                            React.createElement(
-	                                'option',
-	                                { value: '' },
-	                                '--'
-	                            ),
-	                            hunts
+	                                'div',
+	                                null,
+	                                'Processing...'
+	                            )
 	                        )
 	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { id: 'stripe-success', style: { display: 'none' } },
+	                        React.createElement(
+	                            'div',
+	                            { className: 'group' },
+	                            React.createElement(
+	                                'div',
+	                                { style: { display: 'block' } },
+	                                React.createElement(
+	                                    'div',
+	                                    { id: 'success-text' },
+	                                    'Thank you for your purchase!'
+	                                ),
+	                                React.createElement(
+	                                    'div',
+	                                    null,
+	                                    React.createElement(
+	                                        'span',
+	                                        null,
+	                                        ' Your leader\'s access code is '
+	                                    ),
+	                                    React.createElement('span', { id: 'leader-code-slot' }),
+	                                    React.createElement(
+	                                        'span',
+	                                        null,
+	                                        ' and your team\'s access code is '
+	                                    ),
+	                                    React.createElement('span', { id: 'member-code-slot' }),
+	                                    React.createElement(
+	                                        'span',
+	                                        null,
+	                                        '.'
+	                                    )
+	                                )
+	                            ),
+	                            React.createElement('div', { id: 'notpaid-text', style: { display: 'block' } }),
+	                            React.createElement(
+	                                'button',
+	                                { onClick: this.handleExit },
+	                                'Confirm'
+	                            )
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        _defineProperty({ style: { textAlign: 'center' }, id: 'form-outcome' }, 'style', { visibility: 'hidden' }),
+	                        'center'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { className: 'buttons' },
 	                    React.createElement(
 	                        'button',
-	                        { type: 'submit' },
-	                        'Register and Pay'
-	                    ),
-	                    React.createElement('div', { className: 'clear' })
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'stripe-confirm', style: { display: 'none' } },
-	                    React.createElement(
-	                        'div',
-	                        { className: 'group' },
-	                        React.createElement(
-	                            'div',
-	                            null,
-	                            React.createElement(
-	                                'span',
-	                                null,
-	                                'Your total is $'
-	                            ),
-	                            React.createElement('span', { id: 'price-slot' }),
-	                            React.createElement(
-	                                'span',
-	                                null,
-	                                '. Please confirm to purchase this scavenger hunt.'
-	                            )
-	                        ),
-	                        React.createElement(
-	                            'button',
-	                            { id: 'confirm-button', onClick: this.handleConfirm },
-	                            'Confirm'
-	                        ),
-	                        React.createElement(
-	                            'button',
-	                            { onClick: this.handleBack },
-	                            'Back'
-	                        )
+	                        { className: 'btn', onClick: this.handleExit },
+	                        'Home'
 	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'stripe-process', style: { display: 'none' } },
-	                    React.createElement(
-	                        'div',
-	                        { className: 'group' },
-	                        React.createElement(
-	                            'div',
-	                            null,
-	                            'Processing...'
-	                        )
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'stripe-success', style: { display: 'none' } },
-	                    React.createElement(
-	                        'div',
-	                        { className: 'group' },
-	                        React.createElement(
-	                            'div',
-	                            { style: { display: 'block' } },
-	                            React.createElement(
-	                                'div',
-	                                { id: 'success-text' },
-	                                'Thank you for your purchase!'
-	                            ),
-	                            React.createElement(
-	                                'div',
-	                                null,
-	                                React.createElement(
-	                                    'span',
-	                                    null,
-	                                    ' Your leader\'s access code is '
-	                                ),
-	                                React.createElement('span', { id: 'leader-code-slot' }),
-	                                React.createElement(
-	                                    'span',
-	                                    null,
-	                                    ' and your team\'s access code is '
-	                                ),
-	                                React.createElement('span', { id: 'member-code-slot' }),
-	                                React.createElement(
-	                                    'span',
-	                                    null,
-	                                    '.'
-	                                )
-	                            )
-	                        ),
-	                        React.createElement('div', { id: 'notpaid-text', style: { display: 'block' } }),
-	                        React.createElement(
-	                            'button',
-	                            { onClick: this.handleExit },
-	                            'Confirm'
-	                        )
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    _defineProperty({ style: { textAlign: 'center' }, id: 'form-outcome' }, 'style', { visibility: 'hidden' }),
-	                    'center'
-	                ),
-	                React.createElement(
-	                    _reactBootstrap.Button,
-	                    { onClick: this.handleExit },
-	                    'Home'
 	                )
 	            );
 	        }
@@ -51585,11 +51595,9 @@
 
 	var React = _interopRequireWildcard(_react);
 
-	var _reactBootstrap = __webpack_require__(240);
-
-	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
-
 	var _Socket = __webpack_require__(185);
+
+	var _reactBootstrap = __webpack_require__(240);
 
 	var _logoSmall = __webpack_require__(496);
 
@@ -51655,9 +51663,6 @@
 	            _this.attempts = data[0]['attempts'];
 	            _this.point = _this.attempts * 5;
 	            document.getElementById('points').innerHTML = "Points Avaiable For this Question: " + _this.point;
-	            if (_this.state.hint1 == "") {
-	                document.getElementById('hint-submit').style.display = "none";
-	            }
 	        });
 	        return _this;
 	    }
@@ -51734,6 +51739,12 @@
 	                });
 	                _this2.dataSize = _this2.state.questionsData.length;
 	                _this2.emit();
+	                if (_this2.state.hint1 == "") {
+	                    document.getElementById('hint-submit').style.display = "none";
+	                }
+	            });
+	            _Socket.Socket.on('playStart', function (data) {
+	                document.getElementById('game').innerText = data[0]['name'];
 	            });
 	        }
 	    }, {
@@ -51814,6 +51825,10 @@
 	        value: function render() {
 	            var _this3 = this;
 
+	            // if(this.props.loggedIn == 'no'){
+	            //         this.props.changePage('home');
+	            // }
+
 	            this.data = this.state.questionsData;
 	            this.dataSize = this.data.length;
 	            for (var i = 0; i < this.data.length; i++) {
@@ -51841,7 +51856,7 @@
 	                    { id: 'header' },
 	                    React.createElement(
 	                        'header',
-	                        null,
+	                        { id: 'game' },
 	                        'Game Name'
 	                    )
 	                ),
@@ -51875,7 +51890,7 @@
 	                            { id: 'input' },
 	                            React.createElement(
 	                                'label',
-	                                { 'for': 'answer', id: 'points', style: { display: this.props.hide, color: '#f2e537' } },
+	                                { id: 'points', style: { display: this.props.hide, color: '#f2e537' } },
 	                                'Points Avaiable For this Question: '
 	                            ),
 	                            React.createElement(_reactBootstrap.FormControl, { id: 'answer', style: { display: this.props.hide }, componentClass: 'textarea', value: this.state.value, onChange: this.handleChange, placeholder: 'Answer' }),
@@ -72167,8 +72182,6 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _reactBootstrap = __webpack_require__(240);
-
 	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -72211,6 +72224,7 @@
 	                document.getElementById('h_name').innerHTML = _this2.hunt['name'];
 	                document.getElementById('h_image').src = "../static/image/gallery/" + _this2.hunt['image'];
 	                document.getElementById('h_start_text').innerHTML = _this2.hunt['start_text'];
+	                _Socket.Socket.emit('huntPlay', { 'id': _this2.hunt['id'], 'name': _this2.hunt['name'] });
 	            });
 	        }
 	    }, {
@@ -72256,27 +72270,33 @@
 	                    { id: 'intro' },
 	                    React.createElement('h1', { id: 'h_name' }),
 	                    React.createElement('h4', { id: 'h_start_text' }),
-	                    React.createElement('img', { id: 'h_image', src: '' }),
+	                    React.createElement('img', { id: 'h_image' }),
 	                    React.createElement(
 	                        'p',
 	                        { style: { display: this.props.hide } },
-	                        'Once you are ready to begin, Start Scavenger Hunt!'
-	                    ),
-	                    React.createElement(
-	                        'div',
-	                        { id: 'buttons' },
+	                        'Press ',
 	                        React.createElement(
-	                            'button',
-	                            { className: 'btn', onClick: this.start, style: { display: this.props.hide } },
+	                            'b',
+	                            null,
 	                            'Start Scavenger Hunt!'
 	                        ),
-	                        React.createElement(
-	                            'button',
-	                            { className: 'btn', onClick: function onClick() {
-	                                    return _this3.props.changePage('home');
-	                                } },
-	                            'Home'
-	                        )
+	                        ' when you are ready to begin!'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { className: 'buttons' },
+	                    React.createElement(
+	                        'button',
+	                        { className: 'btn', onClick: this.start, style: { display: this.props.hide } },
+	                        'Start Scavenger Hunt!'
+	                    ),
+	                    React.createElement(
+	                        'button',
+	                        { className: 'btn', onClick: function onClick() {
+	                                return _this3.props.changePage('home');
+	                            } },
+	                        'Home'
 	                    )
 	                )
 	            );

@@ -21,20 +21,18 @@ def hello():
     print()
     return flask.render_template('index.html')
 
-@socketio.on('play')
+@socketio.on('huntPlay')
 def getQuestions(data):
     global questionNum
     questionsData = []
-
     try:
-        questions = models.db.session.query(models.Questions)
+        questions = models.db.session.query(models.Questions).filter(models.Questions.hunts_id == data['id'])
         for row in questions:
             questionsData.append({'question':row.question, 'answer':row.answer,'hint1':row.hint_A,'hint2':row.hint_B,'hunts_id':row.hunts_id})
     except Exception as e: 
         print (e)
         
     socketio.emit('hunt', questionsData)
-    questionNum += questionNum
     print('Scavenger hunt data sent.')
 
 @socketio.on('startPlay')
@@ -44,10 +42,9 @@ def getHunt(data):
     try:
         hunt = models.db.session.query(models.Hunts).filter(models.Hunts.id == data)
         for row in hunt:
-            print "Hello"
-            huntData.append({'name': row.name, 'image':row.image, 'start_text':row.start_text})
+            huntData.append({'id':row.id, 'name': row.name, 'image':row.image, 'start_text':row.start_text})
     except Exception as e: 
-        print "Help"
+        print (e)
         
     socketio.emit('playStart', huntData)
     print('Hunt Data.')

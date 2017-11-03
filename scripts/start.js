@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Socket } from './Socket';
-import { Button } from 'react-bootstrap';
 
 import { LogoSmall } from './logo-small';
 
@@ -26,6 +25,7 @@ export class Start extends React.Component {
             document.getElementById('h_name').innerHTML = this.hunt['name'];
             document.getElementById('h_image').src = "../static/image/gallery/" + this.hunt['image'];
             document.getElementById('h_start_text').innerHTML = this.hunt['start_text'];
+            Socket.emit('huntPlay', {'id':this.hunt['id'], 'name':this.hunt['name']});
         });
     }
 
@@ -55,15 +55,15 @@ export class Start extends React.Component {
                     <header>Start</header>
                 </div>
                 <div id='intro'>
-                <h1 id = "h_name"></h1>
-                <h4 id='h_start_text'></h4>
-                <img id = "h_image" src=""/>
-                <p style={{display:this.props.hide}}>Once you are ready to begin, Start Scavenger Hunt!</p>
-                    <div id='buttons'>
-                        <button className="btn" onClick={this.start} style={{display:this.props.hide}}>Start Scavenger Hunt!</button>
-                        <button className="btn" onClick={() => this.props.changePage('home')}>Home</button>
-                    </div>      
+                    <h1 id = "h_name"></h1>
+                    <h4 id='h_start_text'></h4>
+                    <img id = "h_image"/>
+                    <p style={{display:this.props.hide}}>Press <b>Start Scavenger Hunt!</b> when you are ready to begin!</p>
                 </div>
+                <div className='buttons'>
+                    <button className="btn" onClick={this.start} style={{display:this.props.hide}}>Start Scavenger Hunt!</button>
+                    <button className="btn" onClick={() => this.props.changePage('home')}>Home</button>
+                </div>  
             </div>
 
         );
