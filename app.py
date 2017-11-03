@@ -169,21 +169,36 @@ def updateTime(data):
         except Exception as e: 
             print(e)
     
+
+
 @socketio.on('leaderboard')
 def updateLeaderboard(data):
-    global teams
+    leaderboardUser = []
     try:
-        sql = models.db.session.query(models.Participants.team_name, models.Participants.score, models.Participants.start_time,  models.Participants.end_time.filter(models.Participants.end_time != None)).order_by(models.Participants.score.desc())
+        sql = models.db.session.query(
+            models.Participants.progress,
+            models.Participants.score,
+            models.Participants.team_name,
+            models.Participants.start_time,
+            models.Participants.end_time).filter(
+                sqlalchemy.and_(
+                    models.Participants.progress == -1,
+                    models.Participants.end_time != None
+                    )).order_by(models.Participants.score.desc())
+        print sql
 
-        print(sql)
-        leaderboardUser.append({'score':row.score,'team_name':row.team_name,'score':row.score, 'start_time':row.start_time,'end_time':row.end_time})
+        for row in sql:
+            leaderboardUser.append({'progress':row.progress, 'score':row.score,'team_name':row.team_name, 'start_time':row.start_time,'end_time':row.end_time})
     except:
-        print("Error: Database does not exist for populating leaderboard")
+        print("Error: leaderboard query broke")
 
     socketio.emit('users', {
         'userlist': leaderboardUser
     })
     print('Leaderboard data sent.')
+
+    
+    
 
 @socketio.on('register')
 def updateRegister(data):
