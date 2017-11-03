@@ -51680,7 +51680,7 @@
 	        key: 'checkAnswer',
 	        value: function checkAnswer() {
 	            var result = document.getElementById('result');
-	            if (this.state.userAnswer == this.state.correctAnswer) {
+	            if (this.state.userAnswer.toLowerCase() == this.state.correctAnswer.toLowerCase()) {
 	                result.style.visibility = 'visible';
 	                result.textContent = 'Correct';
 	                result.style.color = "#9bf442";
