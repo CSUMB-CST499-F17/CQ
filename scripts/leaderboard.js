@@ -24,7 +24,7 @@ export class Leaderboard extends React.Component {
         //retrieves users from database who have completed the scavenger hunt
         Socket.on('users', (data) => {
             this.setState({
-                'userlist': data
+                'userlist': data['userlist']
             });
         });
     }
@@ -44,7 +44,7 @@ export class Leaderboard extends React.Component {
         if (this.state.userlist != null) {
             userlist = this.state.userlist.map(
                 (n, index) =>
-                <tr key={index}><td>{n.score}</td> <td>{n.team_name}</td><td>{n.score}</td><td>{n.end_time}</td></tr>
+                <tr key={index}><td>{index+1}</td> <td>{n.team_name}</td><td>{n.score}</td><td>{n.end_time}</td></tr>
              );
         }
 
