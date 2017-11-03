@@ -51163,7 +51163,7 @@
 	        _this.userdata = {
 	            team_name: '',
 	            email: '',
-	            hunts_id: '1',
+	            hunts_id: '',
 	            image: '',
 	            discount_code: ''
 	        };
@@ -51280,11 +51280,14 @@
 	            document.getElementById("stripe-form").reset();
 	            this.userdata.discount_code = '';
 	            this.userdata.email = '';
-	            this.userdata.hunts_id = '1';
+	            this.userdata.hunts_id = '';
 	            this.userdata.image = '';
 	            this.userdata.team_name = '';
 	            this.token = null;
 	            this.card.clear();
+	            while (this.hunts.length) {
+	                this.hunts.pop();
+	            }
 
 	            this.props.changePage('home');
 	        }
