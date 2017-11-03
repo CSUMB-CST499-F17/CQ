@@ -170,7 +170,7 @@ def updateTime(data):
             print(e)
     
 @socketio.on('leaderboard')
-def updateLeaderboard():
+def updateLeaderboard(data):
     global teams
     try:
         sql = models.db.session.query(models.Participants.team_name, models.Participants.score, models.Participants.start_time,  models.Participants.end_time.filter(models.Participants.end_time != None)).order_by(models.Participants.score.desc())
@@ -223,7 +223,6 @@ def checkUserInfo(data):
         return json.dumps({'condition':'accept','price':price})
     
 def calculatePrice(discount_code):
-    
     price = 50
     total_percent = 100
     try:
@@ -245,7 +244,6 @@ def calculatePrice(discount_code):
 
 @socketio.on('checkout')
 def checkout(data):
-    
     stripe.api_key = "sk_test_O6BW3ED77qHecdLRd832IdjW"
     token = data['token']
     userdata = data['userdata']
