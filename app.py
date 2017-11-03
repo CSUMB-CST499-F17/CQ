@@ -173,13 +173,13 @@ def updateLeaderboard():
     print('Leaderboard data sent.')
 
 @socketio.on('register')
-def updateRegister():
+def updateRegister(data):
     ongoingHunts = [];
     try:
         sql = models.db.session.query(models.Hunts.id,models.Hunts.name,models.Hunts.h_type).filter(sqlalchemy.and_(models.Hunts.start_time <= datetime.datetime.now(),models.Hunts.end_time >= datetime.datetime.now())).order_by(models.Hunts.id.desc())
         for row in sql:
             ongoingHunts.append({'id':row.id,'name':row.name,'h_type':row.h_type})
-        socketio.emit('updateRegister', ongoingHunts) 
+        socketio.emit('updateRegister', ongoingHunts)
     except:
         print("Error: Database does not exist")
 
@@ -208,16 +208,15 @@ def checkout(data):
     
     # check errors that database can catch
     if models.db.session.query(models.Participants).filter(models.Participants.email == client_email, models.Participants.hunts_id == hunt_id).count() > 0:
-        socketio.emit('rejection', {'message':"email address already registered for this hunt"})
+        return json.dumps({'condition':'reject','message':"Email address already registered for this hunt."})
     elif models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name).count() > 0:
-        socketio.emit('rejection', {'message':"team name already registered for this hunt"})
+        return json.dumps({'condition':'reject','message':"Team name already registered for this hunt."})
     else:
         # create account
         random.seed();
         random_number = random.randint(0,9999)
         hunt_name = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt_id).first().name
-        hunt_name = hunt_name.replace(" ", "")
-        #strip all punctuation
+        hunt_name = ''.join(e for e in hunt_name if e.isalnum())
         leader_code = hunt_name + "{:04d}".format(random_number)
         
         random.seed();
@@ -232,8 +231,7 @@ def checkout(data):
             
             participants = models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name)
         except:
-            socketio.emit('rejection', {'message':'could not connect to database'})
-            return
+            return json.dumps({'condition':'reject','message':'Could not connect to database.'})
         
         try:
             price = 50
@@ -247,7 +245,7 @@ def checkout(data):
             except:
                 print("Error: couldn't connect to discount table")
                 pass
-            price = price * total_percent
+            price = price * total_percent/100
             
             print("Price = " + str(price) + "; total percent = " + str(total_percent))
             
@@ -266,11 +264,9 @@ def checkout(data):
         except stripe.error.CardError as e:
             body = e.json_body
             err  = body.get('error', {})
-            socketio.emit('rejection', {'message':'account created, could not process payment; Access code: ' + leader_code + '; Error code: ' + err.get('code')})
-            return
+            return json.dumps({'condition':'reject','message':'Account created, could not process payment; Access code: ' + leader_code + '; Error code: ' + err.get('code')})
         except stripe.error.StripeError as e:
-            socketio.emit('rejection', {'message':'account created, could not process payment; Access code: ' + leader_code})
-            return
+            return json.dumps({'condition':'reject','message':'Account created, could not process payment; Access code: ' + leader_code})
         
         # send email
         try:
@@ -281,8 +277,8 @@ def checkout(data):
             print("Error: Could not send email")
             pass
         
-        # emit access code back to JS app
-        socketio.emit('acceptance', {'access_code':leader_code, 'price':price})
+        # send access code back to JS app
+        return json.dumps({'condition':'accept','leader_code':leader_code, 'member_code':member_code, 'price':price})
     
 def email_client(client_email, subject, message):
     recp_message  = 'Subject: {}\n\n{}'.format(subject, message)

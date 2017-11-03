@@ -192,6 +192,7 @@ questions = models.Questions(
 models.db.session.add(questions)
 models.db.session.commit()
 
+<<<<<<< HEAD
 questions = models.Questions(
     "According to the sign at McAbee Beach, who were the first fishermen here?", #Question
     "Rumsien", #Answer
@@ -202,6 +203,9 @@ questions = models.Questions(
     1 #hunt ID
     )
 models.db.session.add(questions)
+=======
+models.db.session.add(models.Hunts("Walking Tour #1", "walking", "This is a sample walking scavenger hunt.", "https://upload.wikimedia.org/wikipedia/commons/7/7c/Fisherman%27s_Wharf_Monterey3.JPG", datetime.datetime(2017, 10, 01, 00, 00, 00, 000000), datetime.datetime(2017, 11, 04, 00, 00, 00, 000000), "This is the starting text! Please go to LOCATION and click start to begin!"))
+>>>>>>> 1e01eb3624a9cfded4139dcf0e451b61bd8bee20
 models.db.session.commit()
 
 questions = models.Questions(

@@ -21989,9 +21989,7 @@
 	        }
 	    }, {
 	        key: 'handle',
-	        value: function handle(callback) {
-	            console.log('returned!');
-	        }
+	        value: function handle(callback) {}
 	    }, {
 	        key: 'changePage',
 	        value: function changePage(to) {
@@ -50755,8 +50753,6 @@
 	            var _this2 = this;
 
 	            _Socket.Socket.on('updateExplore', function (data) {
-
-	                console.log('load');
 	                _Socket.Socket.emit('changeType', _this2.state.chosentype.toLowerCase(), _Socket.Socket.callback = _this2.updateExplore);
 	            });
 	        }
@@ -51168,6 +51164,7 @@
 	        _this.handleDiscountChange = _this.handleDiscountChange.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        _this.handleFormReject = _this.handleFormReject.bind(_this);
+	        _this.handleCallback = _this.handleCallback.bind(_this);
 	        return _this;
 	    }
 
@@ -51188,16 +51185,6 @@
 	                _this2.hunts = ongoingHunts;
 	                _this2.setState(); //DONT ASK ME WHY THIS WORKS BUT IT WORKS, DO NOT DELETE
 	            });
-
-	            _Socket.Socket.on('acceptance', function (data) {
-	                var outcomeElement = document.getElementById('form-outcome');
-	                outcomeElement.textContent = "Your access code: " + data['access_code'];
-	                outcomeElement.style.color = "#00FF00";
-	            });
-
-	            _Socket.Socket.on('rejection', function (data) {
-	                _this2.handleFormReject(data['message']);
-	            });
 	        }
 	    }, {
 	        key: 'handleSubmit',
@@ -51213,26 +51200,26 @@
 	            var re = /^.+$/;
 	            var OK = re.exec(this.userdata.team_name);
 	            if (!OK) {
-	                this.handleFormReject('no team name entered');
+	                this.handleFormReject('No team name entered.');
 	                return 0;
 	            }
 
 	            OK = re.exec(this.userdata.email);
 	            if (!OK) {
-	                this.handleFormReject('no email address entered');
+	                this.handleFormReject('No email address entered.');
 	                return 0;
 	            }
 
 	            OK = re.exec(this.userdata.hunts_id);
 	            if (!OK) {
-	                this.handleFormReject('no hunt selected');
+	                this.handleFormReject('No hunt selected.');
 	                return 0;
 	            }
 
 	            re = /[^@]+@[^@]+\.[^@]+/;
 	            OK = re.exec(this.userdata.email);
 	            if (!OK) {
-	                this.handleFormReject('invalid email address');
+	                this.handleFormReject('Invalid email address.');
 	                return 0;
 	            }
 
@@ -51241,11 +51228,23 @@
 	                    this_.handleFormReject(result.error.message);
 	                    return 0;
 	                } else {
-	                    outcomeElement.textContent = "Success! Token generated: " + result.token.id;
-	                    outcomeElement.style.color = "#666EE8";
-	                    _Socket.Socket.emit('checkout', { 'token': result.token.id, 'userdata': this_.userdata });
+	                    // outcomeElement.textContent = "Success! Token generated: " + result.token.id;
+	                    // outcomeElement.style.color = "#666EE8";
+	                    _Socket.Socket.emit('checkout', { 'token': result.token.id, 'userdata': this_.userdata }, _Socket.Socket.callback = this_.handleCallback);
 	                }
 	            });
+	        }
+	    }, {
+	        key: 'handleCallback',
+	        value: function handleCallback(callback) {
+	            var data = JSON.parse(callback);
+	            var outcomeElement = document.getElementById('form-outcome');
+	            if (data['condition'] == 'accept') {
+	                outcomeElement.textContent = "Your access code: " + data['leader_code'] + " Your teams code: " + data['member_code'];
+	                outcomeElement.style.color = "#00FF00";
+	            } else if (data['condition'] == 'reject') {
+	                this.handleFormReject(data['message']);
+	            }
 	        }
 	    }, {
 	        key: 'handleFormReject',
@@ -51265,7 +51264,6 @@
 	        key: 'handleDiscountChange',
 	        value: function handleDiscountChange(event) {
 	            event.preventDefault();
-	            console.log(event.target.value);
 	            this.userdata.discount_code = event.target.value;
 	        }
 	    }, {
@@ -51304,8 +51302,8 @@
 	                    'option',
 	                    { value: n[0] },
 	                    n[1],
-	                    '-',
-	                    n[2]
+	                    ' - ',
+	                    n[2].charAt(0).toUpperCase() + n[2].slice(1)
 	                );
 	            });
 	            return React.createElement(
@@ -51364,7 +51362,7 @@
 	                                null,
 	                                'Discount Code'
 	                            ),
-	                            React.createElement('input', { className: 'field', placeholder: 'AAAA0000', onChange: this.handleDiscountChange })
+	                            React.createElement('input', { className: 'field', placeholder: 'CODE1234', onChange: this.handleDiscountChange })
 	                        )
 	                    ),
 	                    React.createElement(
