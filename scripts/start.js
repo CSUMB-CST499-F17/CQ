@@ -21,10 +21,11 @@ export class Start extends React.Component {
 
     componentDidMount(){
         //retireves the hunt question information
-        Socket.on('hunt', (data) => {
+        Socket.on('playStart', (data) => {
             this.hunt = data[0];
-            this.start_text = data[0]['start_text']
-            document.getElementById('start_text').textContent = this.start.text;
+            document.getElementById('h_name').innerHTML = this.hunt['name'];
+            document.getElementById('h_image').src = "../static/image/gallery/" + this.hunt['image'];
+            document.getElementById('h_start_text').innerHTML = this.hunt['start_text'];
         });
     }
 
@@ -54,10 +55,13 @@ export class Start extends React.Component {
                     <header>Start</header>
                 </div>
                 <div id='intro'>
-                <div id='start_text'></div>
+                <h1 id = "h_name"></h1>
+                <h4 id='h_start_text'></h4>
+                <img id = "h_image" src=""/>
+                <p style={{display:this.props.hide}}>Once you are ready to begin, Start Scavenger Hunt!</p>
                     <div id='buttons'>
-                        <Button onClick={this.start}>Start Scavenger Hunt!</Button>
-                        <Button onClick={() => this.props.changePage('home')}>Home</Button>
+                        <button className="btn" onClick={this.start} style={{display:this.props.hide}}>Start Scavenger Hunt!</button>
+                        <button className="btn" onClick={() => this.props.changePage('home')}>Home</button>
                     </div>      
                 </div>
             </div>

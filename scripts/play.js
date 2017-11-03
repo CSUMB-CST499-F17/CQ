@@ -57,6 +57,9 @@ export class Play extends React.Component {
                 'playerQuestionOn': data[0]['progress'] - 1
             });
             this.score = data[0]['score'];
+            if(this.score == -1 || this.score == null){
+                this.score = this.dataSize * 25;
+            }
             this.attempts = data[0]['attempts'];
             this.point = this.attempts * 5;
             document.getElementById('points').innerHTML = "Points Avaiable For this Question: " + this.point;
@@ -81,7 +84,6 @@ export class Play extends React.Component {
             result.style.visibility = 'visible';
             result.textContent = 'Correct';
             result.style.color="#9bf442";
-            console.log(this.dataSize)
             if(this.state.playerQuestionOn + 2 == this.dataSize){
                 document.getElementById('next').textContent = "Last Question";
             }
@@ -134,7 +136,8 @@ export class Play extends React.Component {
             this.setState({
                 'questionsData': data
             });
-            this.dataSize = data.length;
+            this.dataSize = this.state.questionsData.length;
+            this.emit();
         });
     }
     
@@ -232,27 +235,28 @@ export class Play extends React.Component {
                 <div id = 'header'>
                     <header>Game Name</header>
                 </div>
-                <div id='play-container'>
-                    <div id="play-form">
-                        <div id="play-question">
+                <div id = 'intro'>
+                    <div id='play-container'>
+                        <div id="play-form">
+                            <div id="play-question"></div>
+                            <div id='hints'>
+                                <div id='hint1' style={{display:'none'}}>Hint PlaceHolder</div>
+                                <div id='hint2' style={{display:'none'}}>Hint PlaceHolder</div>
+                            </div>
+                        </div> 
+                        <div id = 'input'> 
+                                <label for="answer" id="points" style={{display:this.props.hide, color:'#f2e537'}}>Points Avaiable For this Question: </label>
+                                <FormControl id = "answer" style={{display:this.props.hide}} componentClass="textarea" value={this.state.value} onChange={this.handleChange}  placeholder="Answer" />
+                                <div id='result'style={{visibility:'hidden'}}>Results Placeholder<br/>array</div>
                         </div>
-                        <div id='hint1' style={{display:'none'}}>Hint PlaceHolder</div>
-                        <div id='hint2' style={{display:'none'}}>Hint PlaceHolder</div>
-                    </div> 
-                    <div id = 'input'> 
-                            <label for="answer" id="points" style={{display:this.props.hide}}>Points Avaiable For this Question: </label>
-                            <FormControl id = "answer" style={{display:this.props.hide}} componentClass="textarea" value={this.state.value} onChange={this.handleChange}  placeholder="Answer" />
-                            <div id='result'style={{visibility:'hidden'}}>Results Placeholder<br/>array</div>
                     </div>
                     <div className='buttons'>
-                        <ButtonToolbar>
-                            <Button id="next" style={{display:'none'}} onClick={this.nextQuestion} >Next Question</Button>
-                            <Button id="complete-button" style={{display:'none'}} onClick={this.completed}>Finish</Button>   
-                            <Button id="answer-submit" style={{display:this.props.hide}} onClick={this.checkAnswer} >Submit</Button>
-                            <Button id="skip" style={{display:'none'}} onClick={this.skip} >Skip Question</Button>
-                            <Button id="hint-submit" style={{display:this.props.hide}} onClick={this.showHint}>Hint</Button>
-                            <Button onClick={() => this.props.changePage('home')}>Home</Button>
-                        </ButtonToolbar>
+                            <button className="btn" id="next" style={{display:'none'}} onClick={this.nextQuestion} >Next Question</button>
+                            <button className="btn" id="complete-button" style={{display:'none'}} onClick={this.completed}>Finish</button> 
+                            <button className="btn" id="answer-submit" style={{display:this.props.hide}} onClick={this.checkAnswer} >Submit</button>
+                            <button className="btn" id="hint-submit" style={{display:this.props.hide}} onClick={this.showHint}>Hint</button>
+                            <button className="btn" id="skip" style={{display:'none'}} onClick={this.skip} >Skip Question</button>
+                            <button className="btn" onClick={() => this.props.changePage('home')}>Home</button>
                     </div>
                 </div>
             </div>

@@ -12,7 +12,7 @@ hunts = models.Hunts(
     "Walking Tour #1",
     "walking",
     "This Scavenger Hunt Begins at the Monterey Custom House Plaza and Ends in Pacific Grove",
-    "",
+    "boats.jpg",
     datetime.datetime(2017, 11, 2, 6),
     datetime.datetime(2017, 11, 26, 12),
     "Start in the Custom House Plaza Park, near Fisherman's Wharf.")
@@ -180,6 +180,7 @@ questions = models.Questions(
     )
 models.db.session.add(questions)
 models.db.session.commit()
+
 
 questions = models.Questions(
     "In between the Chart House and El Torito restaurants there is a sign as you walk down the sidewalk. " +

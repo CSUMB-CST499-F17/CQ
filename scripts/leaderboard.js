@@ -33,8 +33,6 @@ export class Leaderboard extends React.Component {
         event.preventDefault();
     }
     render() {
-        
-        console.log(this.state.userlist);
         let userlist='';
 
         var data = this.state.userlist;
