@@ -185,6 +185,7 @@ def updateTime(data):
 @socketio.on('leaderboard')
 def updateLeaderboard(data):
     leaderboardUser = []
+    team = []
     try:
         sql = models.db.session.query(
             models.Participants.progress,
@@ -196,13 +197,12 @@ def updateLeaderboard(data):
                     models.Participants.progress == -1,
                     models.Participants.end_time != None
                     )).order_by(models.Participants.score.desc())
-        print sql
 
         for row in sql:
-            leaderboardUser.append({'progress':row.progress, 'score':row.score,'team_name':row.team_name, 'start_time':row.start_time,'end_time':row.end_time})
+            leaderboardUser.append({'progress':row.progress, 'score':row.score,'team_name':row.team_name, 'start_time':row.start_time.strftime('%Y.%M.%d.%H.%M'),'end_time':row.end_time.strftime('%Y.%M.%d.%H.%M')})
+
     except:
         print("Error: leaderboard query broke")
-
     socketio.emit('users', {
         'userlist': leaderboardUser
     })
