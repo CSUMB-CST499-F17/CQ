@@ -225,6 +225,8 @@ def calculatePrice(discount_code):
     except:
         print("Error: couldn't connect to discount table")
         pass
+    
+    #price's base unit is one cent, so 100 = $1
     price = price * total_percent
     
     return price
@@ -277,9 +279,9 @@ def checkout(data):
     except stripe.error.CardError as e:
         body = e.json_body
         err  = body.get('error', {})
-        return json.dumps({'condition':'reject','message':'Account created, could not process payment; Access code: ' + leader_code + '; Error code: ' + err.get('code')})
+        return json.dumps({'condition':'not_paid','leader_code':leader_code, 'member_code':member_code, 'error_code':err.get('code')})
     except stripe.error.StripeError as e:
-        return json.dumps({'condition':'reject','message':'Account created, could not process payment; Access code: ' + leader_code})
+        return json.dumps({'condition':'not_paid','leader_code':leader_code, 'member_code':member_code, 'error_code':None})
     
     # send email
     try:
@@ -291,7 +293,7 @@ def checkout(data):
         pass
     
     # send access code back to JS app
-    return json.dumps({'condition':'confirm','leader_code':leader_code, 'member_code':member_code, 'price':price})
+    return json.dumps({'condition':'confirm','leader_code':leader_code, 'member_code':member_code})
     
 def email_client(client_email, subject, message):
     recp_message  = 'Subject: {}\n\n{}'.format(subject, message)

@@ -51164,6 +51164,8 @@
 	        };
 	        _this.hunts = [];
 
+	        _this.token = null;
+
 	        _this.setOutcome = _this.setOutcome.bind(_this);
 	        _this.handleNameChange = _this.handleNameChange.bind(_this);
 	        _this.handleHuntChange = _this.handleHuntChange.bind(_this);
@@ -51194,17 +51196,18 @@
 	                    ongoingHunts.push(hunt);
 	                }
 	                _this2.hunts = ongoingHunts;
-	                _this2.setState(); //DONT ASK ME WHY THIS WORKS BUT IT WORKS, DO NOT DELETE
+	                _this2.forceUpdate(); //DONT ASK ME WHY THIS WORKS BUT IT WORKS, DO NOT DELETE
 	            });
 	        }
 	    }, {
 	        key: 'handleSubmit',
 	        value: function handleSubmit(event) {
-	            console.log(this.userdata);
 	            event.preventDefault();
 	            // Handle form submission
 	            var outcomeElement = document.getElementById('form-outcome');
 	            outcomeElement.textContent = '';
+
+	            var this_ = this;
 
 	            // check errors that regex can catch
 	            var re = /^.+$/;
@@ -51233,23 +51236,23 @@
 	                return 0;
 	            }
 
-	            _Socket.Socket.emit('checkUserInfo', { 'userdata': this.userdata }, _Socket.Socket.callback = this.handleCallback);
+	            this.token = this.stripe.createToken(this.card).then(function (result) {
+	                if (result.error) {
+	                    this_.handleFormReject(result.error.message);
+	                    return null;
+	                } else {
+	                    _Socket.Socket.emit('checkUserInfo', { 'userdata': this_.userdata }, _Socket.Socket.callback = this_.handleCallback);
+	                    return result.token.id;
+	                }
+	            });
 	        }
 	    }, {
 	        key: 'handleConfirm',
 	        value: function handleConfirm(event) {
-	            console.log('pressed');
 	            var this_ = this;
 
-	            this.token = this.stripe.createToken(this.card).then(function (result) {
-	                if (result.error) {
-	                    this_.handleFormReject(result.error.message);
-	                    return 0;
-	                } else {
-	                    // outcomeElement.textContent = "Success! Token generated: " + result.token.id;
-	                    // outcomeElement.style.color = "#666EE8";
-	                    _Socket.Socket.emit('checkout', { 'token': result.token.id, 'userdata': this_.userdata, 'price': this_.price }, _Socket.Socket.callback = this_.handleCallback);
-	                }
+	            this.token.then(function (token) {
+	                _Socket.Socket.emit('checkout', { 'token': token, 'userdata': this_.userdata, 'price': this_.price }, _Socket.Socket.callback = this_.handleCallback);
 	            });
 
 	            document.getElementById('stripe-confirm').style.display = 'none';
@@ -51258,20 +51261,25 @@
 	    }, {
 	        key: 'handleBack',
 	        value: function handleBack(event) {
-	            event.preventDefault();
 	            document.getElementById('stripe-confirm').style.display = 'none';
 	            document.getElementById('stripe-form').style.display = 'block';
 	        }
 	    }, {
 	        key: 'handleExit',
 	        value: function handleExit(event) {
-	            event.preventDefault();
 	            document.getElementById('stripe-form').style.display = 'block';
 	            document.getElementById('stripe-confirm').style.display = 'none';
 	            document.getElementById('stripe-process').style.display = 'none';
 	            document.getElementById('stripe-success').style.display = 'none';
 
 	            document.getElementById("stripe-form").reset();
+	            this.userdata.discount_code = '';
+	            this.userdata.email = '';
+	            this.userdata.hunts_id = '1';
+	            this.userdata.image = '';
+	            this.userdata.team_name = '';
+	            this.token = null;
+	            this.card.clear();
 
 	            this.props.changePage('home');
 	        }
@@ -51279,8 +51287,6 @@
 	        key: 'handleCallback',
 	        value: function handleCallback(callback) {
 	            var data = JSON.parse(callback);
-
-	            console.log(data);
 
 	            if (data['condition'] == 'reject') {
 	                this.handleFormReject(data['message']);
@@ -51292,6 +51298,13 @@
 	            } else if (data['condition'] == 'confirm') {
 	                document.getElementById('stripe-process').style.display = 'none';
 	                document.getElementById('stripe-success').style.display = 'block';
+	                document.getElementById('success-text').textContent = "Thank you for your purchase!";
+	                document.getElementById('leader-code-slot').textContent = data['leader_code'];
+	                document.getElementById('member-code-slot').textContent = data['member_code'];
+	            } else if (data['condition'] == 'not_paid') {
+	                document.getElementById('stripe-process').style.display = 'none';
+	                document.getElementById('stripe-success').style.display = 'block';
+	                document.getElementById('success-text').textContent = "Your account was created, but we couldn't process your payment. " + (data['error_code'] != null ? "Error code: " + data['error_code'] + " " : "") + "Please login to re-attempt payment.";
 	                document.getElementById('leader-code-slot').textContent = data['leader_code'];
 	                document.getElementById('member-code-slot').textContent = data['member_code'];
 	            }
@@ -51495,28 +51508,38 @@
 	                    { id: 'stripe-success', style: { display: 'none' } },
 	                    React.createElement(
 	                        'div',
-	                        null,
+	                        { className: 'group' },
 	                        React.createElement(
 	                            'div',
-	                            null,
+	                            { style: { display: 'block' } },
 	                            React.createElement(
-	                                'span',
-	                                null,
-	                                'Thank you for your purchase! Your access code is '
+	                                'div',
+	                                { id: 'success-text' },
+	                                'Thank you for your purchase!'
 	                            ),
-	                            React.createElement('span', { id: 'leader-code-slot' }),
 	                            React.createElement(
-	                                'span',
+	                                'div',
 	                                null,
-	                                ' and your team\'s access code is '
-	                            ),
-	                            React.createElement('span', { id: 'member-code-slot' }),
-	                            React.createElement(
-	                                'span',
-	                                null,
-	                                '.'
+	                                React.createElement(
+	                                    'span',
+	                                    null,
+	                                    ' Your leader\'s access code is '
+	                                ),
+	                                React.createElement('span', { id: 'leader-code-slot' }),
+	                                React.createElement(
+	                                    'span',
+	                                    null,
+	                                    ' and your team\'s access code is '
+	                                ),
+	                                React.createElement('span', { id: 'member-code-slot' }),
+	                                React.createElement(
+	                                    'span',
+	                                    null,
+	                                    '.'
+	                                )
 	                            )
 	                        ),
+	                        React.createElement('div', { id: 'notpaid-text', style: { display: 'block' } }),
 	                        React.createElement(
 	                            'button',
 	                            { onClick: this.handleExit },
