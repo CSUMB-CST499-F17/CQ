@@ -1,0 +1,43 @@
+import * as React from 'react';
+import { Socket } from '../Socket';
+import { LogoSmall } from '../logo-small';
+
+
+export class NavBar extends React.Component {
+    constructor(props) {
+    super(props);
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.logout
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+    }
+    componentDidMount(){
+        
+    }
+    
+    logout(){
+        this.props.logOutSetProps('no', 'guest');
+        this.props.changePage('home');
+    }
+    
+    render() {
+        return (
+            <div>
+                <div id="topnav">
+                    <a onClick={() => this.props.changePage('adminHome')}>Home</a>
+                    <a onClick={() => this.props.changePage('adminLeaderboard')}>Leaderboard</a>
+                    <a onClick={() => this.props.changePage('adminHunts')}>Hunts</a>
+                    <a style={{display:this.props.hide}} onClick={() => this.props.changePage('admins')}>Settings</a>
+                    <a onClick={() => this.logout()}>Logout</a>
+                    <div id = 'logo-small-nav'>
+                    <LogoSmall />
+                </div>
+                </div> 
+            </div>
+         
+        );
+    }
+}

@@ -1,3 +1,6 @@
 Flask
-Flask-SocketIO
+flask-socketio
 requests
+Flask-SQLAlchemy
+stripe
+psycopg2

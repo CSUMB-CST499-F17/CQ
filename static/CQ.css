@@ -1,0 +1,493 @@
+@import url(https://fonts.googleapis.com/css?family=Merriweather+Sans);
+
+body {
+    overflow-x: none;
+    font-family: Helvetica, sans-serif;
+    background: #3E6F96;
+    height: 100%;
+}
+#content{
+    display: flex;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    flex-direction: column;
+    height: 83.5%;
+}
+header, h1{
+    color:white;
+    font-size: 32px;
+}
+h4{
+    color:white;
+}
+p{
+    color:white;
+    font-size: 16px;
+}
+.buttons{
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+    color: white;
+    font-size: 24pt;
+    justify-content: center;
+    display:flex;
+}
+.btn {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 5px 15px;
+    text-align: center;
+    text-decoration: none;
+    /*display: inline-block;*/
+    font-size: 16px;
+    margin: 4px 4px;
+    cursor: pointer;
+}
+
+/* Front Page */
+#front-header {
+    width: 100%;
+    background-color: white;
+    margin: auto;
+    text-align:center;
+}
+#intro{
+    text-align:center;
+    justify-content: center;
+    margin:auto;
+    max-width: 100%;
+    display:block;
+}
+#input{
+	display:block;
+	text-align:center;
+	justify-content: center;
+	margin:auto;
+}
+#login input{
+    text-align: center;
+    display: inline-block;
+    color: black;
+    font-size: 16px;
+    margin: 4px 2px;
+}
+#errorMessage{
+    font-size: 16px;
+}
+
+/* Slideshow */
+#slideshow{
+    height:400px;
+    line-height: 400px;
+	margin: auto;
+	margin-top:20px;
+}
+.helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+#slideshow img{
+    max-width:100%;
+    max-height:100%;
+    display: inline-block;
+    vertical-align: middle;
+    border:solid;
+    border-width: 7;
+    border-color: #f2e537;
+}
+
+/* Explore */
+#explore #header{
+    font-size: 24px;
+}
+.hunt-preview{
+    
+}
+.hunt-preview img{
+    max-width:45%;
+    max-height:45%;
+    display: inline-block;
+    vertical-align: middle;
+    border:solid;
+    border-width: 7;
+    border-color: #f2e537;
+}
+
+/* Start */
+#h_image{
+    margin:15px;
+    max-width:45%;
+    max-height:45%;
+    display: inline-block;
+    vertical-align: middle;
+    border:solid;
+    border-width: 7;
+    border-color: #f2e537;
+}
+#h_name{
+    margin:15px;
+}
+#h_start_text{
+    margin:15px;
+}
+
+/* Logos */ 
+#logo-big{
+    width:700px;
+}
+#logo-small img{
+    max-width:9%;
+    position: fixed;
+    top: 0.5em;
+    right: 0em;
+}
+#logo-small-nav img{
+    max-width:60px;
+    width:60px;
+    height:60px;
+    float:right;
+    margin-right:2%;
+}
+#header {
+    color: white;
+    font-size: 32px;
+    font-weight:bold;
+    margin-top:10px;
+    margin-bottom:10px;
+    padding-right:100px;
+    padding-left:15px;
+}
+#introhunts{
+    text-align:center;
+    justify-content: center;
+    margin:auto;
+    max-width: 100%;
+    display:flex;
+}
+
+#search{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 15px;
+}
+#question, #questionEdit  {
+    justify-content: center;
+    width: 100%;
+    height: 255px;
+    overflow-y: scroll;
+}
+.question-group{
+    margin:5px;
+}
+#question-label{
+    color:white;
+    font-size: 24px;
+    font-weight:bold;
+}
+#create-form-container{
+    width:55%;
+    border: 5px solid #F4D930;
+    border-radius: 25px;
+}
+#create-form{
+    display: flex;
+    justify-content: center;
+    padding:20px 20px 0px 20px;
+    width:100%;
+}
+.create-item{
+    margin:5px;
+    justify-content: center;
+    position:absolute;
+    z-index:100;
+}
+#play-container{
+    margin:20px;
+    width:60%;
+    justify-content: center;
+    margin:auto;
+    color:white;
+    padding-top:30px;
+}
+#play-form{
+    justify-content: center;
+    margin:auto;
+    text-align: center;
+}
+#hints, #play-question, #answer{
+    margin:15 0 15 0;
+}
+#hints{
+    width:100%;
+}
+#hint1, #hint2{
+    margin:15 0 15 0;
+    font-size:18px;
+}
+#play-question{
+    font-size: 36px
+}
+#result{
+    font-size: 24px;
+    font-weight: bold;
+}
+#hints{
+    justify-content: center;
+    margin:auto;
+    width:70%;
+    text-align:left;
+}
+#leaderboard-form{
+    justify-content: center;
+    display:flex;
+    width:30%;
+    margin:auto;
+}
+#leaderboard-search{
+    display:inline;
+}
+#leaderboard-search1{
+    display:inline;
+
+}
+#leaderboards{
+    max-width: 30%;
+    padding: 20px;
+    justify-content: center;
+    margin: auto;
+
+}
+#leaderboard-table, th, td {
+   border: 1px solid black;
+}
+#leaderboard-table{
+    width:100%;
+    justify-content: center;
+    margin: auto;
+    background-color:white;
+}
+#userList{
+    overflow: hidden;
+    max-height:400px;
+    max-width:100%;
+    width:100%;
+    background-color: red;
+}
+#userList:hover{
+overflow-y:scroll;
+}
+#leaderboard-table2{
+    width:100%;
+    justify-content: center;
+    background-color:white;
+}
+td{
+    width:25%;
+    padding:10px;
+}
+
+ /* Add a black background color to the top navigation */
+#topnav {
+    background-color: #333;
+    overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+#topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 18px 20px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/* Change the color of links on hover */
+#topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Hide the link that should open and close the topnav on small screens */
+#topnav .icon {
+    display: none;
+}
+
+.clear {
+    clear: both;
+}
+
+/*STRIPE CSS, can be altered*/
+#stripe-form {
+  width: 480px;
+  max-width: 100%;
+  margin: 20px auto;
+}
+
+.group {
+  background: white;
+  box-shadow: 0 7px 14px 0 rgba(49,49,93,0.10),
+              0 3px 6px 0 rgba(0,0,0,0.08);
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.group label:not(:last-child) {
+  border-bottom: 1px solid #F0F5FA;
+}
+
+#stripe-form .full {
+  text-align: center;
+}
+
+#stripe-form .full label {
+  margin-right: 20px;
+}
+
+#stripe-form label {
+  position: relative;
+  color: #8898AA;
+  font-weight: 300;
+  height: 40px;
+  line-height: 40px;
+  margin-left: 20px;
+  display: block;
+}
+
+#stripe-form label > span {
+  width: 20%;
+  text-align: right;
+  float: left;
+}
+
+
+.field {
+  background: transparent;
+  font-weight: 300;
+  border: 0;
+  color: #31325F;
+  outline: none;
+  padding-right: 10px;
+  padding-left: 10px;
+  cursor: text;
+  width: 70%;
+  height: 40px;
+  float: right;
+}
+
+.field::-webkit-input-placeholder { color: #CFD7E0; }
+.field::-moz-placeholder { color: #CFD7E0; }
+.field:-ms-input-placeholder { color: #CFD7E0; }
+
+#stripe-form button {
+  float: left;
+  display: block;
+  background: #74CCCF;
+  color: white;
+  box-shadow: 0 7px 14px 0 rgba(49,49,93,0.10),
+              0 3px 6px 0 rgba(0,0,0,0.08);
+  border-radius: 4px;
+  border: 0;
+  margin-top: 20px;
+  font-size: 15px;
+  font-weight: 400;
+  width: 100%;
+  max-width: 100%;
+  height: 40px;
+  line-height: 38px;
+  outline: none;
+}
+
+#stripe-form button:focus {
+  background: #555ABF;
+}
+
+#stripe-form button:active {
+  background: #43458B;
+}
+
+#stripe-outcome {
+  float: left;
+  width: 100%;
+  padding-top: 8px;
+  min-height: 24px;
+  text-align: center;
+
+  font-size: 13px;
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+    #header {
+        font-size: 2.5em;
+        margin: 10px;
+        padding-left:2px;
+    }
+    header, h1{
+        color:white;
+        font-size: 20px;
+    }
+    #explore #header{
+        font-size: 16px;
+    }
+    #slideshow{
+        height:350px;
+        line-height: 300px;
+    }
+    #logo-big{
+        width:90%;
+        height:20%;
+    }
+    #logo-small{
+        width:15%;
+        float:left;
+    }
+    #intro{
+        text-align:center;
+        justify-content: center;
+        display: block;
+        margin:auto;
+        max-width: 100%;
+    }
+    #play-question{
+        font-size: 24px;
+    }
+    #logo-small-nav{
+        width:40px;
+        float:right;
+        margin-right:0%;
+        margin-top:3px;
+    }
+    /* Add a black background color to the top navigation */
+    #topnav {
+        background-color: #333;
+        overflow: hidden;
+    }
+
+    /* Style the links inside the navigation bar */
+    #topnav a {
+        float: left;
+        display: block;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 7px; /* first is top and bottom second is left and right*/
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    /* Change the color of links on hover */
+    #topnav a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+    /* Hide the link that should open and close the topnav on small screens */
+    #topnav .icon {
+        display: none;
+    }
+}
