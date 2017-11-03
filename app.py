@@ -18,7 +18,6 @@ db = flask_sqlalchemy.SQLAlchemy(app)
 #FUNCTIONS
 @app.route('/')
 def hello():
-    print()
     return flask.render_template('index.html')
 
 @socketio.on('play')
@@ -32,7 +31,7 @@ def getHunt(data):
         for row in questions:
             questionsData.append({'question':row.question, 'answer':row.answer,'hint1':row.hint_A,'hint2':row.hint_B,'hunts_id':row.hunts_id})
     except Exception as e: 
-        print (e)
+        print(e)
         
     socketio.emit('hunt', questionsData)
     questionNum += questionNum
@@ -141,7 +140,7 @@ def updateProgress(data):
 def updateTime(data):
     user = data['user']
     if(data['start_time'] != ""):
-        print "Start Time"
+        print("Start Time")
         try:
             #updates end_time
             query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.start_time: datetime.datetime.now()})
@@ -150,7 +149,7 @@ def updateTime(data):
         except Exception as e: 
             print(e)
     if(data['end_time'] != ""):
-        print "End Time"
+        print("End Time")
         try:
             #updates end_time
             query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.end_time: datetime.datetime.now()})
@@ -165,7 +164,7 @@ def updateLeaderboard():
     try:
         sql = models.db.session.query(models.Participants.team_name, models.Participants.score, models.Participants.start_time,  models.Participants.end_time.filter(models.Participants.end_time != None)).order_by(models.Participants.score.desc())
 
-        print sql
+        print(sql)
         leaderboardUser.append({'score':row.score,'team_name':row.team_name,'score':row.score, 'start_time':row.start_time,'end_time':row.end_time})
     except:
         print("Error: Database does not exist for populating leaderboard")
@@ -295,7 +294,6 @@ def email_client(client_email, subject, message):
     
 def hash_password(password):
     salt = uuid.uuid4().hex + uuid.uuid4().hex
-    print hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
     return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
 
 def check_password(hashed_password, user_password):
