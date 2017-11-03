@@ -51164,6 +51164,8 @@
 	        };
 	        _this.hunts = [];
 
+	        _this.token = null;
+
 	        _this.setOutcome = _this.setOutcome.bind(_this);
 	        _this.handleNameChange = _this.handleNameChange.bind(_this);
 	        _this.handleHuntChange = _this.handleHuntChange.bind(_this);
@@ -51171,6 +51173,9 @@
 	        _this.handleCardChange = _this.handleCardChange.bind(_this);
 	        _this.handleDiscountChange = _this.handleDiscountChange.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.handleConfirm = _this.handleConfirm.bind(_this);
+	        _this.handleBack = _this.handleBack.bind(_this);
+	        _this.handleExit = _this.handleExit.bind(_this);
 	        _this.handleFormReject = _this.handleFormReject.bind(_this);
 	        _this.handleCallback = _this.handleCallback.bind(_this);
 	        return _this;
@@ -51191,7 +51196,7 @@
 	                    ongoingHunts.push(hunt);
 	                }
 	                _this2.hunts = ongoingHunts;
-	                _this2.setState(); //DONT ASK ME WHY THIS WORKS BUT IT WORKS, DO NOT DELETE
+	                _this2.forceUpdate(); //DONT ASK ME WHY THIS WORKS BUT IT WORKS, DO NOT DELETE
 	            });
 	        }
 	    }, {
@@ -51199,8 +51204,8 @@
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
 	            // Handle form submission
-	            var form = document.getElementById('payment-form');
 	            var outcomeElement = document.getElementById('form-outcome');
+	            outcomeElement.textContent = '';
 
 	            var this_ = this;
 
@@ -51234,24 +51239,74 @@
 	            this.token = this.stripe.createToken(this.card).then(function (result) {
 	                if (result.error) {
 	                    this_.handleFormReject(result.error.message);
-	                    return 0;
+	                    return null;
 	                } else {
-	                    // outcomeElement.textContent = "Success! Token generated: " + result.token.id;
-	                    // outcomeElement.style.color = "#666EE8";
-	                    _Socket.Socket.emit('checkout', { 'token': result.token.id, 'userdata': this_.userdata }, _Socket.Socket.callback = this_.handleCallback);
+	                    _Socket.Socket.emit('checkUserInfo', { 'userdata': this_.userdata }, _Socket.Socket.callback = this_.handleCallback);
+	                    return result.token.id;
 	                }
 	            });
+	        }
+	    }, {
+	        key: 'handleConfirm',
+	        value: function handleConfirm(event) {
+	            var this_ = this;
+
+	            this.token.then(function (token) {
+	                _Socket.Socket.emit('checkout', { 'token': token, 'userdata': this_.userdata, 'price': this_.price }, _Socket.Socket.callback = this_.handleCallback);
+	            });
+
+	            document.getElementById('stripe-confirm').style.display = 'none';
+	            document.getElementById('stripe-process').style.display = 'block';
+	        }
+	    }, {
+	        key: 'handleBack',
+	        value: function handleBack(event) {
+	            document.getElementById('stripe-confirm').style.display = 'none';
+	            document.getElementById('stripe-form').style.display = 'block';
+	        }
+	    }, {
+	        key: 'handleExit',
+	        value: function handleExit(event) {
+	            document.getElementById('stripe-form').style.display = 'block';
+	            document.getElementById('stripe-confirm').style.display = 'none';
+	            document.getElementById('stripe-process').style.display = 'none';
+	            document.getElementById('stripe-success').style.display = 'none';
+
+	            document.getElementById("stripe-form").reset();
+	            this.userdata.discount_code = '';
+	            this.userdata.email = '';
+	            this.userdata.hunts_id = '1';
+	            this.userdata.image = '';
+	            this.userdata.team_name = '';
+	            this.token = null;
+	            this.card.clear();
+
+	            this.props.changePage('home');
 	        }
 	    }, {
 	        key: 'handleCallback',
 	        value: function handleCallback(callback) {
 	            var data = JSON.parse(callback);
-	            var outcomeElement = document.getElementById('form-outcome');
-	            if (data['condition'] == 'accept') {
-	                outcomeElement.textContent = "Your access code: " + data['leader_code'] + " Your teams code: " + data['member_code'];
-	                outcomeElement.style.color = "#00FF00";
-	            } else if (data['condition'] == 'reject') {
+
+	            if (data['condition'] == 'reject') {
 	                this.handleFormReject(data['message']);
+	            } else if (data['condition'] == 'accept') {
+	                this.price = data['price'];
+	                document.getElementById('stripe-form').style.display = 'none';
+	                document.getElementById('stripe-confirm').style.display = 'block';
+	                document.getElementById('price-slot').textContent = this.price / 100;
+	            } else if (data['condition'] == 'confirm') {
+	                document.getElementById('stripe-process').style.display = 'none';
+	                document.getElementById('stripe-success').style.display = 'block';
+	                document.getElementById('success-text').textContent = "Thank you for your purchase!";
+	                document.getElementById('leader-code-slot').textContent = data['leader_code'];
+	                document.getElementById('member-code-slot').textContent = data['member_code'];
+	            } else if (data['condition'] == 'not_paid') {
+	                document.getElementById('stripe-process').style.display = 'none';
+	                document.getElementById('stripe-success').style.display = 'block';
+	                document.getElementById('success-text').textContent = "Your account was created, but we couldn't process your payment. " + (data['error_code'] != null ? "Error code: " + data['error_code'] + " " : "") + "Please login to re-attempt payment.";
+	                document.getElementById('leader-code-slot').textContent = data['leader_code'];
+	                document.getElementById('member-code-slot').textContent = data['member_code'];
 	            }
 	        }
 	    }, {
@@ -51303,8 +51358,6 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this3 = this;
-
 	            var hunts = this.hunts.map(function (n, index) {
 	                return React.createElement(
 	                    'option',
@@ -51402,14 +51455,106 @@
 	                        { type: 'submit' },
 	                        'Register and Pay'
 	                    ),
-	                    React.createElement('div', { id: 'form-outcome' }),
 	                    React.createElement('div', { className: 'clear' })
 	                ),
 	                React.createElement(
+	                    'div',
+	                    { id: 'stripe-confirm', style: { display: 'none' } },
+	                    React.createElement(
+	                        'div',
+	                        { className: 'group' },
+	                        React.createElement(
+	                            'div',
+	                            null,
+	                            React.createElement(
+	                                'span',
+	                                null,
+	                                'Your total is $'
+	                            ),
+	                            React.createElement('span', { id: 'price-slot' }),
+	                            React.createElement(
+	                                'span',
+	                                null,
+	                                '. Please confirm to purchase this scavenger hunt.'
+	                            )
+	                        ),
+	                        React.createElement(
+	                            'button',
+	                            { id: 'confirm-button', onClick: this.handleConfirm },
+	                            'Confirm'
+	                        ),
+	                        React.createElement(
+	                            'button',
+	                            { onClick: this.handleBack },
+	                            'Back'
+	                        )
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'stripe-process', style: { display: 'none' } },
+	                    React.createElement(
+	                        'div',
+	                        { className: 'group' },
+	                        React.createElement(
+	                            'div',
+	                            null,
+	                            'Processing...'
+	                        )
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'stripe-success', style: { display: 'none' } },
+	                    React.createElement(
+	                        'div',
+	                        { className: 'group' },
+	                        React.createElement(
+	                            'div',
+	                            { style: { display: 'block' } },
+	                            React.createElement(
+	                                'div',
+	                                { id: 'success-text' },
+	                                'Thank you for your purchase!'
+	                            ),
+	                            React.createElement(
+	                                'div',
+	                                null,
+	                                React.createElement(
+	                                    'span',
+	                                    null,
+	                                    ' Your leader\'s access code is '
+	                                ),
+	                                React.createElement('span', { id: 'leader-code-slot' }),
+	                                React.createElement(
+	                                    'span',
+	                                    null,
+	                                    ' and your team\'s access code is '
+	                                ),
+	                                React.createElement('span', { id: 'member-code-slot' }),
+	                                React.createElement(
+	                                    'span',
+	                                    null,
+	                                    '.'
+	                                )
+	                            )
+	                        ),
+	                        React.createElement('div', { id: 'notpaid-text', style: { display: 'block' } }),
+	                        React.createElement(
+	                            'button',
+	                            { onClick: this.handleExit },
+	                            'Confirm'
+	                        )
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { style: { textAlign: 'center' }, id: 'form-outcome' },
+	                    'center'
+	                ),
+	                React.createElement(
 	                    _reactBootstrap.Button,
-	                    { onClick: function onClick() {
-	                            return _this3.props.changePage('home');
-	                        } },
+	                    { onClick: this.handleExit },
 	                    'Home'
 	                )
 	            );
