@@ -17,7 +17,7 @@ export class AdminCreateHunt extends React.Component {
         super(props);
         this.state = {
             'count':0,
-            'limit':25,
+            'limit':35,
             'name':'',
             'sDate':'',
             'eDate':'',

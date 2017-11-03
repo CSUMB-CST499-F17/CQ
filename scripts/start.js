@@ -9,6 +9,7 @@ export class Start extends React.Component {
         super(props);
         this.user = [];
         this.hunt = [];
+        this.start_text = "";
         this.handleSubmit = this.handleSubmit.bind(this);
         this.start = this.start.bind(this);
         
@@ -21,7 +22,9 @@ export class Start extends React.Component {
     componentDidMount(){
         //retireves the hunt question information
         Socket.on('hunt', (data) => {
-            this.hunt = data;
+            this.hunt = data[0];
+            this.start_text = data[0]['start_text']
+            document.getElementById('start_text').textContent = this.start.text;
         });
     }
 
@@ -50,11 +53,13 @@ export class Start extends React.Component {
                 <div id = 'header'>
                     <header>Start</header>
                 </div>
-                    <div id='intro'>
-                        <div id='buttons'>
-                            <Button onClick={this.start}>Start Scavenger Hunt!</Button>
-                        </div>      
-                    </div>
+                <div id='intro'>
+                <div id='start_text'></div>
+                    <div id='buttons'>
+                        <Button onClick={this.start}>Start Scavenger Hunt!</Button>
+                        <Button onClick={() => this.props.changePage('home')}>Home</Button>
+                    </div>      
+                </div>
             </div>
 
         );

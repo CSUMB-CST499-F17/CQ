@@ -81,11 +81,13 @@ export class Play extends React.Component {
             result.style.visibility = 'visible';
             result.textContent = 'Correct';
             result.style.color="#9bf442";
+            console.log(this.dataSize)
             if(this.state.playerQuestionOn + 2 == this.dataSize){
                 document.getElementById('next').textContent = "Last Question";
             }
             if(this.state.playerQuestionOn + 1 == this.dataSize){
                 document.getElementById('complete-button').style.display = "block";
+                document.getElementById('skip').style.display = "none";
             }
             if(this.state.playerQuestionOn < this.dataSize - 1){
                 document.getElementById('next').style.display = "block";
@@ -116,7 +118,12 @@ export class Play extends React.Component {
     }
     
     completed(){
-        this.emit();
+        try{
+            Socket.emit('progessUpdate', {'user': this.state.user, 'progress':-1, 'score':this.score, 'attempts': this.attempts});    
+        }
+        catch(err){
+            console.log(err);
+        }
         Socket.emit('updateTime', {'user': this.state.user, 'start_time': "", 'end_time':'now'});
         this.props.changePage('complete');
     }
@@ -127,6 +134,7 @@ export class Play extends React.Component {
             this.setState({
                 'questionsData': data
             });
+            this.dataSize = data.length;
         });
     }
     
@@ -144,7 +152,11 @@ export class Play extends React.Component {
         document.getElementById('hint2').style.display = "none";
         document.getElementById('next').style.display = "none";
         document.getElementById('result').style.display = "none";
+        document.getElementById('skip').style.display = "none";
         document.getElementById('answer').value = "";
+        this.setState({
+            'attempts':[]
+        })
         
         this.state.playerQuestionOn++;
         this.emit();
@@ -184,7 +196,14 @@ export class Play extends React.Component {
     
     skip(){
         this.score = this.score - this.point;
-        this.nextQuestion();
+        if(this.state.playerQuestionOn + 1 == this.dataSize){
+            document.getElementById('complete-button').style.display = "block";
+            document.getElementById('skip').style.display = "none";
+            document.getElementById('answer-submit').style.display = "none";
+        }
+        else{
+            this.nextQuestion();
+        }
     }
     
 

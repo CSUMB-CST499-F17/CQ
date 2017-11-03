@@ -31,8 +31,8 @@ def getHunt(data):
         questions = models.db.session.query(models.Questions)
         for row in questions:
             questionsData.append({'question':row.question, 'answer':row.answer,'hint1':row.hint_A,'hint2':row.hint_B,'hunts_id':row.hunts_id})
-    except:
-        print("Error: Database/table questions does not exist")
+    except Exception as e: 
+        print (e)
         
     socketio.emit('hunt', questionsData)
     questionNum += questionNum
@@ -80,12 +80,11 @@ def validateCredentials(data):
                 
             users = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'])
             for query in users:
-                print query
-            for query in users:
-                print check_password(query.leader_code, data['access'])
                 if(check_password(query.leader_code, data['access'])):
                     userData.append({'email': query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress, 'score':query.score, 'attempts':query.attempts})
                     socketio.emit('user', userData)
+                    if query.progress == -1:
+                        return 'finished'
                     return 'teamLead%' + query.team_name
 
             users = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'])
@@ -93,6 +92,8 @@ def validateCredentials(data):
                 if(check_password(query.member_code, data['access'])):
                     userData.append({'email':query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress})
                     socketio.emit('user', userData)
+                    if query.progres == -1:
+                        return 'finished'
                     return 'team%' + query.team_name
                     
             users = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.is_super == True)
@@ -107,7 +108,7 @@ def validateCredentials(data):
                     
         except Exception as e: 
             print (e)
-            print 'no%guest'
+            return 'no%guest'
 
 @socketio.on('progessUpdate')
 def updateProgress(data):
