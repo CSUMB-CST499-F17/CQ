@@ -65,15 +65,17 @@ export class Leaderboard extends React.Component {
                         </div>
                         <div id='leaderboards'>
                             <table id="leaderboard-table">
-                                <tr>
-                                    <td>Rank</td><td>Team</td><td>Score</td><td>Time</td>
-                                </tr>
+                                <tbody>
+                                    <tr>
+                                        <td>Rank</td><td>Team</td><td>Score</td><td>Time</td>
+                                    </tr>
+                                </tbody>
                             </table>
                             <div id="userList">
                             <table id="leaderboard-table2">
-
-                                {userlist}
-
+                                <tbody>
+                                    {userlist}
+                                </tbody>
                             </table>
                             </div>
                         </div>

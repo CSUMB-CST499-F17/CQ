@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
 import { Socket } from './Socket';
+import { LogoSmall } from './logo-small';
 
 export class Register extends React.Component {
     constructor(props) {
@@ -154,6 +155,9 @@ export class Register extends React.Component {
         );
         return (
             <div>
+                <div id = 'logo-small'>
+                    <LogoSmall/>
+                </div>
                 <div id = 'header'>
                     <header>Register</header>
                 </div>
@@ -172,8 +176,8 @@ export class Register extends React.Component {
                         <div id="card-element" className="field" onChange={this.handleCardChange}></div>
                       </label>
                       <label>
-                        <span>Discount Code</span>
-                        <input className="field" placeholder="CODE1234" onChange={this.handleDiscountChange}/>
+                        <span>Code</span>
+                        <input className="field" placeholder="PromoCode1234" onChange={this.handleDiscountChange}/>
                       </label>
                     </div>
                     <div className="group full">

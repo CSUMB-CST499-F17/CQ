@@ -49,7 +49,10 @@ def updateHome(data):
     if resetConditions:
 	    lastPage = 'home'
     socketio.emit('updateHome', lastPage)
-    return lastPage
+
+@socketio.on('slideshow')
+def updateSlideshow(data):
+    return
     
 @socketio.on('explore')
 def updateExplore(data):
@@ -271,7 +274,7 @@ def checkout(data):
         # send email
         try:
             subject = "Coastal Quest Activation Code"
-            message = "Welcome to Coastal Quest Scavenger Hunts, {}! Your access code is {}. Have fun on your journey!".format(team_name,leader_code)
+            message = "Welcome to Coastal Quest Scavenger Hunts, {}! Your access codes are Team Leader: {} Team Members: {}. Have fun on your journey!".format(team_name,leader_code,member_code)
             email_client(client_email,subject,message)
         except:
             print("Error: Could not send email")

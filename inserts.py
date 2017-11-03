@@ -5,6 +5,8 @@ import datetime
 
 models.db.create_all()
 
+models.db.session.add(models.Admins("katjones@csumb.edu", "SuperAdmin", "2466d01e6903125458ad26828cca9f90ea0a2af1b637012c0bb71f4bc3cb3144:3a42a5bef15c47e7bc00cd2a3b57b0ce78e58d2424fa4e6e9c452acc16a0b361", True))
+models.db.session.commit()
 
 hunts = models.Hunts(
     "Walking Tour #1",
@@ -192,7 +194,6 @@ questions = models.Questions(
 models.db.session.add(questions)
 models.db.session.commit()
 
-<<<<<<< HEAD
 questions = models.Questions(
     "According to the sign at McAbee Beach, who were the first fishermen here?", #Question
     "Rumsien", #Answer
@@ -203,9 +204,6 @@ questions = models.Questions(
     1 #hunt ID
     )
 models.db.session.add(questions)
-=======
-models.db.session.add(models.Hunts("Walking Tour #1", "walking", "This is a sample walking scavenger hunt.", "https://upload.wikimedia.org/wikipedia/commons/7/7c/Fisherman%27s_Wharf_Monterey3.JPG", datetime.datetime(2017, 10, 01, 00, 00, 00, 000000), datetime.datetime(2017, 11, 04, 00, 00, 00, 000000), "This is the starting text! Please go to LOCATION and click start to begin!"))
->>>>>>> 1e01eb3624a9cfded4139dcf0e451b61bd8bee20
 models.db.session.commit()
 
 questions = models.Questions(
