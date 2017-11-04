@@ -21980,12 +21980,13 @@
 	        }
 	    }, {
 	        key: 'logOutSetProps',
-	        value: function logOutSetProps(loggedIn, name) {
+	        value: function logOutSetProps() {
 	            this.setState({
-	                loggedIn: loggedIn,
-	                name: name,
+	                loggedIn: 'no',
+	                name: 'guest',
 	                hide: 'none' //UNHIDE BEFORE BETA
 	            });
+	            this.changePage('home');
 	        }
 	    }, {
 	        key: 'handle',
@@ -21996,7 +21997,6 @@
 	        key: 'changePage',
 	        value: function changePage(location) {
 	            try {
-	                console.log(location);
 	                _Socket.Socket.emit(location, this.state, _Socket.Socket.callback = this.handle);
 	                if (location.indexOf('admin') != -1) {
 	                    //it is admin page
@@ -22045,7 +22045,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'play', style: { display: 'none' } },
-	                    React.createElement(_play.Play, { changePage: this.changePage, loggedIn: this.state.loggedIn, hide: this.state.hide })
+	                    React.createElement(_play.Play, { changePage: this.changePage, loggedIn: this.state.loggedIn, hide: this.state.hide, logOutSetProps: this.logOutSetProps })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -51931,9 +51931,9 @@
 	                        React.createElement(
 	                            'button',
 	                            { className: 'btn', onClick: function onClick() {
-	                                    return _this3.props.changePage('home');
+	                                    return _this3.props.logOutSetProps();
 	                                } },
-	                            'Home'
+	                            'Logout'
 	                        )
 	                    )
 	                )
@@ -72099,7 +72099,6 @@
 	                } catch (err) {
 	                    console.log(err);
 	                }
-	                console.log(_this2.state.score);
 	                if (_this2.state.score > -1) {
 	                    document.getElementById('title').innerHTML = "<b>Final Results for " + data[0]['hunt_name'] + "</b>";
 	                    document.getElementById('time').innerHTML = "<b>Time taken to complete Hunt:</b><br/> " + _this2.state.time;
@@ -72160,9 +72159,9 @@
 	                    React.createElement(
 	                        'button',
 	                        { className: 'btn', onClick: function onClick() {
-	                                return _this3.props.changePage('home');
+	                                return _this3.props.logOutSetProps();
 	                            } },
-	                        'Home'
+	                        'Logout'
 	                    )
 	                )
 	            );
@@ -72366,12 +72365,6 @@
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {}
 	    }, {
-	        key: 'logout',
-	        value: function logout() {
-	            this.props.logOutSetProps('no', 'guest');
-	            this.props.changePage('home');
-	        }
-	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _this2 = this;
@@ -72413,7 +72406,7 @@
 	                    React.createElement(
 	                        'a',
 	                        { onClick: function onClick() {
-	                                return _this2.logout();
+	                                return _this2.props.logOutSetProps();
 	                            } },
 	                        'Logout'
 	                    ),

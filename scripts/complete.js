@@ -29,7 +29,6 @@ export class Complete extends React.Component {
             catch(err){
                 console.log(err);
             }
-            console.log(this.state.score);
             if(this.state.score > -1){
                 document.getElementById('title').innerHTML = "<b>Final Results for " + data[0]['hunt_name'] + "</b>";
                 document.getElementById('time').innerHTML = "<b>Time taken to complete Hunt:</b><br/> " + this.state.time;
@@ -62,7 +61,7 @@ export class Complete extends React.Component {
                     </div>
                     <div className='buttons'>
                         <button className="btn" onClick={() => this.props.changePage('leaderboard')}>Leaderboard</button>
-                        <button className="btn" onClick={() => this.props.changePage('home')}>Home</button>
+                        <button className="btn" onClick={() => this.props.logOutSetProps()}>Logout</button>
                     </div>  
             </div>
 

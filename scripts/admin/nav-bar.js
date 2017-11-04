@@ -17,12 +17,7 @@ export class NavBar extends React.Component {
     componentDidMount(){
         
     }
-    
-    logout(){
-        this.props.logOutSetProps('no', 'guest');
-        this.props.changePage('home');
-    }
-    
+
     render() {
         return (
             <div>
@@ -31,7 +26,7 @@ export class NavBar extends React.Component {
                     <a onClick={() => this.props.changePage('adminLeaderboard')}>Leaderboard</a>
                     <a onClick={() => this.props.changePage('adminHunts')}>Hunts</a>
                     <a style={{display:this.props.hide}} onClick={() => this.props.changePage('admins')}>Settings</a>
-                    <a onClick={() => this.logout()}>Logout</a>
+                    <a onClick={() => this.props.logOutSetProps()}>Logout</a>
                     <div id = 'logo-small-nav'>
                     <LogoSmall />
                 </div>

@@ -261,7 +261,7 @@ export class Play extends React.Component {
                             
                     </div>
                     <div className='buttons'>
-                        <button className="btn" onClick={() => this.props.changePage('home')}>Home</button>
+                        <button className="btn" onClick={() => this.props.logOutSetProps()}>Logout</button>
                     </div>
                 </div>
             </div>

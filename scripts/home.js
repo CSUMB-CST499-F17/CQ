@@ -14,7 +14,7 @@ export class Home extends React.Component {
         this.login = this.login.bind(this);
         this.showSlides = this.showSlides.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-       
+        
     }
     componentDidMount(){
         Socket.on('updateHome', (data) => {

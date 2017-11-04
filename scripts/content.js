@@ -58,19 +58,19 @@ export class Content extends React.Component{
             });
         }
     }
-    logOutSetProps(loggedIn, name){
+    logOutSetProps(){
         this.setState({
-            loggedIn: loggedIn,
-            name: name,
+            loggedIn: 'no',
+            name: 'guest',
             hide:'none'  //UNHIDE BEFORE BETA
         });
+        this.changePage('home');
     }
     handle(callback){
         //handle returns from any page sockets
     }
     changePage(location){
         try{
-            console.log(location)
             Socket.emit(location, this.state, Socket.callback=this.handle);
             if(location.indexOf('admin') != -1){ //it is admin page
                 document.getElementById(this.state.lastPage).style.display = "none";
@@ -107,7 +107,7 @@ export class Content extends React.Component{
                     <Register changePage={this.changePage}/>
                 </div>
                 <div id = 'play' style={{display:'none'}}>
-                    <Play changePage={this.changePage} loggedIn={this.state.loggedIn} hide={this.state.hide}/>
+                    <Play changePage={this.changePage} loggedIn={this.state.loggedIn} hide={this.state.hide} logOutSetProps={this.logOutSetProps}/>
                 </div>
                 <div id = 'complete' style={{display:'none'}}>
                     <Complete changePage={this.changePage} loggedIn={this.state.loggedIn} hide={this.state.hide}/>
