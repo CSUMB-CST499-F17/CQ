@@ -299,6 +299,9 @@ export class Register extends React.Component {
                     
                     <div style={{textAlign:'center'}} id="form-outcome" style={{visibility:'hidden'}}>center</div>
                 </div>
+                <div id='buttons'>
+                    <button className='btn' onClick={() => this.props.changePage('home')}>Home</button>
+                </div>
             </div>
          
         );

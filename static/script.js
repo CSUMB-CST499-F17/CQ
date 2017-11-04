@@ -51357,6 +51357,8 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var _this3 = this;
+
 	            var hunts = this.hunts.map(function (n, index) {
 	                return React.createElement(
 	                    'option',
@@ -51585,6 +51587,17 @@
 	                        'div',
 	                        _defineProperty({ style: { textAlign: 'center' }, id: 'form-outcome' }, 'style', { visibility: 'hidden' }),
 	                        'center'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'buttons' },
+	                    React.createElement(
+	                        'button',
+	                        { className: 'btn', onClick: function onClick() {
+	                                return _this3.props.changePage('home');
+	                            } },
+	                        'Home'
 	                    )
 	                )
 	            );
