@@ -51464,31 +51464,41 @@
 	                        { id: 'stripe-confirm', style: { display: 'none' } },
 	                        React.createElement(
 	                            'div',
-	                            { className: 'group' },
+	                            { className: 'group1' },
 	                            React.createElement(
 	                                'div',
-	                                null,
+	                                { id: 'confirm' },
 	                                React.createElement(
 	                                    'span',
 	                                    null,
-	                                    'Your total is $'
+	                                    React.createElement(
+	                                        'b',
+	                                        null,
+	                                        'Your total:'
+	                                    ),
+	                                    ' $'
 	                                ),
 	                                React.createElement('span', { id: 'price-slot' }),
+	                                React.createElement('br', null),
 	                                React.createElement(
 	                                    'span',
 	                                    null,
-	                                    '. Please confirm to purchase this scavenger hunt.'
+	                                    ' Please Press Confirm to Join this Hunt'
 	                                )
 	                            ),
 	                            React.createElement(
-	                                'button',
-	                                { id: 'confirm-button', onClick: this.handleConfirm },
-	                                'Confirm'
-	                            ),
-	                            React.createElement(
-	                                'button',
-	                                { onClick: this.handleBack },
-	                                'Back'
+	                                'div',
+	                                { id: 'buttons' },
+	                                React.createElement(
+	                                    'button',
+	                                    { id: 'confirm-button', className: 'btn', onClick: this.handleConfirm },
+	                                    'Confirm'
+	                                ),
+	                                React.createElement(
+	                                    'button',
+	                                    { className: 'btn', onClick: this.handleBack },
+	                                    'Cancel'
+	                                )
 	                            )
 	                        )
 	                    ),
@@ -51497,10 +51507,10 @@
 	                        { id: 'stripe-process', style: { display: 'none' } },
 	                        React.createElement(
 	                            'div',
-	                            { className: 'group' },
+	                            { className: 'group1' },
 	                            React.createElement(
 	                                'div',
-	                                null,
+	                                { id: 'confirm' },
 	                                'Processing...'
 	                            )
 	                        )
@@ -51510,14 +51520,16 @@
 	                        { id: 'stripe-success', style: { display: 'none' } },
 	                        React.createElement(
 	                            'div',
-	                            { className: 'group' },
+	                            { className: 'group1' },
 	                            React.createElement(
 	                                'div',
-	                                { style: { display: 'block' } },
+	                                { id: 'confirm', style: { display: 'block' } },
 	                                React.createElement(
 	                                    'div',
 	                                    { id: 'success-text' },
-	                                    'Thank you for your purchase!'
+	                                    'Thank you for your purchase!',
+	                                    React.createElement('br', null),
+	                                    'An email was sent to your provided email address with the following information:'
 	                                ),
 	                                React.createElement(
 	                                    'div',
@@ -51525,26 +51537,46 @@
 	                                    React.createElement(
 	                                        'span',
 	                                        null,
-	                                        ' Your leader\'s access code is '
+	                                        'Here is your access code to play the hunt: '
+	                                    ),
+	                                    React.createElement('br', null),
+	                                    React.createElement(
+	                                        'span',
+	                                        null,
+	                                        ' ',
+	                                        React.createElement(
+	                                            'b',
+	                                            null,
+	                                            ' Team Leader\'s Access Code:'
+	                                        ),
+	                                        ' '
 	                                    ),
 	                                    React.createElement('span', { id: 'leader-code-slot' }),
+	                                    React.createElement('br', null),
 	                                    React.createElement(
 	                                        'span',
 	                                        null,
-	                                        ' and your team\'s access code is '
+	                                        ' And here is a code to share with your teammates: '
 	                                    ),
-	                                    React.createElement('span', { id: 'member-code-slot' }),
+	                                    React.createElement('br', null),
 	                                    React.createElement(
 	                                        'span',
 	                                        null,
-	                                        '.'
-	                                    )
+	                                        ' ',
+	                                        React.createElement(
+	                                            'b',
+	                                            null,
+	                                            'Team Members\' Access Code:'
+	                                        ),
+	                                        '  '
+	                                    ),
+	                                    React.createElement('span', { id: 'member-code-slot' })
 	                                )
 	                            ),
 	                            React.createElement('div', { id: 'notpaid-text', style: { display: 'block' } }),
 	                            React.createElement(
 	                                'button',
-	                                { onClick: this.handleExit },
+	                                { className: 'btn', onClick: this.handleExit },
 	                                'Confirm'
 	                            )
 	                        )
@@ -51553,15 +51585,6 @@
 	                        'div',
 	                        _defineProperty({ style: { textAlign: 'center' }, id: 'form-outcome' }, 'style', { visibility: 'hidden' }),
 	                        'center'
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { className: 'buttons' },
-	                    React.createElement(
-	                        'button',
-	                        { className: 'btn', onClick: this.handleExit },
-	                        'Home'
 	                    )
 	                )
 	            );

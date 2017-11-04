@@ -260,44 +260,44 @@ export class Register extends React.Component {
                     </form>
                     
                     <div id = 'stripe-confirm' style={{display:'none'}}>
-                        <div className="group">
-                            <div>
-                                <span>Your total is $</span>
-                                <span id="price-slot"></span>
-                                <span>. Please confirm to purchase this scavenger hunt.</span>
+                        <div className="group1">
+                            <div id="confirm">
+                                <span><b>Your total:</b> $</span>
+                                <span id="price-slot"></span><br/>
+                                <span> Please Press Confirm to Join this Hunt</span>
                             </div>
-                            <button id="confirm-button" onClick={this.handleConfirm}>Confirm</button>
-                            <button onClick={this.handleBack}>Back</button>
+                            <div id = "buttons">
+                                <button id="confirm-button" className="btn" onClick={this.handleConfirm}>Confirm</button>
+                                <button className="btn" onClick={this.handleBack}>Cancel</button>
+                            </div>
                         </div>
                     </div>
                     
                     <div id = 'stripe-process' style={{display:'none'}}>
-                        <div className="group">
-                            <div>Processing...</div>
+                        <div  className="group1">
+                            <div id="confirm">Processing...</div>
                         </div>
                     </div>
                     
                     <div id = 'stripe-success' style={{display:'none'}} >
-                        <div className="group">
-                            <div style={{display:'block'}}>
-                                <div id = 'success-text'>Thank you for your purchase!</div>
+                        <div className="group1">
+                            <div id="confirm" style={{display:'block'}}>
+                                <div id = 'success-text'>Thank you for your purchase!<br/>An email was sent to your provided email address with the following information:</div>
                                 <div>
-                                    <span> Your leader's access code is </span>
-                                    <span id="leader-code-slot"></span>
-                                    <span> and your team's access code is </span>
+                                    <span>Here is your access code to play the hunt: </span><br/>
+                                    <span> <b> Team Leader's Access Code:</b> </span>
+                                    <span id="leader-code-slot"></span><br/>
+                                    <span> And here is a code to share with your teammates: </span><br/>
+                                    <span> <b>Team Members' Access Code:</b>  </span>
                                     <span id="member-code-slot"></span>
-                                    <span>.</span>
                                 </div>
                             </div>
                             <div id = 'notpaid-text' style={{display:'block'}}></div>
-                            <button onClick={this.handleExit}>Confirm</button>
+                            <button className="btn" onClick={this.handleExit}>Confirm</button>
                         </div>
                     </div>
                     
                     <div style={{textAlign:'center'}} id="form-outcome" style={{visibility:'hidden'}}>center</div>
-                </div>
-                <div className="buttons">
-                    <button className="btn" onClick={this.handleExit}>Home</button>
                 </div>
             </div>
          
