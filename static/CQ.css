@@ -441,7 +441,7 @@ td{
         margin: 10px;
         padding-left:2px;
     }
-    header, h1{
+    header, h1, #confirm{
         color:white;
         font-size: 20px;
     }

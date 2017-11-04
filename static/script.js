@@ -51291,16 +51291,19 @@
 	            } else if (data['condition'] == 'accept') {
 	                this.price = data['price'];
 	                document.getElementById('stripe-form').style.display = 'none';
+	                document.getElementById('bt').style.display = 'none';
 	                document.getElementById('stripe-confirm').style.display = 'block';
 	                document.getElementById('price-slot').textContent = this.price / 100;
 	            } else if (data['condition'] == 'confirm') {
 	                document.getElementById('stripe-process').style.display = 'none';
+	                document.getElementById('bt').style.display = 'none';
 	                document.getElementById('stripe-success').style.display = 'block';
 	                document.getElementById('success-text').textContent = "Thank you for your purchase!";
 	                document.getElementById('leader-code-slot').textContent = data['leader_code'];
 	                document.getElementById('member-code-slot').textContent = data['member_code'];
 	            } else if (data['condition'] == 'not_paid') {
 	                document.getElementById('stripe-process').style.display = 'none';
+	                document.getElementById('bt').style.display = 'none';
 	                document.getElementById('stripe-success').style.display = 'block';
 	                document.getElementById('success-text').textContent = "Your account was created, but we couldn't process your payment. " + (data['error_code'] != null ? "Error code: " + data['error_code'] + " " : "") + "Please login to re-attempt payment.";
 	                document.getElementById('leader-code-slot').textContent = data['leader_code'];
@@ -51539,17 +51542,10 @@
 	                                    React.createElement(
 	                                        'span',
 	                                        null,
-	                                        'Here is your access code to play the hunt: '
-	                                    ),
-	                                    React.createElement('br', null),
-	                                    React.createElement(
-	                                        'span',
-	                                        null,
-	                                        ' ',
 	                                        React.createElement(
 	                                            'b',
 	                                            null,
-	                                            ' Team Leader\'s Access Code:'
+	                                            'Here Is Your Access Code To Play The Hunt:'
 	                                        ),
 	                                        ' '
 	                                    ),
@@ -51558,28 +51554,28 @@
 	                                    React.createElement(
 	                                        'span',
 	                                        null,
-	                                        ' And here is a code to share with your teammates: '
+	                                        React.createElement(
+	                                            'b',
+	                                            null,
+	                                            'Here Is A Code To Share With Your Teammates:'
+	                                        ),
+	                                        '  '
 	                                    ),
+	                                    React.createElement('span', { id: 'member-code-slot' }),
+	                                    React.createElement('br', null),
 	                                    React.createElement('br', null),
 	                                    React.createElement(
 	                                        'span',
 	                                        null,
-	                                        ' ',
-	                                        React.createElement(
-	                                            'b',
-	                                            null,
-	                                            'Team Members\' Access Code:'
-	                                        ),
-	                                        '  '
-	                                    ),
-	                                    React.createElement('span', { id: 'member-code-slot' })
+	                                        'Return to the Home Page and Login with your Team Name and Access Code in the \'Login to Existing Team\' Section'
+	                                    )
 	                                )
 	                            ),
 	                            React.createElement('div', { id: 'notpaid-text', style: { display: 'block' } }),
 	                            React.createElement(
 	                                'button',
 	                                { className: 'btn', onClick: this.handleExit },
-	                                'Confirm'
+	                                'Accept'
 	                            )
 	                        )
 	                    ),
@@ -51591,7 +51587,7 @@
 	                ),
 	                React.createElement(
 	                    'div',
-	                    { id: 'buttons' },
+	                    { className: 'buttons', id: 'bt' },
 	                    React.createElement(
 	                        'button',
 	                        { className: 'btn', onClick: function onClick() {

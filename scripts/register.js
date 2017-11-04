@@ -157,11 +157,13 @@ export class Register extends React.Component {
         else if (data['condition'] == 'accept'){
             this.price =  data['price'];
             document.getElementById('stripe-form').style.display = 'none';
+            document.getElementById('bt').style.display = 'none';
             document.getElementById('stripe-confirm').style.display = 'block';
             document.getElementById('price-slot').textContent = this.price/100;
         }
         else if (data['condition'] == 'confirm'){
             document.getElementById('stripe-process').style.display = 'none';
+            document.getElementById('bt').style.display = 'none';
             document.getElementById('stripe-success').style.display = 'block';
             document.getElementById('success-text').textContent = "Thank you for your purchase!";
             document.getElementById('leader-code-slot').textContent = data['leader_code'];
@@ -170,6 +172,7 @@ export class Register extends React.Component {
         
         else if (data['condition'] == 'not_paid'){
             document.getElementById('stripe-process').style.display = 'none';
+            document.getElementById('bt').style.display = 'none';
             document.getElementById('stripe-success').style.display = 'block';
             document.getElementById('success-text').textContent = "Your account was created, but we couldn't process your payment. "
                 + (data['error_code'] != null ? "Error code: " + data['error_code'] + " ": "")
@@ -284,22 +287,21 @@ export class Register extends React.Component {
                             <div id="confirm" style={{display:'block'}}>
                                 <div id = 'success-text'>Thank you for your purchase!<br/>An email was sent to your provided email address with the following information:</div>
                                 <div>
-                                    <span>Here is your access code to play the hunt: </span><br/>
-                                    <span> <b> Team Leader's Access Code:</b> </span>
+                                    <span><b>Here Is Your Access Code To Play The Hunt:</b> </span>
                                     <span id="leader-code-slot"></span><br/>
-                                    <span> And here is a code to share with your teammates: </span><br/>
-                                    <span> <b>Team Members' Access Code:</b>  </span>
-                                    <span id="member-code-slot"></span>
+                                    <span><b>Here Is A Code To Share With Your Teammates:</b>  </span>
+                                    <span id="member-code-slot"></span><br/><br/>
+                                    <span>Return to the Home Page and Login with your Team Name and Access Code in the 'Login to Existing Team' Section</span>
                                 </div>
                             </div>
                             <div id = 'notpaid-text' style={{display:'block'}}></div>
-                            <button className="btn" onClick={this.handleExit}>Confirm</button>
+                            <button className="btn" onClick={this.handleExit}>Accept</button>
                         </div>
                     </div>
                     
                     <div style={{textAlign:'center'}} id="form-outcome" style={{visibility:'hidden'}}>center</div>
                 </div>
-                <div id='buttons'>
+                <div className='buttons' id="bt">
                     <button className='btn' onClick={() => this.props.changePage('home')}>Home</button>
                 </div>
             </div>
