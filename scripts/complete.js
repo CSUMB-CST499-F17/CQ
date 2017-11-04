@@ -9,7 +9,8 @@ export class Complete extends React.Component {
         super(props);
         this.state = {
             'user': [],
-            'score':-1
+            'score':-1,
+            'time':""
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -19,12 +20,21 @@ export class Complete extends React.Component {
         Socket.on('user', (data) => {
             this.setState({
                 'user': data[0]['team_name'], 
-                'score':data[0]['score']
+                'score':data[0]['score'] + data[0]['time'],
+                'time':data[0]['elapsed']
             });
+            try{
+                Socket.emit('progessUpdate', {'user': this.state.user, 'progress':-1, 'score':this.state.score, 'attempts': 5});    
+            }
+            catch(err){
+                console.log(err);
+            }
             console.log(this.state.score);
             if(this.state.score > -1){
-                document.getElementById('team').innerHTML = this.state.user;
-                document.getElementById('score').innerHTML = this.state.score;
+                document.getElementById('title').innerHTML = "<b>Final Results for " + data[0]['hunt_name'] + "</b>";
+                document.getElementById('time').innerHTML = "<b>Time taken to complete Hunt:</b><br/> " + this.state.time;
+                document.getElementById('team').innerHTML = "<b>Team Name:</b><br/> " + this.state.user;
+                document.getElementById('score').innerHTML = "<b>Final Score:</b><br/> " + this.state.score;
             }
         });
     }
@@ -43,15 +53,17 @@ export class Complete extends React.Component {
                     <header>Finished</header>
                 </div>
                     <div id='intro'>
+                        <h1 id= "title" ></h1>
                         <div id = 'results'>
-                            <div id = 'team'></div>
-                            <div id = 'score'></div>
+                            <h2 id = 'team'></h2>
+                            <h2 id = 'time'></h2>
+                            <h2 id = 'score'></h2>
                         </div>
-                        <div className='buttons'>
-                            <Button onClick={() => this.props.changePage('leaderboard')}>Leaderboard</Button>
-                            <Button onClick={() => this.props.changePage('home')}>Home</Button>
-                        </div>      
                     </div>
+                    <div className='buttons'>
+                        <button className="btn" onClick={() => this.props.changePage('leaderboard')}>Leaderboard</button>
+                        <button className="btn" onClick={() => this.props.changePage('home')}>Home</button>
+                    </div>  
             </div>
 
         );

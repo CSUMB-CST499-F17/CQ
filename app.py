@@ -118,10 +118,11 @@ def validateCredentials(data):
             for query in users:
                 if(check_password(query.password, data['access'])):
                     return 'admin%' + query.username
-                    
+            
+            return 'no%guest'
         except Exception as e: 
             print (e)
-            return 'no%guest'
+            
 
 @socketio.on('progessUpdate')
 def updateProgress(data):
@@ -136,17 +137,44 @@ def updateProgress(data):
         #updates the score
         query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.score: data['score']})
         models.db.session.commit()
-        # #updates end_time
-        # query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.end_time: datetime.datetime.now()})
-        # models.db.session.commit()
         
-        #sends updates back to play.js
+        query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt'])
+        for row in query:
+            elapsed = getTimeElapsed(str(row.end_time-row.start_time))
+            time = timeScore((row.end_time-row.start_time).total_seconds())
+            
         userData = []
-        userData.append({'email':user['email'], 'team_name':user['team_name'], 'hunt':user['hunt'], 'progress':data['progress'], 'score':data['score'], 'attempts':data['attempts']})
+        userData.append({'email':user['email'], 'team_name':user['team_name'], 'hunt':user['hunt'], 'progress':data['progress'], 'score':data['score'], 'attempts':data['attempts'], 'time': time, 'elapsed':elapsed, 'hunt_name': data['hunt_name']})
         socketio.emit('user', userData)
     except Exception as e: 
-        print
+        print (e)
+        
+def getTimeElapsed(time):
+    if "days" in time: #mulitple days
+        if len(time) == 16: #mulitple days over 10 hours
+            return time[0] + "days, " + time[8] + "" + time[9] + " hours, " + time[11] + "" + time[12] + " minutes, " + time[14] + "" + time[15] + " seconds"
+        else:#mulitple days under 10 hours
+            return time[0] + "days, " + time[8] + " hours, " + time[10] + "" + time[11] + " minutes, " + time[13] + "" + time[14] + " seconds"
+    if "day," in time: #one day
+        if len(time) == 15: #one day and over 10 hours
+            return time[0] + "days, " + time[7] + "" + time[8] + " hours, " + time[10] + "" + time[11] + " minutes, " + time[13] + "" + time[14] + " seconds"
+        else:#one day under 10 hours
+            return time[0] + "days, " + time[7] + " hours, " + time[9] + "" + time[10] + " minutes, " + time[12] + "" + time[13] + " seconds"
+    if len(time) == 8: #over 10 hours
+        return time[0] + time[1] + " hours, " + time[3] + "" + time[4] + " minutes, " + time[6] + "" + time[7] + " seconds"
+    else: #below 10 hours
+        return time[0] + " hours, " + time[2] + "" + time[3] + " minutes, " + time[5] + "" + time[6] + " seconds"
     
+def timeScore(total):
+    hours = total / 60 / 60;
+    if(hours <= 2):
+        score = 500
+    else:
+        score = 500 - (60 * (int(hours) - 2))
+        if(score < 0):
+            score = 0
+    return score
+
 @socketio.on('updateTime')
 def updateTime(data):
     user = data['user']
@@ -169,21 +197,36 @@ def updateTime(data):
         except Exception as e: 
             print(e)
     
+
+
 @socketio.on('leaderboard')
 def updateLeaderboard(data):
-    global teams
+    leaderboardUser = []
+    team = []
     try:
-        sql = models.db.session.query(models.Participants.team_name, models.Participants.score, models.Participants.start_time,  models.Participants.end_time.filter(models.Participants.end_time != None)).order_by(models.Participants.score.desc())
+        sql = models.db.session.query(
+            models.Participants.progress,
+            models.Participants.score,
+            models.Participants.team_name,
+            models.Participants.start_time,
+            models.Participants.end_time).filter(
+                sqlalchemy.and_(
+                    models.Participants.progress == -1,
+                    models.Participants.end_time != None
+                    )).order_by(models.Participants.score.desc())
 
-        print(sql)
-        leaderboardUser.append({'score':row.score,'team_name':row.team_name,'score':row.score, 'start_time':row.start_time,'end_time':row.end_time})
+        for row in sql:
+            leaderboardUser.append({'progress':row.progress, 'score':row.score,'team_name':row.team_name, 'start_time':row.start_time.strftime('%Y.%M.%d.%H.%M'),'end_time':row.end_time.strftime('%Y.%M.%d.%H.%M')})
+
     except:
-        print("Error: Database does not exist for populating leaderboard")
-
+        print("Error: leaderboard query broke")
     socketio.emit('users', {
         'userlist': leaderboardUser
     })
     print('Leaderboard data sent.')
+
+    
+    
 
 @socketio.on('register')
 def updateRegister(data):

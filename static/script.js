@@ -50976,7 +50976,7 @@
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.score
+	                            index + 1
 	                        ),
 	                        ' ',
 	                        React.createElement(
@@ -51018,16 +51018,6 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'intro' },
-	                    React.createElement(
-	                        'div',
-	                        { id: 'leaderboard-form' },
-	                        React.createElement('input', { id: 'leaderboard-search1', className: 'form-control ', placeholder: 'Search Hunts', size: '5' }),
-	                        React.createElement(
-	                            'button',
-	                            { id: 'leaderboard-search', className: 'btn' },
-	                            'Search'
-	                        )
-	                    ),
 	                    React.createElement(
 	                        'div',
 	                        { id: 'leaderboards' },
@@ -51163,7 +51153,7 @@
 	        _this.userdata = {
 	            team_name: '',
 	            email: '',
-	            hunts_id: '1',
+	            hunts_id: '',
 	            image: '',
 	            discount_code: ''
 	        };
@@ -51280,11 +51270,14 @@
 	            document.getElementById("stripe-form").reset();
 	            this.userdata.discount_code = '';
 	            this.userdata.email = '';
-	            this.userdata.hunts_id = '1';
+	            this.userdata.hunts_id = '';
 	            this.userdata.image = '';
 	            this.userdata.team_name = '';
 	            this.token = null;
 	            this.card.clear();
+	            while (this.hunts.length) {
+	                this.hunts.pop();
+	            }
 
 	            this.props.changePage('home');
 	        }
@@ -51641,7 +51634,7 @@
 	        _this.attempts = 5;
 	        _this.data = [];
 	        _this.dataSize = 0;
-
+	        _this.hunt_name = "";
 	        _this.emit = _this.emit.bind(_this);
 	        _this.checkAnswer = _this.checkAnswer.bind(_this);
 	        _this.completed = _this.completed.bind(_this);
@@ -51655,9 +51648,10 @@
 	            _this.setState({
 	                'user': data[0],
 	                'playerQuestionOn': data[0]['progress'] - 1
+
 	            });
 	            _this.score = data[0]['score'];
-	            if (_this.score == -1 || _this.score == null) {
+	            if ((_this.score == null || _this.score <= 0) && data[0]['progress'] >= 0) {
 	                _this.score = _this.dataSize * 25;
 	            }
 	            _this.attempts = data[0]['attempts'];
@@ -51671,7 +51665,7 @@
 	        key: 'emit',
 	        value: function emit() {
 	            try {
-	                _Socket.Socket.emit('progessUpdate', { 'user': this.state.user, 'progress': this.state.playerQuestionOn + 1, 'score': this.score, 'attempts': this.attempts });
+	                _Socket.Socket.emit('progessUpdate', { 'user': this.state.user, 'progress': this.state.playerQuestionOn + 1, 'score': this.score, 'attempts': this.attempts, 'hunt_name': this.hunt_name });
 	            } catch (err) {
 	                console.log(err);
 	            }
@@ -51680,7 +51674,7 @@
 	        key: 'checkAnswer',
 	        value: function checkAnswer() {
 	            var result = document.getElementById('result');
-	            if (this.state.userAnswer == this.state.correctAnswer) {
+	            if (this.state.userAnswer.toLowerCase() == this.state.correctAnswer.toLowerCase()) {
 	                result.style.visibility = 'visible';
 	                result.textContent = 'Correct';
 	                result.style.color = "#9bf442";
@@ -51699,7 +51693,7 @@
 	                document.getElementById('result').style.display = "block";
 	            } else {
 	                if (document.getElementById('answer').value != "") {
-	                    if (this.attempts > 0) {
+	                    if (this.attempts > 0 && this.score > 0) {
 	                        this.score -= 5;
 	                        this.attempts--;
 	                        this.emit();
@@ -51719,9 +51713,8 @@
 	    }, {
 	        key: 'completed',
 	        value: function completed() {
-	            console.log(this.score);
 	            try {
-	                _Socket.Socket.emit('progessUpdate', { 'user': this.state.user, 'progress': -1, 'score': this.score, 'attempts': this.attempts });
+	                _Socket.Socket.emit('progessUpdate', { 'user': this.state.user, 'progress': -1, 'score': this.score, 'attempts': this.attempts, 'hunt_name': data[0]['name'] });
 	            } catch (err) {
 	                console.log(err);
 	            }
@@ -51745,6 +51738,7 @@
 	                }
 	            });
 	            _Socket.Socket.on('playStart', function (data) {
+	                _this2.hunt_name = data[0]['name'];
 	                document.getElementById('game').innerText = data[0]['name'];
 	            });
 	        }
@@ -51790,7 +51784,7 @@
 	    }, {
 	        key: 'showHint',
 	        value: function showHint() {
-	            if (this.attempts > 0) {
+	            if (this.attempts > 0 && this.score > 0) {
 	                this.score -= 5;
 	                this.attempts--;
 	                this.emit();
@@ -51827,16 +51821,13 @@
 	        value: function render() {
 	            var _this3 = this;
 
-	            // if(this.props.loggedIn == 'no'){
-	            //         this.props.changePage('home');
-	            // }
-
 	            this.data = this.state.questionsData;
 	            this.dataSize = this.data.length;
 	            for (var i = 0; i < this.data.length; i++) {
 	                var obj = this.data[i];
 	                if (i == this.state.playerQuestionOn) {
-	                    document.getElementById('play-question').innerHTML = obj.question;
+	                    var num = i + 1;
+	                    document.getElementById('play-question').innerHTML = "#" + num + " - " + obj.question;
 	                    this.state.correctAnswer = obj.answer;
 	                    document.getElementById('hint1').innerHTML = "Hint One: " + obj.hint1;
 	                    document.getElementById('hint2').innerHTML = "Hint Two: " + obj.hint2;
@@ -51932,7 +51923,11 @@
 	                            'button',
 	                            { className: 'btn', id: 'skip', style: { display: 'none' }, onClick: this.skip },
 	                            'Skip Question'
-	                        ),
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { className: 'buttons' },
 	                        React.createElement(
 	                            'button',
 	                            { className: 'btn', onClick: function onClick() {
@@ -72080,7 +72075,8 @@
 
 	        _this.state = {
 	            'user': [],
-	            'score': -1
+	            'score': -1,
+	            'time': ""
 	        };
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        return _this;
@@ -72095,12 +72091,20 @@
 	            _Socket.Socket.on('user', function (data) {
 	                _this2.setState({
 	                    'user': data[0]['team_name'],
-	                    'score': data[0]['score']
+	                    'score': data[0]['score'] + data[0]['time'],
+	                    'time': data[0]['elapsed']
 	                });
+	                try {
+	                    _Socket.Socket.emit('progessUpdate', { 'user': _this2.state.user, 'progress': -1, 'score': _this2.state.score, 'attempts': 5 });
+	                } catch (err) {
+	                    console.log(err);
+	                }
 	                console.log(_this2.state.score);
 	                if (_this2.state.score > -1) {
-	                    document.getElementById('team').innerHTML = _this2.state.user;
-	                    document.getElementById('score').innerHTML = _this2.state.score;
+	                    document.getElementById('title').innerHTML = "<b>Final Results for " + data[0]['hunt_name'] + "</b>";
+	                    document.getElementById('time').innerHTML = "<b>Time taken to complete Hunt:</b><br/> " + _this2.state.time;
+	                    document.getElementById('team').innerHTML = "<b>Team Name:</b><br/> " + _this2.state.user;
+	                    document.getElementById('score').innerHTML = "<b>Final Score:</b><br/> " + _this2.state.score;
 	                }
 	            });
 	        }
@@ -72134,29 +72138,31 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'intro' },
+	                    React.createElement('h1', { id: 'title' }),
 	                    React.createElement(
 	                        'div',
 	                        { id: 'results' },
-	                        React.createElement('div', { id: 'team' }),
-	                        React.createElement('div', { id: 'score' })
+	                        React.createElement('h2', { id: 'team' }),
+	                        React.createElement('h2', { id: 'time' }),
+	                        React.createElement('h2', { id: 'score' })
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { className: 'buttons' },
+	                    React.createElement(
+	                        'button',
+	                        { className: 'btn', onClick: function onClick() {
+	                                return _this3.props.changePage('leaderboard');
+	                            } },
+	                        'Leaderboard'
 	                    ),
 	                    React.createElement(
-	                        'div',
-	                        { className: 'buttons' },
-	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: function onClick() {
-	                                    return _this3.props.changePage('leaderboard');
-	                                } },
-	                            'Leaderboard'
-	                        ),
-	                        React.createElement(
-	                            _reactBootstrap.Button,
-	                            { onClick: function onClick() {
-	                                    return _this3.props.changePage('home');
-	                                } },
-	                            'Home'
-	                        )
+	                        'button',
+	                        { className: 'btn', onClick: function onClick() {
+	                                return _this3.props.changePage('home');
+	                            } },
+	                        'Home'
 	                    )
 	                )
 	            );

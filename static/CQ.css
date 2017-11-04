@@ -16,7 +16,7 @@ body {
 }
 header, h1{
     color:white;
-    font-size: 32px;
+    font-size: 36px;
 }
 h4{
     color:white;
@@ -135,6 +135,25 @@ p{
     margin:15px;
 }
 
+/* Complete */ 
+#team, #score, #time{
+    color: white;
+    font-size:32px;
+    padding:10px;
+}
+#results{
+    display: inline-block;
+    border:solid;
+    border-width: 7;
+    border-color: #f2e537;
+    width:650px;
+    max-width: 65%;
+    margin:10px;
+}
+#title{
+    margin:15px;
+}
+
 /* Logos */ 
 #logo-big{
     width:700px;
@@ -241,19 +260,6 @@ p{
     margin:auto;
     width:70%;
     text-align:left;
-}
-#leaderboard-form{
-    justify-content: center;
-    display:flex;
-    width:30%;
-    margin:auto;
-}
-#leaderboard-search{
-    display:inline;
-}
-#leaderboard-search1{
-    display:inline;
-
 }
 #leaderboards{
     max-width: 30%;
