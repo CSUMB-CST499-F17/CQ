@@ -261,19 +261,6 @@ p{
     width:70%;
     text-align:left;
 }
-#leaderboard-form{
-    justify-content: center;
-    display:flex;
-    width:30%;
-    margin:auto;
-}
-#leaderboard-search{
-    display:inline;
-}
-#leaderboard-search1{
-    display:inline;
-
-}
 #leaderboards{
     max-width: 30%;
     padding: 20px;

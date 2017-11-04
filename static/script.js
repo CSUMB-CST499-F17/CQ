@@ -51020,16 +51020,6 @@
 	                    { id: 'intro' },
 	                    React.createElement(
 	                        'div',
-	                        { id: 'leaderboard-form' },
-	                        React.createElement('input', { id: 'leaderboard-search1', className: 'form-control ', placeholder: 'Search Hunts', size: '5' }),
-	                        React.createElement(
-	                            'button',
-	                            { id: 'leaderboard-search', className: 'btn' },
-	                            'Search'
-	                        )
-	                    ),
-	                    React.createElement(
-	                        'div',
 	                        { id: 'leaderboards' },
 	                        React.createElement(
 	                            'table',
@@ -51933,7 +51923,11 @@
 	                            'button',
 	                            { className: 'btn', id: 'skip', style: { display: 'none' }, onClick: this.skip },
 	                            'Skip Question'
-	                        ),
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { className: 'buttons' },
 	                        React.createElement(
 	                            'button',
 	                            { className: 'btn', onClick: function onClick() {

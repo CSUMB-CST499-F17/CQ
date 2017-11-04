@@ -57,10 +57,6 @@ export class Leaderboard extends React.Component {
                     <header>Leaderboard</header>
                 </div>
                     <div id='intro'>
-                        <div id='leaderboard-form'>
-                            <input  id = "leaderboard-search1" className="form-control " placeholder="Search Hunts" size="5" />
-                            <button id = "leaderboard-search" className="btn">Search</button>
-                        </div>
                         <div id='leaderboards'>
                             <table id="leaderboard-table">
                                 <tbody>

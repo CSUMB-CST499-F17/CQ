@@ -258,7 +258,10 @@ export class Play extends React.Component {
                             <button className="btn" id="answer-submit" style={{display:this.props.hide}} onClick={this.checkAnswer} >Submit</button>
                             <button className="btn" id="hint-submit" style={{display:this.props.hide}} onClick={this.showHint}>Hint</button>
                             <button className="btn" id="skip" style={{display:'none'}} onClick={this.skip} >Skip Question</button>
-                            <button className="btn" onClick={() => this.props.changePage('home')}>Home</button>
+                            
+                    </div>
+                    <div className='buttons'>
+                        <button className="btn" onClick={() => this.props.changePage('home')}>Home</button>
                     </div>
                 </div>
             </div>
