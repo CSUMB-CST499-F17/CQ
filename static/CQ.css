@@ -16,7 +16,7 @@ body {
 }
 header, h1{
     color:white;
-    font-size: 32px;
+    font-size: 36px;
 }
 h4{
     color:white;
@@ -136,9 +136,22 @@ p{
 }
 
 /* Complete */ 
-#team, #score{
+#team, #score, #time{
     color: white;
     font-size:32px;
+    padding:10px;
+}
+#results{
+    display: inline-block;
+    border:solid;
+    border-width: 7;
+    border-color: #f2e537;
+    width:650px;
+    max-width: 65%;
+    margin:10px;
+}
+#title{
+    margin:15px;
 }
 
 /* Logos */ 

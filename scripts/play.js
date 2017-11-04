@@ -35,7 +35,7 @@ export class Play extends React.Component {
         this.attempts = 5;
         this.data = [];
         this.dataSize = 0;
-        
+        this.hunt_name = "";
         this.emit = this.emit.bind(this);
         this.checkAnswer = this.checkAnswer.bind(this);
         this.completed = this.completed.bind(this);
@@ -64,7 +64,7 @@ export class Play extends React.Component {
     
     emit(){
         try{
-            Socket.emit('progessUpdate', {'user': this.state.user, 'progress':this.state.playerQuestionOn + 1, 'score':this.score, 'attempts': this.attempts});    
+            Socket.emit('progessUpdate', {'user': this.state.user, 'progress':this.state.playerQuestionOn + 1, 'score':this.score, 'attempts': this.attempts, 'hunt_name':this.hunt_name});    
         }
         catch(err){
             console.log(err);
@@ -114,7 +114,7 @@ export class Play extends React.Component {
     
     completed(){
         try{
-            Socket.emit('progessUpdate', {'user': this.state.user, 'progress':-1, 'score':this.score, 'attempts': this.attempts});    
+            Socket.emit('progessUpdate', {'user': this.state.user, 'progress':-1, 'score':this.score, 'attempts': this.attempts, 'hunt_name':data[0]['name']});    
         }
         catch(err){
             console.log(err);
@@ -136,6 +136,7 @@ export class Play extends React.Component {
             }
         });
         Socket.on('playStart', (data) => {
+            this.hunt_name = data[0]['name'];
             document.getElementById('game').innerText = data[0]['name'];
         });
     }

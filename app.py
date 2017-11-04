@@ -140,14 +140,31 @@ def updateProgress(data):
         
         query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt'])
         for row in query:
-            time = timeScore((row.start_time-row.end_time).total_seconds())
+            elapsed = getTimeElapsed(str(row.end_time-row.start_time))
+            time = timeScore((row.end_time-row.start_time).total_seconds())
             
         userData = []
-        userData.append({'email':user['email'], 'team_name':user['team_name'], 'hunt':user['hunt'], 'progress':data['progress'], 'score':data['score'], 'attempts':data['attempts'], 'time': time})
+        userData.append({'email':user['email'], 'team_name':user['team_name'], 'hunt':user['hunt'], 'progress':data['progress'], 'score':data['score'], 'attempts':data['attempts'], 'time': time, 'elapsed':elapsed, 'hunt_name': data['hunt_name']})
         socketio.emit('user', userData)
     except Exception as e: 
         print (e)
-
+        
+def getTimeElapsed(time):
+    if "days" in time: #mulitple days
+        if len(time) == 16: #mulitple days over 10 hours
+            return time[0] + "days, " + time[8] + "" + time[9] + " hours, " + time[11] + "" + time[12] + " minutes, " + time[14] + "" + time[15] + " seconds"
+        else:#mulitple days under 10 hours
+            return time[0] + "days, " + time[8] + " hours, " + time[10] + "" + time[11] + " minutes, " + time[13] + "" + time[14] + " seconds"
+    if "day," in time: #one day
+        if len(time) == 15: #one day and over 10 hours
+            return time[0] + "days, " + time[7] + "" + time[8] + " hours, " + time[10] + "" + time[11] + " minutes, " + time[13] + "" + time[14] + " seconds"
+        else:#one day under 10 hours
+            return time[0] + "days, " + time[7] + " hours, " + time[9] + "" + time[10] + " minutes, " + time[12] + "" + time[13] + " seconds"
+    if len(time) == 8: #over 10 hours
+        return time[0] + time[1] + " hours, " + time[3] + "" + time[4] + " minutes, " + time[6] + "" + time[7] + " seconds"
+    else: #below 10 hours
+        return time[0] + " hours, " + time[2] + "" + time[3] + " minutes, " + time[5] + "" + time[6] + " seconds"
+    
 def timeScore(total):
     hours = total / 60 / 60;
     if(hours <= 2):
