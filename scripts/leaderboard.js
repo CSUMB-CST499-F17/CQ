@@ -36,29 +36,22 @@ export class Leaderboard extends React.Component {
         let userlist='';
         var dif;
         var data = this.state.userlist;
+        var dif;
         
         for(var i = 0; i < data.length; i++) {
             console.log(data[i].start_time);
             console.log(data[i].end_time);
-            
-            var a = new Date(data[i].start_time);
-            var b = new Date(data[i].end_time);
-            var difference = (b - a) / 1000;
-            console.log(difference);
-            dif = Date.parse(data[i].start_time) - Date.parse(data[i].end_time);
+            var start = new Date(data[i].start_time);
+            var end = new Date(data[i].end_time);
+            data[i].end_time = (end-start) /1000/60/60;  // second/minutes/hours
+            data[i].end_time = data[i].end_time.toFixed(2);
         }
-        console.log(dif);
-        
-        
-        
-        
-        
-        
+
         
         if (this.state.userlist != null) {
             userlist = this.state.userlist.map(
                 (n, index) =>
-                <tr key={index}><td>{index+1}</td> <td>{n.team_name}</td><td>{n.score}</td><td>{n.dif}</td></tr>
+                <tr key={index}><td>{index+1}</td> <td>{n.team_name}</td><td>{n.score}</td><td>{n.end_time}</td></tr>
              );
         }
 
@@ -75,7 +68,7 @@ export class Leaderboard extends React.Component {
                             <table id="leaderboard-table">
                                 <tbody>
                                     <tr>
-                                        <td>Rank</td><td>Team</td><td>Score</td><td>Start Time</td>
+                                        <td>Rank</td><td>Team</td><td>Score</td><td>Time (Hours)</td>
                                     </tr>
                                 </tbody>
                             </table>

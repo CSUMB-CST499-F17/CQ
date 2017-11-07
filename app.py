@@ -216,7 +216,7 @@ def updateLeaderboard(data):
                     )).order_by(models.Participants.score.desc())
 
         for row in sql:
-            leaderboardUser.append({'progress':row.progress, 'score':row.score,'team_name':row.team_name, 'start_time':row.start_time.strftime('%Y, %m, %d, %H, %M, %S'),'end_time':row.end_time.strftime('%Y, %m, %d, %H, %M, %S')})
+            leaderboardUser.append({'progress':row.progress, 'score':row.score,'team_name':row.team_name, 'start_time':row.start_time.strftime('%Y-%m-%d %H:%M:%S'),'end_time':row.end_time.strftime('%Y-%m-%d %H:%M:%S')})
 
     except:
         print("Error: leaderboard query broke")

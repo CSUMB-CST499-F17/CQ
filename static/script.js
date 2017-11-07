@@ -51280,18 +51280,16 @@
 	            var userlist = '';
 	            var dif;
 	            var data = this.state.userlist;
+	            var dif;
 
 	            for (var i = 0; i < data.length; i++) {
 	                console.log(data[i].start_time);
 	                console.log(data[i].end_time);
-
-	                var a = new Date(data[i].start_time);
-	                var b = new Date(data[i].end_time);
-	                var difference = (b - a) / 1000;
-	                console.log(difference);
-	                dif = Date.parse(data[i].start_time) - Date.parse(data[i].end_time);
+	                var start = new Date(data[i].start_time);
+	                var end = new Date(data[i].end_time);
+	                data[i].end_time = (end - start) / 1000 / 60 / 60; // second/minutes/hours
+	                data[i].end_time = data[i].end_time.toFixed(2);
 	            }
-	            console.log(dif);
 
 	            if (this.state.userlist != null) {
 	                userlist = this.state.userlist.map(function (n, index) {
@@ -51317,7 +51315,7 @@
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.dif
+	                            n.end_time
 	                        )
 	                    );
 	                });
@@ -51373,7 +51371,7 @@
 	                                    React.createElement(
 	                                        'td',
 	                                        null,
-	                                        'Start Time'
+	                                        'Time (Hours)'
 	                                    )
 	                                )
 	                            )
