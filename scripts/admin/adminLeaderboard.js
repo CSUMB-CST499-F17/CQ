@@ -38,7 +38,7 @@ export class AdminLeaderboard extends React.Component {
         if (this.state.userlist != null) {
             userlist = this.state.userlist.map(
                 (n, index) =>
-                <tr key={index}><td></td><td>{n.name}</td><td>{n.picture}</td><td></td></tr>
+                <tr key={index}><td>{index+1}</td> <td>{n.team_name}</td><td>{n.score}</td><td>{n.end_time}</td></tr>
              );
         }
         
