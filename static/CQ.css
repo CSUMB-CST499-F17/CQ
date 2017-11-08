@@ -36,7 +36,7 @@ p{
 }
 .btn {
     background-color: white;
-    color: black;
+    color: #0d3551;
     border: none;
     padding: 5px 15px;
     text-align: center;
@@ -70,7 +70,7 @@ p{
 #login input{
     text-align: center;
     display: inline-block;
-    color: black;
+    color: #0d3551;
     font-size: 16px;
     margin: 4px 2px;
 }
@@ -270,12 +270,12 @@ p{
     margin: auto;
 }
 #leaderboard-table, th, td {
-   border: 1px solid black;
+   border: 1px solid #3E6F96;
 }
 #leaderboard-table, tr:nth-child(even) {
-   background-color: #FAEBD7;
+   background-color: #fffcdb;
 }
-#leaderboard-table, th {
+#leaderboard-table td {
    font-weight: bold;
    background-color: #74CCCF;
    color:white;
@@ -294,6 +294,7 @@ overflow-y:scroll;
     width:100%;
     justify-content: center;
     background-color:white;
+    color: #0d3551;
 }
 td{
     width:25%;
@@ -320,7 +321,7 @@ td{
 /* Change the color of links on hover */
 #topnav a:hover {
     background-color: #ddd;
-    color: black;
+    color: #0d3551;
 }
 
 /* Hide the link that should open and close the topnav on small screens */
@@ -502,7 +503,7 @@ td{
     /* Change the color of links on hover */
     #topnav a:hover {
         background-color: #ddd;
-        color: black;
+        color: #0d3551;
     }
 
     /* Hide the link that should open and close the topnav on small screens */

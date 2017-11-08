@@ -15,7 +15,8 @@ export class AdminLeaderboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            'userlist': []
+            'userlist': [],
+            'userlistPlusTime': []
         };
         this.pageName = 'adminLeaderboard';
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -36,42 +37,43 @@ export class AdminLeaderboard extends React.Component {
 
     render() {
         let userlist='';
-        var dif;
-        var data = this.state.userlist;
-        var dif;
-        
-        for(var i = 0; i < data.length; i++) {
-            console.log(data[i].start_time);
-            console.log(data[i].end_time);
-            console.log('admin')
-            var start = new Date(data[i].start_time);
-            var end = new Date(data[i].end_time);
-            data[i].end_time = (end-start) /1000;  // second/minutes/hours
-            // data[i].end_time = data[i].end_time.toFixed(2);
-            var delta = data[i].end_time;
-            // calculate (and subtract) whole days
-            var days = Math.floor(delta / 86400);
-            delta -= days * 86400;
-            // calculate (and subtract) whole hours
-            var hours = Math.floor(delta / 3600) % 24;
-            delta -= hours * 3600;
-            // calculate (and subtract) whole minutes
-            var minutes = Math.floor(delta / 60) % 60;
-            delta -= minutes * 60;
-            // what's left is seconds
-            var seconds = delta % 60;
-            data[i].end_time = [days,hours,minutes,seconds];
-        }
+        for(var i = 0; i < this.state.userlist.length; i++) {
+            var start = new Date(this.state.userlist[i].start_time);
+            var end = new Date(this.state.userlist[i].end_time);
+            var team_name = this.state.userlist[i].team_name;
+            var score = this.state.userlist[i].score;
             
+            var time = (end-start) /1000;  // second/minutes/hours
+        
+            // calculate (and subtract) whole days
+            var days = Math.floor(time / 86400);
+            time -= days * 86400;
+            // calculate (and subtract) whole hours
+            var hours = Math.floor(time / 3600) % 24;
+            time -= hours * 3600;
+            // calculate (and subtract) whole minutes
+            var minutes = Math.floor(time / 60) % 60;
+            time -= minutes * 60;
+            // what's left is seconds
+            var seconds = time % 60;
+            
+            this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
+            
+            
+        }
 
         
-        if (this.state.userlist != null) {
-            userlist = this.state.userlist.map(
+        if (this.state.userlistPlusTime != null) {
+            userlist = this.state.userlistPlusTime.map(
                 (n, index) =>
-                <tr key={index}><td>{index+1}</td> <td>{n.team_name}</td><td>{n.score}</td><td>{n.end_time[0]} d<br></br>{n.end_time[1]} h<br></br>{n.end_time[2]} m<br></br>{n.end_time[3]} s</td></tr>
+                <tr key={index}><td>{index+1}</td> <td>{n[0]}</td><td>{n[1]}</td>
+                <td>{n[2] != 0 ? <div>{n[2]} d<br/></div> : <div/>}
+                    {n[3] != 0 ? <div>{n[3]} h<br/></div> : <div/>}
+                    {n[4] != 0 ? <div>{n[4]} m<br/></div> : <div/>}
+                    {n[5] != 0 ? <div>{n[5]} s<br/></div> : <div/>}
+                </td></tr>
              );
         }
-        
         
         return (
             <div>
