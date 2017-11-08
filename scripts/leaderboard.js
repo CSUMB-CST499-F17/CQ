@@ -41,6 +41,7 @@ export class Leaderboard extends React.Component {
         for(var i = 0; i < data.length; i++) {
             console.log(data[i].start_time);
             console.log(data[i].end_time);
+            console.log('user')
             var start = new Date(data[i].start_time);
             var end = new Date(data[i].end_time);
             data[i].end_time = (end-start) /1000;  // second/minutes/hours
