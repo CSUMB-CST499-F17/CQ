@@ -262,20 +262,23 @@ p{
     text-align:left;
 }
 #leaderboards{
-    max-width: 30%;
-    padding: 20px;
-    justify-content: center;
+    max-width: 80%;
     margin: auto;
-
+}
+#leaderboard-table{
+    width:100%;
+    margin: auto;
 }
 #leaderboard-table, th, td {
    border: 1px solid black;
 }
-#leaderboard-table{
-    width:100%;
-    justify-content: center;
-    margin: auto;
-    background-color:white;
+#leaderboard-table, tr:nth-child(even) {
+   background-color: #FAEBD7;
+}
+#leaderboard-table, th {
+   font-weight: bold;
+   background-color: #74CCCF;
+   color:white;
 }
 #userList{
     overflow: hidden;
@@ -475,6 +478,9 @@ td{
         float:right;
         margin-right:0%;
         margin-top:3px;
+    }
+    #leaderboards{
+        max-width: 100%;
     }
     /* Add a black background color to the top navigation */
     #topnav {
