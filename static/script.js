@@ -52342,7 +52342,7 @@
 	                hint1 = this.props.state.questions[index]['hint1'];
 	                hint2 = this.props.state.questions[index]['hint2'];
 	                points = this.props.state.user.attempts * 5;
-	                if (this.props.state.question[index]['hint1'] != "") {
+	                if (this.props.state.question[index + 1]['hint1'] != "") {
 	                    this.hide = 'block';
 	                }
 	            } catch (err) {}
