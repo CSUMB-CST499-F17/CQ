@@ -172,7 +172,7 @@ def getTimeElapsed(time):
         return time[0] + " hour(s), " + time[2] + "" + time[3] + " minutes, " + time[5] + "" + time[6] + " seconds"
     
 def timeScore(total):
-    print "in Timescore"
+    print("in Timescore")
     hours = total / 60 / 60;
     if(hours <= 2):
         score = 500
@@ -184,7 +184,7 @@ def timeScore(total):
 
 @socketio.on('updateTime')
 def updateTime(data):
-    print "In updateTime"
+    print("In updateTime")
     user = data['user']
     if(data['start_time'] != ""):
         print("Start Time")
