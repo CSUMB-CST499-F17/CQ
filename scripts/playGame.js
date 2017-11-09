@@ -9,6 +9,7 @@ export class PlayGame extends React.Component {
         this.state = {
             'attempts':[],
         };
+        this.hide = 'none';
         this.checkAnswer = this.checkAnswer.bind(this);
         this.completed = this.completed.bind(this);
         this.emit0 = this.emit0.bind(this);
@@ -115,14 +116,10 @@ export class PlayGame extends React.Component {
         document.getElementById('skip').style.display = "none";
         document.getElementById('answer').value = "";
         document.getElementById('answer-submit').style.display = "block";
-        if(this.props.state.questions[(this.props.state.user.progress + 1)].hint1 == ""){
+        if(this.props.state.questions[(this.props.state.user.progress + 1)]['hint1'] == ""){
             //checks to see if there is a second hint, if not, the button disappears
-            document.getElementById('hint-submit').style.display = "none";
-        }
-        else{
             document.getElementById('hint-submit').style.display = "block";
         }
-        document.getElementById('hint-submit').style.display = "block";
         var userData = {'id':this.props.state.user.id, 'email':this.props.state.user.email, 'team_name':this.props.state.user.team_name, 'hunts_id':this.props.state.user.hunts_id, 'score':this.props.state.user.score, 'attempts':5, 'progress':(this.props.state.user.progress + 1)};
         this.props.setUser(userData,this.done0);
     }
@@ -130,7 +127,7 @@ export class PlayGame extends React.Component {
     //reveals the hint on hint button ciick
     showHint(){
         var userData ={};
-        if(this.props.state.questions[this.props.state.user.progress].hint1 != ""){
+        if(this.props.state.questions[this.props.state.user.progress]['hint1'] != ""){
             //checks to see if there is a first hint, if not, the button disappears
             document.getElementById('hint1').style.display = "block";
             if(this.props.state.user.attempts > 0 && this.props.state.user.score > 0){
@@ -139,7 +136,7 @@ export class PlayGame extends React.Component {
             }
         }
         //condition when the button is clicked once
-        if(this.props.state.questions[this.props.state.user.progress].hint2 == ""){
+        if(this.props.state.questions[this.props.state.user.progress]['hint2'] == ""){
             //checks to see if there is a second hint, if not, the button disappears
             document.getElementById('hint-submit').style.display = "none";
         }
@@ -183,7 +180,7 @@ export class PlayGame extends React.Component {
             document.getElementById('skip').style.display = "none";
             document.getElementById('answer').value = "";
             document.getElementById('answer-submit').style.display = "block";
-            if(this.props.state.questions[(this.props.state.user.progress + 1)].hint1 == ""){
+            if(this.props.state.questions[(this.props.state.user.progress + 1)]['hint1'] == ""){
                 //checks to see if there is a second hint, if not, the button disappears
                 document.getElementById('hint-submit').style.display = "none";
             }
@@ -215,6 +212,9 @@ export class PlayGame extends React.Component {
             hint1 = this.props.state.questions[index]['hint1'];
             hint2 = this.props.state.questions[index]['hint2'];
             points = this.props.state.user.attempts * 5;
+            if(this.props.state.question[index + 1]['hint1'] != ""){
+                this.hide = 'block';
+            }
         }catch(err){}
         
         return (
@@ -241,7 +241,7 @@ export class PlayGame extends React.Component {
                             <button className="btn" id="next" style={{display:'none'}} onClick={this.nextQuestion} >Next Question</button>
                             <button className="btn" id="complete-button" style={{display:'none'}} onClick={() => this.completed()}>Finish</button> 
                             <button className="btn" id="answer-submit" style={{display:this.props.hide}} onClick={this.checkAnswer} >Submit</button>
-                            <button className="btn" id="hint-submit" style={{display:this.props.hide}} onClick={this.showHint}>Hint</button>
+                            <button className="btn" id="hint-submit" style={{display:this.hide}} onClick={this.showHint}>Hint</button>
                             <button className="btn" id="skip" style={{display:'none'}} onClick={this.skip} >Skip Question</button>
                             
                     </div>

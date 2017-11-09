@@ -22086,7 +22086,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'play', style: { display: 'none' } },
-	                    React.createElement(_play.Play, { changePage: this.changePage, state: this.state, setProps: this.setProps, logOutSetProps: this.logOutSetProps, updateData: this.updateData })
+	                    React.createElement(_play.Play, { changePage: this.changePage, hide: this.state.hide, state: this.state, setProps: this.setProps, logOutSetProps: this.logOutSetProps, updateData: this.updateData })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -50674,7 +50674,6 @@
 
 	        _this.state = {
 	            'count': 0,
-
 	            'hunts': [],
 	            'types': [],
 	            'chosentype': ''
@@ -50789,7 +50788,17 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'intro' },
-	                    hunts,
+	                    React.createElement(
+	                        'div',
+	                        null,
+	                        React.createElement('img', { className: 'arrow-left', src: './static/image/l-arrow.png', onClick: function onClick() {
+	                                return _this3.setState({ count: _this3.state.count == 0 ? _this3.state.hunts.length - 1 : _this3.state.count - 1 });
+	                            } }),
+	                        React.createElement('img', { className: 'arrow-right', src: './static/image/r-arrow.png', onClick: function onClick() {
+	                                return _this3.setState({ count: _this3.state.count == _this3.state.hunts.length - 1 ? 0 : _this3.state.count + 1 });
+	                            } }),
+	                        hunts[this.state.count]
+	                    ),
 	                    React.createElement(
 	                        'div',
 	                        { id: 'buttons' },
@@ -50810,7 +50819,7 @@
 	                    ),
 	                    React.createElement(
 	                        'div',
-	                        { id: 'buttons' },
+	                        null,
 	                        React.createElement(
 	                            'button',
 	                            { className: 'btn', onClick: function onClick() {
@@ -51769,17 +51778,17 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'start', style: { display: this.hide } },
-	                    React.createElement(_start.Start, { changePage: this.props.changePage, changePlay: this.changePlay, setPlay: this.setPlay, setUser: this.setUser, state: this.state })
+	                    React.createElement(_start.Start, { changePage: this.props.changePage, hide: this.props.hide, changePlay: this.changePlay, setPlay: this.setPlay, setUser: this.setUser, state: this.state })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'playGame', style: { display: this.hide } },
-	                    React.createElement(_playGame.PlayGame, { changePage: this.props.changePage, changePlay: this.changePlay, setPlay: this.setPlay, setUser: this.setUser, state: this.state, logOutSetProps: this.props.logOutSetProps })
+	                    React.createElement(_playGame.PlayGame, { changePage: this.props.changePage, hide: this.props.hide, changePlay: this.changePlay, setPlay: this.setPlay, setUser: this.setUser, state: this.state, logOutSetProps: this.props.logOutSetProps })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'complete', style: { display: this.hide } },
-	                    React.createElement(_complete.Complete, { changePage: this.props.changePage, setPlay: this.setPlay, setUser: this.setUser, state: this.state, logOutSetProps: this.props.logOutSetProps })
+	                    React.createElement(_complete.Complete, { changePage: this.props.changePage, hide: this.props.hide, setPlay: this.setPlay, setUser: this.setUser, state: this.state, logOutSetProps: this.props.logOutSetProps })
 	                )
 	            );
 	        }
@@ -52116,6 +52125,7 @@
 	        _this.state = {
 	            'attempts': []
 	        };
+	        _this.hide = 'none';
 	        _this.checkAnswer = _this.checkAnswer.bind(_this);
 	        _this.completed = _this.completed.bind(_this);
 	        _this.emit0 = _this.emit0.bind(_this);
@@ -52227,13 +52237,10 @@
 	            document.getElementById('skip').style.display = "none";
 	            document.getElementById('answer').value = "";
 	            document.getElementById('answer-submit').style.display = "block";
-	            if (this.props.state.questions[this.props.state.user.progress + 1].hint1 == "") {
+	            if (this.props.state.questions[this.props.state.user.progress + 1]['hint1'] == "") {
 	                //checks to see if there is a second hint, if not, the button disappears
-	                document.getElementById('hint-submit').style.display = "none";
-	            } else {
 	                document.getElementById('hint-submit').style.display = "block";
 	            }
-	            document.getElementById('hint-submit').style.display = "block";
 	            var userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score, 'attempts': 5, 'progress': this.props.state.user.progress + 1 };
 	            this.props.setUser(userData, this.done0);
 	        }
@@ -52244,7 +52251,7 @@
 	        key: 'showHint',
 	        value: function showHint() {
 	            var userData = {};
-	            if (this.props.state.questions[this.props.state.user.progress].hint1 != "") {
+	            if (this.props.state.questions[this.props.state.user.progress]['hint1'] != "") {
 	                //checks to see if there is a first hint, if not, the button disappears
 	                document.getElementById('hint1').style.display = "block";
 	                if (this.props.state.user.attempts > 0 && this.props.state.user.score > 0) {
@@ -52253,7 +52260,7 @@
 	                }
 	            }
 	            //condition when the button is clicked once
-	            if (this.props.state.questions[this.props.state.user.progress].hint2 == "") {
+	            if (this.props.state.questions[this.props.state.user.progress]['hint2'] == "") {
 	                //checks to see if there is a second hint, if not, the button disappears
 	                document.getElementById('hint-submit').style.display = "none";
 	            }
@@ -52302,7 +52309,7 @@
 	                document.getElementById('skip').style.display = "none";
 	                document.getElementById('answer').value = "";
 	                document.getElementById('answer-submit').style.display = "block";
-	                if (this.props.state.questions[this.props.state.user.progress + 1].hint1 == "") {
+	                if (this.props.state.questions[this.props.state.user.progress + 1]['hint1'] == "") {
 	                    //checks to see if there is a second hint, if not, the button disappears
 	                    document.getElementById('hint-submit').style.display = "none";
 	                } else {
@@ -52335,6 +52342,9 @@
 	                hint1 = this.props.state.questions[index]['hint1'];
 	                hint2 = this.props.state.questions[index]['hint2'];
 	                points = this.props.state.user.attempts * 5;
+	                if (this.props.state.question[index + 1]['hint1'] != "") {
+	                    this.hide = 'block';
+	                }
 	            } catch (err) {}
 
 	            return React.createElement(
@@ -52421,7 +52431,7 @@
 	                        ),
 	                        React.createElement(
 	                            'button',
-	                            { className: 'btn', id: 'hint-submit', style: { display: this.props.hide }, onClick: this.showHint },
+	                            { className: 'btn', id: 'hint-submit', style: { display: this.hide }, onClick: this.showHint },
 	                            'Hint'
 	                        ),
 	                        React.createElement(

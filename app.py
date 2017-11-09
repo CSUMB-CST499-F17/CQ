@@ -157,16 +157,18 @@ def updateProgress(data):
         
 def getTimeElapsed(time):
     if "days" in time: #mulitple days
-        if len(time) == 16: #mulitple days over 10 hours
+        if len(time) == 24: #mulitple days over 10 hours
+                return time[0] + time[1] + "days, " + time[9] + "" + time[10] + " hours, " + time[12] + "" + time[13] + " minutes, " + time[15] + "" + time[16] + " seconds"
+        if len(time) == 23: #mulitple days over 10 hours
             return time[0] + "days, " + time[8] + "" + time[9] + " hours, " + time[11] + "" + time[12] + " minutes, " + time[14] + "" + time[15] + " seconds"
         else:#mulitple days under 10 hours
             return time[0] + "days, " + time[8] + " hour(s), " + time[10] + "" + time[11] + " minutes, " + time[13] + "" + time[14] + " seconds"
     if "day," in time: #one day
-        if len(time) == 15: #one day and over 10 hours
-            return time[0] + "days, " + time[7] + "" + time[8] + " hours, " + time[10] + "" + time[11] + " minutes, " + time[13] + "" + time[14] + " seconds"
+        if len(time) == 22: #one day and over 10 hours
+            return time[0] + "day, " + time[7] + "" + time[8] + " hours, " + time[10] + "" + time[11] + " minutes, " + time[13] + "" + time[14] + " seconds"
         else:#one day under 10 hours
-            return time[0] + "days, " + time[7] + " hour(s), " + time[9] + "" + time[10] + " minutes, " + time[12] + "" + time[13] + " seconds"
-    if len(time) >= 8: #over 10 hours
+            return time[0] + "day, " + time[7] + " hour(s), " + time[9] + "" + time[10] + " minutes, " + time[12] + "" + time[13] + " seconds"
+    if len(time) == 15: #over 10 hours
         return time[0] + time[1] + " hours, " + time[3] + "" + time[4] + " minutes, " + time[6] + "" + time[7] + " seconds"
     else: #below 10 hours
         return time[0] + " hour(s), " + time[2] + "" + time[3] + " minutes, " + time[5] + "" + time[6] + " seconds"
