@@ -77,6 +77,7 @@ export class Explore extends React.Component {
         
         return (
             <div>
+            
                 <div id = 'logo-small'>
                     <LogoSmall/>
                 </div>
@@ -89,15 +90,14 @@ export class Explore extends React.Component {
                 </div>
                 <div className="clear"></div>
                 <div id='intro'>
-                    
-                    {hunts[this.state.count]}
+                    <div>
+                        <img className="arrow-left" src="./static/image/l-arrow.png" onClick={() => this.setState(({count:(this.state.count == 0 ? this.state.hunts.length - 1 : this.state.count - 1)}))}></img>
+                        <img className="arrow-right" src="./static/image/r-arrow.png" onClick={() => this.setState(({count:(this.state.count == this.state.hunts.length - 1 ? 0 : this.state.count + 1)}))}></img>
+                        {hunts[this.state.count]}
+                    </div>
                     <div id='buttons'>
                         <button className='btn' onClick={() => this.props.changePage('leaderboard')}>Leaderboard</button>
                         <button className='btn' onClick={() => this.props.changePage('register')}>Participate</button>
-                    </div>
-                    <div>
-                        <button><img src="./static/image/l-arrow.png" onClick={() => this.setState(({count:(this.state.count == 0 ? this.state.hunts.length - 1 : this.state.count - 1)}))} /></button>
-                        <button><img src="./static/image/r-arrow.png" onClick={() => this.setState(({count:(this.state.count == this.state.hunts.length - 1 ? 0 : this.state.count + 1)}))} /></button>
                     </div>
                     <div>
                         <button className='btn' onClick={() => this.props.changePage('home')}>Home</button>

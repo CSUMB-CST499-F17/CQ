@@ -108,13 +108,26 @@ p{
     
 }
 .hunt-preview img{
-    max-width:45%;
+    max-width:70%;
     max-height:45%;
     display: inline-block;
     vertical-align: middle;
-    border:solid;
+    /*border:solid;
     border-width: 7;
-    border-color: #f2e537;
+    border-color: #f2e537;*/
+}
+.arrow-left, .arrow-right {
+    top: 10%;
+    bottom: 50%;
+    margin: auto;
+    position: absolute;
+    vertical-align: middle;
+}
+.arrow-left {
+    left:0px;
+}
+.arrow-right {
+    right:0px;
 }
 
 /* Start */

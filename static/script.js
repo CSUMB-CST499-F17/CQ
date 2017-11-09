@@ -50788,7 +50788,17 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'intro' },
-	                    hunts[this.state.count],
+	                    React.createElement(
+	                        'div',
+	                        null,
+	                        React.createElement('img', { className: 'arrow-left', src: './static/image/l-arrow.png', onClick: function onClick() {
+	                                return _this3.setState({ count: _this3.state.count == 0 ? _this3.state.hunts.length - 1 : _this3.state.count - 1 });
+	                            } }),
+	                        React.createElement('img', { className: 'arrow-right', src: './static/image/r-arrow.png', onClick: function onClick() {
+	                                return _this3.setState({ count: _this3.state.count == _this3.state.hunts.length - 1 ? 0 : _this3.state.count + 1 });
+	                            } }),
+	                        hunts[this.state.count]
+	                    ),
 	                    React.createElement(
 	                        'div',
 	                        { id: 'buttons' },
@@ -50805,24 +50815,6 @@
 	                                    return _this3.props.changePage('register');
 	                                } },
 	                            'Participate'
-	                        )
-	                    ),
-	                    React.createElement(
-	                        'div',
-	                        null,
-	                        React.createElement(
-	                            'button',
-	                            null,
-	                            React.createElement('img', { src: './static/image/l-arrow.png', onClick: function onClick() {
-	                                    return _this3.setState({ count: _this3.state.count == 0 ? _this3.state.hunts.length - 1 : _this3.state.count - 1 });
-	                                } })
-	                        ),
-	                        React.createElement(
-	                            'button',
-	                            null,
-	                            React.createElement('img', { src: './static/image/r-arrow.png', onClick: function onClick() {
-	                                    return _this3.setState({ count: _this3.state.count == _this3.state.hunts.length - 1 ? 0 : _this3.state.count + 1 });
-	                                } })
 	                        )
 	                    ),
 	                    React.createElement(
