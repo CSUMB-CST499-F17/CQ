@@ -467,8 +467,16 @@ td{
         margin:auto;
         max-width: 100%;
     }
+    #play-container{
+    margin:20px;
+    width:85%;
+    justify-content: center;
+    margin:auto;
+    color:white;
+    padding-top:30px;
+}
     #play-question{
-        font-size: 24px;
+        font-size: 20px;
     }
     #logo-small-nav{
         width:40px;

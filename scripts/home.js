@@ -25,7 +25,12 @@ export class Home extends React.Component {
                     document.getElementById("home").style.display = "block";
                 }
                 else{
-                    this.props.changePage(savedPage);
+                    if(this.props.loggedIn == 'no'){
+                        this.props.changePage('home');
+                    }
+                    else{
+                        this.props.changePage(savedPage);
+                    }
                 }
             }
             catch(e){ //first connect, no last page
@@ -81,7 +86,7 @@ export class Home extends React.Component {
                                 <button className="btn" onClick={this.login}>Log into Existing Team</button>
                             </div>
                             <div id = 'existingTeam' style={{display:'none'}}>
-                            	<ExistingTeam changePage={this.props.changePage} cancel={this.login} setProps={this.props.setProps} loggedIn={this.props.state.loggedIn} name={this.props.state.name}/>
+                            	<ExistingTeam changePage={this.props.changePage} updateData={this.props.updateData} cancel={this.login} setProps={this.props.setProps} loggedIn={this.props.loggedIn} hunt={this.props.hunt} questions={this.props.questions} user={this.props.user}/>
                             </div>
                         </div>
                     </div>
