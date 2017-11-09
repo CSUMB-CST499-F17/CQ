@@ -5,72 +5,68 @@ import { Socket } from './Socket';
 export class ExistingTeam extends React.Component {
     constructor(props) {
         super(props);
-        this.team = "";
-        this.progress = 0;
+        this.state = {
+            'access':"",
+            'team':""
+        };
         this.pageName = 'existingTeam';
+        this.progress = 0;
+        this.user = [];
         
-        this.handle = this.handle.bind(this);
+        this.handle = this.handle.bind(this); //handles data recieved from validateCreentials
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.validateCredentials = this.validateCredentials.bind(this);
-        
-        //retireves the user information
-        Socket.on('user', (data) => {
-                this.progress = data[0]['progress'];
-                this.hunt_id = data[0]['hunt']
-        });
+        // this.loadGame = this.loadGame.bind(this); //if team name is team or teamLead, this determines what data gets sent to start.js or play.js
+        this.validateCredentials = this.validateCredentials.bind(this); //checks team name and password with database in app.py
         
     }
-    handle(callback){
-        var res = callback.split('%');
-            try{
-                this.props.setProps(res[0], res[1]); //loggedIn, name
-                document.getElementById("team_name").value = "";
-                document.getElementById("access").value = "";
-                switch(res[0]) {
-                    case "teamLead":
-                    case "team":
-                        if(this.progress == 0){
-                            Socket.emit('startPlay', this.hunt_id);
-                            this.props.changePage('start');
-                        }
-                        else{
-                            Socket.emit('startPlay', this.hunt_id);
-                            Socket.emit('huntPlay', {'id':this.hunt_id});
-                            this.props.changePage('play');
-                        }
-                        
-                        break;
-                    case "superAdmin":
-                    case "admin":
-                        this.props.changePage('adminHome');
+        handle(callback){
+        var data = JSON.parse(callback);
+        try{
+            this.props.setProps('id', data['id']);
+            this.props.setProps('name', data['name']);
+            this.props.setProps('loggedIn', data['loggedIn']);
+            document.getElementById("team_name").value = "";
+            document.getElementById("access").value = "";
+            document.getElementById("errorMessage").value = "";
             
+            switch(data['loggedIn']) {
+                case "teamLead":
+                case "team":
+                    this.props.changePage('play');
+                    break;
+                case "superAdmin":
+                case "admin":
+                    this.props.changePage('adminHome');
+                    break;
+                case "no":
+                    document.getElementById("errorMessage").innerHTML = "⚠ Invalid Team Name or Access Code ⚠";
+                    document.getElementById("errorMessage").style.visibility = 'visible';
+                    document.getElementById("errorMessage").style.color="#f2e537";
+                    document.getElementById("access").value = "";
+                    break;
+                case "finished": 
+                    document.getElementById("errorMessage").innerHTML = "⚠ Scavenger Hunt Completed By This Team ⚠  <br/> ⚠ Please Create New Team or Explore Other Hunts! ⚠" ;
+                    document.getElementById("errorMessage").style.visibility = 'visible';
+                    document.getElementById("errorMessage").style.color="#f2e537";
+                    document.getElementById("access").value = "";
+                default:
                         break;
-                    case "no":
-                        document.getElementById("errorMessage").innerHTML = "⚠ Invalid Team Name or Access Code ⚠";
-                        document.getElementById("errorMessage").style.visibility = 'visible';
-                        document.getElementById("errorMessage").style.color="#f2e537";
-                        document.getElementById("access").value = "";
-                        break;
-                    case "finished": 
-                        document.getElementById("errorMessage").innerHTML = "⚠ Scavenger Hunt Completed By This Team ⚠  <br/> ⚠ Please Create New Team and Explore Other Hunts!⚠";
-                        document.getElementById("errorMessage").style.visibility = 'visible';
-                        document.getElementById("errorMessage").style.color="#f2e537";
-                        document.getElementById("access").value = "";
-                    default:
-                            break;
-                    } 
-            }
-            catch(err) {
-                console.log(err);
             } 
+        }
+        catch(err) {
+            console.log(err);
+        } 
     }
     handleSubmit(event) {
         event.preventDefault();
     }
+
     validateCredentials(){
-        this.team = document.getElementById("team_name").value;
-        var access = document.getElementById("access").value;
-        if(this.team == "")
+        this.setState({
+            team: document.getElementById("team_name").value,
+            access: document.getElementById("access").value
+        });
+        if(document.getElementById("team_name").value == "")
         {
             document.getElementById("errorMessage").innerHTML = "⚠ Please Enter valid Team Name and Access Code ⚠";
             document.getElementById("errorMessage").style.visibility = 'visible';
@@ -79,7 +75,7 @@ export class ExistingTeam extends React.Component {
         else
         {
             document.getElementById("errorMessage").style.visibility = 'hidden';
-            Socket.emit('validateCredentials',{'team_name':this.team,'access':access}, Socket.callback=this.handle);
+            Socket.emit('validateCredentials',{'team_name':document.getElementById("team_name").value,'access':document.getElementById("access").value}, Socket.callback=this.handle);
         }
     }
     

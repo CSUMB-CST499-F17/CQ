@@ -20,50 +20,26 @@ db = flask_sqlalchemy.SQLAlchemy(app)
 def hello():
     return flask.render_template('index.html')
 
-@socketio.on('huntPlay')
-def getQuestions(data):
-    global questionNum
-    questionsData = []
-    try:
-        questions = models.db.session.query(models.Questions).filter(models.Questions.hunts_id == data['id'])
-        for row in questions:
-            questionsData.append({'question':row.question, 'answer':row.answer,'hint1':row.hint_A,'hint2':row.hint_B,'hunts_id':row.hunts_id})
-    except Exception as e: 
-        print(e)
-        
-    socketio.emit('hunt', questionsData)
-    print('Scavenger hunt data sent.')
-
-@socketio.on('startPlay')
-def getHunt(data):
-    huntData = []
-
-    try:
-        hunt = models.db.session.query(models.Hunts).filter(models.Hunts.id == data)
-        for row in hunt:
-            huntData.append({'id':row.id, 'name': row.name, 'image':row.image, 'start_text':row.start_text})
-    except Exception as e: 
-        print (e)
-        
-    socketio.emit('playStart', huntData)
-    print('Hunt Data.')
-
 @socketio.on('home')
 def updateHome(data):
     loggedIn = data['loggedIn'].lower()
     lastPage = data['lastPage']
     superAdminPages = ['admins', 'adminCreate']
-    adminPages = ['adminHome', 'adminLeaderboard', 'adminHunts', 'adminCreateHunt', 'adminEditHunt'].extend(superAdminPages)
+    adminPages = ['adminHome', 'adminLeaderboard', 'adminHunts', 'adminCreateHunt', 'adminEditHunt']
+    adminPages.extend(superAdminPages)
     teamPages = ['play']
-    resetConditions = ('no' in loggedIn) or ((lastPage in adminPages) and ('admin' not in loggedIn)) or ((lastPage in teamPages) and ('team' not in loggedIn)) or ((lastPage in superAdminPages) and ('super' not in loggedIn))
+    loginPages = [] 
+    loginPages.extend(adminPages)
+    loginPages.extend(teamPages)
+    notLoggedIn = ('no' in loggedIn) and (lastPage in loginPages)
+    notAdmin = (lastPage in adminPages) and ('admin' not in loggedIn)
+    notSuperAdmin = ((lastPage in superAdminPages) and ('super' not in loggedIn))
+    noTeam = (lastPage in teamPages) and ('team' not in loggedIn)
+    resetConditions = notLoggedIn or notAdmin or notSuperAdmin or noTeam
     if resetConditions:
 	    lastPage = 'home'
-    socketio.emit('updateHome', lastPage)
+    return lastPage
 
-@socketio.on('slideshow')
-def updateSlideshow(data):
-    return
-    
 @socketio.on('explore')
 def updateExplore(data):
     socketio.emit('updateExplore')
@@ -88,84 +64,115 @@ def changeType(data):
 
 @socketio.on('validateCredentials')
 def validateCredentials(data):
-        userData = []
-        try:
-                
+        try:  
             users = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'])
             for query in users:
                 if(check_password(query.leader_code, data['access'])):
-                    userData.append({'email': query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress, 'score':query.score, 'attempts':query.attempts})
-                    socketio.emit('user', userData)
                     if query.progress == -1:
-                        return 'finished'
-                    return 'teamLead%' + query.team_name
-
-            users = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'])
-            for query in users:    
-                if(check_password(query.member_code, data['access'])):
-                    userData.append({'email':query.email, 'team_name':query.team_name, 'hunt':query.hunts_id, 'progress':query.progress})
-                    socketio.emit('user', userData)
+                        return json.dumps({'id':query.id, 'loggedIn':'finished', 'name':query.team_name, "hunts_id":query.hunts_id})
+                    return json.dumps({'id':query.id, 'loggedIn':'teamLead', 'name':query.team_name, "hunts_id":query.hunts_id})
+                elif(check_password(query.member_code, data['access'])):
                     if query.progress == -1:
-                        return 'finished'
-                    return 'team%' + query.team_name
+                        return json.dumps({'id':query.id, 'loggedIn':'finished', 'name':query.team_name, "hunts_id":query.hunts_id})
+                    return json.dumps({'id':query.id, 'loggedIn':'team', 'name':query.team_name, "hunts_id":query.hunts_id})
                     
             users = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.is_super == True)
             for query in users:    
                 if(check_password(query.password, data['access'])):
-                    return 'superAdmin%' + query.username
+                    return json.dumps({'id':query.id, 'loggedIn':'superAdmin', 'name':query.username, "hunts_id":query.hunts_id})
                     
             users = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.is_super == False)
             for query in users:
                 if(check_password(query.password, data['access'])):
-                    return 'admin%' + query.username
+                    return json.dumps({'id':query.id, 'loggedIn':'admin', 'name':query.username, "hunts_id":query.hunts_id})
             
-            return 'no%guest'
+            return json.dumps({'id':-1, 'loggedIn':'no', 'name':'guest'})
         except Exception as e: 
             print (e)
-            
+     
+@socketio.on('play')
+def updatePlay(data):
+    socketio.emit('updatePlay', 'updatePlay');
 
-@socketio.on('progessUpdate')
+@socketio.on('loadUser')
+def getUser(data):
+    userData = []
+    try:
+        users = models.db.session.query(models.Participants).filter(models.Participants.id == data)
+        for query in users:    
+            userData.append({'id':data, 'email': query.email, 'team_name':query.team_name, 'hunts_id':query.hunts_id, 'progress':query.progress, 'score':query.score, 'attempts':query.attempts, 'time': None, 'elapsed':None})
+        return json.dumps(userData)
+    except Exception as e: 
+        print (e)
+
+@socketio.on('loadHunts')
+def getHunt(data):
+    huntData = []
+    questionsData = []
+    try:
+        hunt = models.db.session.query(models.Hunts).filter(models.Hunts.id == data)
+        for row in hunt:
+            huntData.append({'id':row.id, 'name': row.name, 'image':row.image, 'start_text':row.start_text})
+    except Exception as e: 
+        print (e)
+    try:
+        questions = models.db.session.query(models.Questions).filter(models.Questions.hunts_id == data)
+        for row in questions:
+            questionsData.append({'question':row.question, 'answer':row.answer,'hint1':row.hint_A,'hint2':row.hint_B,'hunts_id':row.hunts_id})
+    except Exception as e: 
+        print(e)
+    return json.dumps({'hunt':huntData,'questions':questionsData})
+
+
+@socketio.on('update')
 def updateProgress(data):
     try:
         user = data['user']
         #updates the progress
-        query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.progress: data['progress']})
+        query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id']).update({models.Participants.progress: data['progress']})
         models.db.session.commit()
         #updates the attempts  
-        query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.attempts: data['attempts']})
+        query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id']).update({models.Participants.attempts: data['attempts']})
         models.db.session.commit()
         #updates the score
-        query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.score: data['score']})
+        query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id']).update({models.Participants.score: data['score']})
         models.db.session.commit()
-        
-        query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt'])
+        time = None
+        elapsed = None
+        query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id'])
         for row in query:
-            elapsed = getTimeElapsed(str(row.end_time-row.start_time))
-            time = timeScore((row.end_time-row.start_time).total_seconds())
-            
-        userData = []
-        userData.append({'email':user['email'], 'team_name':user['team_name'], 'hunt':user['hunt'], 'progress':data['progress'], 'score':data['score'], 'attempts':data['attempts'], 'time': time, 'elapsed':elapsed, 'hunt_name': data['hunt_name']})
-        socketio.emit('user', userData)
+            if row.start_time != None and row.end_time != None:
+                elapsed = getTimeElapsed(str(row.end_time-row.start_time))
+                time = timeScore((row.end_time-row.start_time).total_seconds())
+                userData = {'email':user['email'], 'team_name':user['team_name'], 'hunts_id':user['hunts_id'], 'progress':data['progress'], 'score':data['score'] + time, 'attempts':data['attempts'], 'time': time, 'elapsed':elapsed}
+                query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id']).update({models.Participants.score: data['score']+time})
+                models.db.session.commit()
+                return json.dumps({'user':userData})
+                
+        userData = {'email':user['email'], 'team_name':user['team_name'], 'hunts_id':user['hunts_id'], 'progress':data['progress'], 'score':data['score'], 'attempts':data['attempts'], 'time': time, 'elapsed':elapsed}
+        return json.dumps({'user':userData})
     except Exception as e: 
         print (e)
+        
         
 def getTimeElapsed(time):
     if "days" in time: #mulitple days
         if len(time) == 16: #mulitple days over 10 hours
             return time[0] + "days, " + time[8] + "" + time[9] + " hours, " + time[11] + "" + time[12] + " minutes, " + time[14] + "" + time[15] + " seconds"
         else:#mulitple days under 10 hours
-            return time[0] + "days, " + time[8] + " hours, " + time[10] + "" + time[11] + " minutes, " + time[13] + "" + time[14] + " seconds"
+            return time[0] + "days, " + time[8] + " hour(s), " + time[10] + "" + time[11] + " minutes, " + time[13] + "" + time[14] + " seconds"
     if "day," in time: #one day
         if len(time) == 15: #one day and over 10 hours
             return time[0] + "days, " + time[7] + "" + time[8] + " hours, " + time[10] + "" + time[11] + " minutes, " + time[13] + "" + time[14] + " seconds"
         else:#one day under 10 hours
-            return time[0] + "days, " + time[7] + " hours, " + time[9] + "" + time[10] + " minutes, " + time[12] + "" + time[13] + " seconds"
-    if len(time) == 8: #over 10 hours
+            return time[0] + "days, " + time[7] + " hour(s), " + time[9] + "" + time[10] + " minutes, " + time[12] + "" + time[13] + " seconds"
+    if len(time) >= 8: #over 10 hours
         return time[0] + time[1] + " hours, " + time[3] + "" + time[4] + " minutes, " + time[6] + "" + time[7] + " seconds"
     else: #below 10 hours
-        return time[0] + " hours, " + time[2] + "" + time[3] + " minutes, " + time[5] + "" + time[6] + " seconds"
+        return time[0] + " hour(s), " + time[2] + "" + time[3] + " minutes, " + time[5] + "" + time[6] + " seconds"
     
 def timeScore(total):
+    print "in Timescore"
     hours = total / 60 / 60;
     if(hours <= 2):
         score = 500
@@ -177,12 +184,13 @@ def timeScore(total):
 
 @socketio.on('updateTime')
 def updateTime(data):
+    print "In updateTime"
     user = data['user']
     if(data['start_time'] != ""):
         print("Start Time")
         try:
             #updates end_time
-            query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.start_time: datetime.datetime.now()})
+            query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id']).update({models.Participants.start_time: datetime.datetime.now()})
             models.db.session.commit()
         
         except Exception as e: 
@@ -191,13 +199,11 @@ def updateTime(data):
         print("End Time")
         try:
             #updates end_time
-            query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunt']).update({models.Participants.end_time: datetime.datetime.now()})
+            query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id']).update({models.Participants.end_time: datetime.datetime.now()})
             models.db.session.commit()
         
         except Exception as e: 
             print(e)
-    
-
 
 @socketio.on('leaderboard')
 def updateLeaderboard(data):
@@ -216,7 +222,7 @@ def updateLeaderboard(data):
                     )).order_by(models.Participants.score.desc())
 
         for row in sql:
-            leaderboardUser.append({'progress':row.progress, 'score':row.score,'team_name':row.team_name, 'start_time':row.start_time.strftime('%Y.%M.%d.%H.%M'),'end_time':row.end_time.strftime('%Y.%M.%d.%H.%M')})
+            leaderboardUser.append({'progress':row.progress, 'score':row.score,'team_name':row.team_name, 'start_time':row.start_time.strftime('%Y-%m-%d %H:%M:%S'),'end_time':row.end_time.strftime('%Y-%m-%d %H:%M:%S')})
 
     except:
         print("Error: leaderboard query broke")
@@ -225,9 +231,10 @@ def updateLeaderboard(data):
     })
     print('Leaderboard data sent.')
 
+@socketio.on('start')
+def updateStart():
+    socketio.emit('updateStart');
     
-    
-
 @socketio.on('register')
 def updateRegister(data):
     ongoingHunts = [];
@@ -374,14 +381,3 @@ if __name__ == '__main__':
             debug=True,
             use_reloader=False
             )
-        # team = []
-        # team = {
-        #     'team_name': "Lakers",
-        #     'image': "yourface.png",
-        #     'question_score': "100",
-        #     'time_taken': "60 second",
-        #     'hunts_id': '1',
-        # }
-        # socketio.emit('leaderboard', {
-        #     'teams': team 
-# })

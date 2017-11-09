@@ -152,7 +152,7 @@ models.db.session.commit()
 questions = models.Questions(
     "Make your way down Cannery Row. At 299 Cannery Row, you will find Adventures by the Sea. " +
     "What is the name of the cannery that used to operate here?", #Question
-    " Aeneas", #Answer
+    "Aeneas", #Answer
     "", #image
     "299 Cannery Row crossover.", #hint 1
     "Six letters.", #hint2
@@ -167,7 +167,7 @@ questions = models.Questions(
     "What was the original name of the building here?", #Question
     "Casa de las Olas", #Answer
     "", #image
-    "Adventures by the Aea kayakers walk right by the sign.", #hint 1
+    "Adventures by the Sea kayakers walk right by the sign.", #hint 1
     "", #hint2
     "", #answer text
     1 #hunt ID
