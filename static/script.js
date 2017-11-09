@@ -51681,7 +51681,7 @@
 	        _this.state = {
 	            hunt: { 'id': 0, 'name': "", 'image': "", 'start_text': "" },
 	            questions: [{ 'question': "", 'answer': "", 'hint1': "", 'hint2': "", 'hunts_id': 0 }],
-	            user: { 'id': 0, 'email': "", 'team_name': "", 'hunts_id': 0, 'progress': 1, 'score': "", 'attempts': 5 }
+	            user: { 'id': 0, 'email': "", 'team_name': "", 'hunts_id': 0, 'progress': 1, 'score': 0, 'attempts': 5 }
 	        };
 	        _this.pageName = 'play';
 	        _this.hide = 'none';
@@ -51830,9 +51830,6 @@
 	    }
 
 	    _createClass(Complete, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {}
-	    }, {
 	        key: 'handleSubmit',
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
@@ -51844,7 +51841,6 @@
 
 	            var title = this.props.state.hunt.name;
 	            var time = this.props.state.user.elapsed;
-	            console.log(time);
 	            var team = this.props.state.user.team_name;
 	            var score = this.props.state.user.score;
 
@@ -51992,9 +51988,6 @@
 	    }
 
 	    _createClass(Start, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {}
-	    }, {
 	        key: 'handleSubmit',
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
@@ -52217,6 +52210,7 @@
 	        value: function handleComplete(callback) {
 	            var data = JSON.parse(callback);
 	            this.props.setUser(data['user'], this.end);
+	            console.log(data['user']);
 	        }
 	    }, {
 	        key: 'end',

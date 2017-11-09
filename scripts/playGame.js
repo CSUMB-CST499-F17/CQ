@@ -100,6 +100,7 @@ export class PlayGame extends React.Component {
     handleComplete(callback){
         var data = JSON.parse(callback);
         this.props.setUser(data['user'], this.end);
+        console.log(data['user']);
     }
     
     end(){

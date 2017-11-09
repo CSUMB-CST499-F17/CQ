@@ -145,6 +145,8 @@ def updateProgress(data):
                 elapsed = getTimeElapsed(str(row.end_time-row.start_time))
                 time = timeScore((row.end_time-row.start_time).total_seconds())
                 userData = {'email':user['email'], 'team_name':user['team_name'], 'hunts_id':user['hunts_id'], 'progress':data['progress'], 'score':data['score'] + time, 'attempts':data['attempts'], 'time': time, 'elapsed':elapsed}
+                query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id']).update({models.Participants.score: data['score']+time})
+                models.db.session.commit()
                 return json.dumps({'user':userData})
                 
         userData = {'email':user['email'], 'team_name':user['team_name'], 'hunts_id':user['hunts_id'], 'progress':data['progress'], 'score':data['score'], 'attempts':data['attempts'], 'time': time, 'elapsed':elapsed}

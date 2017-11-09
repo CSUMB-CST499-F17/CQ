@@ -10,11 +10,7 @@ export class Start extends React.Component {
         this.start = this.start.bind(this);
 
     }
-
-    componentDidMount(){
-        
-    }
-
+    
     handleSubmit(event) {
         event.preventDefault();
     }
