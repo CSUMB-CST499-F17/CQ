@@ -17,7 +17,6 @@ export class Explore extends React.Component {
         super(props);
         this.state = {
             'count':0,
-            
             'hunts':[],
             'types':[],
             'chosentype':''
@@ -90,12 +89,17 @@ export class Explore extends React.Component {
                 </div>
                 <div className="clear"></div>
                 <div id='intro'>
-                    {hunts}
+                    
+                    {hunts[this.state.count]}
                     <div id='buttons'>
                         <button className='btn' onClick={() => this.props.changePage('leaderboard')}>Leaderboard</button>
                         <button className='btn' onClick={() => this.props.changePage('register')}>Participate</button>
                     </div>
-                    <div id='buttons'>
+                    <div>
+                        <button><img src="./static/image/l-arrow.png" onClick={() => this.setState(({count:(this.state.count == 0 ? this.state.hunts.length - 1 : this.state.count - 1)}))} /></button>
+                        <button><img src="./static/image/r-arrow.png" onClick={() => this.setState(({count:(this.state.count == this.state.hunts.length - 1 ? 0 : this.state.count + 1)}))} /></button>
+                    </div>
+                    <div>
                         <button className='btn' onClick={() => this.props.changePage('home')}>Home</button>
                     </div>
                 </div>

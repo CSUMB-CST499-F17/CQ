@@ -50674,7 +50674,6 @@
 
 	        _this.state = {
 	            'count': 0,
-
 	            'hunts': [],
 	            'types': [],
 	            'chosentype': ''
@@ -50789,7 +50788,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'intro' },
-	                    hunts,
+	                    hunts[this.state.count],
 	                    React.createElement(
 	                        'div',
 	                        { id: 'buttons' },
@@ -50810,7 +50809,25 @@
 	                    ),
 	                    React.createElement(
 	                        'div',
-	                        { id: 'buttons' },
+	                        null,
+	                        React.createElement(
+	                            'button',
+	                            null,
+	                            React.createElement('img', { src: './static/image/l-arrow.png', onClick: function onClick() {
+	                                    return _this3.setState({ count: _this3.state.count == 0 ? _this3.state.hunts.length - 1 : _this3.state.count - 1 });
+	                                } })
+	                        ),
+	                        React.createElement(
+	                            'button',
+	                            null,
+	                            React.createElement('img', { src: './static/image/r-arrow.png', onClick: function onClick() {
+	                                    return _this3.setState({ count: _this3.state.count == _this3.state.hunts.length - 1 ? 0 : _this3.state.count + 1 });
+	                                } })
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        null,
 	                        React.createElement(
 	                            'button',
 	                            { className: 'btn', onClick: function onClick() {
