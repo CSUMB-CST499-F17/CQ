@@ -8,55 +8,12 @@ export class Home extends React.Component {
         super(props);
         this.pageName = 'home';
         this.index = 0;
-        this.timer;
-        this.images = ['boats','bust','canneryrow','crossedarms','lighthousewide','montereycanningcompany','sistercitypark','swanboat','whale'];
-        // IMAGES THAT SHOW UP SIDEWAYS: 'diversmemorial','lady','lighthousenarrow','shareabench','twowhales', 'yesterdaysdream'
         this.login = this.login.bind(this);
-        this.showSlides = this.showSlides.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         
     }
-    componentDidMount(){
-        Socket.on('updateHome', (data) => {
-            var savedPage = window.localStorage.getItem( 'lastPage' );
-            try{
-                if(savedPage.includes("home")){
-                    Socket.emit('slideshow', '', Socket.callback=this.showSlides);
-                    document.getElementById("home").style.display = "block";
-                }
-                else{
-                    if(this.props.loggedIn == 'no'){
-                        this.props.changePage('home');
-                    }
-                    else{
-                        this.props.changePage(savedPage);
-                    }
-                }
-            }
-            catch(e){ //first connect, no last page
-                window.localStorage.setItem( 'lastPage', 'home' );
-                Socket.emit('slideshow', '', Socket.callback=this.showSlides);
-                document.getElementById("home").style.display = "block";
-            }
-        });
-    }
     handleSubmit(event) {
         event.preventDefault();
-    }
-    showSlides() {
-        var image = document.getElementById("ss-image");
-        if (this.index < this.images.length){
-            image.src="../static/image/gallery/"+this.images[this.index]+".jpg";
-            this.index+=1;
-        }
-        else{
-            this.index=0;
-        }
-        // var index = Math.floor(Math.random() * this.images.length);
-        // image.src="../static/image/gallery/"+this.images[index]+".jpg"; 
-        if(this.props.state.lastPage == 'home'){
-            setTimeout(this.showSlides, 7000); // Change image every 7 seconds
-        }
     }
     login(){
         if (document.getElementById("existingTeam").style.display == "none"){

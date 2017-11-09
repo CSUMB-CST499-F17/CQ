@@ -32,17 +32,53 @@ export class Content extends React.Component{
             questions:[],
             user:{}
         };
-        // this.start = this.start.bind(this);
+        this.images = ['boats','bust','canneryrow','crossedarms','lighthousewide','montereycanningcompany','sistercitypark','swanboat','whale'];
+        // IMAGES THAT SHOW UP SIDEWAYS: 'diversmemorial','lady','lighthousenarrow','shareabench','twowhales', 'yesterdaysdream'
         this.handle = this.handle.bind(this);
         this.changePage = this.changePage.bind(this);
         this.setProps = this.setProps.bind(this);
         this.logOutSetProps = this.logOutSetProps.bind(this);
-        
+        this.ready = this.ready.bind(this);
+        this.start = this.start.bind(this);
+        this.showSlides = this.showSlides.bind(this);
     }
     componentDidMount(){
-        Socket.emit('home', this.state);
-        // Socket.emit('home', this.state, Socket.callback=this.start);
-        
+        try{ //get state from localstorage
+            var obj = JSON.parse(window.localStorage.state);
+            this.setState(obj, this.ready);
+        }catch(e){
+            Socket.emit('home', this.state, Socket.callback=this.start);
+        }
+    }
+    ready(){
+        Socket.emit('home', this.state, Socket.callback=this.start);
+    }
+    start(lastPage){
+        try{
+            if(lastPage.includes("home")){
+                this.showSlides();
+                document.getElementById("home").style.display = "block";
+            }
+            else{
+                this.changePage(lastPage);
+            }
+        }
+        catch(e){ //first connect, no last page?
+            console.log(e);
+        }
+    }
+    showSlides() {
+        var image = document.getElementById("ss-image");
+        if (this.index < this.images.length){
+            image.src="../static/image/gallery/"+this.images[this.index]+".jpg";
+            this.index+=1;
+        }
+        else{
+            this.index=0;
+        }
+        if(this.state.lastPage == 'home'){
+            setTimeout(this.showSlides, 7000); // Change image every 7 seconds
+        }
     }
     setProps(prop, value){
         var obj  = {};
@@ -73,7 +109,6 @@ export class Content extends React.Component{
         //handle returns from any page sockets
     }
     changePage(location){
-        //if location is admin or team page and loggedin == no, go to home, set state guest
         try{
             Socket.emit(location, this.state);
             if(location.indexOf('admin') != -1){ //it is admin page
@@ -81,15 +116,13 @@ export class Content extends React.Component{
                 document.getElementById(location).style.display = "block";
                 document.getElementById('nav-bar').style.display = "block";
             }
-            else if(location.indexOf('admin') == -1){
+            else if(location.indexOf('admin') == -1){ //not admin
                 document.getElementById(this.state.lastPage).style.display = "none";
                 document.getElementById(location).style.display = "block";
                 document.getElementById('nav-bar').style.display = "none";
             }
             this.state.lastPage = location;
-            for (var n in this.state){
-                window.localStorage.setItem( n, this.state[n] );
-            }
+            window.localStorage.setItem('state',JSON.stringify(this.state));
         }catch(e){
             console.log(e);
         }

@@ -72,12 +72,10 @@ export class Play extends React.Component {
         //load start, play, or finish page accordingly and fill with data stored in vars
     }
     changePlay(current, next){
-        console.log(current, next);
         document.getElementById(next).style.display = 'block';
         document.getElementById(current).style.display = 'none';
     }
     
-
     render() {
         return (
             <div>

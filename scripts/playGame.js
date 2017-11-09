@@ -43,10 +43,10 @@ export class PlayGame extends React.Component {
             document.getElementById('answer-submit').style.display = "none";
             document.getElementById('hint-submit').style.display = "none";
             document.getElementById('result').style.display = "block";
+            var emptyArray = [];
             this.setState({
-                'attempts':[],
-            });
-            this.emit1();
+                'attempts':emptyArray
+            }, this.emit1);
         }
         else{
             if(document.getElementById('answer').value != ""){
@@ -70,7 +70,6 @@ export class PlayGame extends React.Component {
     }
 
     completed(){
-        console.log("Reached Completed");
         try{
             Socket.emit('updateTime', {'user': this.props.state.user, 'start_time': "", 'end_time':'now'});
             Socket.emit('update', {'user': this.props.state.user, 'progress':-1, 'score':this.props.state.user.score, 'attempts': 5}, Socket.callback=this.handleComplete);    
@@ -90,7 +89,6 @@ export class PlayGame extends React.Component {
     }
     
     emit1(){
-        console.log("Emit1");
         try{
             Socket.emit('update', {'user': this.props.state.user, 'progress':(this.props.state.user.progress + 1), 'score':this.props.state.user.score, 'attempts': 5});
         }
@@ -131,17 +129,16 @@ export class PlayGame extends React.Component {
     //reveals the hint on hint button ciick
     showHint(){
         var userData ={};
-        if(this.props.state.questions[this.props.state.user.progress]['hint1'] != ""){
-            //checks to see if there is a second hint, if not, the button disappears
+        if(this.props.state.questions[this.props.state.user.progress].hint1 != ""){
+            //checks to see if there is a first hint, if not, the button disappears
             document.getElementById('hint1').style.display = "block";
             if(this.props.state.user.attempts > 0 && this.props.state.user.score > 0){
-                console.log(this.props.state.user.attempts);
                 userData = {'id':this.props.state.user.id, 'email':this.props.state.user.email, 'team_name':this.props.state.user.team_name, 'hunts_id':this.props.state.user.hunts_id, 'score':(this.props.state.user.score - 5), 'attempts':(this.props.state.user.attempts - 1), 'progress':this.props.state.user.progress};
                 this.props.setUser(userData, this.done0);
             }
         }
         //condition when the button is clicked once
-        if(this.props.state.questions[this.props.state.user.progress]['hint2'] == ""){
+        if(this.props.state.questions[this.props.state.user.progress].hint2 == ""){
             //checks to see if there is a second hint, if not, the button disappears
             document.getElementById('hint-submit').style.display = "none";
         }
@@ -150,7 +147,6 @@ export class PlayGame extends React.Component {
             document.getElementById('hint2').style.display = "block";
             document.getElementById('hint-submit').style.display = "none";
             if(this.props.state.user.attempts > 0 && this.props.state.user.score > 0){
-                console.log(this.props.state.user.attempts);
                 userData = {'id':this.props.state.user.id, 'email':this.props.state.user.email, 'team_name':this.props.state.user.team_name, 'hunts_id':this.props.state.user.hunts_id, 'score':(this.props.state.user.score - 5), 'attempts':(this.props.state.user.attempts - 1), 'progress':this.props.state.user.progress};
                 this.props.setUser(userData, this.done0);
             }
@@ -158,16 +154,12 @@ export class PlayGame extends React.Component {
         }
     }
     done0(){
-        console.log("Reached done OK");
         this.emit0();
     }
     done1(){
-        console.log("Reached done OK");
         this.emit1();
     }
     skipComplete(){
-        console.log("Reached skipComplete OK");
-        console.log(this.props.state.user);
         this.completed();
     }
     
@@ -178,6 +170,7 @@ export class PlayGame extends React.Component {
             document.getElementById('answer-submit').style.display = "none";
             document.getElementById('complete-button').style.display = "block";
             userData = {'id':this.props.state.user.id, 'email':this.props.state.user.email, 'team_name':this.props.state.user.team_name, 'hunts_id':this.props.state.user.hunts_id, 'score':(this.props.state.user.score - (this.props.state.user.attempts * 5)), 'attempts':5, 'progress':this.props.state.user.progress};
+
             this.props.setUser(userData,this.skipComplete);
             this.skipComplete;
         }
@@ -199,7 +192,10 @@ export class PlayGame extends React.Component {
             document.getElementById('hint-submit').style.display = "block";
             userData = {'id':this.props.state.user.id, 'email':this.props.state.user.email, 'team_name':this.props.state.user.team_name, 'hunts_id':this.props.state.user.hunts_id, 'score':(this.props.state.user.score - (this.props.state.user.attempts * 5)), 'attempts':5, 'progress':(this.props.state.user.progress + 1)};
             this.props.setUser(userData,this.done1);
-            
+            var emptyArray = [];
+            this.setState({
+                'attempts':emptyArray
+            }, this.emit1);
         }
     }
     
@@ -218,9 +214,7 @@ export class PlayGame extends React.Component {
             hint1 = this.props.state.questions[index]['hint1'];
             hint2 = this.props.state.questions[index]['hint2'];
             points = this.props.state.user.attempts * 5;
-        }catch(err){
-            console.log("issue setting question stuff");
-        }
+        }catch(err){}
         
         return (
             <div>

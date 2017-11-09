@@ -25,17 +25,21 @@ def updateHome(data):
     loggedIn = data['loggedIn'].lower()
     lastPage = data['lastPage']
     superAdminPages = ['admins', 'adminCreate']
-    adminPages = ['adminHome', 'adminLeaderboard', 'adminHunts', 'adminCreateHunt', 'adminEditHunt'].extend(superAdminPages)
+    adminPages = ['adminHome', 'adminLeaderboard', 'adminHunts', 'adminCreateHunt', 'adminEditHunt']
+    adminPages.extend(superAdminPages)
     teamPages = ['play']
-    resetConditions = ('no' in loggedIn) or ((lastPage in adminPages) and ('admin' not in loggedIn)) or ((lastPage in teamPages) and ('team' not in loggedIn)) or ((lastPage in superAdminPages) and ('super' not in loggedIn))
+    loginPages = [] 
+    loginPages.extend(adminPages)
+    loginPages.extend(teamPages)
+    notLoggedIn = ('no' in loggedIn) and (lastPage in loginPages)
+    notAdmin = (lastPage in adminPages) and ('admin' not in loggedIn)
+    notSuperAdmin = ((lastPage in superAdminPages) and ('super' not in loggedIn))
+    noTeam = (lastPage in teamPages) and ('team' not in loggedIn)
+    resetConditions = notLoggedIn or notAdmin or notSuperAdmin or noTeam
     if resetConditions:
 	    lastPage = 'home'
-    socketio.emit('updateHome', lastPage)
+    return lastPage
 
-@socketio.on('slideshow')
-def updateSlideshow(data):
-    return
-    
 @socketio.on('explore')
 def updateExplore(data):
     socketio.emit('updateExplore')

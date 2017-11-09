@@ -20,6 +20,7 @@ export class Complete extends React.Component {
         
         let title = this.props.state.hunt.name;
         let time = this.props.state.user.elapsed;
+        console.log(time);
         let team = this.props.state.user.team_name;
         let score = this.props.state.user.score;
         

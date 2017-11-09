@@ -21945,20 +21945,62 @@
 	            questions: [],
 	            user: {}
 	        };
-	        // this.start = this.start.bind(this);
+	        _this.images = ['boats', 'bust', 'canneryrow', 'crossedarms', 'lighthousewide', 'montereycanningcompany', 'sistercitypark', 'swanboat', 'whale'];
+	        // IMAGES THAT SHOW UP SIDEWAYS: 'diversmemorial','lady','lighthousenarrow','shareabench','twowhales', 'yesterdaysdream'
 	        _this.handle = _this.handle.bind(_this);
 	        _this.changePage = _this.changePage.bind(_this);
 	        _this.setProps = _this.setProps.bind(_this);
 	        _this.logOutSetProps = _this.logOutSetProps.bind(_this);
-
+	        _this.ready = _this.ready.bind(_this);
+	        _this.start = _this.start.bind(_this);
+	        _this.showSlides = _this.showSlides.bind(_this);
 	        return _this;
 	    }
 
 	    _createClass(Content, [{
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	            _Socket.Socket.emit('home', this.state);
-	            // Socket.emit('home', this.state, Socket.callback=this.start);
+	            try {
+	                //get state from localstorage
+	                var obj = JSON.parse(window.localStorage.state);
+	                this.setState(obj, this.ready);
+	            } catch (e) {
+	                _Socket.Socket.emit('home', this.state, _Socket.Socket.callback = this.start);
+	            }
+	        }
+	    }, {
+	        key: 'ready',
+	        value: function ready() {
+	            _Socket.Socket.emit('home', this.state, _Socket.Socket.callback = this.start);
+	        }
+	    }, {
+	        key: 'start',
+	        value: function start(lastPage) {
+	            try {
+	                if (lastPage.includes("home")) {
+	                    this.showSlides();
+	                    document.getElementById("home").style.display = "block";
+	                } else {
+	                    this.changePage(lastPage);
+	                }
+	            } catch (e) {
+	                //first connect, no last page?
+	                console.log(e);
+	            }
+	        }
+	    }, {
+	        key: 'showSlides',
+	        value: function showSlides() {
+	            var image = document.getElementById("ss-image");
+	            if (this.index < this.images.length) {
+	                image.src = "../static/image/gallery/" + this.images[this.index] + ".jpg";
+	                this.index += 1;
+	            } else {
+	                this.index = 0;
+	            }
+	            if (this.state.lastPage == 'home') {
+	                setTimeout(this.showSlides, 7000); // Change image every 7 seconds
+	            }
 	        }
 	    }, {
 	        key: 'setProps',
@@ -21996,7 +22038,6 @@
 	    }, {
 	        key: 'changePage',
 	        value: function changePage(location) {
-	            //if location is admin or team page and loggedin == no, go to home, set state guest
 	            try {
 	                _Socket.Socket.emit(location, this.state);
 	                if (location.indexOf('admin') != -1) {
@@ -22005,14 +22046,13 @@
 	                    document.getElementById(location).style.display = "block";
 	                    document.getElementById('nav-bar').style.display = "block";
 	                } else if (location.indexOf('admin') == -1) {
+	                    //not admin
 	                    document.getElementById(this.state.lastPage).style.display = "none";
 	                    document.getElementById(location).style.display = "block";
 	                    document.getElementById('nav-bar').style.display = "none";
 	                }
 	                this.state.lastPage = location;
-	                for (var n in this.state) {
-	                    window.localStorage.setItem(n, this.state[n]);
-	                }
+	                window.localStorage.setItem('state', JSON.stringify(this.state));
 	            } catch (e) {
 	                console.log(e);
 	            }
@@ -30677,62 +30717,16 @@
 
 	        _this.pageName = 'home';
 	        _this.index = 0;
-	        _this.timer;
-	        _this.images = ['boats', 'bust', 'canneryrow', 'crossedarms', 'lighthousewide', 'montereycanningcompany', 'sistercitypark', 'swanboat', 'whale'];
-	        // IMAGES THAT SHOW UP SIDEWAYS: 'diversmemorial','lady','lighthousenarrow','shareabench','twowhales', 'yesterdaysdream'
 	        _this.login = _this.login.bind(_this);
-	        _this.showSlides = _this.showSlides.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 
 	        return _this;
 	    }
 
 	    _createClass(Home, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            var _this2 = this;
-
-	            _Socket.Socket.on('updateHome', function (data) {
-	                var savedPage = window.localStorage.getItem('lastPage');
-	                try {
-	                    if (savedPage.includes("home")) {
-	                        _Socket.Socket.emit('slideshow', '', _Socket.Socket.callback = _this2.showSlides);
-	                        document.getElementById("home").style.display = "block";
-	                    } else {
-	                        if (_this2.props.loggedIn == 'no') {
-	                            _this2.props.changePage('home');
-	                        } else {
-	                            _this2.props.changePage(savedPage);
-	                        }
-	                    }
-	                } catch (e) {
-	                    //first connect, no last page
-	                    window.localStorage.setItem('lastPage', 'home');
-	                    _Socket.Socket.emit('slideshow', '', _Socket.Socket.callback = _this2.showSlides);
-	                    document.getElementById("home").style.display = "block";
-	                }
-	            });
-	        }
-	    }, {
 	        key: 'handleSubmit',
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
-	        }
-	    }, {
-	        key: 'showSlides',
-	        value: function showSlides() {
-	            var image = document.getElementById("ss-image");
-	            if (this.index < this.images.length) {
-	                image.src = "../static/image/gallery/" + this.images[this.index] + ".jpg";
-	                this.index += 1;
-	            } else {
-	                this.index = 0;
-	            }
-	            // var index = Math.floor(Math.random() * this.images.length);
-	            // image.src="../static/image/gallery/"+this.images[index]+".jpg"; 
-	            if (this.props.state.lastPage == 'home') {
-	                setTimeout(this.showSlides, 7000); // Change image every 7 seconds
-	            }
 	        }
 	    }, {
 	        key: 'login',
@@ -30748,7 +30742,7 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this3 = this;
+	            var _this2 = this;
 
 	            return React.createElement(
 	                'div',
@@ -30779,7 +30773,7 @@
 	                                React.createElement(
 	                                    'button',
 	                                    { className: 'btn', onClick: function onClick() {
-	                                            return _this3.props.changePage('explore');
+	                                            return _this2.props.changePage('explore');
 	                                        } },
 	                                    'Let\'s Explore!'
 	                                ),
@@ -51758,7 +51752,6 @@
 	    }, {
 	        key: 'changePlay',
 	        value: function changePlay(current, next) {
-	            console.log(current, next);
 	            document.getElementById(next).style.display = 'block';
 	            document.getElementById(current).style.display = 'none';
 	        }
@@ -51851,6 +51844,7 @@
 
 	            var title = this.props.state.hunt.name;
 	            var time = this.props.state.user.elapsed;
+	            console.log(time);
 	            var team = this.props.state.user.team_name;
 	            var score = this.props.state.user.score;
 
@@ -52166,10 +52160,10 @@
 	                document.getElementById('answer-submit').style.display = "none";
 	                document.getElementById('hint-submit').style.display = "none";
 	                document.getElementById('result').style.display = "block";
+	                var emptyArray = [];
 	                this.setState({
-	                    'attempts': []
-	                });
-	                this.emit1();
+	                    'attempts': emptyArray
+	                }, this.emit1);
 	            } else {
 	                if (document.getElementById('answer').value != "") {
 	                    var newArray = this.state.attempts.slice();
@@ -52193,7 +52187,6 @@
 	    }, {
 	        key: 'completed',
 	        value: function completed() {
-	            console.log("Reached Completed");
 	            try {
 	                _Socket.Socket.emit('updateTime', { 'user': this.props.state.user, 'start_time': "", 'end_time': 'now' });
 	                _Socket.Socket.emit('update', { 'user': this.props.state.user, 'progress': -1, 'score': this.props.state.user.score, 'attempts': 5 }, _Socket.Socket.callback = this.handleComplete);
@@ -52213,7 +52206,6 @@
 	    }, {
 	        key: 'emit1',
 	        value: function emit1() {
-	            console.log("Emit1");
 	            try {
 	                _Socket.Socket.emit('update', { 'user': this.props.state.user, 'progress': this.props.state.user.progress + 1, 'score': this.props.state.user.score, 'attempts': 5 });
 	            } catch (err) {
@@ -52258,17 +52250,16 @@
 	        key: 'showHint',
 	        value: function showHint() {
 	            var userData = {};
-	            if (this.props.state.questions[this.props.state.user.progress]['hint1'] != "") {
-	                //checks to see if there is a second hint, if not, the button disappears
+	            if (this.props.state.questions[this.props.state.user.progress].hint1 != "") {
+	                //checks to see if there is a first hint, if not, the button disappears
 	                document.getElementById('hint1').style.display = "block";
 	                if (this.props.state.user.attempts > 0 && this.props.state.user.score > 0) {
-	                    console.log(this.props.state.user.attempts);
 	                    userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - 5, 'attempts': this.props.state.user.attempts - 1, 'progress': this.props.state.user.progress };
 	                    this.props.setUser(userData, this.done0);
 	                }
 	            }
 	            //condition when the button is clicked once
-	            if (this.props.state.questions[this.props.state.user.progress]['hint2'] == "") {
+	            if (this.props.state.questions[this.props.state.user.progress].hint2 == "") {
 	                //checks to see if there is a second hint, if not, the button disappears
 	                document.getElementById('hint-submit').style.display = "none";
 	            }
@@ -52277,7 +52268,6 @@
 	                document.getElementById('hint2').style.display = "block";
 	                document.getElementById('hint-submit').style.display = "none";
 	                if (this.props.state.user.attempts > 0 && this.props.state.user.score > 0) {
-	                    console.log(this.props.state.user.attempts);
 	                    userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - 5, 'attempts': this.props.state.user.attempts - 1, 'progress': this.props.state.user.progress };
 	                    this.props.setUser(userData, this.done0);
 	                }
@@ -52286,20 +52276,16 @@
 	    }, {
 	        key: 'done0',
 	        value: function done0() {
-	            console.log("Reached done OK");
 	            this.emit0();
 	        }
 	    }, {
 	        key: 'done1',
 	        value: function done1() {
-	            console.log("Reached done OK");
 	            this.emit1();
 	        }
 	    }, {
 	        key: 'skipComplete',
 	        value: function skipComplete() {
-	            console.log("Reached skipComplete OK");
-	            console.log(this.props.state.user);
 	            this.completed();
 	        }
 	    }, {
@@ -52311,6 +52297,7 @@
 	                document.getElementById('answer-submit').style.display = "none";
 	                document.getElementById('complete-button').style.display = "block";
 	                userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - this.props.state.user.attempts * 5, 'attempts': 5, 'progress': this.props.state.user.progress };
+
 	                this.props.setUser(userData, this.skipComplete);
 	                this.skipComplete;
 	            } else {
@@ -52330,6 +52317,10 @@
 	                document.getElementById('hint-submit').style.display = "block";
 	                userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - this.props.state.user.attempts * 5, 'attempts': 5, 'progress': this.props.state.user.progress + 1 };
 	                this.props.setUser(userData, this.done1);
+	                var emptyArray = [];
+	                this.setState({
+	                    'attempts': emptyArray
+	                }, this.emit1);
 	            }
 	        }
 	    }, {
@@ -52350,9 +52341,7 @@
 	                hint1 = this.props.state.questions[index]['hint1'];
 	                hint2 = this.props.state.questions[index]['hint2'];
 	                points = this.props.state.user.attempts * 5;
-	            } catch (err) {
-	                console.log("issue setting question stuff");
-	            }
+	            } catch (err) {}
 
 	            return React.createElement(
 	                'div',
