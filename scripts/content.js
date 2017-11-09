@@ -144,7 +144,7 @@ export class Content extends React.Component{
                         <Register changePage={this.changePage}/>
                     </div>
                      <div id = 'play' style={{display:'none'}}>
-                        <Play changePage={this.changePage} state={this.state} setProps={this.setProps} logOutSetProps={this.logOutSetProps} updateData={this.updateData}/>
+                        <Play changePage={this.changePage} hide={this.state.hide} state={this.state} setProps={this.setProps} logOutSetProps={this.logOutSetProps} updateData={this.updateData}/>
                     </div>
                     <div id = 'nav-bar' style={{display:'none'}}>
                         <NavBar changePage={this.changePage} hide={this.state.hide} logOutSetProps={this.logOutSetProps}/>

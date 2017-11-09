@@ -83,13 +83,13 @@ export class Play extends React.Component {
                     <LogoSmall/>
                 </div>
                 <div id = 'start' style={{display:this.hide}}>
-                    <Start changePage={this.props.changePage} changePlay={this.changePlay} setPlay={this.setPlay} setUser={this.setUser} state={this.state}/>
+                    <Start changePage={this.props.changePage} hide={this.props.hide} changePlay={this.changePlay} setPlay={this.setPlay} setUser={this.setUser} state={this.state}/>
                 </div>
                 <div id = 'playGame' style={{display:this.hide}}>
-                    <PlayGame changePage={this.props.changePage} changePlay={this.changePlay} setPlay={this.setPlay} setUser={this.setUser} state={this.state} logOutSetProps={this.props.logOutSetProps}/>
+                    <PlayGame changePage={this.props.changePage} hide={this.props.hide} changePlay={this.changePlay} setPlay={this.setPlay} setUser={this.setUser} state={this.state} logOutSetProps={this.props.logOutSetProps}/>
                 </div>
                 <div id = 'complete' style={{display:this.hide}}>
-                    <Complete changePage={this.props.changePage} setPlay={this.setPlay} setUser={this.setUser} state={this.state} logOutSetProps={this.props.logOutSetProps}/>
+                    <Complete changePage={this.props.changePage} hide={this.props.hide} setPlay={this.setPlay} setUser={this.setUser} state={this.state} logOutSetProps={this.props.logOutSetProps}/>
                 </div>
             </div>
         );
