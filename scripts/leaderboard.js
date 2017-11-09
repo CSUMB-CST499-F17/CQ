@@ -14,7 +14,8 @@ export class Leaderboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            'userlist': []
+            'userlist': [],
+            'userlistPlusTime': []
         };
         this.pageName = 'leaderboard';
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -34,20 +35,44 @@ export class Leaderboard extends React.Component {
     }
     render() {
         let userlist='';
-
-        var data = this.state.userlist;
-        for(var i = 0; i < data.length; i++) {
-            data[i].end_time = data[i].start_time - data[i].end_time;
-        }
+        for(var i = 0; i < this.state.userlist.length; i++) {
+            var start = new Date(this.state.userlist[i].start_time);
+            var end = new Date(this.state.userlist[i].end_time);
+            var team_name = this.state.userlist[i].team_name;
+            var score = this.state.userlist[i].score;
+            
+            var time = (end-start) /1000;  // second/minutes/hours
         
+            // calculate (and subtract) whole days
+            var days = Math.floor(time / 86400);
+            time -= days * 86400;
+            // calculate (and subtract) whole hours
+            var hours = Math.floor(time / 3600) % 24;
+            time -= hours * 3600;
+            // calculate (and subtract) whole minutes
+            var minutes = Math.floor(time / 60) % 60;
+            time -= minutes * 60;
+            // what's left is seconds
+            var seconds = time % 60;
+            
+            this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
+            
+            
+        }
 
-        if (this.state.userlist != null) {
-            userlist = this.state.userlist.map(
+        
+        if (this.state.userlistPlusTime != null) {
+            userlist = this.state.userlistPlusTime.map(
                 (n, index) =>
-                <tr key={index}><td>{index+1}</td> <td>{n.team_name}</td><td>{n.score}</td><td>{n.end_time}</td></tr>
+                <tr key={index}><td>{index+1}</td> <td>{n[0]}</td><td>{n[1]}</td>
+                <td>{n[2] != 0 ? <div>{n[2]} d<br/></div> : <div/>}
+                    {n[3] != 0 ? <div>{n[3]} h<br/></div> : <div/>}
+                    {n[4] != 0 ? <div>{n[4]} m<br/></div> : <div/>}
+                    {n[5] != 0 ? <div>{n[5]} s<br/></div> : <div/>}
+                </td></tr>
              );
         }
-
+        
         return (
             <div>
                 <div id = 'logo-small'>
@@ -61,7 +86,7 @@ export class Leaderboard extends React.Component {
                             <table id="leaderboard-table">
                                 <tbody>
                                     <tr>
-                                        <td>Rank</td><td>Team</td><td>Score</td><td>Time</td>
+                                        <td>Rank</td><td>Team</td><td>Score</td><td>Time    </td>
                                     </tr>
                                 </tbody>
                             </table>

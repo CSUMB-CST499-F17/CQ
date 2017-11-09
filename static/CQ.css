@@ -36,7 +36,7 @@ p{
 }
 .btn {
     background-color: white;
-    color: black;
+    color: #0d3551;
     border: none;
     padding: 5px 15px;
     text-align: center;
@@ -70,7 +70,7 @@ p{
 #login input{
     text-align: center;
     display: inline-block;
-    color: black;
+    color: #0d3551;
     font-size: 16px;
     margin: 4px 2px;
 }
@@ -262,20 +262,23 @@ p{
     text-align:left;
 }
 #leaderboards{
-    max-width: 30%;
-    padding: 20px;
-    justify-content: center;
+    max-width: 80%;
     margin: auto;
-
-}
-#leaderboard-table, th, td {
-   border: 1px solid black;
 }
 #leaderboard-table{
     width:100%;
-    justify-content: center;
     margin: auto;
-    background-color:white;
+}
+#leaderboard-table, th, td {
+   border: 1px solid #3E6F96;
+}
+#leaderboard-table, tr:nth-child(even) {
+   background-color: #fffcdb;
+}
+#leaderboard-table td {
+   font-weight: bold;
+   background-color: #74CCCF;
+   color:white;
 }
 #userList{
     overflow: hidden;
@@ -291,6 +294,7 @@ overflow-y:scroll;
     width:100%;
     justify-content: center;
     background-color:white;
+    color: #0d3551;
 }
 td{
     width:25%;
@@ -317,7 +321,7 @@ td{
 /* Change the color of links on hover */
 #topnav a:hover {
     background-color: #ddd;
-    color: black;
+    color: #0d3551;
 }
 
 /* Hide the link that should open and close the topnav on small screens */
@@ -484,6 +488,9 @@ td{
         margin-right:0%;
         margin-top:3px;
     }
+    #leaderboards{
+        max-width: 100%;
+    }
     /* Add a black background color to the top navigation */
     #topnav {
         background-color: #333;
@@ -504,7 +511,7 @@ td{
     /* Change the color of links on hover */
     #topnav a:hover {
         background-color: #ddd;
-        color: black;
+        color: #0d3551;
     }
 
     /* Hide the link that should open and close the topnav on small screens */

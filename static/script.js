@@ -50923,7 +50923,8 @@
 	        var _this = _possibleConstructorReturn(this, (Leaderboard.__proto__ || Object.getPrototypeOf(Leaderboard)).call(this, props));
 
 	        _this.state = {
-	            'userlist': []
+	            'userlist': [],
+	            'userlistPlusTime': []
 	        };
 	        _this.pageName = 'leaderboard';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
@@ -50953,14 +50954,31 @@
 	            var _this3 = this;
 
 	            var userlist = '';
+	            for (var i = 0; i < this.state.userlist.length; i++) {
+	                var start = new Date(this.state.userlist[i].start_time);
+	                var end = new Date(this.state.userlist[i].end_time);
+	                var team_name = this.state.userlist[i].team_name;
+	                var score = this.state.userlist[i].score;
 
-	            var data = this.state.userlist;
-	            for (var i = 0; i < data.length; i++) {
-	                data[i].end_time = data[i].start_time - data[i].end_time;
+	                var time = (end - start) / 1000; // second/minutes/hours
+
+	                // calculate (and subtract) whole days
+	                var days = Math.floor(time / 86400);
+	                time -= days * 86400;
+	                // calculate (and subtract) whole hours
+	                var hours = Math.floor(time / 3600) % 24;
+	                time -= hours * 3600;
+	                // calculate (and subtract) whole minutes
+	                var minutes = Math.floor(time / 60) % 60;
+	                time -= minutes * 60;
+	                // what's left is seconds
+	                var seconds = time % 60;
+
+	                this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
 	            }
 
-	            if (this.state.userlist != null) {
-	                userlist = this.state.userlist.map(function (n, index) {
+	            if (this.state.userlistPlusTime != null) {
+	                userlist = this.state.userlistPlusTime.map(function (n, index) {
 	                    return React.createElement(
 	                        'tr',
 	                        { key: index },
@@ -50973,17 +50991,44 @@
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.team_name
+	                            n[0]
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.score
+	                            n[1]
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.end_time
+	                            n[2] != 0 ? React.createElement(
+	                                'div',
+	                                null,
+	                                n[2],
+	                                ' d',
+	                                React.createElement('br', null)
+	                            ) : React.createElement('div', null),
+	                            n[3] != 0 ? React.createElement(
+	                                'div',
+	                                null,
+	                                n[3],
+	                                ' h',
+	                                React.createElement('br', null)
+	                            ) : React.createElement('div', null),
+	                            n[4] != 0 ? React.createElement(
+	                                'div',
+	                                null,
+	                                n[4],
+	                                ' m',
+	                                React.createElement('br', null)
+	                            ) : React.createElement('div', null),
+	                            n[5] != 0 ? React.createElement(
+	                                'div',
+	                                null,
+	                                n[5],
+	                                ' s',
+	                                React.createElement('br', null)
+	                            ) : React.createElement('div', null)
 	                        )
 	                    );
 	                });
@@ -51039,7 +51084,7 @@
 	                                    React.createElement(
 	                                        'td',
 	                                        null,
-	                                        'Time'
+	                                        'Time    '
 	                                    )
 	                                )
 	                            )
@@ -52538,10 +52583,12 @@
 	        var _this = _possibleConstructorReturn(this, (AdminLeaderboard.__proto__ || Object.getPrototypeOf(AdminLeaderboard)).call(this, props));
 
 	        _this.state = {
-	            'userlist': []
+	            'userlist': [],
+	            'userlistPlusTime': []
 	        };
-
+	        _this.pageName = 'adminLeaderboard';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.componentDidMount = _this.componentDidMount.bind(_this);
 	        return _this;
 	    }
 
@@ -52565,23 +52612,82 @@
 	        key: 'render',
 	        value: function render() {
 	            var userlist = '';
-	            if (this.state.userlist != null) {
-	                userlist = this.state.userlist.map(function (n, index) {
+	            for (var i = 0; i < this.state.userlist.length; i++) {
+	                var start = new Date(this.state.userlist[i].start_time);
+	                var end = new Date(this.state.userlist[i].end_time);
+	                var team_name = this.state.userlist[i].team_name;
+	                var score = this.state.userlist[i].score;
+
+	                var time = (end - start) / 1000; // second/minutes/hours
+
+	                // calculate (and subtract) whole days
+	                var days = Math.floor(time / 86400);
+	                time -= days * 86400;
+	                // calculate (and subtract) whole hours
+	                var hours = Math.floor(time / 3600) % 24;
+	                time -= hours * 3600;
+	                // calculate (and subtract) whole minutes
+	                var minutes = Math.floor(time / 60) % 60;
+	                time -= minutes * 60;
+	                // what's left is seconds
+	                var seconds = time % 60;
+
+	                this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
+	            }
+
+	            if (this.state.userlistPlusTime != null) {
+	                userlist = this.state.userlistPlusTime.map(function (n, index) {
 	                    return React.createElement(
 	                        'tr',
 	                        { key: index },
-	                        React.createElement('td', null),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.name
+	                            index + 1
+	                        ),
+	                        ' ',
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n[0]
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.picture
+	                            n[1]
 	                        ),
-	                        React.createElement('td', null)
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n[2] != 0 ? React.createElement(
+	                                'div',
+	                                null,
+	                                n[2],
+	                                ' d',
+	                                React.createElement('br', null)
+	                            ) : React.createElement('div', null),
+	                            n[3] != 0 ? React.createElement(
+	                                'div',
+	                                null,
+	                                n[3],
+	                                ' h',
+	                                React.createElement('br', null)
+	                            ) : React.createElement('div', null),
+	                            n[4] != 0 ? React.createElement(
+	                                'div',
+	                                null,
+	                                n[4],
+	                                ' m',
+	                                React.createElement('br', null)
+	                            ) : React.createElement('div', null),
+	                            n[5] != 0 ? React.createElement(
+	                                'div',
+	                                null,
+	                                n[5],
+	                                ' s',
+	                                React.createElement('br', null)
+	                            ) : React.createElement('div', null)
+	                        )
 	                    );
 	                });
 	            }
