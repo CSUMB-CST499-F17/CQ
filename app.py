@@ -233,9 +233,9 @@ def updateLeaderboard(data):
     })
     print('Leaderboard data sent.')
 
-@socketio.on('start')
-def updateStart():
-    socketio.emit('updateStart');
+# @socketio.on('start')
+# def updateStart():
+#     socketio.emit('updateStart');
     
 @socketio.on('register')
 def updateRegister(data):

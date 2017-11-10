@@ -116,7 +116,7 @@ export class PlayGame extends React.Component {
         document.getElementById('skip').style.display = "none";
         document.getElementById('answer').value = "";
         document.getElementById('answer-submit').style.display = "block";
-        if(this.props.state.questions[(this.props.state.user.progress + 1)]['hint1'] == ""){
+        if(this.props.state.questions[(this.props.state.user.progress + 1)]['hint1'] != ""){
             //checks to see if there is a second hint, if not, the button disappears
             document.getElementById('hint-submit').style.display = "block";
         }
@@ -188,12 +188,12 @@ export class PlayGame extends React.Component {
                 document.getElementById('hint-submit').style.display = "block";
             }
             document.getElementById('hint-submit').style.display = "block";
-            userData = {'id':this.props.state.user.id, 'email':this.props.state.user.email, 'team_name':this.props.state.user.team_name, 'hunts_id':this.props.state.user.hunts_id, 'score':(this.props.state.user.score - (this.props.state.user.attempts * 5)), 'attempts':5, 'progress':(this.props.state.user.progress + 1)};
-            this.props.setUser(userData,this.done1);
             var emptyArray = [];
             this.setState({
                 'attempts':emptyArray
-            }, this.emit1);
+            });
+            userData = {'id':this.props.state.user.id, 'email':this.props.state.user.email, 'team_name':this.props.state.user.team_name, 'hunts_id':this.props.state.user.hunts_id, 'score':(this.props.state.user.score - (this.props.state.user.attempts * 5)), 'attempts':5, 'progress':(this.props.state.user.progress + 1)};
+            this.props.setUser(userData,this.done0);
         }
     }
     
