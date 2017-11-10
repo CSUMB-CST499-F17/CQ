@@ -92,13 +92,7 @@ export class Explore extends React.Component {
                 </div>
                 <div className="clear"></div>
                 <div id='intro'>
-<<<<<<< HEAD
-                    <div id='arrows'>
-                        <img className="arrow-left" src="./static/image/l-arrow.png" onClick={() => this.setState(({count:(this.state.count == 0 ? this.state.hunts.length - 1 : this.state.count - 1)}))}></img>
-                        <img className="arrow-right" src="./static/image/r-arrow.png" onClick={() => this.setState(({count:(this.state.count == this.state.hunts.length - 1 ? 0 : this.state.count + 1)}))}></img>
-=======
                     <div className='hunt-preview'>
->>>>>>> b08df653c35d34de37c8e0be680ea9d9ee80957f
                         {hunts[this.state.count]}
                     </div>
                     <div id='buttons'>

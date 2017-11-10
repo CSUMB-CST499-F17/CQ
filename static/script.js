@@ -21894,7 +21894,7 @@
 
 	var _explore = __webpack_require__(495);
 
-	var _leaderboard = __webpack_require__(497);
+	var _leaderboard = __webpack_require__(496);
 
 	var _register = __webpack_require__(498);
 
@@ -50654,7 +50654,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(496);
+	var _logoSmall = __webpack_require__(497);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -50797,7 +50797,6 @@
 	                    React.createElement(
 	                        'div',
 	                        { className: 'hunt-preview' },
->>>>>>> b08df653c35d34de37c8e0be680ea9d9ee80957f
 	                        hunts[this.state.count]
 	                    ),
 	                    React.createElement(
@@ -50841,54 +50840,6 @@
 /* 496 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.LogoSmall = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var LogoSmall = exports.LogoSmall = function (_React$Component) {
-	    _inherits(LogoSmall, _React$Component);
-
-	    function LogoSmall(props) {
-	        _classCallCheck(this, LogoSmall);
-
-	        return _possibleConstructorReturn(this, (LogoSmall.__proto__ || Object.getPrototypeOf(LogoSmall)).call(this, props));
-	    }
-
-	    _createClass(LogoSmall, [{
-	        key: "render",
-	        value: function render() {
-	            return React.createElement(
-	                "div",
-	                null,
-	                React.createElement("img", { id: "logo-small-img", src: "../static/image/logo-small.png" })
-	            );
-	        }
-	    }]);
-
-	    return LogoSmall;
-	}(React.Component);
-
-/***/ },
-/* 497 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -50908,7 +50859,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(496);
+	var _logoSmall = __webpack_require__(497);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -51131,6 +51082,54 @@
 	}(React.Component);
 
 /***/ },
+/* 497 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.LogoSmall = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var LogoSmall = exports.LogoSmall = function (_React$Component) {
+	    _inherits(LogoSmall, _React$Component);
+
+	    function LogoSmall(props) {
+	        _classCallCheck(this, LogoSmall);
+
+	        return _possibleConstructorReturn(this, (LogoSmall.__proto__ || Object.getPrototypeOf(LogoSmall)).call(this, props));
+	    }
+
+	    _createClass(LogoSmall, [{
+	        key: "render",
+	        value: function render() {
+	            return React.createElement(
+	                "div",
+	                null,
+	                React.createElement("img", { id: "logo-small-img", src: "../static/image/logo-small.png" })
+	            );
+	        }
+	    }]);
+
+	    return LogoSmall;
+	}(React.Component);
+
+/***/ },
 /* 498 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -51151,7 +51150,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(496);
+	var _logoSmall = __webpack_require__(497);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -51664,7 +51663,7 @@
 
 	var _reactBootstrap = __webpack_require__(240);
 
-	var _logoSmall = __webpack_require__(496);
+	var _logoSmall = __webpack_require__(497);
 
 	var _complete = __webpack_require__(500);
 
@@ -51824,7 +51823,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(496);
+	var _logoSmall = __webpack_require__(497);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -52348,11 +52347,6 @@
 	                    document.getElementById('hint-submit').style.display = "block";
 	                }
 	                document.getElementById('hint-submit').style.display = "block";
-<<<<<<< HEAD
-=======
-	                userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - this.props.state.user.attempts * 5, 'attempts': 5, 'hints': 0, 'progress': this.props.state.user.progress + 1 };
-	                this.props.setUser(userData, this.done1);
->>>>>>> b08df653c35d34de37c8e0be680ea9d9ee80957f
 	                var emptyArray = [];
 	                this.setState({
 	                    'attempts': emptyArray
@@ -72666,7 +72660,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(496);
+	var _logoSmall = __webpack_require__(497);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
