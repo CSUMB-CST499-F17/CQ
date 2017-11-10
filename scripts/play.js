@@ -61,12 +61,20 @@ export class Play extends React.Component {
     
     updatePlay(){
         if(this.state.user.progress == 0){
-            document.getElementById('start').style.display = 'block';
+            document.getElementById('complete').style.display = 'none';
             document.getElementById('playGame').style.display = 'none';
+            document.getElementById('start').style.display = 'block';
         }
         else if(this.state.user.progress > 0){
-            document.getElementById('playGame').style.display = 'block';
             document.getElementById('start').style.display = 'none';
+            document.getElementById('complete').style.display = 'none';
+            document.getElementById('playGame').style.display = 'block';
+        }
+        else if(this.state.user.progress == -1){
+
+            document.getElementById('start').style.display = 'none';
+            document.getElementById('playGame').style.display = 'none';
+            document.getElementById('complete').style.display = 'block';
         }
         //check if need to update then update or ignore
         //load start, play, or finish page accordingly and fill with data stored in vars

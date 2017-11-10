@@ -50741,7 +50741,13 @@
 	                        null,
 	                        n[1]
 	                    ),
-	                    React.createElement('img', { src: "../static/image/gallery/" + n[4] }),
+	                    React.createElement('div', { className: 'arrow arrow-left', onClick: function onClick() {
+	                            return _this3.setState({ count: _this3.state.count == 0 ? _this3.state.hunts.length - 1 : _this3.state.count - 1 });
+	                        } }),
+	                    React.createElement('img', { src: n[4] }),
+	                    React.createElement('div', { className: 'arrow arrow-right', onClick: function onClick() {
+	                            return _this3.setState({ count: _this3.state.count == _this3.state.hunts.length - 1 ? 0 : _this3.state.count + 1 });
+	                        } }),
 	                    React.createElement(
 	                        'p',
 	                        null,
@@ -50790,13 +50796,8 @@
 	                    { id: 'intro' },
 	                    React.createElement(
 	                        'div',
-	                        { id: 'arrows' },
-	                        React.createElement('img', { className: 'arrow-left', src: './static/image/l-arrow.png', onClick: function onClick() {
-	                                return _this3.setState({ count: _this3.state.count == 0 ? _this3.state.hunts.length - 1 : _this3.state.count - 1 });
-	                            } }),
-	                        React.createElement('img', { className: 'arrow-right', src: './static/image/r-arrow.png', onClick: function onClick() {
-	                                return _this3.setState({ count: _this3.state.count == _this3.state.hunts.length - 1 ? 0 : _this3.state.count + 1 });
-	                            } }),
+	                        { className: 'hunt-preview' },
+>>>>>>> b08df653c35d34de37c8e0be680ea9d9ee80957f
 	                        hunts[this.state.count]
 	                    ),
 	                    React.createElement(
@@ -51749,11 +51750,18 @@
 	        key: 'updatePlay',
 	        value: function updatePlay() {
 	            if (this.state.user.progress == 0) {
-	                document.getElementById('start').style.display = 'block';
+	                document.getElementById('complete').style.display = 'none';
 	                document.getElementById('playGame').style.display = 'none';
+	                document.getElementById('start').style.display = 'block';
 	            } else if (this.state.user.progress > 0) {
-	                document.getElementById('playGame').style.display = 'block';
 	                document.getElementById('start').style.display = 'none';
+	                document.getElementById('complete').style.display = 'none';
+	                document.getElementById('playGame').style.display = 'block';
+	            } else if (this.state.user.progress == -1) {
+
+	                document.getElementById('start').style.display = 'none';
+	                document.getElementById('playGame').style.display = 'none';
+	                document.getElementById('complete').style.display = 'block';
 	            }
 	            //check if need to update then update or ignore
 	            //load start, play, or finish page accordingly and fill with data stored in vars
@@ -51852,7 +51860,77 @@
 	            var time = this.props.state.user.elapsed;
 	            var team = this.props.state.user.team_name;
 	            var score = this.props.state.user.score;
-
+	            var results = React.createElement('div', { id: 'results' });
+	            if (this.props.state.questions.length == 0) {
+	                results = React.createElement(
+	                    'div',
+	                    { id: 'results' },
+	                    React.createElement(
+	                        'h2',
+	                        { id: 'err' },
+	                        React.createElement(
+	                            'span',
+	                            null,
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'There are no questions in this hunt.'
+	                            )
+	                        )
+	                    )
+	                );
+	            } else {
+	                results = React.createElement(
+	                    'div',
+	                    { id: 'results' },
+	                    React.createElement(
+	                        'h2',
+	                        { id: 'team' },
+	                        React.createElement(
+	                            'span',
+	                            null,
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Team Name: '
+	                            ),
+	                            React.createElement('br', null),
+	                            ' ',
+	                            team
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'h2',
+	                        { id: 'time' },
+	                        React.createElement(
+	                            'span',
+	                            null,
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Time Taken To Complete Hunt: '
+	                            ),
+	                            React.createElement('br', null),
+	                            time
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'h2',
+	                        { id: 'score' },
+	                        React.createElement(
+	                            'span',
+	                            null,
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Final Score:'
+	                            ),
+	                            React.createElement('br', null),
+	                            score
+	                        )
+	                    )
+	                );
+	            }
 	            return React.createElement(
 	                'div',
 	                null,
@@ -51878,56 +51956,7 @@
 	                            title
 	                        )
 	                    ),
-	                    React.createElement(
-	                        'div',
-	                        { id: 'results' },
-	                        React.createElement(
-	                            'h2',
-	                            { id: 'team' },
-	                            React.createElement(
-	                                'span',
-	                                null,
-	                                React.createElement(
-	                                    'b',
-	                                    null,
-	                                    'Team Name: '
-	                                ),
-	                                React.createElement('br', null),
-	                                ' ',
-	                                team
-	                            )
-	                        ),
-	                        React.createElement(
-	                            'h2',
-	                            { id: 'time' },
-	                            React.createElement(
-	                                'span',
-	                                null,
-	                                React.createElement(
-	                                    'b',
-	                                    null,
-	                                    'Time Taken To Complete Hunt: '
-	                                ),
-	                                React.createElement('br', null),
-	                                time
-	                            )
-	                        ),
-	                        React.createElement(
-	                            'h2',
-	                            { id: 'score' },
-	                            React.createElement(
-	                                'span',
-	                                null,
-	                                React.createElement(
-	                                    'b',
-	                                    null,
-	                                    'Final Score:'
-	                                ),
-	                                React.createElement('br', null),
-	                                score
-	                            )
-	                        )
-	                    )
+	                    results
 	                ),
 	                React.createElement(
 	                    'div',
@@ -52004,12 +52033,17 @@
 	    }, {
 	        key: 'start',
 	        value: function start() {
-	            _Socket.Socket.emit('updateTime', { 'user': this.props.state.user, 'start_time': "now", 'end_time': "" });
-	            _Socket.Socket.emit('update', { 'user': this.props.state.user, 'progress': 1, 'score': this.props.state.questions.length * 25, 'attempts': 5 }, _Socket.Socket.callback = this.handle);
+	            if (this.props.state.questions.length > 0) {
+	                _Socket.Socket.emit('updateTime', { 'user': this.props.state.user, 'start_time': "now", 'end_time': "" });
+	                _Socket.Socket.emit('update', { 'user': this.props.state.user, 'progress': 1, 'score': this.props.state.questions.length * 25, 'attempts': 5, 'hints': 0 }, _Socket.Socket.callback = this.handle);
+	            } else {
+	                this.props.changePlay('start', 'complete');
+	            }
 	        }
 	    }, {
 	        key: 'handle',
 	        value: function handle(callback) {
+	            console.log(callback);
 	            var data = JSON.parse(callback);
 	            this.props.setPlay(data['user']);
 	            this.props.changePlay('start', 'playGame');
@@ -52021,7 +52055,7 @@
 
 	            var hname = this.props.state.hunt.name;
 	            var hstext = this.props.state.hunt.start_text;
-	            var himage = "../static/image/gallery/" + this.props.state.hunt.image;
+	            var himage = this.props.state.hunt.image;
 	            return React.createElement(
 	                'div',
 	                null,
@@ -52149,11 +52183,10 @@
 	                result.style.visibility = 'visible';
 	                result.textContent = 'Correct';
 	                result.style.color = "#9bf442";
-
 	                if (this.props.state.user.progress == this.props.state.questions.length) {
 	                    document.getElementById('next').textContent = "Last Question";
 	                }
-	                if (this.props.state.user.progress == this.props.state.questions.length - 1) {
+	                if (this.props.state.user.progress == this.props.state.questions.length - 1 || this.props.state.user.progress == this.props.state.questions.length && this.props.state.questions.length == 1) {
 	                    document.getElementById('complete-button').style.display = "block";
 	                    document.getElementById('skip').style.display = "none";
 	                }
@@ -52192,7 +52225,7 @@
 	        value: function completed() {
 	            try {
 	                _Socket.Socket.emit('updateTime', { 'user': this.props.state.user, 'start_time': "", 'end_time': 'now' });
-	                _Socket.Socket.emit('update', { 'user': this.props.state.user, 'progress': -1, 'score': this.props.state.user.score, 'attempts': 5 }, _Socket.Socket.callback = this.handleComplete);
+	                _Socket.Socket.emit('update', { 'user': this.props.state.user, 'progress': -1, 'score': this.props.state.user.score, 'attempts': 5, 'hints': 0 }, _Socket.Socket.callback = this.handleComplete);
 	            } catch (err) {
 	                console.log(err);
 	            }
@@ -52201,7 +52234,7 @@
 	        key: 'emit0',
 	        value: function emit0() {
 	            try {
-	                _Socket.Socket.emit('update', { 'user': this.props.state.user, 'progress': this.props.state.user.progress, 'score': this.props.state.user.score, 'attempts': this.props.state.user.attempts });
+	                _Socket.Socket.emit('update', { 'user': this.props.state.user, 'progress': this.props.state.user.progress, 'score': this.props.state.user.score, 'attempts': this.props.state.user.attempts, 'hints': this.props.state.user.hints });
 	            } catch (err) {
 	                console.log(err);
 	            }
@@ -52210,7 +52243,7 @@
 	        key: 'emit1',
 	        value: function emit1() {
 	            try {
-	                _Socket.Socket.emit('update', { 'user': this.props.state.user, 'progress': this.props.state.user.progress + 1, 'score': this.props.state.user.score, 'attempts': 5 });
+	                _Socket.Socket.emit('update', { 'user': this.props.state.user, 'progress': this.props.state.user.progress + 1, 'score': this.props.state.user.score, 'attempts': 5, 'hints': 0 });
 	            } catch (err) {
 	                console.log(err);
 	            }
@@ -52220,7 +52253,6 @@
 	        value: function handleComplete(callback) {
 	            var data = JSON.parse(callback);
 	            this.props.setUser(data['user'], this.end);
-	            console.log(data['user']);
 	        }
 	    }, {
 	        key: 'end',
@@ -52241,7 +52273,7 @@
 	                //checks to see if there is a second hint, if not, the button disappears
 	                document.getElementById('hint-submit').style.display = "block";
 	            }
-	            var userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score, 'attempts': 5, 'progress': this.props.state.user.progress + 1 };
+	            var userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score, 'attempts': 5, 'hints': 0, 'progress': this.props.state.user.progress + 1 };
 	            this.props.setUser(userData, this.done0);
 	        }
 
@@ -52255,7 +52287,7 @@
 	                //checks to see if there is a first hint, if not, the button disappears
 	                document.getElementById('hint1').style.display = "block";
 	                if (this.props.state.user.attempts > 0 && this.props.state.user.score > 0) {
-	                    userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - 5, 'attempts': this.props.state.user.attempts - 1, 'progress': this.props.state.user.progress };
+	                    userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - 5, 'attempts': this.props.state.user.attempts - 1, 'hints': this.props.state.user.hints + 1, 'progress': this.props.state.user.progress };
 	                    this.props.setUser(userData, this.done0);
 	                }
 	            }
@@ -52269,7 +52301,7 @@
 	                document.getElementById('hint2').style.display = "block";
 	                document.getElementById('hint-submit').style.display = "none";
 	                if (this.props.state.user.attempts > 0 && this.props.state.user.score > 0) {
-	                    userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - 5, 'attempts': this.props.state.user.attempts - 1, 'progress': this.props.state.user.progress };
+	                    userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - 5, 'attempts': this.props.state.user.attempts - 1, 'hints': this.props.state.user.hints + 1, 'progress': this.props.state.user.progress };
 	                    this.props.setUser(userData, this.done0);
 	                }
 	            }
@@ -52297,7 +52329,7 @@
 	                document.getElementById('skip').style.display = "none";
 	                document.getElementById('answer-submit').style.display = "none";
 	                document.getElementById('complete-button').style.display = "block";
-	                userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - this.props.state.user.attempts * 5, 'attempts': 5, 'progress': this.props.state.user.progress };
+	                userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - this.props.state.user.attempts * 5, 'attempts': 5, 'hints': 0, 'progress': this.props.state.user.progress };
 
 	                this.props.setUser(userData, this.skipComplete);
 	                this.skipComplete;
@@ -52316,6 +52348,11 @@
 	                    document.getElementById('hint-submit').style.display = "block";
 	                }
 	                document.getElementById('hint-submit').style.display = "block";
+<<<<<<< HEAD
+=======
+	                userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - this.props.state.user.attempts * 5, 'attempts': 5, 'hints': 0, 'progress': this.props.state.user.progress + 1 };
+	                this.props.setUser(userData, this.done1);
+>>>>>>> b08df653c35d34de37c8e0be680ea9d9ee80957f
 	                var emptyArray = [];
 	                this.setState({
 	                    'attempts': emptyArray

@@ -11,18 +11,66 @@ models.db.session.commit()
 models.db.session.add(models.Discounts("c5d0d951dd579674d44b137c69ad592ca63fdd6b24e276e7c2b78d113e0dff7a:e38b1f5d8b0b4051a62c0452eb20f95da46d1e6edeb04972aff7d68385d577a9", 100, 1000))
 models.db.session.commit()
 
-hunts = models.Hunts(
+hunt = models.Hunts(
+    "Testing",
+    "testing",
+    "This hunt is solely for testing purposes.",
+    "https://farm6.staticflickr.com/5528/12048988946_aed7cd6042_b.jpg",
+    datetime.datetime(2017, 11, 1, 12),
+    datetime.datetime(2017, 12, 1, 12),
+    "Press start when ready.")
+models.db.session.add(hunt)
+models.db.session.commit()
+
+hunt = models.Hunts(
+    "Test Two",
+    "testing",
+    "This hunt is solely for testing purposes.",
+    "https://farm6.staticflickr.com/5240/7417287052_abacd9c42b_h.jpg",
+    datetime.datetime(2017, 11, 1, 12),
+    datetime.datetime(2017, 12, 1, 12),
+    "Press start when ready.")
+models.db.session.add(hunt)
+models.db.session.commit()
+
+hunt = models.Hunts(
     "Walking Tour #1",
     "walking",
     "This Scavenger Hunt Begins at the Monterey Custom House Plaza and Ends in Pacific Grove",
-    "boats.jpg",
+    "static/image/gallery/boats.jpg",
     datetime.datetime(2017, 11, 2, 12),
     datetime.datetime(2017, 11, 26, 12),
     "Start in the Custom House Plaza Park, near Fisherman's Wharf.")
-models.db.session.add(hunts)
+models.db.session.add(hunt)
 models.db.session.commit()
 
-models.db.session.add(models.Participants("katjones@csumb.edu","CQ","static/image/logo-small.png","12557a0701bb6d32c946e583885baa8094d1b3da1338e96e52b58823a18515c9:c96a3ea7786d423ab1bc7d8316a15990d3054cd6ece64c9181e9648cff046b19","230080283465983fdffc13798dc678de35b966819b5a1db1646f371a04c045e6:a403cbbcf5b741b7887d14ffc78c8607864fa42ed66449b7b11ec53c0628441b",datetime.datetime(2017, 11, 2, 13),datetime.datetime(2017, 11, 2, 15),-1,5,1325,True,1))
+participant = models.Participants(
+    "coastalquest1337@gmail.com", #email
+    "CQ", #teamname
+    "static/image/logo-small.png", #image
+    "9c57af821280017af3ac0515f8ccce3bfb4bb8e0aeab5749202b7ba42457705e:fb0b225a3ed147c4beddab7e56996af49ea977709ff543a8a451b2f9b3613648", #leader code
+    "5280af3d3ba3cfdd9492b383817da19417c09eb37a311a4fe083fc6bef81a5b7:e47918d8fd1c4e42a728c1f493c2496ecc1606a0b1bb4c999ac489d6e744f253", #member code
+    None, #start time
+    None, #end time
+    0, #progress
+    0, #attempts
+    0, #hints
+    0, #score
+    True, #hasPaid
+    1) #hunt id
+models.db.session.add(participant)
+models.db.session.commit()
+
+questions = models.Questions(
+    "What is your team name?", #Question
+    "CQ", #Answer
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Yes_Check_Circle.svg/2000px-Yes_Check_Circle.svg.png", #image
+    "Coastal Quest", #hint 1
+    "", #hint2
+    "You got it!", #answer text
+    1 #hunt ID
+    )
+models.db.session.add(questions)
 models.db.session.commit()
 
 questions = models.Questions(
@@ -32,7 +80,7 @@ questions = models.Questions(
     "You will find the theatre on the corner of Pacific and John Street.", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -46,7 +94,7 @@ questions = models.Questions(
     "The courts are about 100 yards away from the theatre.", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -62,7 +110,7 @@ questions = models.Questions(
     "Look for the flagpole", #hint 1
     "", #hint2
     "This event signaled the passing of California from Mexican rule to American.", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -75,7 +123,7 @@ questions = models.Questions(
     "Look near the bicycle racks.", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -90,7 +138,7 @@ questions = models.Questions(
     "Approximately 100 yards from Santa Rosalia.", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -105,7 +153,7 @@ questions = models.Questions(
     "If you're at the basketball courts, you've gone too far.", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -118,7 +166,7 @@ questions = models.Questions(
     "If you've crossed a street, you've gone too far.", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -130,7 +178,7 @@ questions = models.Questions(
     "The Spanish explorers called them \"lobos de marinos\", because they reminded them of the wolves back home.", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -144,7 +192,7 @@ questions = models.Questions(
     "This memorial is along the water, before the start of Cannery Row.", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -157,7 +205,7 @@ questions = models.Questions(
     "299 Cannery Row crossover.", #hint 1
     "Six letters.", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -170,7 +218,7 @@ questions = models.Questions(
     "Adventures by the Sea kayakers walk right by the sign.", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -182,7 +230,7 @@ questions = models.Questions(
     "", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -196,7 +244,7 @@ questions = models.Questions(
     "A parking lot is across the street.", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -208,7 +256,7 @@ questions = models.Questions(
     "The sign sits to the south of the Spindrift Inn.", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -221,7 +269,7 @@ questions = models.Questions(
     "", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -233,7 +281,7 @@ questions = models.Questions(
     "She was the queen of Cannery Row.", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -246,7 +294,7 @@ questions = models.Questions(
     "This sign is near the replica model homes of early cannery workers.", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -258,7 +306,7 @@ questions = models.Questions(
     "", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -272,7 +320,7 @@ questions = models.Questions(
     "Near the middle on the first floor of the American tin cannery.", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -286,7 +334,7 @@ questions = models.Questions(
     "In the stairwell at the end of the American tin cannery.", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -300,7 +348,7 @@ questions = models.Questions(
     "", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -313,7 +361,7 @@ questions = models.Questions(
     "", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -325,7 +373,7 @@ questions = models.Questions(
     "", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -338,7 +386,7 @@ questions = models.Questions(
     "", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -350,7 +398,7 @@ questions = models.Questions(
     "", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -363,7 +411,7 @@ questions = models.Questions(
     "", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -376,7 +424,7 @@ questions = models.Questions(
     "", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -388,7 +436,7 @@ questions = models.Questions(
     "", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -400,7 +448,7 @@ questions = models.Questions(
     "", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -412,7 +460,7 @@ questions = models.Questions(
     "", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -424,7 +472,7 @@ questions = models.Questions(
     "", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -436,7 +484,7 @@ questions = models.Questions(
     "", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()
@@ -449,7 +497,7 @@ questions = models.Questions(
     "", #hint 1
     "", #hint2
     "", #answer text
-    1 #hunt ID
+    3 #hunt ID
     )
 models.db.session.add(questions)
 models.db.session.commit()

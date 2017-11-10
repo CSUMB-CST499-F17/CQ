@@ -18,7 +18,17 @@ export class Complete extends React.Component {
         let time = this.props.state.user.elapsed;
         let team = this.props.state.user.team_name;
         let score = this.props.state.user.score;
-        
+        let results = <div id = 'results'></div>;
+        if(this.props.state.questions.length == 0){
+            results = <div id = 'results'><h2 id = 'err'><span><b>There are no questions in this hunt.</b></span></h2></div>;
+        }
+        else{
+            results = <div id = 'results'>
+                                <h2 id = 'team'><span><b>Team Name: </b><br/> {team}</span></h2>
+                                <h2 id = 'time'><span><b>Time Taken To Complete Hunt: </b><br/>{time}</span></h2>
+                                <h2 id = 'score'><span><b>Final Score:</b><br/>{score}</span></h2>
+                            </div>;
+        }
         return (
             <div>
                 <div id = 'header'>
@@ -26,11 +36,7 @@ export class Complete extends React.Component {
                 </div>
                     <div id='intro'>
                         <h1 id= "title" ><b>Final Results for {title}</b></h1>
-                        <div id = 'results'>
-                            <h2 id = 'team'><span><b>Team Name: </b><br/> {team}</span></h2>
-                            <h2 id = 'time'><span><b>Time Taken To Complete Hunt: </b><br/>{time}</span></h2>
-                            <h2 id = 'score'><span><b>Final Score:</b><br/>{score}</span></h2>
-                        </div>
+                        {results}
                     </div>
                     <div className='buttons'>
                         <button className="btn" onClick={() => this.props.changePage('leaderboard')}>Leaderboard</button>
