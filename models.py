@@ -59,11 +59,12 @@ class Participants(db.Model):
     end_time = db.Column(db.DateTime)
     progress = db.Column(db.Integer)
     attempts = db.Column(db.Integer)
+    hints = db.Column(db.Integer)
     score = db.Column(db.Integer)
     has_paid = db.Column(db.Boolean, nullable=False, default=False)
     hunts_id = db.Column(db.Integer, db.ForeignKey('hunts.id'), nullable=False)
     
-    def __init__(self, e, tn, i, lc, mc, st, et, p, a, sc, hp, hid):
+    def __init__(self, e, tn, i, lc, mc, st, et, p, a, h, sc, hp, hid):
         self.email = e
         self.team_name = tn
         self.image = i
@@ -73,12 +74,13 @@ class Participants(db.Model):
         self.end_time = et
         self.progress = p
         self.attempts = a
+        self.hints = h
         self.score = sc
         self.has_paid = hp
         self.hunts_id = hid
     
     def __repr__(self): 
-        return '<Question Data: {} {} {} {} {} {} {} {} {} {} {} {}>'.format(self.email, self.team_name, self.image, self.leader_code, self.member_code, self.start_time, self.end_time, self.progress, self.attempts, self.score, self.has_paid, self.hunts_id)
+        return '<Question Data: {} {} {} {} {} {} {} {} {} {} {} {} {}>'.format(self.email, self.team_name, self.image, self.leader_code, self.member_code, self.start_time, self.end_time, self.progress, self.attempts, self.hints, self.score, self.has_paid, self.hunts_id)
         
 class Admins(db.Model):
     id = db.Column(db.Integer, primary_key=True) # key

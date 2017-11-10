@@ -66,7 +66,9 @@ export class Explore extends React.Component {
         let hunts = this.state.hunts.map((n, index) => 
             <div id={n[0]} key={n[0]} className="hunt-preview">
                 <header>{n[1]}</header>
-                <img src={"../static/image/gallery/" + n[4]}/>
+                <div className="arrow arrow-left" onClick={() => this.setState(({count:(this.state.count == 0 ? this.state.hunts.length - 1 : this.state.count - 1)}))}></div>
+                <img src={n[4]}/>
+                <div className="arrow arrow-right" onClick={() => this.setState(({count:(this.state.count == this.state.hunts.length - 1 ? 0 : this.state.count + 1)}))}></div>
                 <p>{n[5]} to {n[6]}</p>
                 <p>{n[3]}</p>
             </div>
@@ -90,9 +92,7 @@ export class Explore extends React.Component {
                 </div>
                 <div className="clear"></div>
                 <div id='intro'>
-                    <div>
-                        <img className="arrow-left" src="./static/image/l-arrow.png" onClick={() => this.setState(({count:(this.state.count == 0 ? this.state.hunts.length - 1 : this.state.count - 1)}))}></img>
-                        <img className="arrow-right" src="./static/image/r-arrow.png" onClick={() => this.setState(({count:(this.state.count == this.state.hunts.length - 1 ? 0 : this.state.count + 1)}))}></img>
+                    <div className='hunt-preview'>
                         {hunts[this.state.count]}
                     </div>
                     <div id='buttons'>

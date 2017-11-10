@@ -16,11 +16,17 @@ export class Start extends React.Component {
     }
     
     start(){
-        Socket.emit('updateTime', {'user': this.props.state.user, 'start_time': "now", 'end_time':""});
-        Socket.emit('update', {'user': this.props.state.user, 'progress':1, 'score':this.props.state.questions.length * 25, 'attempts': 5}, Socket.callback=this.handle);   
+        if(this.props.state.questions.length > 0){
+            Socket.emit('updateTime', {'user': this.props.state.user, 'start_time': "now", 'end_time':""});
+            Socket.emit('update', {'user': this.props.state.user, 'progress':1, 'score':this.props.state.questions.length * 25, 'attempts': 5, 'hints':0}, Socket.callback=this.handle);   
+        }
+        else{
+            this.props.changePlay('start', 'complete');
+        }
     }
     
     handle(callback){
+        console.log(callback);
         var data = JSON.parse(callback);
         this.props.setPlay(data['user']);
         this.props.changePlay('start', 'playGame');
@@ -29,7 +35,7 @@ export class Start extends React.Component {
     render() {
         let hname = this.props.state.hunt.name;
         let hstext = this.props.state.hunt.start_text;
-        let himage = "../static/image/gallery/" + this.props.state.hunt.image;
+        let himage = this.props.state.hunt.image;
         return (
             <div>
                 <div id = 'header'>

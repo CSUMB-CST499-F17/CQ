@@ -41,7 +41,6 @@ p{
     padding: 5px 15px;
     text-align: center;
     text-decoration: none;
-    /*display: inline-block;*/
     font-size: 16px;
     margin: 4px 4px;
     cursor: pointer;
@@ -104,30 +103,29 @@ p{
 #explore #header{
     font-size: 24px;
 }
-.hunt-preview{
-    
-}
 .hunt-preview img{
-    max-width:70%;
+    max-width:45%;
     max-height:45%;
     display: inline-block;
     vertical-align: middle;
-    /*border:solid;
+    border:solid;
     border-width: 7;
-    border-color: #f2e537;*/
+    border-color: #f2e537;
 }
-.arrow-left, .arrow-right {
-    top: 10%;
-    bottom: 50%;
-    margin: auto;
-    position: absolute;
+.arrow{
+    background-size: cover;
+    width: 64px;
+    height:64px;
+    margin: 10px;
+    display: inline-block;
     vertical-align: middle;
+    cursor: pointer;
 }
-.arrow-left {
-    left:0px;
+.arrow-left{
+    background-image: url("image/arrowleft.png");
 }
-.arrow-right {
-    right:0px;
+.arrow-right{
+    background-image: url("image/arrowright.png");
 }
 
 /* Start */
@@ -149,7 +147,7 @@ p{
 }
 
 /* Complete */ 
-#team, #score, #time{
+#team, #score, #time, #err{
     color: white;
     font-size:32px;
     padding:10px;
@@ -396,7 +394,6 @@ td{
   float: left;
 }
 
-
 .field {
   background: transparent;
   font-weight: 300;
@@ -465,6 +462,10 @@ td{
     #explore #header{
         font-size: 16px;
     }
+    .hunt-preview img{
+        max-width:70%;
+        max-height:45%;
+    }    
     #slideshow{
         height:350px;
         line-height: 300px;
