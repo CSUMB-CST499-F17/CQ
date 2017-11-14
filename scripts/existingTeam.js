@@ -44,11 +44,6 @@ export class ExistingTeam extends React.Component {
                     document.getElementById("errorMessage").style.color="#f2e537";
                     document.getElementById("access").value = "";
                     break;
-                case "finished": 
-                    document.getElementById("errorMessage").innerHTML = "⚠ Scavenger Hunt Completed By This Team ⚠  <br/> ⚠ Please Create New Team or Explore Other Hunts! ⚠" ;
-                    document.getElementById("errorMessage").style.visibility = 'visible';
-                    document.getElementById("errorMessage").style.color="#f2e537";
-                    document.getElementById("access").value = "";
                 default:
                         break;
             } 

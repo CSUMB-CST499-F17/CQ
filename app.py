@@ -79,12 +79,12 @@ def validateCredentials(data):
             users = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.is_super == True)
             for query in users:    
                 if(check_password(query.password, data['access'])):
-                    return json.dumps({'id':query.id, 'loggedIn':'superAdmin', 'name':query.username, "hunts_id":query.hunts_id})
+                    return json.dumps({'id':query.id, 'loggedIn':'superAdmin', 'name':query.username})
                     
             users = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.is_super == False)
             for query in users:
                 if(check_password(query.password, data['access'])):
-                    return json.dumps({'id':query.id, 'loggedIn':'admin', 'name':query.username, "hunts_id":query.hunts_id})
+                    return json.dumps({'id':query.id, 'loggedIn':'admin', 'name':query.username})
             
             return json.dumps({'id':-1, 'loggedIn':'no', 'name':'guest'})
         except Exception as e: 
