@@ -21894,7 +21894,7 @@
 
 	var _explore = __webpack_require__(495);
 
-	var _leaderboard = __webpack_require__(496);
+	var _leaderboard = __webpack_require__(497);
 
 	var _register = __webpack_require__(498);
 
@@ -50654,7 +50654,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(497);
+	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -50840,6 +50840,54 @@
 /* 496 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.LogoSmall = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var React = _interopRequireWildcard(_react);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var LogoSmall = exports.LogoSmall = function (_React$Component) {
+	    _inherits(LogoSmall, _React$Component);
+
+	    function LogoSmall(props) {
+	        _classCallCheck(this, LogoSmall);
+
+	        return _possibleConstructorReturn(this, (LogoSmall.__proto__ || Object.getPrototypeOf(LogoSmall)).call(this, props));
+	    }
+
+	    _createClass(LogoSmall, [{
+	        key: "render",
+	        value: function render() {
+	            return React.createElement(
+	                "div",
+	                null,
+	                React.createElement("img", { id: "logo-small-img", src: "../static/image/logo-small.png" })
+	            );
+	        }
+	    }]);
+
+	    return LogoSmall;
+	}(React.Component);
+
+/***/ },
+/* 497 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -50859,7 +50907,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(497);
+	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -51082,54 +51130,6 @@
 	}(React.Component);
 
 /***/ },
-/* 497 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.LogoSmall = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var LogoSmall = exports.LogoSmall = function (_React$Component) {
-	    _inherits(LogoSmall, _React$Component);
-
-	    function LogoSmall(props) {
-	        _classCallCheck(this, LogoSmall);
-
-	        return _possibleConstructorReturn(this, (LogoSmall.__proto__ || Object.getPrototypeOf(LogoSmall)).call(this, props));
-	    }
-
-	    _createClass(LogoSmall, [{
-	        key: "render",
-	        value: function render() {
-	            return React.createElement(
-	                "div",
-	                null,
-	                React.createElement("img", { id: "logo-small-img", src: "../static/image/logo-small.png" })
-	            );
-	        }
-	    }]);
-
-	    return LogoSmall;
-	}(React.Component);
-
-/***/ },
 /* 498 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -51150,7 +51150,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(497);
+	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -51663,7 +51663,7 @@
 
 	var _reactBootstrap = __webpack_require__(240);
 
-	var _logoSmall = __webpack_require__(497);
+	var _logoSmall = __webpack_require__(496);
 
 	var _complete = __webpack_require__(500);
 
@@ -51690,7 +51690,7 @@
 	        _this.state = {
 	            hunt: { 'id': 0, 'name': "", 'image': "", 'start_text': "" },
 	            questions: [{ 'question': "", 'answer': "", 'hint1': "", 'hint2': "", 'hunts_id': 0 }],
-	            user: { 'id': 0, 'email': "", 'team_name': "", 'hunts_id': 0, 'progress': 1, 'score': 0, 'attempts': 5 }
+	            user: { 'id': 0, 'email': "", 'team_name': "", 'hunts_id': 0, 'progress': 1, 'score': 0, 'attempts': 5, 'start_time': null, 'end_time': null }
 	        };
 	        _this.pageName = 'play';
 	        _this.hide = 'none';
@@ -51823,7 +51823,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(497);
+	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -51856,10 +51856,10 @@
 	            var _this2 = this;
 
 	            var title = this.props.state.hunt.name;
-	            var time = this.props.state.user.elapsed;
 	            var team = this.props.state.user.team_name;
 	            var score = this.props.state.user.score;
 	            var results = React.createElement('div', { id: 'results' });
+
 	            if (this.props.state.questions.length == 0) {
 	                results = React.createElement(
 	                    'div',
@@ -51879,6 +51879,20 @@
 	                    )
 	                );
 	            } else {
+	                var start = new Date(this.props.state.user.start_time);
+	                var end = new Date(this.props.state.user.end_time);
+	                var time = (end - start) / 1000; // second/minutes/hours
+	                // calculate (and subtract) whole days
+	                var days = Math.floor(time / 86400);
+	                time -= days * 86400;
+	                // calculate (and subtract) whole hours
+	                var hours = Math.floor(time / 3600) % 24;
+	                time -= hours * 3600;
+	                // calculate (and subtract) whole minutes
+	                var minutes = Math.floor(time / 60) % 60;
+	                time -= minutes * 60;
+	                // what's left is seconds
+	                var seconds = time % 60;
 	                results = React.createElement(
 	                    'div',
 	                    { id: 'results' },
@@ -51910,7 +51924,34 @@
 	                                'Time Taken To Complete Hunt: '
 	                            ),
 	                            React.createElement('br', null),
-	                            time
+	                            days != 0 ? React.createElement(
+	                                'span',
+	                                null,
+	                                days,
+	                                ' day(s), ',
+	                                React.createElement('br', null)
+	                            ) : React.createElement('div', null),
+	                            hours != 0 ? React.createElement(
+	                                'span',
+	                                null,
+	                                hours,
+	                                ' hour(s), ',
+	                                React.createElement('br', null)
+	                            ) : React.createElement('div', null),
+	                            minutes != 0 ? React.createElement(
+	                                'span',
+	                                null,
+	                                minutes,
+	                                ' minute(s), ',
+	                                React.createElement('br', null)
+	                            ) : React.createElement('div', null),
+	                            seconds != 0 ? React.createElement(
+	                                'span',
+	                                null,
+	                                seconds,
+	                                ' second(s)',
+	                                React.createElement('br', null)
+	                            ) : React.createElement('div', null)
 	                        )
 	                    ),
 	                    React.createElement(
@@ -52268,10 +52309,10 @@
 	            document.getElementById('skip').style.display = "none";
 	            document.getElementById('answer').value = "";
 	            document.getElementById('answer-submit').style.display = "block";
-	            if (this.props.state.questions[this.props.state.user.progress + 1]['hint1'] != "") {
-	                //checks to see if there is a second hint, if not, the button disappears
-	                document.getElementById('hint-submit').style.display = "block";
-	            }
+	            // if(this.props.state.questions[(this.props.state.user.progress)]['hint1'] != ""){
+	            //     //checks to see if there is a second hint, if not, the button disappears
+	            //     document.getElementById('hint-submit').style.display = "block";
+	            // }
 	            var userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score, 'attempts': 5, 'hints': 0, 'progress': this.props.state.user.progress + 1 };
 	            this.props.setUser(userData, this.done0);
 	        }
@@ -52282,28 +52323,28 @@
 	        key: 'showHint',
 	        value: function showHint() {
 	            var userData = {};
-	            if (this.props.state.questions[this.props.state.user.progress]['hint1'] != "") {
+	            if (this.props.state.questions[this.props.state.user.progress - 1]['hint1'] != "" && document.getElementById('hint1').style.display == "none") {
 	                //checks to see if there is a first hint, if not, the button disappears
 	                document.getElementById('hint1').style.display = "block";
 	                if (this.props.state.user.attempts > 0 && this.props.state.user.score > 0) {
 	                    userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - 5, 'attempts': this.props.state.user.attempts - 1, 'hints': this.props.state.user.hints + 1, 'progress': this.props.state.user.progress };
 	                    this.props.setUser(userData, this.done0);
 	                }
-	            }
-	            //condition when the button is clicked once
-	            if (this.props.state.questions[this.props.state.user.progress]['hint2'] == "") {
-	                //checks to see if there is a second hint, if not, the button disappears
-	                document.getElementById('hint-submit').style.display = "none";
-	            }
-	            //condition if the button is clicked twice and there is a second hint
-	            if (this.props.state.questions[this.props.state.user.progress]['hint2'] != "") {
-	                document.getElementById('hint2').style.display = "block";
-	                document.getElementById('hint-submit').style.display = "none";
-	                if (this.props.state.user.attempts > 0 && this.props.state.user.score > 0) {
-	                    userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - 5, 'attempts': this.props.state.user.attempts - 1, 'hints': this.props.state.user.hints + 1, 'progress': this.props.state.user.progress };
-	                    this.props.setUser(userData, this.done0);
+	                //condition when the button is clicked once
+	                if (this.props.state.questions[this.props.state.user.progress - 1]['hint2'] == "") {
+	                    //checks to see if there is a second hint, if not, the button disappears
+	                    document.getElementById('hint-submit').style.display = "none";
 	                }
 	            }
+	            //condition if the button is clicked twice and there is a second hint
+	            else if (this.props.state.questions[this.props.state.user.progress - 1]['hint2'] != "" && document.getElementById('hint2').style.display == "none") {
+	                    document.getElementById('hint2').style.display = "block";
+	                    document.getElementById('hint-submit').style.display = "none";
+	                    if (this.props.state.user.attempts > 0 && this.props.state.user.score > 0) {
+	                        userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - 5, 'attempts': this.props.state.user.attempts - 1, 'hints': this.props.state.user.hints + 1, 'progress': this.props.state.user.progress };
+	                        this.props.setUser(userData, this.done0);
+	                    }
+	                }
 	        }
 	    }, {
 	        key: 'done0',
@@ -52340,18 +52381,19 @@
 	                document.getElementById('skip').style.display = "none";
 	                document.getElementById('answer').value = "";
 	                document.getElementById('answer-submit').style.display = "block";
-	                if (this.props.state.questions[this.props.state.user.progress + 1]['hint1'] == "") {
-	                    //checks to see if there is a second hint, if not, the button disappears
-	                    document.getElementById('hint-submit').style.display = "none";
-	                } else {
-	                    document.getElementById('hint-submit').style.display = "block";
-	                }
-	                document.getElementById('hint-submit').style.display = "block";
+	                // if(this.props.state.questions[(this.props.state.user.progress + 1)]['hint1'] == ""){
+	                //     //checks to see if there is a second hint, if not, the button disappears
+	                //     document.getElementById('hint-submit').style.display = "none";
+	                // }
+	                // else{
+	                //     document.getElementById('hint-submit').style.display = "block";
+	                // }
+	                // document.getElementById('hint-submit').style.display = "block";
 	                var emptyArray = [];
 	                this.setState({
 	                    'attempts': emptyArray
 	                });
-	                userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - this.props.state.user.attempts * 5, 'attempts': 5, 'progress': this.props.state.user.progress + 1 };
+	                userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'hints': 0, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - this.props.state.user.attempts * 5, 'attempts': 5, 'progress': this.props.state.user.progress + 1 };
 	                this.props.setUser(userData, this.done0);
 	            }
 	        }
@@ -52360,6 +52402,7 @@
 	        value: function render() {
 	            var _this2 = this;
 
+	            this.hide = 'none';
 	            var index = 0;
 	            var name = '';
 	            var question = '';
@@ -52373,8 +52416,19 @@
 	                hint1 = this.props.state.questions[index]['hint1'];
 	                hint2 = this.props.state.questions[index]['hint2'];
 	                points = this.props.state.user.attempts * 5;
-	                if (this.props.state.question[index + 1]['hint1'] != "") {
+	                if (this.props.state.questions[index]['hint1'] != "" && this.props.state.user.hints == 0) {
 	                    this.hide = 'block';
+	                } else {
+	                    if (this.props.state.questions[index]['hint2'] != "" && this.props.state.user.hints == 1) {
+	                        document.getElementById('hint1').style.display = "block";
+	                        this.hide = 'block';
+	                    } else {
+	                        if (this.props.state.questions[index]['hint2'] != "" && this.props.state.user.hints == 2) {
+	                            document.getElementById('hint1').style.display = "block";
+	                            document.getElementById('hint2').style.display = "block";
+	                        }
+	                        this.hide = 'none';
+	                    }
 	                }
 	            } catch (err) {}
 
@@ -52406,7 +52460,7 @@
 	                            ),
 	                            React.createElement(
 	                                'div',
-	                                { id: 'hints' },
+	                                { id: 'hints', style: { display: this.props.hide } },
 	                                React.createElement(
 	                                    'div',
 	                                    { id: 'hint1', style: { display: 'none' } },
@@ -72660,7 +72714,7 @@
 
 	var _Socket = __webpack_require__(185);
 
-	var _logoSmall = __webpack_require__(497);
+	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 

@@ -13,7 +13,7 @@ export class Play extends React.Component {
         this.state = { 
             hunt: {'id':0, 'name': "", 'image':"", 'start_text':""},
             questions: [{'question':"", 'answer':"",'hint1':"",'hint2':"",'hunts_id':0}],
-            user: {'id':0, 'email': "", 'team_name':"", 'hunts_id':0, 'progress':1, 'score':0, 'attempts':5}
+            user: {'id':0, 'email': "", 'team_name':"", 'hunts_id':0, 'progress':1, 'score':0, 'attempts':5, 'start_time': null, 'end_time':null}
         };
         this.pageName = 'play';
         this.hide = 'none';

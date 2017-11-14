@@ -17,6 +17,9 @@ body {
 header, h1{
     color:white;
     font-size: 36px;
+    text-shadow:2px 2px 1px rgba(116,204,207,1);
+    font-weight:bold;
+    font-variant:small-caps;
 }
 h4{
     color:white;
@@ -431,9 +434,9 @@ td{
   outline: none;
 }
 
-#stripe-form button:focus {
-  background: #555ABF;
-}
+/*#stripe-form button:focus {*/
+/*  background: #555ABF;*/
+/*}*/
 
 #stripe-form button:active {
   background: #43458B;

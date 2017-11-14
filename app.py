@@ -68,12 +68,12 @@ def validateCredentials(data):
             users = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'])
             for query in users:
                 if(check_password(query.leader_code, data['access'])):
-                    if query.progress == -1:
-                        return json.dumps({'id':query.id, 'loggedIn':'finished', 'name':query.team_name, "hunts_id":query.hunts_id})
+                    # if query.progress == -1:
+                    #     return json.dumps({'id':query.id, 'loggedIn':'finished', 'name':query.team_name, "hunts_id":query.hunts_id})
                     return json.dumps({'id':query.id, 'loggedIn':'teamLead', 'name':query.team_name, "hunts_id":query.hunts_id})
                 elif(check_password(query.member_code, data['access'])):
-                    if query.progress == -1:
-                        return json.dumps({'id':query.id, 'loggedIn':'finished', 'name':query.team_name, "hunts_id":query.hunts_id})
+                    # if query.progress == -1:
+                    #     return json.dumps({'id':query.id, 'loggedIn':'finished', 'name':query.team_name, "hunts_id":query.hunts_id})
                     return json.dumps({'id':query.id, 'loggedIn':'team', 'name':query.team_name, "hunts_id":query.hunts_id})
                     
             users = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.is_super == True)
@@ -99,8 +99,11 @@ def getUser(data):
     userData = []
     try:
         users = models.db.session.query(models.Participants).filter(models.Participants.id == data)
-        for query in users:    
-            userData.append({'id':data, 'email': query.email, 'team_name':query.team_name, 'hunts_id':query.hunts_id, 'progress':query.progress, 'score':query.score, 'attempts':query.attempts, 'hints':query.hints, 'time': None, 'elapsed':None})
+        for query in users:  
+            if(query.progress == -1):
+                userData.append({'id':data, 'email': query.email, 'team_name':query.team_name, 'hunts_id':query.hunts_id, 'progress':query.progress, 'score':query.score, 'attempts':query.attempts, 'hints':query.hints, 'start_time':query.start_time.strftime("%Y-%m-%d %H:%M:%S"), 'end_time':query.end_time.strftime("%Y-%m-%d %H:%M:%S")})
+            else:
+                userData.append({'id':data, 'email': query.email, 'team_name':query.team_name, 'hunts_id':query.hunts_id, 'progress':query.progress, 'score':query.score, 'attempts':query.attempts, 'hints':query.hints, 'start_time':query.start_time.strftime("%Y-%m-%d %H:%M:%S"), 'end_time':query.end_time})
         return json.dumps(userData)
     except Exception as e: 
         print(e)
@@ -140,41 +143,40 @@ def updateProgress(data):
         #updates the score
         query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id']).update({models.Participants.score: data['score']})
         models.db.session.commit()
-        time = None
-        elapsed = None
+        
         query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id'])
         for row in query:
             if row.start_time != None and row.end_time != None:
-                elapsed = getTimeElapsed(str(row.end_time-row.start_time))
+                # elapsed = getTimeElapsed(str(row.end_time-row.start_time))
                 time = timeScore((row.end_time-row.start_time).total_seconds())
-                userData = {'email':user['email'], 'team_name':user['team_name'], 'hunts_id':user['hunts_id'], 'progress':data['progress'], 'score':data['score'] + time, 'attempts':data['attempts'], 'hints':data['hints'], 'time': time, 'elapsed':elapsed}
+                userData = {'email':user['email'], 'team_name':user['team_name'], 'hunts_id':user['hunts_id'], 'progress':data['progress'], 'score':data['score'] + time, 'attempts':data['attempts'], 'hints':data['hints'], 'start_time':user['start_time'], 'end_time':user['end_time'].strftime("%Y-%m-%d %H:%M:%S")}
                 query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id']).update({models.Participants.score: data['score']+time})
                 models.db.session.commit()
                 return json.dumps({'user':userData})
                 
-        userData = {'email':user['email'], 'team_name':user['team_name'], 'hunts_id':user['hunts_id'], 'progress':data['progress'], 'score':data['score'], 'attempts':data['attempts'], 'hints':data['hints'], 'time': time, 'elapsed':elapsed}
+        userData = {'email':user['email'], 'team_name':user['team_name'], 'hunts_id':user['hunts_id'], 'progress':data['progress'], 'score':data['score'], 'attempts':data['attempts'], 'hints':data['hints'], 'start_time':user['start_time'], 'end_time':user['end_time']}
         return json.dumps({'user':userData})
     except Exception as e: 
         print(e)
         
         
-def getTimeElapsed(time):
-    if "days" in time: #mulitple days
-        if len(time) == 24: #mulitple days over 10 hours
-                return time[0] + time[1] + "days, " + time[9] + "" + time[10] + " hours, " + time[12] + "" + time[13] + " minutes, " + time[15] + "" + time[16] + " seconds"
-        if len(time) == 23: #mulitple days over 10 hours
-            return time[0] + "days, " + time[8] + "" + time[9] + " hours, " + time[11] + "" + time[12] + " minutes, " + time[14] + "" + time[15] + " seconds"
-        else:#mulitple days under 10 hours
-            return time[0] + "days, " + time[8] + " hour(s), " + time[10] + "" + time[11] + " minutes, " + time[13] + "" + time[14] + " seconds"
-    if "day," in time: #one day
-        if len(time) == 22: #one day and over 10 hours
-            return time[0] + "day, " + time[7] + "" + time[8] + " hours, " + time[10] + "" + time[11] + " minutes, " + time[13] + "" + time[14] + " seconds"
-        else:#one day under 10 hours
-            return time[0] + "day, " + time[7] + " hour(s), " + time[9] + "" + time[10] + " minutes, " + time[12] + "" + time[13] + " seconds"
-    if len(time) == 15: #over 10 hours
-        return time[0] + time[1] + " hours, " + time[3] + "" + time[4] + " minutes, " + time[6] + "" + time[7] + " seconds"
-    else: #below 10 hours
-        return time[0] + " hour(s), " + time[2] + "" + time[3] + " minutes, " + time[5] + "" + time[6] + " seconds"
+# def getTimeElapsed(time):
+#     if "days" in time: #mulitple days
+#         if len(time) == 24: #mulitple days over 10 hours
+#                 return time[0] + time[1] + "days, " + time[9] + "" + time[10] + " hours, " + time[12] + "" + time[13] + " minutes, " + time[15] + "" + time[16] + " seconds"
+#         if len(time) == 23: #mulitple days over 10 hours
+#             return time[0] + "days, " + time[8] + "" + time[9] + " hours, " + time[11] + "" + time[12] + " minutes, " + time[14] + "" + time[15] + " seconds"
+#         else:#mulitple days under 10 hours
+#             return time[0] + "days, " + time[8] + " hour(s), " + time[10] + "" + time[11] + " minutes, " + time[13] + "" + time[14] + " seconds"
+#     if "day," in time: #one day
+#         if len(time) == 22: #one day and over 10 hours
+#             return time[0] + "day, " + time[7] + "" + time[8] + " hours, " + time[10] + "" + time[11] + " minutes, " + time[13] + "" + time[14] + " seconds"
+#         else:#one day under 10 hours
+#             return time[0] + "day, " + time[7] + " hour(s), " + time[9] + "" + time[10] + " minutes, " + time[12] + "" + time[13] + " seconds"
+#     if len(time) == 15: #over 10 hours
+#         return time[0] + time[1] + " hours, " + time[3] + "" + time[4] + " minutes, " + time[6] + "" + time[7] + " seconds"
+#     else: #below 10 hours
+#         return time[0] + " hour(s), " + time[2] + "" + time[3] + " minutes, " + time[5] + "" + time[6] + " seconds"
     
 def timeScore(total):
     print("in Timescore")
