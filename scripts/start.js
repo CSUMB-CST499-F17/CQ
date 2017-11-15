@@ -33,41 +33,37 @@ export class Start extends React.Component {
     }
     
     show(){
-        console.log("In show");
-        document.getElementById('modal').style.display = 'block';
+        if(document.getElementById('modal').style.display == 'block'){
+            document.getElementById('modal').style.display = 'none';
+        }
+        else{
+            document.getElementById('modal').style.display = 'block';
+        }
     }
     
     render() {
         let hname = this.props.state.hunt.name;
         let hstext = this.props.state.hunt.start_text;
         let himage = this.props.state.hunt.image;
-        
-        // var myBigGreenDialog = {
-        //     backgroundColor: 'rgba(190, 190, 190, .95)',
-        //     fontSize: '28px',
-        //     color: '#ffffff',
-        //     // width: '75%',
-        //     // height: '600px',
-        //     marginTop: '-20%',
-        //     // marginLeft: '-37%',
-        //     borderRadius: '25px',
-        // };
     
         return (
             <div>
                 <div id = 'modal' className='modal-content' style={{display:'none'}}>
-                  <div  className="tutorial text"><header>How To Play</header><br/>
-                    <div>It’s time to begin your quest!</div>
-                    <div>You will earn points based on total time to complete the scavenger hunt and correct answers on the questions and challenges.
-                    Fastest time and the least amount of wrong answers is how you win.</div>
-                    <div>Each question or challenge is worth 25 points. If you answer correctly on the first try, you earn 25 points.</div>
-                    <div>If you answer incorrectly, you may try again for 20 points.</div>
-                    <div>There may be clues or hints available, but 5 points will be deducted when used.</div>
-                    <div>In summary, each question is worth 25 points. 
-                    Each wrong answer and/or hint will cost 5 points.  You must answer the question to move on to the next. 
-                    You have the option to skip questions, but no points will be awarded to any question skipped.</div>
-                    <div>Most importantly, have fun! 
-                    Enjoy the beautiful and scenic Monterey Bay!  Talk with the locals!  Learn something new about this historic area!  
+                  <div  className="tutorial text"><header>How To Play</header>
+                    <div id="modal-text">
+                        <div>It’s time to begin your quest!</div>
+                        <div>Points are earned based on:
+                        <ul>total time to complete the scavenger hunt and correct answers on the questions</ul>
+                        Fastest time and the least amount of wrong answers is how you win.</div><br/>
+                        <div>Each question is worth up to <b>25 points</b>.</div><br/>
+                        <div>For each incorrect answer, <b>5 points</b> will be deducted until you reach 0 points for that question.</div>
+                        <div>There may be <b>hints</b> available, but <b>5 points</b> will be deducted when used.</div><br/>
+                        <div>You must answer the question to move on to the next.<br/> 
+                        You have the option to <b>skip</b> questions, but no points will be awarded to any question skipped.</div><br/>
+                        <div>Most importantly, have fun! <br/>
+                        Enjoy the beautiful and scenic Monterey Bay!  Talk with the locals!  Learn something new about this historic area!  
+                        </div><br/>
+                        <button className = "btn" onClick={() => this.show()}>Close</button>
                     </div>
                   </div>
                 </div>

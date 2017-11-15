@@ -52086,8 +52086,11 @@
 	    }, {
 	        key: 'show',
 	        value: function show() {
-	            console.log("In show");
-	            document.getElementById('modal').style.display = 'block';
+	            if (document.getElementById('modal').style.display == 'block') {
+	                document.getElementById('modal').style.display = 'none';
+	            } else {
+	                document.getElementById('modal').style.display = 'block';
+	            }
 	        }
 	    }, {
 	        key: 'render',
@@ -52097,17 +52100,6 @@
 	            var hname = this.props.state.hunt.name;
 	            var hstext = this.props.state.hunt.start_text;
 	            var himage = this.props.state.hunt.image;
-
-	            // var myBigGreenDialog = {
-	            //     backgroundColor: 'rgba(190, 190, 190, .95)',
-	            //     fontSize: '28px',
-	            //     color: '#ffffff',
-	            //     // width: '75%',
-	            //     // height: '600px',
-	            //     marginTop: '-20%',
-	            //     // marginLeft: '-37%',
-	            //     borderRadius: '25px',
-	            // };
 
 	            return React.createElement(
 	                'div',
@@ -52123,41 +52115,96 @@
 	                            null,
 	                            'How To Play'
 	                        ),
-	                        React.createElement('br', null),
 	                        React.createElement(
 	                            'div',
-	                            null,
-	                            'It\u2019s time to begin your quest!'
-	                        ),
-	                        React.createElement(
-	                            'div',
-	                            null,
-	                            'You will earn points based on total time to complete the scavenger hunt and correct answers on the questions and challenges. Fastest time and the least amount of wrong answers is how you win.'
-	                        ),
-	                        React.createElement(
-	                            'div',
-	                            null,
-	                            'Each question or challenge is worth 25 points. If you answer correctly on the first try, you earn 25 points.'
-	                        ),
-	                        React.createElement(
-	                            'div',
-	                            null,
-	                            'If you answer incorrectly, you may try again for 20 points.'
-	                        ),
-	                        React.createElement(
-	                            'div',
-	                            null,
-	                            'There may be clues or hints available, but 5 points will be deducted when used.'
-	                        ),
-	                        React.createElement(
-	                            'div',
-	                            null,
-	                            'In summary, each question is worth 25 points. Each wrong answer and/or hint will cost 5 points.  You must answer the question to move on to the next. You have the option to skip questions, but no points will be awarded to any question skipped.'
-	                        ),
-	                        React.createElement(
-	                            'div',
-	                            null,
-	                            'Most importantly, have fun! Enjoy the beautiful and scenic Monterey Bay!  Talk with the locals!  Learn something new about this historic area!'
+	                            { id: 'modal-text' },
+	                            React.createElement(
+	                                'div',
+	                                null,
+	                                'It\u2019s time to begin your quest!'
+	                            ),
+	                            React.createElement(
+	                                'div',
+	                                null,
+	                                'Points are earned based on:',
+	                                React.createElement(
+	                                    'ul',
+	                                    null,
+	                                    'total time to complete the scavenger hunt and correct answers on the questions'
+	                                ),
+	                                'Fastest time and the least amount of wrong answers is how you win.'
+	                            ),
+	                            React.createElement('br', null),
+	                            React.createElement(
+	                                'div',
+	                                null,
+	                                'Each question is worth up to ',
+	                                React.createElement(
+	                                    'b',
+	                                    null,
+	                                    '25 points'
+	                                ),
+	                                '.'
+	                            ),
+	                            React.createElement('br', null),
+	                            React.createElement(
+	                                'div',
+	                                null,
+	                                'For each incorrect answer, ',
+	                                React.createElement(
+	                                    'b',
+	                                    null,
+	                                    '5 points'
+	                                ),
+	                                ' will be deducted until you reach 0 points for that question.'
+	                            ),
+	                            React.createElement(
+	                                'div',
+	                                null,
+	                                'There may be ',
+	                                React.createElement(
+	                                    'b',
+	                                    null,
+	                                    'hints'
+	                                ),
+	                                ' available, but ',
+	                                React.createElement(
+	                                    'b',
+	                                    null,
+	                                    '5 points'
+	                                ),
+	                                ' will be deducted when used.'
+	                            ),
+	                            React.createElement('br', null),
+	                            React.createElement(
+	                                'div',
+	                                null,
+	                                'You must answer the question to move on to the next.',
+	                                React.createElement('br', null),
+	                                'You have the option to ',
+	                                React.createElement(
+	                                    'b',
+	                                    null,
+	                                    'skip'
+	                                ),
+	                                ' questions, but no points will be awarded to any question skipped.'
+	                            ),
+	                            React.createElement('br', null),
+	                            React.createElement(
+	                                'div',
+	                                null,
+	                                'Most importantly, have fun! ',
+	                                React.createElement('br', null),
+	                                'Enjoy the beautiful and scenic Monterey Bay!  Talk with the locals!  Learn something new about this historic area!'
+	                            ),
+	                            React.createElement('br', null),
+	                            React.createElement(
+	                                'button',
+	                                { className: 'btn', onClick: function onClick() {
+	                                        return _this2.show();
+	                                    } },
+	                                'Close'
+	                            )
 	                        )
 	                    )
 	                ),
