@@ -32,10 +32,12 @@ export class Admins extends React.Component {
     }
     render() {
         var admins = '';
+        
         console.log(this.state.getAdmin);
+        
         if (this.state.getAdmin != null) {
             admins = this.state.getAdmin.map(
-                (n, index) =><tr key={index}><td>{n.email}</td><td>{n.username}</td><td>{n.password}</td></tr>
+                (n, index) =><tr key={index}><td>{n.email}</td><td>{n.username}</td></tr>
              );
         }
         
@@ -47,8 +49,12 @@ export class Admins extends React.Component {
                 <div id='intro'>
                     List of Admins and option to edit admins goes here<br/>
                 </div>
-                <div>
-                {admins}
+                <div id="userList">
+                    <table id="admin-table">
+                        <tbody>
+                            {admins}
+                        </tbody>
+                    </table>
                 </div>
                 <div className='buttons'>
                     <form onSubmit = {this.handleSubmit}>

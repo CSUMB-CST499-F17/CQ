@@ -73871,7 +73871,9 @@
 	            var _this3 = this;
 
 	            var admins = '';
+
 	            console.log(this.state.getAdmin);
+
 	            if (this.state.getAdmin != null) {
 	                admins = this.state.getAdmin.map(function (n, index) {
 	                    return React.createElement(
@@ -73886,11 +73888,6 @@
 	                            'td',
 	                            null,
 	                            n.username
-	                        ),
-	                        React.createElement(
-	                            'td',
-	                            null,
-	                            n.password
 	                        )
 	                    );
 	                });
@@ -73916,8 +73913,16 @@
 	                ),
 	                React.createElement(
 	                    'div',
-	                    null,
-	                    admins
+	                    { id: 'userList' },
+	                    React.createElement(
+	                        'table',
+	                        { id: 'admin-table' },
+	                        React.createElement(
+	                            'tbody',
+	                            null,
+	                            admins
+	                        )
+	                    )
 	                ),
 	                React.createElement(
 	                    'div',

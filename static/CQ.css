@@ -321,7 +321,8 @@ p{
     max-height:400px;
     max-width:100%;
     width:100%;
-    background-color: red;
+    margin: auto;
+    
 }
 #userList:hover{
 overflow-y:scroll;
@@ -329,6 +330,14 @@ overflow-y:scroll;
 #leaderboard-table2{
     width:100%;
     justify-content: center;
+    background-color:white;
+    color: #0d3551;
+}
+#admin-table{
+    margin: auto;
+    width:60%;
+    justify-content: center;
+    text-align: center;
     background-color:white;
     color: #0d3551;
 }

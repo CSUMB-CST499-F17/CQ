@@ -372,24 +372,24 @@ def email_client(client_email, subject, message):
     server.sendmail(email_address, client_email, recp_message)
     server.quit()
 
-@socketio.on('getAdmin')
-def getAdmin():
+@socketio.on('admins')
+def getAdmin(data):
     adminList = []
     try:
         sql = models.db.session.query(
             models.Admins.email,
-            models.Admins.username,
-            models.Admins.password)
+            models.Admins.username)
 
         for row in sql:
-            adminList.append({'progress':row.email, 'score':row.username,'team_name':row.password})
+            adminList.append({'email':row.email, 'username':row.username})
     except:
-        print("Error: leaderboard query broke")
+        print("Error: admin query broke")
+        
     print (adminList)
     socketio.emit('getAdmin', {
         'getAdmin': adminList
     })
-    print('Leaderboard data sent.')
+    print('admin data sent.')
     
 @socketio.on('addAdmin')   
 def addAdmin(data):
