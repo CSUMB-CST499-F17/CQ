@@ -36,7 +36,7 @@ models.db.session.commit()
 hunt = models.Hunts(
     "Walking Tour #1",
     "walking",
-    "This Scavenger Hunt Begins at the Monterey Custom House Plaza and Ends in Pacific Grove",
+    "This scavenger hunt begins at the Monterey Custom House Plaza and ends in Pacific Grove.",
     "static/image/gallery/boats.jpg",
     datetime.datetime(2017, 11, 2, 12),
     datetime.datetime(2017, 11, 26, 12),

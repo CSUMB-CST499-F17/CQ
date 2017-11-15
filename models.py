@@ -80,7 +80,7 @@ class Participants(db.Model):
         self.hunts_id = hid
     
     def __repr__(self): 
-        return '<Question Data: {} {} {} {} {} {} {} {} {} {} {} {} {}>'.format(self.email, self.team_name, self.image, self.leader_code, self.member_code, self.start_time, self.end_time, self.progress, self.attempts, self.hints, self.score, self.has_paid, self.hunts_id)
+        return '<Participant Data: {} {} {} {} {} {} {} {} {} {} {} {} {}>'.format(self.email, self.team_name, self.image, self.leader_code, self.member_code, self.start_time, self.end_time, self.progress, self.attempts, self.hints, self.score, self.has_paid, self.hunts_id)
         
 class Admins(db.Model):
     id = db.Column(db.Integer, primary_key=True) # key
@@ -96,7 +96,7 @@ class Admins(db.Model):
         self.is_super = iss
     
     def __repr__(self): 
-        return '<Question Data: {} {} {} {}>'.format(self.email, self.username, self.password , self.is_super)
+        return '<Admin Data: {} {} {} {}>'.format(self.email, self.username, self.password , self.is_super)
         
 class Discounts(db.Model):
     id = db.Column(db.Integer, primary_key=True) # key

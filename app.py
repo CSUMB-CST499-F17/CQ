@@ -237,14 +237,15 @@ def updateLeaderboard(data):
             models.Participants.score,
             models.Participants.team_name,
             models.Participants.start_time,
-            models.Participants.end_time).filter(
+            models.Participants.end_time,
+            models.Participants.hunts_id).filter(
                 sqlalchemy.and_(
                     models.Participants.progress == -1,
                     models.Participants.end_time != None
                     )).order_by(models.Participants.score.desc())
 
         for row in sql:
-            leaderboardUser.append({'progress':row.progress, 'score':row.score,'team_name':row.team_name, 'start_time':row.start_time.strftime('%Y-%m-%d %H:%M:%S'),'end_time':row.end_time.strftime('%Y-%m-%d %H:%M:%S')})
+            leaderboardUser.append({'progress':row.progress, 'score':row.score,'team_name':row.team_name, 'start_time':row.start_time.strftime('%Y-%m-%d %H:%M:%S'),'end_time':row.end_time.strftime('%Y-%m-%d %H:%M:%S'),'hunts_id':row.hunts_id})
 
     except:
         print("Error: leaderboard query broke")
@@ -335,13 +336,13 @@ def checkout(data):
     random_number = random.randint(0,9999)
     member_code = hunt_name + "{:04d}".format(random_number)
     
-    participants = None
+    participant = None
     try:
-        participants = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None, None, 0, 0, 0, 0, False, hunt_id)
-        models.db.session.add(participants)  
+        participant = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None, None, 0, 0, 0, 0, False, hunt_id)
+        models.db.session.add(participant)  
         models.db.session.commit()
         
-        participants = models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name).first()
+        participant = models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name).first()
     except:
         return json.dumps({'condition':'reject','message':'Could not connect to database.'})
     
@@ -354,25 +355,23 @@ def checkout(data):
                 source=token,
             )
         
-        participants.has_paid = True
+        participant.has_paid = True
         models.db.session.commit()
-
-        pass
     except stripe.error.CardError as e:
         body = e.json_body
         err  = body.get('error', {})
-        participants.delete()
+        models.db.session.delete(participant)
         models.db.session.commit()
         return json.dumps({'condition':'not_paid', 'error_code':err.get('code')})
     except stripe.error.StripeError as e:
-        participants.delete()
+        models.db.session.delete(participant)
         models.db.session.commit()
         return json.dumps({'condition':'not_paid', 'error_code':None})
     
     # send email
     try:
         subject = "Coastal Quest Activation Code"
-        message = "Welcome to Coastal Quest Scavenger Hunts, {}! \nHere is your access code to play the hunt: \nTeam Leader: {} \nAnd here is a code to share with your teammates: \nTeam Members: {}. \nHave fun on your journey!".format(team_name,leader_code,member_code)
+        message = "Welcome to Coastal Quest Scavenger Hunts, {}! \nHere is your access code to play the hunt: \nTeam Leader: {}\nHave fun on your journey!".format(team_name,leader_code)
         email_client(client_email,subject,message)
     except:
         print("Error: Could not send email")
@@ -397,25 +396,46 @@ def getAdmin(data):
     try:
         sql = models.db.session.query(
             models.Admins.email,
-            models.Admins.username)
+            models.Admins.username,
+            models.Admins.is_super)
 
         for row in sql:
-            adminList.append({'email':row.email, 'username':row.username})
+            adminList.append({'email':row.email, 'username':row.username, 'is_super':row.is_super})
     except:
         print("Error: admin query broke")
 
     socketio.emit('getAdmin', {
         'getAdmin': adminList
     })
-    
-@socketio.on('addAdmin')   
+
+@socketio.on('addAdmin')
 def addAdmin(data):
-    admin = models.Admins(data['email'], data['team_name'], data['access_code'], data['URL'])
-    print(admin)
-    
-    models.db.session.add(admin)  
+    admin = models.Admins(data['email'], data['team_name'], data['access_code'], data['is_super'])
+
+
+    models.db.session.add(admin)
+    models.db.session.commit()
+
+@socketio.on('deleteAdminFace')
+def deleteAdmin(data):
+    adminDelete = []
+    try:
+
+        sql = models.db.session.query(
+            models.Admins.email,
+            models.Admins.username,
+            models.Admins.is_super).filter(
+                models.Admins.username == data['username'])
+
+        for row in sql:
+            adminDelete.append({'email':row.email, 'username':row.username, 'is_super': row.is_super})
+    except:
+        print("Error: admin query broke")
+    print(adminDelete)
+    adminDelete.delete()
     models.db.session.commit()
     
+
     
 def hash_password(password):
     salt = uuid.uuid4().hex + uuid.uuid4().hex

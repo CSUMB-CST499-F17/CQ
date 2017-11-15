@@ -10,7 +10,6 @@ export class Home extends React.Component {
         this.index = 0;
         this.login = this.login.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        
     }
     handleSubmit(event) {
         event.preventDefault();

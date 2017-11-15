@@ -25,6 +25,7 @@ export class Explore extends React.Component {
         this.sort = this.sort.bind(this);
         this.updateExplore = this.updateExplore.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.changePageWithId = this.changePageWithId.bind(this);
     }
     
     componentDidMount() {
@@ -59,6 +60,10 @@ export class Explore extends React.Component {
         this.setState({'types': types});
         Socket.emit('changeType', type.toLowerCase(), Socket.callback=this.updateExplore);
     }
+    changePageWithId(hid, page){
+        this.props.setProps('select',hid);
+        this.props.changePage(page);
+    }
     handleSubmit(event) {
         event.preventDefault();
     }
@@ -71,6 +76,10 @@ export class Explore extends React.Component {
                 <div className="arrow arrow-right" onClick={() => this.setState(({count:(this.state.count == this.state.hunts.length - 1 ? 0 : this.state.count + 1)}))}></div>
                 <p>{n[5]} to {n[6]}</p>
                 <p>{n[3]}</p>
+                <div id='buttons'>
+                    <button className='btn' onClick={() => this.changePageWithId(n[0],'leaderboard')}>Leaderboard</button>
+                    <button className='btn' onClick={() => this.changePageWithId(n[0],'register')}>Participate</button>
+                </div>
             </div>
         );
         let types = this.state.types.map((n, index) => 
@@ -94,10 +103,6 @@ export class Explore extends React.Component {
                 <div id='intro'>
                     <div className='hunt-preview'>
                         {hunts[this.state.count]}
-                    </div>
-                    <div id='buttons'>
-                        <button className='btn' onClick={() => this.props.changePage('leaderboard')}>Leaderboard</button>
-                        <button className='btn' onClick={() => this.props.changePage('register')}>Participate</button>
                     </div>
                     <div>
                         <button className='btn' onClick={() => this.props.changePage('home')}>Home</button>
