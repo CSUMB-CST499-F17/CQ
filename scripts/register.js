@@ -123,6 +123,7 @@ export class Register extends React.Component {
     }
     
     handleBack(event) {
+        document.getElementById('stripe-success').style.display = 'none';
         document.getElementById('stripe-confirm').style.display = 'none';
         document.getElementById('stripe-form').style.display = 'block';
     }
@@ -155,30 +156,37 @@ export class Register extends React.Component {
             this.handleFormReject(data['message']);
         }
         else if (data['condition'] == 'accept'){
-            this.price =  data['price'];
             document.getElementById('stripe-form').style.display = 'none';
-            document.getElementById('bt').style.display = 'none';
             document.getElementById('stripe-confirm').style.display = 'block';
+            document.getElementById('home-button').style.display = 'none';
+            
+            this.price = data['price'];
             document.getElementById('price-slot').textContent = this.price/100;
         }
         else if (data['condition'] == 'confirm'){
             document.getElementById('stripe-process').style.display = 'none';
-            document.getElementById('bt').style.display = 'none';
             document.getElementById('stripe-success').style.display = 'block';
-            document.getElementById('success-text').textContent = "Thank you for your purchase!";
+            document.getElementById('success-text').style.display = 'block';
+            document.getElementById('failure-text').style.display = 'none';
+            document.getElementById('home-button').style.display = 'none';
+            
             document.getElementById('leader-code-slot').textContent = data['leader_code'];
             document.getElementById('member-code-slot').textContent = data['member_code'];
         }
-        
         else if (data['condition'] == 'not_paid'){
             document.getElementById('stripe-process').style.display = 'none';
-            document.getElementById('bt').style.display = 'none';
             document.getElementById('stripe-success').style.display = 'block';
-            document.getElementById('success-text').textContent = "Your account was created, but we couldn't process your payment. "
-                + (data['error_code'] != null ? "Error code: " + data['error_code'] + " ": "")
-                + "Please login to re-attempt payment.";
-            document.getElementById('leader-code-slot').textContent = data['leader_code'];
-            document.getElementById('member-code-slot').textContent = data['member_code'];
+            document.getElementById('success-text').style.display = 'none';
+            document.getElementById('failure-text').style.display = 'block';
+            document.getElementById('home-button').style.display = 'block';
+            
+            if(data['error_code'] == null){
+                document.getElementById('error-text').style.display = 'none';
+            }
+            else{
+                document.getElementById('error-text').style.display = 'block';
+                document.getElementById('error-code-slot').textContent = data['error_code'];
+            }
         }
     }
     
@@ -263,11 +271,11 @@ export class Register extends React.Component {
                     </form>
                     
                     <div id = 'stripe-confirm' style={{display:'none'}}>
-                        <div className="group1">
-                            <div id="confirm">
+                        <div className="confirm-group">
+                            <div id="confirm-text">
                                 <span><b>Your total:</b> $</span>
                                 <span id="price-slot"></span><br/>
-                                <span> Please Press Confirm to Join this Hunt</span>
+                                <span> Please press confirm to join this hunt.</span>
                             </div>
                             <div id = "buttons">
                                 <button id="confirm-button" className="btn" onClick={this.handleConfirm}>Confirm</button>
@@ -277,32 +285,40 @@ export class Register extends React.Component {
                     </div>
                     
                     <div id = 'stripe-process' style={{display:'none'}}>
-                        <div  className="group1">
-                            <div id="confirm">Processing...</div>
+                        <div className="confirm-group">
+                            <div id="process-text">Processing...</div>
                         </div>
                     </div>
                     
                     <div id = 'stripe-success' style={{display:'none'}} >
-                        <div className="group1">
-                            <div id="confirm" style={{display:'block'}}>
-                                <div id = 'success-text'>Thank you for your purchase!<br/>An email was sent to your provided email address with the following information:</div>
+                        <div className="confirm-group">
+                            <div id="success-text" style={{display:'block'}}>
+                                <div>Thank you for your purchase!<br/>An email was sent to your provided email address with the following information:</div>
                                 <div>
-                                    <span><b>Here Is Your Access Code To Play The Hunt:</b> </span>
+                                    <span><b>Here is your access code to play the hunt:</b> </span>
                                     <span id="leader-code-slot"></span><br/>
-                                    <span><b>Here Is A Code To Share With Your Teammates:</b>  </span>
+                                    <span><b>Here is a code to share with your teammates:</b>  </span>
                                     <span id="member-code-slot"></span><br/><br/>
-                                    <span>Return to the Home Page and Login with your Team Name and Access Code in the 'Login to Existing Team' Section</span>
+                                    <span>Return to the home page and log in with your team name and access code in the 'Login to Existing Team' section.</span>
                                 </div>
+                                <button className="btn" onClick={this.handleExit}>Accept</button>
                             </div>
-                            <div id = 'notpaid-text' style={{display:'block'}}></div>
-                            <button className="btn" onClick={this.handleExit}>Accept</button>
+                            <div id = 'failure-text' style={{display:'none'}}>
+                                <div>We're sorry, your payment did not go through. <br/>Please return to the previous screen to try again.</div>
+                                <div id='error-text' style={{display:'block'}}>
+                                    <span>Error code: </span>
+                                    <span id="error-code-slot"></span>
+                                </div>
+                                <button className="btn" onClick={this.handleBack}>Back</button>
+                            </div>
+                            
                         </div>
                     </div>
                     
                     <div style={{textAlign:'center'}} id="form-outcome" style={{visibility:'hidden'}}>center</div>
                 </div>
-                <div className='buttons' id="bt">
-                    <button className='btn' onClick={() => this.props.changePage('home')}>Home</button>
+                <div className='buttons' id="home-button">
+                    <button className='btn' onClick={this.handleExit}>Home</button>
                 </div>
             </div>
          

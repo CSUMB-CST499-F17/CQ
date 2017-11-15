@@ -272,7 +272,7 @@ def checkUserInfo(data):
     print(userdata)
     if models.db.session.query(models.Participants).filter(models.Participants.email == userdata['email'], models.Participants.hunts_id == userdata['hunts_id']).count() > 0:
         return json.dumps({'condition':'reject','message':"Email address already registered for this hunt."})
-    elif models.db.session.query(models.Participants).filter(models.Participants.team_name == userdata['team_name']).count() > 0:
+    elif models.db.session.query(models.Participants).filter(models.Participants.team_name == userdata['team_name'], models.Participants.hunts_id == userdata['hunts_id']).count() > 0:
         return json.dumps({'condition':'reject','message':"Team name already registered for this hunt."})
     else:
         price = calculatePrice(userdata['discount_code'])
@@ -281,12 +281,12 @@ def checkUserInfo(data):
     
 def calculatePrice(discount_code):
     price = 50
-    total_percent = 100
+    discount_percent = 0
     try:
         discount_query = models.db.session.query(models.Discounts)
         for row in discount_query:
-            if check_password(row.code, discount_code) and r.uses > 0:
-                total_percent = discount_query.first().percent
+            if check_password(row.code, discount_code) and row.uses > 0:
+                discount_percent = discount_query.first().percent
                 discount_query.first().uses -= 1
                 models.db.session.commit()
                 break
@@ -295,7 +295,7 @@ def calculatePrice(discount_code):
         pass
     
     # price's base unit is one cent, so 100 = $1
-    price = price * (100 - total_percent)
+    price = price * (100 - discount_percent)
     
     return price
 
@@ -346,9 +346,13 @@ def checkout(data):
     except stripe.error.CardError as e:
         body = e.json_body
         err  = body.get('error', {})
-        return json.dumps({'condition':'not_paid','leader_code':leader_code, 'member_code':member_code, 'error_code':err.get('code')})
+        participants.delete()
+        models.db.session.commit()
+        return json.dumps({'condition':'not_paid', 'error_code':err.get('code')})
     except stripe.error.StripeError as e:
-        return json.dumps({'condition':'not_paid','leader_code':leader_code, 'member_code':member_code, 'error_code':None})
+        participants.delete()
+        models.db.session.commit()
+        return json.dumps({'condition':'not_paid', 'error_code':None})
     
     # send email
     try:

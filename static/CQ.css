@@ -384,7 +384,7 @@ td{
   max-width: 100%;
   margin: 20px auto;
 }
-#confirm{
+.confirm-group{
     color:white;
     font-size:32px;
     margin:auto;
