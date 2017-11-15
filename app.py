@@ -391,10 +391,11 @@ def getAdmin(data):
     
 @socketio.on('addAdmin')   
 def addAdmin(data):
-    admin = models.Admins(data['email'], data['team_name'], data['access_code'])
+    admin = models.Admins(data['email'], data['team_name'], data['access_code'], data['URL'])
     print(admin)
-    # models.db.session.add(admin)  
-    # models.db.session.commit()
+    
+    models.db.session.add(admin)  
+    models.db.session.commit()
     
     
 def hash_password(password):

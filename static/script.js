@@ -73999,6 +73999,7 @@
 
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        _this.pageName = 'adminCreate';
+	        _this.addAdmin = _this.addAdmin.bind(_this);
 	        return _this;
 	    }
 
@@ -74006,16 +74007,19 @@
 	        key: 'handleSubmit',
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
+	        }
+	    }, {
+	        key: 'addAdmin',
+	        value: function addAdmin() {
 	            _Socket.Socket.emit('addAdmin', { 'email': document.getElementById('create_email').value,
 	                'team_name': document.getElementById('create_team_name').value,
 	                'access_code': document.getElementById('create_access_code').value,
 	                'URL': document.getElementById('create_URL').value });
+	            this.props.changePage('admins');
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
-
 	            return React.createElement(
 	                'div',
 	                null,
@@ -74046,7 +74050,7 @@
 	                                React.createElement('br', null),
 	                                React.createElement(_reactBootstrap.FormControl, { id: 'create_access_code', type: 'text', placeholder: 'Access Code' }),
 	                                React.createElement('br', null),
-	                                React.createElement(_reactBootstrap.FormControl, { id: 'create_URL', type: 'text', placeholder: 'Image URL' })
+	                                React.createElement(_reactBootstrap.FormControl, { id: 'create_URL', type: 'text', placeholder: 'Super Admin?(T/F)' })
 	                            )
 	                        )
 	                    ),
@@ -74067,9 +74071,7 @@
 	                                        null,
 	                                        React.createElement(
 	                                            _reactBootstrap.Button,
-	                                            { id: 'add-admin', onClick: function onClick() {
-	                                                    return _this2.props.changePage('admins');
-	                                                } },
+	                                            { id: 'add-admin', onClick: this.addAdmin },
 	                                            'Add Admin'
 	                                        )
 	                                    )

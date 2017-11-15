@@ -13,18 +13,21 @@ export class AdminCreate extends React.Component {
         
         this.handleSubmit = this.handleSubmit.bind(this);
         this.pageName = 'adminCreate';
+        this.addAdmin = this.addAdmin.bind(this);
     }
 
     handleSubmit(event) {
         event.preventDefault();
+        
+    }
+    
+    addAdmin(){
         Socket.emit('addAdmin', {'email':document.getElementById('create_email').value, 
                                 'team_name':document.getElementById('create_team_name').value,
                                 'access_code':document.getElementById('create_access_code').value,
-                                'URL':document.getElementById('create_URL').value}
-                    );
+                                'URL':document.getElementById('create_URL').value});
+        this.props.changePage('admins')
     }
-    
-
     render() {
         return (
             <div>
@@ -38,7 +41,7 @@ export class AdminCreate extends React.Component {
                                     <FormControl id='create_email' type="text" placeholder="Email" /><br/>
                                     <FormControl id='create_team_name' type="text" placeholder="Team Name" /><br/>
                                     <FormControl id='create_access_code' type="text" placeholder="Access Code" /><br/>
-                                    <FormControl id='create_URL' type="text" placeholder="Image URL" />
+                                    <FormControl id='create_URL' type="text" placeholder="Super Admin?(T/F)" />
                                 </InputGroup>
                             </FormGroup>
                         </form>
@@ -47,7 +50,7 @@ export class AdminCreate extends React.Component {
                                 <FormGroup>
                                     <InputGroup>
                                         <ButtonToolbar>
-                                            <Button id='add-admin' onClick={() => this.props.changePage('admins')}>Add Admin</Button>
+                                            <Button id='add-admin' onClick={this.addAdmin}>Add Admin</Button>
                                         </ButtonToolbar>
                                     </InputGroup>
                                 </FormGroup>
