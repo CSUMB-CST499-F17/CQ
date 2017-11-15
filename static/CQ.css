@@ -169,7 +169,7 @@ p{
 }
 
 .modal-content{
-    margin: 0;
+    padding:30px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -177,16 +177,17 @@ p{
     z-index: 1; /* Sit on top */
     display:flex;
     justify-content: center;
-	margin:auto;
-    overflow: auto; /* Enable scroll if needed */
+    /*overflow: auto;*/
     background-color: rgba(190, 190, 190, .95);
-    font-size: 28px;
+    font-size: 24px;
     color: #ffffff;
-    width: 75%;
-    height: 600px;
-    margin-top: -20%;
-    margin-left: -37%;
-    border-radius: 25px;
+    width: 85%;
+    border-radius: 22px;
+    text-align: center;
+}
+#modal-text{
+    padding-top:5px;
+    color: navy;
 }
 
 /* Logos */ 
@@ -555,5 +556,10 @@ td{
     /* Hide the link that should open and close the topnav on small screens */
     #topnav .icon {
         display: none;
+    }
+    .modal-content{
+        font-size:18px;
+        top: 90%;
+        width: 95%;
     }
 }
