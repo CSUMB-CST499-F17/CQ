@@ -172,7 +172,7 @@ export class Register extends React.Component {
             document.getElementById('home-button').style.display = 'none';
             
             document.getElementById('leader-code-slot').textContent = data['leader_code'];
-            document.getElementById('member-code-slot').textContent = data['member_code'];
+            // document.getElementById('member-code-slot').textContent = data['member_code'];
         }
         else if (data['condition'] == 'not_paid'){
             document.getElementById('stripe-process').style.display = 'none';
@@ -227,9 +227,9 @@ export class Register extends React.Component {
         }
     }
     
-    render() {
+    render() { 
         let hunts = this.hunts.map((n, index) => 
-            <option value={n[0]}>{n[1]} - {n[2].charAt(0).toUpperCase() + n[2].slice(1)}</option>
+            <option value={n[0]} >{n[1]} - {n[2].charAt(0).toUpperCase() + n[2].slice(1)}</option>
         );
         return (
             <div>
@@ -262,7 +262,7 @@ export class Register extends React.Component {
                         <div className="group full">
                             <label>Ongoing Scavenger Hunts</label>
                             <select name="hunts" form='stripe-form' onChange={this.handleHuntChange}>
-                                <option value=''>--</option>
+                                <option value=''>Choose a Hunt</option>
                                 {hunts}
                             </select>
                         </div>
@@ -296,10 +296,8 @@ export class Register extends React.Component {
                             <div id="success-text" style={{display:'block'}}>
                                 <div>Thank you for your purchase!<br/>An email was sent to your provided email address with the following information:</div>
                                 <div>
-                                    <span><b>Here is your access code to play the hunt:</b> </span>
+                                    <span><b>Here is your access code to login and play:</b> </span>
                                     <span id="leader-code-slot"></span><br/>
-                                    <span><b>Here is a code to share with your teammates:</b>  </span>
-                                    <span id="member-code-slot"></span><br/><br/>
                                     <span>Return to the home page and log in with your team name and access code in the 'Login to Existing Team' section.</span>
                                 </div>
                                 <button className="btn" onClick={this.handleExit}>Accept</button>

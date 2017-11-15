@@ -54,13 +54,16 @@ export class Leaderboard extends React.Component {
             time -= minutes * 60;
             // what's left is seconds
             var seconds = time % 60;
-            
-            this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
-            
-            
-        }
-
         
+            if(this.props.state.select < 0) { //no filter, all winners
+                this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
+            }
+            else {
+                if(this.props.state.select == this.state.userlist[i].hunts_id) { //no filter, all winners
+                    this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
+                }
+            }
+        }
         if (this.state.userlistPlusTime != null) {
             userlist = this.state.userlistPlusTime.map(
                 (n, index) =>
@@ -72,7 +75,6 @@ export class Leaderboard extends React.Component {
                 </td></tr>
              );
         }
-        
         return (
             <div>
                 <div id = 'logo-small'>

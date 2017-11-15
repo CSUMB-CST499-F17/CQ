@@ -21941,9 +21941,7 @@
 	            loggedIn: 'no', //no,admin,superAdmin,team,teamLead
 	            lastPage: 'home', //last page loaded, set this dynamically
 	            hide: 'none', //determines whether or not buttons and inputs are visible
-	            hunt: {},
-	            questions: [],
-	            user: {}
+	            select: -1
 	        };
 	        _this.images = ['boats', 'bust', 'canneryrow', 'crossedarms', 'lighthousewide', 'montereycanningcompany', 'sistercitypark', 'swanboat', 'whale'];
 	        // IMAGES THAT SHOW UP SIDEWAYS: 'diversmemorial','lady','lighthousenarrow','shareabench','twowhales', 'yesterdaysdream'
@@ -22071,12 +22069,12 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'explore', style: { display: 'none' } },
-	                    React.createElement(_explore.Explore, { changePage: this.changePage, key: 'explore' })
+	                    React.createElement(_explore.Explore, { changePage: this.changePage, setProps: this.setProps, key: 'explore' })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'leaderboard', style: { display: 'none' } },
-	                    React.createElement(_leaderboard.Leaderboard, { changePage: this.changePage })
+	                    React.createElement(_leaderboard.Leaderboard, { changePage: this.changePage, state: this.state })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -30719,7 +30717,7 @@
 	        _this.index = 0;
 	        _this.login = _this.login.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-
+	        _this.explore = _this.explore.bind(_this);
 	        return _this;
 	    }
 
@@ -30740,10 +30738,14 @@
 	            }
 	        }
 	    }, {
+	        key: 'explore',
+	        value: function explore() {
+	            this.props.setProps('select', -1);
+	            this.props.changePage('explore');
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
-
 	            return React.createElement(
 	                'div',
 	                null,
@@ -30772,9 +30774,7 @@
 	                                { id: 'nav' },
 	                                React.createElement(
 	                                    'button',
-	                                    { className: 'btn', onClick: function onClick() {
-	                                            return _this2.props.changePage('explore');
-	                                        } },
+	                                    { className: 'btn', onClick: this.explore },
 	                                    'Let\'s Explore!'
 	                                ),
 	                                React.createElement(
@@ -50677,6 +50677,7 @@
 	        _this.sort = _this.sort.bind(_this);
 	        _this.updateExplore = _this.updateExplore.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.changePageWithId = _this.changePageWithId.bind(_this);
 	        return _this;
 	    }
 
@@ -50718,6 +50719,12 @@
 	            _Socket.Socket.emit('changeType', type.toLowerCase(), _Socket.Socket.callback = this.updateExplore);
 	        }
 	    }, {
+	        key: 'changePageWithId',
+	        value: function changePageWithId(hid, page) {
+	            this.props.setProps('select', hid);
+	            this.props.changePage(page);
+	        }
+	    }, {
 	        key: 'handleSubmit',
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
@@ -50754,6 +50761,24 @@
 	                        'p',
 	                        null,
 	                        n[3]
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { id: 'buttons' },
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn', onClick: function onClick() {
+	                                    return _this3.changePageWithId(n[0], 'leaderboard');
+	                                } },
+	                            'Leaderboard'
+	                        ),
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn', onClick: function onClick() {
+	                                    return _this3.changePageWithId(n[0], 'register');
+	                                } },
+	                            'Participate'
+	                        )
 	                    )
 	                );
 	            });
@@ -50793,24 +50818,6 @@
 	                        'div',
 	                        { className: 'hunt-preview' },
 	                        hunts[this.state.count]
-	                    ),
-	                    React.createElement(
-	                        'div',
-	                        { id: 'buttons' },
-	                        React.createElement(
-	                            'button',
-	                            { className: 'btn', onClick: function onClick() {
-	                                    return _this3.props.changePage('leaderboard');
-	                                } },
-	                            'Leaderboard'
-	                        ),
-	                        React.createElement(
-	                            'button',
-	                            { className: 'btn', onClick: function onClick() {
-	                                    return _this3.props.changePage('register');
-	                                } },
-	                            'Participate'
-	                        )
 	                    ),
 	                    React.createElement(
 	                        'div',
@@ -50972,9 +50979,16 @@
 	                // what's left is seconds
 	                var seconds = time % 60;
 
-	                this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
+	                if (this.props.state.select < 0) {
+	                    //no filter, all winners
+	                    this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
+	                } else {
+	                    if (this.props.state.select == this.state.userlist[i].hunts_id) {
+	                        //no filter, all winners
+	                        this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
+	                    }
+	                }
 	            }
-
 	            if (this.state.userlistPlusTime != null) {
 	                userlist = this.state.userlistPlusTime.map(function (n, index) {
 	                    return React.createElement(
@@ -51031,7 +51045,6 @@
 	                    );
 	                });
 	            }
-
 	            return React.createElement(
 	                'div',
 	                null,
@@ -51339,7 +51352,7 @@
 	                document.getElementById('home-button').style.display = 'none';
 
 	                document.getElementById('leader-code-slot').textContent = data['leader_code'];
-	                document.getElementById('member-code-slot').textContent = data['member_code'];
+	                // document.getElementById('member-code-slot').textContent = data['member_code'];
 	            } else if (data['condition'] == 'not_paid') {
 	                document.getElementById('stripe-process').style.display = 'none';
 	                document.getElementById('stripe-success').style.display = 'block';
@@ -51495,7 +51508,7 @@
 	                                React.createElement(
 	                                    'option',
 	                                    { value: '' },
-	                                    '--'
+	                                    'Choose a Hunt'
 	                                ),
 	                                hunts
 	                            )
@@ -51588,24 +51601,11 @@
 	                                        React.createElement(
 	                                            'b',
 	                                            null,
-	                                            'Here is your access code to play the hunt:'
+	                                            'Here is your access code to login and play:'
 	                                        ),
 	                                        ' '
 	                                    ),
 	                                    React.createElement('span', { id: 'leader-code-slot' }),
-	                                    React.createElement('br', null),
-	                                    React.createElement(
-	                                        'span',
-	                                        null,
-	                                        React.createElement(
-	                                            'b',
-	                                            null,
-	                                            'Here is a code to share with your teammates:'
-	                                        ),
-	                                        '  '
-	                                    ),
-	                                    React.createElement('span', { id: 'member-code-slot' }),
-	                                    React.createElement('br', null),
 	                                    React.createElement('br', null),
 	                                    React.createElement(
 	                                        'span',

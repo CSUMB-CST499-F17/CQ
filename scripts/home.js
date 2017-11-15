@@ -10,7 +10,7 @@ export class Home extends React.Component {
         this.index = 0;
         this.login = this.login.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        
+        this.explore = this.explore.bind(this);
     }
     handleSubmit(event) {
         event.preventDefault();
@@ -24,6 +24,10 @@ export class Home extends React.Component {
             document.getElementById("existingTeam").style.display = "none";
             document.getElementById("nav").style.display = "block";
         }
+    }
+    explore(){
+        this.props.setProps('select', -1);
+        this.props.changePage('explore');
     }
     render() {
         return (
@@ -39,7 +43,7 @@ export class Home extends React.Component {
                     <div className='buttons'>
                         <div className ="tool">
                             <div id="nav">
-                                <button className="btn" onClick={() => this.props.changePage('explore')}>Let's Explore!</button>
+                                <button className="btn" onClick={this.explore}>Let's Explore!</button>
                                 <button className="btn" onClick={this.login}>Log into Existing Team</button>
                             </div>
                             <div id = 'existingTeam' style={{display:'none'}}>

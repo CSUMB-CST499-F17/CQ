@@ -28,9 +28,7 @@ export class Content extends React.Component{
             loggedIn: 'no', //no,admin,superAdmin,team,teamLead
             lastPage: 'home', //last page loaded, set this dynamically
             hide:'none', //determines whether or not buttons and inputs are visible
-            hunt:{},
-            questions:[],
-            user:{}
+            select: -1
         };
         this.images = ['boats','bust','canneryrow','crossedarms','lighthousewide','montereycanningcompany','sistercitypark','swanboat','whale'];
         // IMAGES THAT SHOW UP SIDEWAYS: 'diversmemorial','lady','lighthousenarrow','shareabench','twowhales', 'yesterdaysdream'
@@ -135,10 +133,10 @@ export class Content extends React.Component{
                         <Home changePage={this.changePage} state={this.state} setProps={this.setProps} />
                     </div>
                     <div id = 'explore' style={{display:'none'}}>
-                        <Explore changePage={this.changePage} key="explore"/>
+                        <Explore changePage={this.changePage} setProps={this.setProps} key="explore"/>
                     </div>
                     <div id = 'leaderboard' style={{display:'none'}}>
-                        <Leaderboard changePage={this.changePage}/>
+                        <Leaderboard changePage={this.changePage} state={this.state}/>
                     </div>
                     <div id = 'register' style={{display:'none'}}>
                         <Register changePage={this.changePage}/>
@@ -170,10 +168,7 @@ export class Content extends React.Component{
                     <div id = 'adminCreate' style={{display:'none'}}>
                         <AdminCreate changePage={this.changePage}/>
                     </div>
-                    
                 </div>
-               
             );
     }
-    
 }
