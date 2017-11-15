@@ -25,7 +25,6 @@ export class ExistingTeam extends React.Component {
             this.props.setProps('id', data['id']);
             this.props.setProps('name', data['name']);
             this.props.setProps('loggedIn', data['loggedIn']);
-            document.getElementById("team_name").value = "";
             document.getElementById("access").value = "";
             document.getElementById("errorMessage").value = "";
             
@@ -76,18 +75,15 @@ export class ExistingTeam extends React.Component {
     
     render() {
         return (
-            <div>
-                <div id='login'>
-                    <input type="text" id = "team_name" placeholder="Team Name" />
-                    <input type="password" id = "access" placeholder="Access Code" />
-                    <div id = "errorMessage" style={{visibility:'hidden'}}> Error Message Placeholder</div>
-                    <div className='buttons'>
-                        <button className="btn" onClick={this.validateCredentials}>Enter!</button>
-                        <button className="btn" onClick={this.props.cancel}>Cancel</button>
-                    </div>
+            <div id='login'>
+                <input type="text" id = "team_name" placeholder="Team Name" />
+                <input type="password" id = "access" placeholder="Access Code" />
+                <div id = "errorMessage" style={{visibility:'hidden'}}> Error Message Placeholder</div>
+                <div className='buttons'>
+                    <button className="btn" onClick={this.validateCredentials}>Enter!</button>
+                    <button className="btn" onClick={this.props.cancel}>Cancel</button>
                 </div>
             </div>
-
         );
     }
 }

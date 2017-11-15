@@ -50541,7 +50541,6 @@
 	                this.props.setProps('id', data['id']);
 	                this.props.setProps('name', data['name']);
 	                this.props.setProps('loggedIn', data['loggedIn']);
-	                document.getElementById("team_name").value = "";
 	                document.getElementById("access").value = "";
 	                document.getElementById("errorMessage").value = "";
 
@@ -50593,30 +50592,26 @@
 	        value: function render() {
 	            return React.createElement(
 	                'div',
-	                null,
+	                { id: 'login' },
+	                React.createElement('input', { type: 'text', id: 'team_name', placeholder: 'Team Name' }),
+	                React.createElement('input', { type: 'password', id: 'access', placeholder: 'Access Code' }),
 	                React.createElement(
 	                    'div',
-	                    { id: 'login' },
-	                    React.createElement('input', { type: 'text', id: 'team_name', placeholder: 'Team Name' }),
-	                    React.createElement('input', { type: 'password', id: 'access', placeholder: 'Access Code' }),
+	                    { id: 'errorMessage', style: { visibility: 'hidden' } },
+	                    ' Error Message Placeholder'
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { className: 'buttons' },
 	                    React.createElement(
-	                        'div',
-	                        { id: 'errorMessage', style: { visibility: 'hidden' } },
-	                        ' Error Message Placeholder'
+	                        'button',
+	                        { className: 'btn', onClick: this.validateCredentials },
+	                        'Enter!'
 	                    ),
 	                    React.createElement(
-	                        'div',
-	                        { className: 'buttons' },
-	                        React.createElement(
-	                            'button',
-	                            { className: 'btn', onClick: this.validateCredentials },
-	                            'Enter!'
-	                        ),
-	                        React.createElement(
-	                            'button',
-	                            { className: 'btn', onClick: this.props.cancel },
-	                            'Cancel'
-	                        )
+	                        'button',
+	                        { className: 'btn', onClick: this.props.cancel },
+	                        'Cancel'
 	                    )
 	                )
 	            );
@@ -52360,7 +52355,7 @@
 	        value: function checkAnswer() {
 	            var result = document.getElementById('result');
 	            if (document.getElementById('answer').value.toLowerCase() == this.props.state.questions[this.props.state.user.progress - 1]['answer'].toLowerCase()) {
-	                result.style.visibility = 'visible';
+	                result.style.display = 'block';
 	                result.textContent = 'Correct';
 	                result.style.color = "#9bf442";
 	                if (this.props.state.user.progress == this.props.state.questions.length) {
@@ -52387,7 +52382,7 @@
 	                    this.setState({
 	                        'attempts': newArray
 	                    });
-	                    result.style.visibility = 'visible';
+	                    result.style.display = 'block';
 	                    result.innerHTML = 'Incorrect <br/> Attempts: ' + newArray;
 	                    result.style.color = "red";
 	                    document.getElementById('answer').value = "";
@@ -52549,19 +52544,23 @@
 	            var hint1 = '';
 	            var hint2 = '';
 	            var points = 0;
+	            var num = '';
 	            try {
 	                index = this.props.state.user.progress - 1;
 	                name = this.props.state.hunt.name;
-	                question = "#" + (index + 1) + " - " + this.props.state.questions[index]['question'];
+	                question = this.props.state.questions[index]['question'];
+	                num = index + 1 + "/" + this.props.state.questions.length;
 	                hint1 = this.props.state.questions[index]['hint1'];
 	                hint2 = this.props.state.questions[index]['hint2'];
 	                points = this.props.state.user.attempts * 5;
 	                if (this.props.state.questions[index]['hint1'] != "" && this.props.state.user.hints == 0) {
 	                    this.hide = 'block';
 	                } else {
-	                    if (this.props.state.questions[index]['hint2'] != "" && this.props.state.user.hints == 1) {
+	                    if (this.props.state.questions[index]['hint1'] != "" && this.props.state.user.hints == 1) {
 	                        document.getElementById('hint1').style.display = "block";
-	                        this.hide = 'block';
+	                        if (this.props.state.questions[index]['hint2'] != "") {
+	                            this.hide = 'block';
+	                        }
 	                    } else {
 	                        if (this.props.state.questions[index]['hint2'] != "" && this.props.state.user.hints == 2) {
 	                            document.getElementById('hint1').style.display = "block";
@@ -52592,6 +52591,11 @@
 	                        { id: 'play-container' },
 	                        React.createElement(
 	                            'div',
+	                            { id: 'background' },
+	                            num
+	                        ),
+	                        React.createElement(
+	                            'div',
 	                            { id: 'play-form' },
 	                            React.createElement(
 	                                'div',
@@ -52617,7 +52621,7 @@
 	                        ),
 	                        React.createElement(
 	                            'div',
-	                            { id: 'input' },
+	                            { id: 'playGameInput' },
 	                            React.createElement(
 	                                'label',
 	                                { id: 'points', style: { display: this.props.hide, color: '#f2e537' } },
@@ -52627,7 +52631,7 @@
 	                            React.createElement(_reactBootstrap.FormControl, { id: 'answer', style: { display: this.props.hide }, componentClass: 'textarea', onChange: this.handleChange, placeholder: 'Answer' }),
 	                            React.createElement(
 	                                'div',
-	                                { id: 'result', style: { visibility: 'hidden' } },
+	                                { id: 'result', style: { display: 'none' } },
 	                                'Results Placeholder',
 	                                React.createElement('br', null),
 	                                'array'
@@ -52700,10 +52704,6 @@
 	var _react = __webpack_require__(1);
 
 	var React = _interopRequireWildcard(_react);
-
-	var _reactBootstrap = __webpack_require__(240);
-
-	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
 
 	var _Socket = __webpack_require__(185);
 

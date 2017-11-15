@@ -27,7 +27,7 @@ export class PlayGame extends React.Component {
     checkAnswer(){
         var result = document.getElementById('result');
         if(document.getElementById('answer').value.toLowerCase() == this.props.state.questions[this.props.state.user.progress - 1]['answer'].toLowerCase()){
-            result.style.visibility = 'visible';
+            result.style.display = 'block';
             result.textContent = 'Correct';
             result.style.color="#9bf442";
             if(this.props.state.user.progress == this.props.state.questions.length){
@@ -55,7 +55,7 @@ export class PlayGame extends React.Component {
                 this.setState({
                     'attempts':newArray
                 });
-                result.style.visibility = 'visible';
+                result.style.display = 'block';
                 result.innerHTML = 'Incorrect <br/> Attempts: ' + newArray;
                 result.style.color="red";
                 document.getElementById('answer').value = "";
@@ -204,10 +204,12 @@ export class PlayGame extends React.Component {
         let hint1 = '';
         let hint2 = '';
         let points = 0;
+        let num = '';
         try{
             index = this.props.state.user.progress - 1;
             name = this.props.state.hunt.name;
-            question = "#" + (index+1) + " - " + this.props.state.questions[index]['question'];
+            question = this.props.state.questions[index]['question'];
+            num = (index + 1) + "/" + this.props.state.questions.length;
             hint1 = this.props.state.questions[index]['hint1'];
             hint2 = this.props.state.questions[index]['hint2'];
             points = this.props.state.user.attempts * 5;
@@ -215,9 +217,11 @@ export class PlayGame extends React.Component {
                 this.hide = 'block';
             }
             else{
-                if(this.props.state.questions[index]['hint2'] != "" && this.props.state.user.hints == 1){
+                if(this.props.state.questions[index]['hint1'] != "" && this.props.state.user.hints == 1){
                     document.getElementById('hint1').style.display = "block";
-                    this.hide = 'block';
+                    if(this.props.state.questions[index]['hint2'] != ""){
+                        this.hide = 'block';
+                    }
                 }
                 else{
                     if(this.props.state.questions[index]['hint2'] != "" && this.props.state.user.hints == 2){
@@ -236,6 +240,9 @@ export class PlayGame extends React.Component {
                 </div>
                 <div id = 'intro'>
                     <div id='play-container'>
+                        <div id="background">
+                                {num}
+                        </div>
                         <div id="play-form">
                             <div id="play-question">{question}</div>
                             <div id='hints' style={{display:this.props.hide}}>
@@ -243,10 +250,10 @@ export class PlayGame extends React.Component {
                                 <div id='hint2' style={{display:'none'}}>Hint Two: {hint2}</div>
                             </div>
                         </div> 
-                        <div id = 'input'> 
+                        <div id="playGameInput"> 
                                 <label id="points" style={{display:this.props.hide, color:'#f2e537'}}>Points Avaiable For this Question: {points}</label>
                                 <FormControl id = "answer" style={{display:this.props.hide}} componentClass="textarea" onChange={this.handleChange}  placeholder="Answer" />
-                                <div id='result'style={{visibility:'hidden'}}>Results Placeholder<br/>array</div>
+                                <div id='result'style={{display:'none'}}>Results Placeholder<br/>array</div>
                         </div>
                     </div>
                     <div className='buttons'>
