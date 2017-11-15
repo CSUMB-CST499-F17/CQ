@@ -74014,6 +74014,8 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var _this2 = this;
+
 	            return React.createElement(
 	                'div',
 	                null,
@@ -74047,27 +74049,29 @@
 	                                React.createElement(_reactBootstrap.FormControl, { id: 'create_URL', type: 'text', placeholder: 'Image URL' })
 	                            )
 	                        )
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { className: 'buttons' },
+	                    ),
 	                    React.createElement(
-	                        'form',
-	                        { onSubmit: this.handleSubmit },
+	                        'div',
+	                        { className: 'buttons' },
 	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            null,
+	                            'form',
+	                            { onSubmit: this.handleSubmit },
 	                            React.createElement(
-	                                _reactBootstrap.InputGroup,
+	                                _reactBootstrap.FormGroup,
 	                                null,
 	                                React.createElement(
-	                                    _reactBootstrap.ButtonToolbar,
+	                                    _reactBootstrap.InputGroup,
 	                                    null,
 	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { id: 'add-admin' },
-	                                        'Add Admin'
+	                                        _reactBootstrap.ButtonToolbar,
+	                                        null,
+	                                        React.createElement(
+	                                            _reactBootstrap.Button,
+	                                            { id: 'add-admin', onClick: function onClick() {
+	                                                    return _this2.props.changePage('admins');
+	                                                } },
+	                                            'Add Admin'
+	                                        )
 	                                    )
 	                                )
 	                            )

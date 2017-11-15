@@ -42,18 +42,19 @@ export class AdminCreate extends React.Component {
                                 </InputGroup>
                             </FormGroup>
                         </form>
+                        <div className='buttons'>
+                            <form onSubmit = {this.handleSubmit}>
+                                <FormGroup>
+                                    <InputGroup>
+                                        <ButtonToolbar>
+                                            <Button id='add-admin' onClick={() => this.props.changePage('admins')}>Add Admin</Button>
+                                        </ButtonToolbar>
+                                    </InputGroup>
+                                </FormGroup>
+                            </form>
+                        </div>
                     </div>
-                <div className='buttons'>
-                    <form onSubmit = {this.handleSubmit}>
-                        <FormGroup>
-                            <InputGroup>
-                                <ButtonToolbar>
-                                    <Button id='add-admin'>Add Admin</Button>
-                                </ButtonToolbar>
-                            </InputGroup>
-                        </FormGroup>
-                    </form>
-                </div>
+                
             </div>
          
         );

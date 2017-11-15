@@ -384,18 +384,17 @@ def getAdmin(data):
             adminList.append({'email':row.email, 'username':row.username})
     except:
         print("Error: admin query broke")
-        
-    print (adminList)
+
     socketio.emit('getAdmin', {
         'getAdmin': adminList
     })
-    print('admin data sent.')
     
 @socketio.on('addAdmin')   
 def addAdmin(data):
-    admin = models.Admins(data['email'], data['team_name'], data['access_code'], data['URL'])
-    models.db.session.add(admin)  
-    models.db.session.commit()
+    admin = models.Admins(data['email'], data['team_name'], data['access_code'])
+    print(admin)
+    # models.db.session.add(admin)  
+    # models.db.session.commit()
     
     
 def hash_password(password):
