@@ -14,11 +14,11 @@ export class Leaderboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            'userlist': [],
-            'userlistPlusTime': []
+            'userlist': []
         };
         this.pageName = 'leaderboard';
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.changePage = this.changePage.bind(this);
     }
 
     componentDidMount(){
@@ -29,11 +29,15 @@ export class Leaderboard extends React.Component {
             });
         });
     }
-
     handleSubmit(event) {
         event.preventDefault();
     }
+    changePage(page){
+        this.props.setProps('select',-1);
+        this.props.changePage(page);
+    }
     render() {
+        var approvedUsers = [];
         let userlist='';
         for(var i = 0; i < this.state.userlist.length; i++) {
             var start = new Date(this.state.userlist[i].start_time);
@@ -54,18 +58,15 @@ export class Leaderboard extends React.Component {
             time -= minutes * 60;
             // what's left is seconds
             var seconds = time % 60;
-        
-            if(this.props.state.select < 0) { //no filter, all winners
-                this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
-            }
-            else {
-                if(this.props.state.select == this.state.userlist[i].hunts_id) { //no filter, all winners
-                    this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
-                }
+            
+            console.log("selected: " + this.props.state.select + ", mine: " + this.state.userlist[i].hunts_id + " render me?");
+            console.log(this.props.state.select == this.state.userlist[i].hunts_id);
+            if(this.props.state.select == this.state.userlist[i].hunts_id) { //no filter, all winners
+                approvedUsers.push([team_name, score, days, hours, minutes, seconds]);
             }
         }
-        if (this.state.userlistPlusTime != null) {
-            userlist = this.state.userlistPlusTime.map(
+        if (approvedUsers.length > 0){
+            userlist = approvedUsers.map(
                 (n, index) =>
                 <tr key={index}><td>{index+1}</td> <td>{n[0]}</td><td>{n[1]}</td>
                 <td>{n[2] != 0 ? <div>{n[2]} d<br/></div> : <div/>}
@@ -73,7 +74,7 @@ export class Leaderboard extends React.Component {
                     {n[4] != 0 ? <div>{n[4]} m<br/></div> : <div/>}
                     {n[5] != 0 ? <div>{n[5]} s<br/></div> : <div/>}
                 </td></tr>
-             );
+            );
         }
         return (
             <div>
@@ -103,7 +104,7 @@ export class Leaderboard extends React.Component {
                     </div>
                 <div className='buttons'>
                     <form onSubmit = {this.handleSubmit}>
-                        <Button onClick={() => this.props.changePage('home')}>Home</Button>
+                        <Button onClick={() => this.changePage('home')}>Home</Button>
                     </form>
                 </div>
             </div>

@@ -8,10 +8,15 @@ export class Complete extends React.Component {
         super(props);
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.lb = this.lb.bind(this);
     }
 
     handleSubmit(event) {
         event.preventDefault();
+    }
+    lb(){
+        this.props.setProps('select',this.props.state.user.hunts_id);
+        this.props.changePage('leaderboard');
     }
     render() {
         let title = this.props.state.hunt.name;
@@ -59,7 +64,7 @@ export class Complete extends React.Component {
                         {results}
                     </div>
                     <div className='buttons'>
-                        <button className="btn" onClick={() => this.props.changePage('leaderboard')}>Leaderboard</button>
+                        <button className="btn" onClick={() => this.lb()}>Leaderboard</button>
                         <button className="btn" onClick={() => this.props.logOutSetProps()}>Logout</button>
                     </div>  
             </div>

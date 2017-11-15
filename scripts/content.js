@@ -125,7 +125,6 @@ export class Content extends React.Component{
             console.log(e);
         }
     }
-    
     render(){
             return (
                 <div>
@@ -136,7 +135,7 @@ export class Content extends React.Component{
                         <Explore changePage={this.changePage} setProps={this.setProps} key="explore"/>
                     </div>
                     <div id = 'leaderboard' style={{display:'none'}}>
-                        <Leaderboard changePage={this.changePage} state={this.state}/>
+                        <Leaderboard changePage={this.changePage} setProps={this.setProps} state={this.state}/>
                     </div>
                     <div id = 'register' style={{display:'none'}}>
                         <Register changePage={this.changePage}/>

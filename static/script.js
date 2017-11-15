@@ -22074,7 +22074,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'leaderboard', style: { display: 'none' } },
-	                    React.createElement(_leaderboard.Leaderboard, { changePage: this.changePage, state: this.state })
+	                    React.createElement(_leaderboard.Leaderboard, { changePage: this.changePage, setProps: this.setProps, state: this.state })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -30717,7 +30717,6 @@
 	        _this.index = 0;
 	        _this.login = _this.login.bind(_this);
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        _this.explore = _this.explore.bind(_this);
 	        return _this;
 	    }
 
@@ -30738,14 +30737,10 @@
 	            }
 	        }
 	    }, {
-	        key: 'explore',
-	        value: function explore() {
-	            this.props.setProps('select', -1);
-	            this.props.changePage('explore');
-	        }
-	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var _this2 = this;
+
 	            return React.createElement(
 	                'div',
 	                null,
@@ -30774,7 +30769,9 @@
 	                                { id: 'nav' },
 	                                React.createElement(
 	                                    'button',
-	                                    { className: 'btn', onClick: this.explore },
+	                                    { className: 'btn', onClick: function onClick() {
+	                                            return _this2.props.changePage('explore');
+	                                        } },
 	                                    'Let\'s Explore!'
 	                                ),
 	                                React.createElement(
@@ -50928,11 +50925,11 @@
 	        var _this = _possibleConstructorReturn(this, (Leaderboard.__proto__ || Object.getPrototypeOf(Leaderboard)).call(this, props));
 
 	        _this.state = {
-	            'userlist': [],
-	            'userlistPlusTime': []
+	            'userlist': []
 	        };
 	        _this.pageName = 'leaderboard';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.changePage = _this.changePage.bind(_this);
 	        return _this;
 	    }
 
@@ -50954,10 +50951,17 @@
 	            event.preventDefault();
 	        }
 	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            this.props.setProps('select', -1);
+	            this.props.changePage(page);
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _this3 = this;
 
+	            var approvedUsers = [];
 	            var userlist = '';
 	            for (var i = 0; i < this.state.userlist.length; i++) {
 	                var start = new Date(this.state.userlist[i].start_time);
@@ -50979,18 +50983,15 @@
 	                // what's left is seconds
 	                var seconds = time % 60;
 
-	                if (this.props.state.select < 0) {
+	                console.log("selected: " + this.props.state.select + ", mine: " + this.state.userlist[i].hunts_id + " render me?");
+	                console.log(this.props.state.select == this.state.userlist[i].hunts_id);
+	                if (this.props.state.select == this.state.userlist[i].hunts_id) {
 	                    //no filter, all winners
-	                    this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
-	                } else {
-	                    if (this.props.state.select == this.state.userlist[i].hunts_id) {
-	                        //no filter, all winners
-	                        this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
-	                    }
+	                    approvedUsers.push([team_name, score, days, hours, minutes, seconds]);
 	                }
 	            }
-	            if (this.state.userlistPlusTime != null) {
-	                userlist = this.state.userlistPlusTime.map(function (n, index) {
+	            if (approvedUsers.length > 0) {
+	                userlist = approvedUsers.map(function (n, index) {
 	                    return React.createElement(
 	                        'tr',
 	                        { key: index },
@@ -51124,7 +51125,7 @@
 	                        React.createElement(
 	                            _reactBootstrap.Button,
 	                            { onClick: function onClick() {
-	                                    return _this3.props.changePage('home');
+	                                    return _this3.changePage('home');
 	                                } },
 	                            'Home'
 	                        )
@@ -51822,7 +51823,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'complete', style: { display: this.hide } },
-	                    React.createElement(_complete.Complete, { changePage: this.props.changePage, hide: this.props.hide, setPlay: this.setPlay, setUser: this.setUser, state: this.state, logOutSetProps: this.props.logOutSetProps })
+	                    React.createElement(_complete.Complete, { changePage: this.props.changePage, hide: this.props.hide, setPlay: this.setPlay, setUser: this.setUser, state: this.state, setProps: this.props.setProps, logOutSetProps: this.props.logOutSetProps })
 	                )
 	            );
 	        }
@@ -51869,6 +51870,7 @@
 	        var _this = _possibleConstructorReturn(this, (Complete.__proto__ || Object.getPrototypeOf(Complete)).call(this, props));
 
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.lb = _this.lb.bind(_this);
 	        return _this;
 	    }
 
@@ -51876,6 +51878,12 @@
 	        key: 'handleSubmit',
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
+	        }
+	    }, {
+	        key: 'lb',
+	        value: function lb() {
+	            this.props.setProps('select', this.props.state.user.hunts_id);
+	            this.props.changePage('leaderboard');
 	        }
 	    }, {
 	        key: 'render',
@@ -52031,7 +52039,7 @@
 	                    React.createElement(
 	                        'button',
 	                        { className: 'btn', onClick: function onClick() {
-	                                return _this2.props.changePage('leaderboard');
+	                                return _this2.lb();
 	                            } },
 	                        'Leaderboard'
 	                    ),
