@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactBootstrap from 'react-bootstrap';
-// import { Socket } from './Socket';
+import { Socket } from '../Socket';
 import { Button } from 'react-bootstrap';
 import { InputGroup } from 'react-bootstrap';
 import { FormGroup } from 'react-bootstrap';
@@ -12,11 +12,18 @@ export class AdminCreate extends React.Component {
         super(props);
         
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.pageName = 'adminCreate';
     }
 
     handleSubmit(event) {
         event.preventDefault();
+        Socket.emit('addAdmin', {'email':document.getElementById('create_email').value, 
+                                'team_name':document.getElementById('create_team_name').value,
+                                'access_code':document.getElementById('create_access_code').value,
+                                'URL':document.getElementById('create_URL').value}
+                    );
     }
+    
 
     render() {
         return (
@@ -28,10 +35,10 @@ export class AdminCreate extends React.Component {
                         <form id='create-form'>
                             <FormGroup>
                                 <InputGroup>
-                                    <FormControl id='create-item' type="text" placeholder="Email" /><br/>
-                                    <FormControl id='create-item' type="text" placeholder="Team Name" /><br/>
-                                    <FormControl id='create-item' type="text" placeholder="Access Code" /><br/>
-                                    <FormControl id='create-item' type="text" placeholder="Image URL" />
+                                    <FormControl id='create_email' type="text" placeholder="Email" /><br/>
+                                    <FormControl id='create_team_name' type="text" placeholder="Team Name" /><br/>
+                                    <FormControl id='create_access_code' type="text" placeholder="Access Code" /><br/>
+                                    <FormControl id='create_URL' type="text" placeholder="Image URL" />
                                 </InputGroup>
                             </FormGroup>
                         </form>
