@@ -16,7 +16,7 @@ body {
 }
 header, h1{
     color:white;
-    font-size: 35px;
+    font-size: 36px;
     text-shadow:2px 2px 1px rgba(116,204,207,1);
     font-weight:bold;
     font-variant:small-caps;
@@ -149,7 +149,7 @@ p{
     margin:15px;
 }
 
-/* Complete */ 
+/* Complete */
 #team, #score, #time, #err{
     color: white;
     font-size:32px;
@@ -167,13 +167,10 @@ p{
 #title{
     margin:15px;
 }
-.tutorial-message{
-    padding:5px;
-}
+
 .modal-content{
-    padding:10px;
+    padding:30px;
     position: absolute;
-    margin-top:1%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -184,7 +181,7 @@ p{
     background-color: rgba(190, 190, 190, .95);
     font-size: 24px;
     color: #ffffff;
-    width: 80%;
+    width: 85%;
     border-radius: 22px;
     text-align: center;
 }
@@ -193,7 +190,7 @@ p{
     color: navy;
 }
 
-/* Logos */ 
+/* Logos */
 #logo-big{
     width:700px;
 }
@@ -325,7 +322,7 @@ p{
     max-width:100%;
     width:100%;
     margin: auto;
-    
+
 }
 #userList:hover{
 overflow-y:scroll;
@@ -336,7 +333,23 @@ overflow-y:scroll;
     background-color:white;
     color: #0d3551;
 }
+
 #admin-table{
+    width:60%;
+    margin: auto;
+}
+#admin-table, th, td {
+   border: 1px solid #3E6F96;
+}
+#admin-table, tr:nth-child(even) {
+   background-color: #fffcdb;
+}
+#admin-table td {
+   font-weight: bold;
+   background-color: #74CCCF;
+   color:white;
+}
+#admin-table2{
     margin: auto;
     width:60%;
     justify-content: center;
@@ -502,7 +515,7 @@ td{
     .hunt-preview img{
         max-width:70%;
         max-height:45%;
-    }    
+    }
     #slideshow{
         height:350px;
         line-height: 300px;

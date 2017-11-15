@@ -396,25 +396,46 @@ def getAdmin(data):
     try:
         sql = models.db.session.query(
             models.Admins.email,
-            models.Admins.username)
+            models.Admins.username,
+            models.Admins.is_super)
 
         for row in sql:
-            adminList.append({'email':row.email, 'username':row.username})
+            adminList.append({'email':row.email, 'username':row.username, 'is_super':row.is_super})
     except:
         print("Error: admin query broke")
 
     socketio.emit('getAdmin', {
         'getAdmin': adminList
     })
-    
-@socketio.on('addAdmin')   
+
+@socketio.on('addAdmin')
 def addAdmin(data):
-    admin = models.Admins(data['email'], data['team_name'], data['access_code'], data['URL'])
-    print(admin)
-    
-    models.db.session.add(admin)  
+    admin = models.Admins(data['email'], data['team_name'], data['access_code'], data['is_super'])
+
+
+    models.db.session.add(admin)
+    models.db.session.commit()
+
+@socketio.on('deleteAdminFace')
+def deleteAdmin(data):
+    adminDelete = []
+    try:
+
+        sql = models.db.session.query(
+            models.Admins.email,
+            models.Admins.username,
+            models.Admins.is_super).filter(
+                models.Admins.username == data['username'])
+
+        for row in sql:
+            adminDelete.append({'email':row.email, 'username':row.username, 'is_super': row.is_super})
+    except:
+        print("Error: admin query broke")
+    print(adminDelete)
+    adminDelete.delete()
     models.db.session.commit()
     
+
     
 def hash_password(password):
     salt = uuid.uuid4().hex + uuid.uuid4().hex
