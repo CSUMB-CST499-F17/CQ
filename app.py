@@ -432,7 +432,7 @@ def deleteAdmin(data):
     except:
         print("Error: admin query broke")
     print(adminDelete)
-    adminDelete.delete()
+    models.db.session.delete(adminDelete)
     models.db.session.commit()
     
 
