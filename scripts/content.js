@@ -148,7 +148,7 @@ export class Content extends React.Component{
                         <NavBar changePage={this.changePage} hide={this.state.hide} logOutSetProps={this.logOutSetProps}/>
                     </div>
                     <div id = 'adminHome' style={{display:'none'}}>
-                        <AdminHome changePage={this.changePage}/>
+                        <AdminHome changePage={this.changePage} state={this.state}/>
                     </div>
                     <div id = 'adminLeaderboard' style={{display:'none'}}>
                         <AdminLeaderboard changePage={this.changePage}/>

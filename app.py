@@ -94,6 +94,10 @@ def validateCredentials(data):
 def updatePlay(data):
     socketio.emit('updatePlay', 'updatePlay');
 
+@socketio.on('adminHome')
+def updatePlay(data):
+    socketio.emit('updateAdminHome', 'updateAdmin');
+
 @socketio.on('loadUser')
 def getUser(data):
     userData = []
@@ -108,6 +112,17 @@ def getUser(data):
     except Exception as e: 
         print(e)
 
+@socketio.on('loadAdmin')
+def getUser(data):
+    adminData = []
+    try:
+        admins = models.db.session.query(models.Admins).filter(models.Admins.id == data)
+        for query in admins:  
+            adminData.append({'id':data, 'email': query.email, 'username':query.username, 'is_super':query.is_super})
+        return json.dumps(adminData)
+    except Exception as e: 
+        print(e)
+        
 @socketio.on('loadHunts')
 def getHunt(data):
     huntData = []

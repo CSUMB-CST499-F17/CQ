@@ -22094,7 +22094,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'adminHome', style: { display: 'none' } },
-	                    React.createElement(_adminHome.AdminHome, { changePage: this.changePage })
+	                    React.createElement(_adminHome.AdminHome, { changePage: this.changePage, state: this.state })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -52152,12 +52152,12 @@
 	                            { id: 'modal-text' },
 	                            React.createElement(
 	                                'div',
-	                                null,
+	                                { className: 'tutorial-message' },
 	                                'It\u2019s time to begin your quest!'
 	                            ),
 	                            React.createElement(
 	                                'div',
-	                                null,
+	                                { className: 'tutorial-message' },
 	                                'Points are earned based on:',
 	                                React.createElement(
 	                                    'ul',
@@ -52166,10 +52166,9 @@
 	                                ),
 	                                'Fastest time and the least amount of wrong answers is how you win.'
 	                            ),
-	                            React.createElement('br', null),
 	                            React.createElement(
 	                                'div',
-	                                null,
+	                                { className: 'tutorial-message' },
 	                                'Each question is worth up to ',
 	                                React.createElement(
 	                                    'b',
@@ -52178,10 +52177,9 @@
 	                                ),
 	                                '.'
 	                            ),
-	                            React.createElement('br', null),
 	                            React.createElement(
 	                                'div',
-	                                null,
+	                                { className: 'tutorial-message' },
 	                                'For each incorrect answer, ',
 	                                React.createElement(
 	                                    'b',
@@ -52192,7 +52190,7 @@
 	                            ),
 	                            React.createElement(
 	                                'div',
-	                                null,
+	                                { className: 'tutorial-message' },
 	                                'There may be ',
 	                                React.createElement(
 	                                    'b',
@@ -52207,13 +52205,10 @@
 	                                ),
 	                                ' will be deducted when used.'
 	                            ),
-	                            React.createElement('br', null),
 	                            React.createElement(
 	                                'div',
-	                                null,
-	                                'You must answer the question to move on to the next.',
-	                                React.createElement('br', null),
-	                                'You have the option to ',
+	                                { className: 'tutorial-message' },
+	                                'You must answer the question to move on to the next. You have the option to ',
 	                                React.createElement(
 	                                    'b',
 	                                    null,
@@ -52221,13 +52216,10 @@
 	                                ),
 	                                ' questions, but no points will be awarded to any question skipped.'
 	                            ),
-	                            React.createElement('br', null),
 	                            React.createElement(
 	                                'div',
-	                                null,
-	                                'Most importantly, have fun! ',
-	                                React.createElement('br', null),
-	                                'Enjoy the beautiful and scenic Monterey Bay!  Talk with the locals!  Learn something new about this historic area!'
+	                                { className: 'tutorial-message' },
+	                                'Most importantly, have fun! Enjoy the beautiful and scenic Monterey Bay!  Talk with the locals!  Learn something new about this historic area!'
 	                            ),
 	                            React.createElement('br', null),
 	                            React.createElement(
@@ -52731,7 +52723,12 @@
 
 	        var _this = _possibleConstructorReturn(this, (AdminHome.__proto__ || Object.getPrototypeOf(AdminHome)).call(this, props));
 
+	        _this.state = {
+	            admin: { 'id': 0, 'email': "", 'username': "", 'is_super': false }
+	        };
+
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.loadAdmin = _this.loadAdmin.bind(_this);
 	        return _this;
 	    }
 
@@ -52741,8 +52738,26 @@
 	            event.preventDefault();
 	        }
 	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _this2 = this;
+
+	            _Socket.Socket.on('updateAdminHome', function (data) {
+	                _Socket.Socket.emit('loadAdmin', _this2.props.state.id, _Socket.Socket.callback = _this2.loadAdmin);
+	            });
+	        }
+	    }, {
+	        key: 'loadAdmin',
+	        value: function loadAdmin(data) {
+	            data = JSON.parse(data);
+	            this.setState({
+	                admin: data[0]
+	            });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var name = this.state.admin.username;
 	            return React.createElement(
 	                'div',
 	                null,
@@ -52752,7 +52767,9 @@
 	                    React.createElement(
 	                        'header',
 	                        null,
-	                        'Welcome, Admin!'
+	                        'Welcome, ',
+	                        name,
+	                        '!'
 	                    )
 	                ),
 	                React.createElement(

@@ -51,16 +51,16 @@ export class Start extends React.Component {
                 <div id = 'modal' className='modal-content' style={{display:'none'}}>
                   <div  className="tutorial text"><header>How To Play</header>
                     <div id="modal-text">
-                        <div>It’s time to begin your quest!</div>
-                        <div>Points are earned based on:
+                        <div className="tutorial-message" >It’s time to begin your quest!</div>
+                        <div className="tutorial-message" >Points are earned based on:
                         <ul>total time to complete the scavenger hunt and correct answers on the questions</ul>
-                        Fastest time and the least amount of wrong answers is how you win.</div><br/>
-                        <div>Each question is worth up to <b>25 points</b>.</div><br/>
-                        <div>For each incorrect answer, <b>5 points</b> will be deducted until you reach 0 points for that question.</div>
-                        <div>There may be <b>hints</b> available, but <b>5 points</b> will be deducted when used.</div><br/>
-                        <div>You must answer the question to move on to the next.<br/> 
-                        You have the option to <b>skip</b> questions, but no points will be awarded to any question skipped.</div><br/>
-                        <div>Most importantly, have fun! <br/>
+                        Fastest time and the least amount of wrong answers is how you win.</div>
+                        <div className="tutorial-message" >Each question is worth up to <b>25 points</b>.</div>
+                        <div className="tutorial-message" >For each incorrect answer, <b>5 points</b> will be deducted until you reach 0 points for that question.</div>
+                        <div className="tutorial-message" >There may be <b>hints</b> available, but <b>5 points</b> will be deducted when used.</div>
+                        <div className="tutorial-message" >You must answer the question to move on to the next.
+                        You have the option to <b>skip</b> questions, but no points will be awarded to any question skipped.</div>
+                        <div className="tutorial-message" >Most importantly, have fun!
                         Enjoy the beautiful and scenic Monterey Bay!  Talk with the locals!  Learn something new about this historic area!  
                         </div><br/>
                         <button className = "btn" onClick={() => this.show()}>Close</button>
