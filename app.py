@@ -335,13 +335,13 @@ def checkout(data):
     random_number = random.randint(0,9999)
     member_code = hunt_name + "{:04d}".format(random_number)
     
-    participants = None
+    participant = None
     try:
-        participants = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None, None, 0, 0, 0, 0, False, hunt_id)
-        models.db.session.add(participants)  
+        participant = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None, None, 0, 0, 0, 0, False, hunt_id)
+        models.db.session.add(participant)  
         models.db.session.commit()
         
-        participants = models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name).first()
+        participant = models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name).first()
     except:
         return json.dumps({'condition':'reject','message':'Could not connect to database.'})
     
@@ -354,25 +354,23 @@ def checkout(data):
                 source=token,
             )
         
-        participants.has_paid = True
+        participant.has_paid = True
         models.db.session.commit()
-
-        pass
     except stripe.error.CardError as e:
         body = e.json_body
         err  = body.get('error', {})
-        participants.delete()
+        models.db.session.delete(participant)
         models.db.session.commit()
         return json.dumps({'condition':'not_paid', 'error_code':err.get('code')})
     except stripe.error.StripeError as e:
-        participants.delete()
+        models.db.session.delete(participant)
         models.db.session.commit()
         return json.dumps({'condition':'not_paid', 'error_code':None})
     
     # send email
     try:
         subject = "Coastal Quest Activation Code"
-        message = "Welcome to Coastal Quest Scavenger Hunts, {}! \nHere is your access code to play the hunt: \nTeam Leader: {} \nAnd here is a code to share with your teammates: \nTeam Members: {}. \nHave fun on your journey!".format(team_name,leader_code,member_code)
+        message = "Welcome to Coastal Quest Scavenger Hunts, {}! \nHere is your access code to play the hunt: \nTeam Leader: {}\nHave fun on your journey!".format(team_name,leader_code)
         email_client(client_email,subject,message)
     except:
         print("Error: Could not send email")
