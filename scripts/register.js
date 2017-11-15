@@ -133,6 +133,7 @@ export class Register extends React.Component {
         document.getElementById('stripe-confirm').style.display = 'none';
         document.getElementById('stripe-process').style.display = 'none';
         document.getElementById('stripe-success').style.display = 'none';
+        document.getElementById('home-button').style.display = 'block';
         
         document.getElementById("stripe-form").reset();
         this.userdata.discount_code = '';
@@ -275,7 +276,7 @@ export class Register extends React.Component {
                             <div id="confirm-text">
                                 <span><b>Your total:</b> $</span>
                                 <span id="price-slot"></span><br/>
-                                <span> Please press confirm to join this hunt.</span>
+                                <span>Please press confirm to join this hunt.</span>
                             </div>
                             <div id = "buttons">
                                 <button id="confirm-button" className="btn" onClick={this.handleConfirm}>Confirm</button>

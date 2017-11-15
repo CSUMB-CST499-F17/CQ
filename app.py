@@ -322,11 +322,11 @@ def checkout(data):
     
     participants = None
     try:
-        participants = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None, None, 0, 0, 0, -1, False, hunt_id)
+        participants = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None, None, 0, 0, 0, 0, False, hunt_id)
         models.db.session.add(participants)  
         models.db.session.commit()
         
-        participants = models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name)
+        participants = models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name).first()
     except:
         return json.dumps({'condition':'reject','message':'Could not connect to database.'})
     

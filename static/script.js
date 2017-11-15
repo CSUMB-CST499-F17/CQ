@@ -51301,6 +51301,7 @@
 	            document.getElementById('stripe-confirm').style.display = 'none';
 	            document.getElementById('stripe-process').style.display = 'none';
 	            document.getElementById('stripe-success').style.display = 'none';
+	            document.getElementById('home-button').style.display = 'block';
 
 	            document.getElementById("stripe-form").reset();
 	            this.userdata.discount_code = '';
@@ -51530,7 +51531,7 @@
 	                                React.createElement(
 	                                    'span',
 	                                    null,
-	                                    ' Please press confirm to join this hunt.'
+	                                    'Please press confirm to join this hunt.'
 	                                )
 	                            ),
 	                            React.createElement(
