@@ -53568,7 +53568,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this4.updateHunts(index);
+	                                        return _this4.props.changePage('adminEditHunt');
 	                                    } },
 	                                'Update'
 	                            )
@@ -53632,11 +53632,6 @@
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Edit Questions'
-	                        ),
-	                        React.createElement(
-	                            'td',
-	                            null,
 	                            'Update Questions'
 	                        ),
 	                        React.createElement(
@@ -53685,17 +53680,6 @@
 	                            'td',
 	                            null,
 	                            n.hunts_id
-	                        ),
-	                        React.createElement(
-	                            'td',
-	                            null,
-	                            React.createElement(
-	                                _reactBootstrap.Button,
-	                                { onClick: function onClick() {
-	                                        return _this4.props.changePage('adminEditHunt');
-	                                    } },
-	                                'Edit'
-	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',

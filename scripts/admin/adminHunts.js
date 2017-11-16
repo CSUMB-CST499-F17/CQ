@@ -102,7 +102,7 @@ export class AdminHunts extends React.Component {
                 <td>{n.end_time}</td>
                 <td>{n.start_text}</td>
                 <td><Button onClick={() => this.showQuestions( index)}>Questions</Button></td>
-                <td><Button onClick={() => this.updateHunts( index)}>Update</Button></td>
+                <td><Button onClick={() => this.props.changePage('adminEditHunt')}>Update</Button></td>
                 <td><Button onClick={() => this.deleteHunt(index, n.name)}>Delete</Button></td>
                 </tr>
              ));
@@ -120,7 +120,6 @@ export class AdminHunts extends React.Component {
                 <td>Hint 2</td>
                 <td>Answer Text</td>
                 <td>Hunts Id</td>
-                <td>Edit Questions</td>
                 <td>Update Questions</td>
                 <td>Delete Questions</td>
                 </tr>
@@ -136,7 +135,6 @@ export class AdminHunts extends React.Component {
                 <td>{n.start_B}</td>
                 <td>{n.answer_text}</td>
                 <td>{n.hunts_id}</td>
-                <td><Button onClick={() => this.props.changePage('adminEditHunt')}>Edit</Button></td>
                 <td><Button onClick={() => this.updateQuestion( index)}>Update</Button></td>
                 <td><Button onClick={() => this.deleteQuestion(index)}>Delete</Button></td>
                 </tr>
