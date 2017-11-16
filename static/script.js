@@ -53582,6 +53582,7 @@
 	                    );
 	                }));
 	            }
+	            console.log(this.state.getQuestions);
 
 	            if (this.state.getQuestions != null) {
 	                questions = this.state.getQuestions.map(function (n, index) {
@@ -53736,15 +53737,6 @@
 	                            null,
 	                            hunts
 	                        )
-	                    ),
-	                    React.createElement(
-	                        'table',
-	                        { id: 'admin-table2' },
-	                        React.createElement(
-	                            'tbody',
-	                            null,
-	                            questions
-	                        )
 	                    )
 	                ),
 	                React.createElement(
@@ -53767,10 +53759,23 @@
 	                                        { onClick: function onClick() {
 	                                                return _this4.props.changePage('adminCreateHunt');
 	                                            } },
-	                                        'Create'
+	                                        'Create Hunt'
 	                                    )
 	                                )
 	                            )
+	                        )
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'userList' },
+	                    React.createElement(
+	                        'table',
+	                        { id: 'admin-table2' },
+	                        React.createElement(
+	                            'tbody',
+	                            null,
+	                            questions
 	                        )
 	                    )
 	                )

@@ -106,6 +106,7 @@ export class AdminHunts extends React.Component {
                 </tr>
              ));
         }
+        console.log(this.state.getQuestions );
         
         if (this.state.getQuestions != null) {
             questions = this.state.getQuestions.map(
@@ -156,24 +157,26 @@ export class AdminHunts extends React.Component {
 
                     </table>
                     
-                    <table id="admin-table2">
-                        <tbody>
-                            {questions}
-                        </tbody>
-
-                    </table>
-
                 </div>
+                
                 <div className='buttons'>
                     <form onSubmit = {this.handleSubmit}>
                         <FormGroup>
                             <InputGroup>
                                 <ButtonToolbar>
-                                    <Button onClick={() => this.props.changePage('adminCreateHunt')}>Create</Button>
+                                    <Button onClick={() => this.props.changePage('adminCreateHunt')}>Create Hunt</Button>
                                 </ButtonToolbar>
                             </InputGroup>
                         </FormGroup>
                     </form>
+                </div>
+                
+                <div id="userList">
+                    <table id="admin-table2">
+                        <tbody>
+                            {questions}
+                        </tbody>
+                    </table>
                 </div>
             </div>
          
