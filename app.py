@@ -446,11 +446,34 @@ def getHunts(data):
         for row in sql:
             huntsList.append({'name':row.name, 'h_type':row.h_type, 'desc':row.desc, 'image':row.image, 'start_time':row.start_time.strftime('%Y-%m-%d %H:%M:%S'), 'end_time':row.end_time.strftime('%Y-%m-%d %H:%M:%S'), 'start_text':row.start_text})
     except:
-        print("Error: admin query broke")
-    print(huntsList)
+        print("Error: hunts Admin query broke")
     socketio.emit('getHunts', {
         'getHunts': huntsList
     })
+    
+@socketio.on('questionsCall')
+def getHunts(data):
+    questionsList = []
+    try:
+        sql = models.db.session.query(
+            models.Questions.question,
+            models.Questions.answer,
+            models.Questions.image,
+            models.Questions.hint_A,
+            models.Questions.hint_B,
+            models.Questions.answer_text,
+            ).filter(
+                models.Questions.id == data['index'])
+
+        for row in sql:
+            questionsList.append({'question':row.question, 'answer':row.answer, 'image':row.image,'hint_A':row.hint_A, 'hint_B':row.hint_B, 'answer_text':row.answer_text})
+    except:
+        print("Error: questionsAdmin query broke")
+    print(questionsList)
+    socketio.emit('getQuestions', {
+        'getQuestions': questionsList
+    })
+
     
 def hash_password(password):
     salt = uuid.uuid4().hex + uuid.uuid4().hex

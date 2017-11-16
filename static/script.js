@@ -53381,12 +53381,14 @@
 	        var _this = _possibleConstructorReturn(this, (AdminHunts.__proto__ || Object.getPrototypeOf(AdminHunts)).call(this, props));
 
 	        _this.state = {
-	            'getHunts': []
+	            'getHunts': [],
+	            'getQuestions': []
 	        };
 	        _this.pageName = 'adminHunts';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        _this.componentDidMount = _this.componentDidMount.bind(_this);
 	        _this.showQuestions = _this.showQuestions.bind(_this);
+	        _this.updateHunts = _this.updateHunts.bind(_this);
 	        return _this;
 	    }
 
@@ -53408,13 +53410,27 @@
 	        }
 	    }, {
 	        key: 'showQuestions',
-	        value: function showQuestions(name) {
-	            console.log(name);
+	        value: function showQuestions(index) {
+	            var _this3 = this;
+
+	            console.log(index);
+	            _Socket.Socket.emit('questionsCall', index);
+
+	            _Socket.Socket.on('getQuestions', function (data) {
+	                _this3.setState({
+	                    'getQuestions': data['getQuestions']
+	                });
+	            });
+	        }
+	    }, {
+	        key: 'updateHunts',
+	        value: function updateHunts(index) {
+	            console.log(index);
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this3 = this;
+	            var _this4 = this;
 
 	            var hunts = '';
 
@@ -53463,6 +53479,11 @@
 	                            'td',
 	                            null,
 	                            'Delete questions before hunts '
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Update hunts '
 	                        )
 	                    );
 	                });
@@ -53512,7 +53533,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this3.showQuestions(n.name);
+	                                        return _this4.showQuestions(index);
 	                                    } },
 	                                'Questions'
 	                            )
@@ -53523,7 +53544,18 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this3.deleteAdmin(index, n.name);
+	                                        return _this4.updateHunts(index);
+	                                    } },
+	                                'Update Hunt'
+	                            )
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            React.createElement(
+	                                _reactBootstrap.Button,
+	                                { onClick: function onClick() {
+	                                        return _this4.deleteAdmin(index, n.name);
 	                                    } },
 	                                'Delete'
 	                            )
@@ -53575,14 +53607,14 @@
 	                                    React.createElement(
 	                                        _reactBootstrap.Button,
 	                                        { onClick: function onClick() {
-	                                                return _this3.props.changePage('adminEditHunt');
+	                                                return _this4.props.changePage('adminEditHunt');
 	                                            } },
 	                                        'Edit'
 	                                    ),
 	                                    React.createElement(
 	                                        _reactBootstrap.Button,
 	                                        { onClick: function onClick() {
-	                                                return _this3.props.changePage('adminCreateHunt');
+	                                                return _this4.props.changePage('adminCreateHunt');
 	                                            } },
 	                                        'Create'
 	                                    )
