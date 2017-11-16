@@ -53380,7 +53380,12 @@
 
 	        var _this = _possibleConstructorReturn(this, (AdminHunts.__proto__ || Object.getPrototypeOf(AdminHunts)).call(this, props));
 
+	        _this.state = {
+	            'getHunts': []
+	        };
+	        _this.pageName = 'adminHunts';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.componentDidMount = _this.componentDidMount.bind(_this);
 	        return _this;
 	    }
 
@@ -53390,10 +53395,78 @@
 	            event.preventDefault();
 	        }
 	    }, {
-	        key: 'render',
-	        value: function render() {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
 	            var _this2 = this;
 
+	            _Socket.Socket.on('getHunts', function (data) {
+	                _this2.setState({
+	                    'getHunts': data['getHunts']
+	                });
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this3 = this;
+
+	            var hunts = '';
+
+	            // console.log(this.state.getAdmin);
+	            if (this.state.getHunts != null) {
+	                hunts = this.state.getHunts.map(function (n, index) {
+	                    return React.createElement(
+	                        'tr',
+	                        { key: index },
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n.name
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n.h_type
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n.desc
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n.image
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n.start_time
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n.end_time
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n.start_text
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            React.createElement(
+	                                _reactBootstrap.Button,
+	                                { onClick: function onClick() {
+	                                        return _this3.deleteAdmin(index, n.name);
+	                                    } },
+	                                'Delete'
+	                            )
+	                        )
+	                    );
+	                });
+	            }
 	            return React.createElement(
 	                'div',
 	                null,
@@ -53406,10 +53479,71 @@
 	                        'Hunts'
 	                    )
 	                ),
+	                React.createElement('div', { id: 'intro' }),
 	                React.createElement(
 	                    'div',
-	                    { id: 'intro' },
-	                    React.createElement('img', { src: 'https://upload.wikimedia.org/wikipedia/commons/8/87/Maplestory_Leaderboard_2015-10.PNG', width: '30%' })
+	                    { id: 'userList' },
+	                    React.createElement(
+	                        'table',
+	                        { id: 'admin-table' },
+	                        React.createElement(
+	                            'tbody',
+	                            null,
+	                            React.createElement(
+	                                'tr',
+	                                null,
+	                                React.createElement(
+	                                    'td',
+	                                    null,
+	                                    'Name'
+	                                ),
+	                                React.createElement(
+	                                    'td',
+	                                    null,
+	                                    'Hunt Type'
+	                                ),
+	                                React.createElement(
+	                                    'td',
+	                                    null,
+	                                    'Description'
+	                                ),
+	                                React.createElement(
+	                                    'td',
+	                                    null,
+	                                    'Image'
+	                                ),
+	                                React.createElement(
+	                                    'td',
+	                                    null,
+	                                    'Start time'
+	                                ),
+	                                React.createElement(
+	                                    'td',
+	                                    null,
+	                                    'End time '
+	                                ),
+	                                React.createElement(
+	                                    'td',
+	                                    null,
+	                                    'Start text'
+	                                ),
+	                                React.createElement(
+	                                    'td',
+	                                    null,
+	                                    ' '
+	                                )
+	                            )
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'table',
+	                        { id: 'admin-table2' },
+	                        React.createElement(
+	                            'tbody',
+	                            null,
+	                            hunts
+	                        )
+	                    )
 	                ),
 	                React.createElement(
 	                    'div',
@@ -53429,14 +53563,14 @@
 	                                    React.createElement(
 	                                        _reactBootstrap.Button,
 	                                        { onClick: function onClick() {
-	                                                return _this2.props.changePage('adminEditHunt');
+	                                                return _this3.props.changePage('adminEditHunt');
 	                                            } },
 	                                        'Edit'
 	                                    ),
 	                                    React.createElement(
 	                                        _reactBootstrap.Button,
 	                                        { onClick: function onClick() {
-	                                                return _this2.props.changePage('adminCreateHunt');
+	                                                return _this3.props.changePage('adminCreateHunt');
 	                                            } },
 	                                        'Create'
 	                                    )

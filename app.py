@@ -424,26 +424,33 @@ def deleteAdmin(data):
             models.Admins.is_super).filter(
                 models.Admins.username == data['username']).delete()
         models.db.session.commit()
-        
-        adminList = []
-        try:
-            sql = models.db.session.query(
-                models.Admins.email,
-                models.Admins.username,
-                models.Admins.is_super)
-    
-            for row in sql:
-                adminList.append({'email':row.email, 'username':row.username, 'is_super':row.is_super})
-        except:
-            print("Error: admin query broke")
-    
-        socketio.emit('getAdmin', {
-            'getAdmin': adminList
+        socketio.emit('admins', {
         })
-
-        
     except:
         print("Error: admin query broke")
+        
+@socketio.on('adminHunts')
+def getHunts(data):
+    huntsList = []
+    try:
+        sql = models.db.session.query(
+            models.Hunts.name,
+            models.Hunts.h_type,
+            models.Hunts.desc,
+            models.Hunts.image,
+            models.Hunts.start_time,
+            models.Hunts.end_time,
+            models.Hunts.start_text
+            )
+
+        for row in sql:
+            huntsList.append({'name':row.name, 'h_type':row.h_type, 'desc':row.desc, 'image':row.image, 'start_time':row.start_time, 'end_time':row.end_time, 'start_text':row.start_text})
+    except:
+        print("Error: admin query broke")
+    print(huntsList)
+    socketio.emit('getHunts', {
+        'getHunts': huntsList
+    })
     
 def hash_password(password):
     salt = uuid.uuid4().hex + uuid.uuid4().hex
