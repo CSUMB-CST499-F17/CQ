@@ -37,6 +37,13 @@ export class AdminHunts extends React.Component {
         if (this.state.getHunts != null) {
             hunts = this.state.getHunts.map(
                 (n, index) =>
+                <tr key={0}>
+                <td>Name</td><td>Hunt Type</td><td>Description</td><td>Image</td><td>Start time</td><td>End time </td><td>Start text</td><td> </td>
+                </tr>
+             );
+            
+            hunts.push(this.state.getHunts.map(
+                (n, index) =>
                 <tr key={index}>
                 <td>{n.name}</td>
                 <td>{n.h_type}</td>
@@ -47,7 +54,7 @@ export class AdminHunts extends React.Component {
                 <td>{n.start_text}</td>
                 <td><Button onClick={() => this.deleteAdmin(index, n.name)}>Delete</Button></td>
                 </tr>
-             );
+             ));
         }
         return (
             <div>
@@ -58,13 +65,6 @@ export class AdminHunts extends React.Component {
                     
                 </div>
                 <div id="userList">
-                        <table id="admin-table">
-                                    <tbody>
-                                        <tr>
-                                            <td>Name</td><td>Hunt Type</td><td>Description</td><td>Image</td><td>Start time</td><td>End time </td><td>Start text</td><td> </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
                         <table id="admin-table2">
                         <tbody>
                             {hunts}

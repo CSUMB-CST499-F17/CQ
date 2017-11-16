@@ -53417,6 +53417,53 @@
 	                hunts = this.state.getHunts.map(function (n, index) {
 	                    return React.createElement(
 	                        'tr',
+	                        { key: 0 },
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Name'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Hunt Type'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Description'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Image'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Start time'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'End time '
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Start text'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            ' '
+	                        )
+	                    );
+	                });
+
+	                hunts.push(this.state.getHunts.map(function (n, index) {
+	                    return React.createElement(
+	                        'tr',
 	                        { key: index },
 	                        React.createElement(
 	                            'td',
@@ -53465,7 +53512,7 @@
 	                            )
 	                        )
 	                    );
-	                });
+	                }));
 	            }
 	            return React.createElement(
 	                'div',
@@ -53483,58 +53530,6 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'userList' },
-	                    React.createElement(
-	                        'table',
-	                        { id: 'admin-table' },
-	                        React.createElement(
-	                            'tbody',
-	                            null,
-	                            React.createElement(
-	                                'tr',
-	                                null,
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    'Name'
-	                                ),
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    'Hunt Type'
-	                                ),
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    'Description'
-	                                ),
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    'Image'
-	                                ),
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    'Start time'
-	                                ),
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    'End time '
-	                                ),
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    'Start text'
-	                                ),
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    ' '
-	                                )
-	                            )
-	                        )
-	                    ),
 	                    React.createElement(
 	                        'table',
 	                        { id: 'admin-table2' },

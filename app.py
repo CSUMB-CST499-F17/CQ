@@ -444,7 +444,7 @@ def getHunts(data):
             )
 
         for row in sql:
-            huntsList.append({'name':row.name, 'h_type':row.h_type, 'desc':row.desc, 'image':row.image, 'start_time':row.start_time, 'end_time':row.end_time, 'start_text':row.start_text})
+            huntsList.append({'name':row.name, 'h_type':row.h_type, 'desc':row.desc, 'image':row.image, 'start_time':row.start_time.strftime('%Y-%m-%d %H:%M:%S'), 'end_time':row.end_time.strftime('%Y-%m-%d %H:%M:%S'), 'start_text':row.start_text})
     except:
         print("Error: admin query broke")
     print(huntsList)
