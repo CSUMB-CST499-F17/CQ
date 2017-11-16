@@ -74125,7 +74125,7 @@
 	            _Socket.Socket.emit('addAdmin', { 'email': document.getElementById('create_email').value,
 	                'team_name': document.getElementById('create_team_name').value,
 	                'access_code': document.getElementById('create_access_code').value,
-	                'URL': document.getElementById('create_URL').value });
+	                'is_super': document.getElementById('is_super').value });
 	            this.props.changePage('admins');
 	        }
 	    }, {
@@ -74161,7 +74161,7 @@
 	                                React.createElement('br', null),
 	                                React.createElement(_reactBootstrap.FormControl, { id: 'create_access_code', type: 'text', placeholder: 'Access Code' }),
 	                                React.createElement('br', null),
-	                                React.createElement(_reactBootstrap.FormControl, { id: 'create_URL', type: 'text', placeholder: 'Super Admin?(T/F)' })
+	                                React.createElement(_reactBootstrap.FormControl, { id: 'is_super', type: 'text', placeholder: 'Super Admin?(T/F)' })
 	                            )
 	                        )
 	                    ),

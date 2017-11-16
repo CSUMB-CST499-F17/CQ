@@ -25,7 +25,7 @@ export class AdminCreate extends React.Component {
         Socket.emit('addAdmin', {'email':document.getElementById('create_email').value, 
                                 'team_name':document.getElementById('create_team_name').value,
                                 'access_code':document.getElementById('create_access_code').value,
-                                'URL':document.getElementById('create_URL').value});
+                                'is_super':document.getElementById('is_super').value});
         this.props.changePage('admins')
     }
     render() {
@@ -41,7 +41,7 @@ export class AdminCreate extends React.Component {
                                     <FormControl id='create_email' type="text" placeholder="Email" /><br/>
                                     <FormControl id='create_team_name' type="text" placeholder="Team Name" /><br/>
                                     <FormControl id='create_access_code' type="text" placeholder="Access Code" /><br/>
-                                    <FormControl id='create_URL' type="text" placeholder="Super Admin?(T/F)" />
+                                    <FormControl id='is_super' type="text" placeholder="Super Admin?(T/F)" />
                                 </InputGroup>
                             </FormGroup>
                         </form>
