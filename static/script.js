@@ -53386,6 +53386,7 @@
 	        _this.pageName = 'adminHunts';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        _this.componentDidMount = _this.componentDidMount.bind(_this);
+	        _this.showQuestions = _this.showQuestions.bind(_this);
 	        return _this;
 	    }
 
@@ -53404,6 +53405,11 @@
 	                    'getHunts': data['getHunts']
 	                });
 	            });
+	        }
+	    }, {
+	        key: 'showQuestions',
+	        value: function showQuestions(name) {
+	            console.log(name);
 	        }
 	    }, {
 	        key: 'render',
@@ -53426,7 +53432,7 @@
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Hunt Type'
+	                            'Hunt type'
 	                        ),
 	                        React.createElement(
 	                            'td',
@@ -53456,7 +53462,7 @@
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            ' '
+	                            'Delete questions before hunts '
 	                        )
 	                    );
 	                });
@@ -53499,6 +53505,17 @@
 	                            'td',
 	                            null,
 	                            n.start_text
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            React.createElement(
+	                                _reactBootstrap.Button,
+	                                { onClick: function onClick() {
+	                                        return _this3.showQuestions(n.name);
+	                                    } },
+	                                'Questions'
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
