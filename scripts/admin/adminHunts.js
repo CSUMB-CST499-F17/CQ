@@ -85,8 +85,9 @@ export class AdminHunts extends React.Component {
                 <td>Start time</td>
                 <td>End time </td>
                 <td>Start text</td>
-                <td>Delete questions before hunts </td>
-                <td>Update hunts </td>
+                <td>Show Questions</td>
+                <td>Update Hunts </td>
+                <td>Delete Questions Before Hunts </td>
                 </tr>
              );
             
@@ -101,8 +102,8 @@ export class AdminHunts extends React.Component {
                 <td>{n.end_time}</td>
                 <td>{n.start_text}</td>
                 <td><Button onClick={() => this.showQuestions( index)}>Questions</Button></td>
-                <td><Button onClick={() => this.updateHunts( index)}>Update Hunt</Button></td>
-                <td><Button onClick={() => this.deleteHunt(index, n.name)}>Delete Hunt</Button></td>
+                <td><Button onClick={() => this.updateHunts( index)}>Update</Button></td>
+                <td><Button onClick={() => this.deleteHunt(index, n.name)}>Delete</Button></td>
                 </tr>
              ));
         }
@@ -119,8 +120,9 @@ export class AdminHunts extends React.Component {
                 <td>Hint 2</td>
                 <td>Answer Text</td>
                 <td>Hunts Id</td>
-                <td>Delete Question</td>
-                <td>Update Question</td>
+                <td>Edit Questions</td>
+                <td>Update Questions</td>
+                <td>Delete Questions</td>
                 </tr>
              );
             
@@ -135,8 +137,8 @@ export class AdminHunts extends React.Component {
                 <td>{n.answer_text}</td>
                 <td>{n.hunts_id}</td>
                 <td><Button onClick={() => this.props.changePage('adminEditHunt')}>Edit</Button></td>
-                <td><Button onClick={() => this.updateQuestion( index)}>Update Question</Button></td>
-                <td><Button onClick={() => this.deleteQuestion(index)}>Delete Question</Button></td>
+                <td><Button onClick={() => this.updateQuestion( index)}>Update</Button></td>
+                <td><Button onClick={() => this.deleteQuestion(index)}>Delete</Button></td>
                 </tr>
              ));
         }

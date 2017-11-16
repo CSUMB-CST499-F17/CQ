@@ -53497,12 +53497,17 @@
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Delete questions before hunts '
+	                            'Show Questions'
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Update hunts '
+	                            'Update Hunts '
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Delete Questions Before Hunts '
 	                        )
 	                    );
 	                });
@@ -53565,7 +53570,7 @@
 	                                { onClick: function onClick() {
 	                                        return _this4.updateHunts(index);
 	                                    } },
-	                                'Update Hunt'
+	                                'Update'
 	                            )
 	                        ),
 	                        React.createElement(
@@ -53576,7 +53581,7 @@
 	                                { onClick: function onClick() {
 	                                        return _this4.deleteHunt(index, n.name);
 	                                    } },
-	                                'Delete Hunt'
+	                                'Delete'
 	                            )
 	                        )
 	                    );
@@ -53627,12 +53632,17 @@
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Delete Question'
+	                            'Edit Questions'
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Update Question'
+	                            'Update Questions'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Delete Questions'
 	                        )
 	                    );
 	                });
@@ -53695,7 +53705,7 @@
 	                                { onClick: function onClick() {
 	                                        return _this4.updateQuestion(index);
 	                                    } },
-	                                'Update Question'
+	                                'Update'
 	                            )
 	                        ),
 	                        React.createElement(
@@ -53706,7 +53716,7 @@
 	                                { onClick: function onClick() {
 	                                        return _this4.deleteQuestion(index);
 	                                    } },
-	                                'Delete Question'
+	                                'Delete'
 	                            )
 	                        )
 	                    );
