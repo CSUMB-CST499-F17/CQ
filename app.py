@@ -463,11 +463,12 @@ def getHunts(data):
             models.Questions.hint_A,
             models.Questions.hint_B,
             models.Questions.answer_text,
+            models.Questions.hunts_id
             ).filter(
-                models.Questions.id == data['index'])
+                models.Questions.hunts_id == data['index'])
 
         for row in sql:
-            questionsList.append({'question':row.question, 'answer':row.answer, 'image':row.image,'hint_A':row.hint_A, 'hint_B':row.hint_B, 'answer_text':row.answer_text})
+            questionsList.append({'question':row.question, 'answer':row.answer, 'image':row.image,'hint_A':row.hint_A, 'hint_B':row.hint_B, 'answer_text':row.answer_text, 'hunts_id':row.hunts_id})
     except:
         print("Error: questionsAdmin query broke")
     print(questionsList)

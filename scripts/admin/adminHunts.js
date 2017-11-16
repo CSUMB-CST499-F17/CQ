@@ -20,6 +20,12 @@ export class AdminHunts extends React.Component {
         this.componentDidMount = this.componentDidMount.bind(this);
         this.showQuestions = this.showQuestions.bind(this);
         this.updateHunts = this.updateHunts.bind(this);
+        this.deleteHunt = this.deleteHunt.bind(this);
+        
+        this.updateQuestion = this.showQuestions.bind(this);
+        this.deleteQuestion = this.showQuestions.bind(this);
+        
+        
     }
 
     handleSubmit(event) {
@@ -35,8 +41,8 @@ export class AdminHunts extends React.Component {
         
     }
     showQuestions(index){
-        console.log(index);
-        Socket.emit('questionsCall', {'index':index});
+        
+        Socket.emit('questionsCall', {'index':index+1});
         
         
         Socket.on('getQuestions', (data) => {
@@ -52,11 +58,22 @@ export class AdminHunts extends React.Component {
         console.log(index);
     }
     
+    deleteHunt(index){
+        console.log(index);
+    }
+    
+    updateQuestion(index){
+        console.log(index);
+    }
+    deleteQuestion(index){
+        console.log(index);
+    }
+
     
     render() {
         var hunts = '';
-
-        // console.log(this.state.getAdmin);
+        var questions = '';
+        
         if (this.state.getHunts != null) {
             hunts = this.state.getHunts.map(
                 (n, index) =>
@@ -85,10 +102,44 @@ export class AdminHunts extends React.Component {
                 <td>{n.start_text}</td>
                 <td><Button onClick={() => this.showQuestions( index)}>Questions</Button></td>
                 <td><Button onClick={() => this.updateHunts( index)}>Update Hunt</Button></td>
-                <td><Button onClick={() => this.deleteAdmin(index, n.name)}>Delete</Button></td>
+                <td><Button onClick={() => this.deleteHunt(index, n.name)}>Delete Hunt</Button></td>
                 </tr>
              ));
         }
+        
+        if (this.state.getQuestions != null) {
+            questions = this.state.getQuestions.map(
+                (n, index) =>
+                <tr key={0}>
+                <td>Question</td>
+                <td>Answer</td>
+                <td>Image</td>
+                <td>Hint 1</td>
+                <td>Hint 2</td>
+                <td>Answer Text</td>
+                <td>Hunts Id</td>
+                <td>Delete Question</td>
+                <td>Update Question</td>
+                </tr>
+             );
+            
+            questions.push(this.state.getQuestions.map(
+                (n, index) =>
+                <tr key={index}>
+                <td>{n.question}</td>
+                <td>{n.answer}</td>
+                <td>{n.image}</td>
+                <td>{n.hint_A}</td>
+                <td>{n.start_B}</td>
+                <td>{n.answer_text}</td>
+                <td>{n.hunts_id}</td>
+                <td><Button onClick={() => this.props.changePage('adminEditHunt')}>Edit</Button></td>
+                <td><Button onClick={() => this.updateQuestion( index)}>Update Question</Button></td>
+                <td><Button onClick={() => this.deleteQuestion(index)}>Delete Question</Button></td>
+                </tr>
+             ));
+        }
+        
         return (
             <div>
                 <div id = 'header'>
@@ -98,9 +149,16 @@ export class AdminHunts extends React.Component {
                     
                 </div>
                 <div id="userList">
-                        <table id="admin-table2">
+                    <table id="admin-table2">
                         <tbody>
                             {hunts}
+                        </tbody>
+
+                    </table>
+                    
+                    <table id="admin-table2">
+                        <tbody>
+                            {questions}
                         </tbody>
 
                     </table>
@@ -111,7 +169,6 @@ export class AdminHunts extends React.Component {
                         <FormGroup>
                             <InputGroup>
                                 <ButtonToolbar>
-                                    <Button onClick={() => this.props.changePage('adminEditHunt')}>Edit</Button>
                                     <Button onClick={() => this.props.changePage('adminCreateHunt')}>Create</Button>
                                 </ButtonToolbar>
                             </InputGroup>

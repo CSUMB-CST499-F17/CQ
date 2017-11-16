@@ -53389,6 +53389,11 @@
 	        _this.componentDidMount = _this.componentDidMount.bind(_this);
 	        _this.showQuestions = _this.showQuestions.bind(_this);
 	        _this.updateHunts = _this.updateHunts.bind(_this);
+	        _this.deleteHunt = _this.deleteHunt.bind(_this);
+
+	        _this.updateQuestion = _this.showQuestions.bind(_this);
+	        _this.deleteQuestion = _this.showQuestions.bind(_this);
+
 	        return _this;
 	    }
 
@@ -53413,8 +53418,7 @@
 	        value: function showQuestions(index) {
 	            var _this3 = this;
 
-	            console.log(index);
-	            _Socket.Socket.emit('questionsCall', { 'index': index });
+	            _Socket.Socket.emit('questionsCall', { 'index': index + 1 });
 
 	            _Socket.Socket.on('getQuestions', function (data) {
 	                _this3.setState({
@@ -53428,13 +53432,28 @@
 	            console.log(index);
 	        }
 	    }, {
+	        key: 'deleteHunt',
+	        value: function deleteHunt(index) {
+	            console.log(index);
+	        }
+	    }, {
+	        key: 'updateQuestion',
+	        value: function updateQuestion(index) {
+	            console.log(index);
+	        }
+	    }, {
+	        key: 'deleteQuestion',
+	        value: function deleteQuestion(index) {
+	            console.log(index);
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _this4 = this;
 
 	            var hunts = '';
+	            var questions = '';
 
-	            // console.log(this.state.getAdmin);
 	            if (this.state.getHunts != null) {
 	                hunts = this.state.getHunts.map(function (n, index) {
 	                    return React.createElement(
@@ -53555,14 +53574,144 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this4.deleteAdmin(index, n.name);
+	                                        return _this4.deleteHunt(index, n.name);
 	                                    } },
-	                                'Delete'
+	                                'Delete Hunt'
 	                            )
 	                        )
 	                    );
 	                }));
 	            }
+
+	            if (this.state.getQuestions != null) {
+	                questions = this.state.getQuestions.map(function (n, index) {
+	                    return React.createElement(
+	                        'tr',
+	                        { key: 0 },
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Question'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Answer'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Image'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Hint 1'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Hint 2'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Answer Text'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Hunts Id'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Delete Question'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Update Question'
+	                        )
+	                    );
+	                });
+
+	                questions.push(this.state.getQuestions.map(function (n, index) {
+	                    return React.createElement(
+	                        'tr',
+	                        { key: index },
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n.question
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n.answer
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n.image
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n.hint_A
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n.start_B
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n.answer_text
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n.hunts_id
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            React.createElement(
+	                                _reactBootstrap.Button,
+	                                { onClick: function onClick() {
+	                                        return _this4.props.changePage('adminEditHunt');
+	                                    } },
+	                                'Edit'
+	                            )
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            React.createElement(
+	                                _reactBootstrap.Button,
+	                                { onClick: function onClick() {
+	                                        return _this4.updateQuestion(index);
+	                                    } },
+	                                'Update Question'
+	                            )
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            React.createElement(
+	                                _reactBootstrap.Button,
+	                                { onClick: function onClick() {
+	                                        return _this4.deleteQuestion(index);
+	                                    } },
+	                                'Delete Question'
+	                            )
+	                        )
+	                    );
+	                }));
+	            }
+
 	            return React.createElement(
 	                'div',
 	                null,
@@ -53587,6 +53736,15 @@
 	                            null,
 	                            hunts
 	                        )
+	                    ),
+	                    React.createElement(
+	                        'table',
+	                        { id: 'admin-table2' },
+	                        React.createElement(
+	                            'tbody',
+	                            null,
+	                            questions
+	                        )
 	                    )
 	                ),
 	                React.createElement(
@@ -53604,13 +53762,6 @@
 	                                React.createElement(
 	                                    _reactBootstrap.ButtonToolbar,
 	                                    null,
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { onClick: function onClick() {
-	                                                return _this4.props.changePage('adminEditHunt');
-	                                            } },
-	                                        'Edit'
-	                                    ),
 	                                    React.createElement(
 	                                        _reactBootstrap.Button,
 	                                        { onClick: function onClick() {
