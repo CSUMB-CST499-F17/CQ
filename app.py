@@ -454,6 +454,7 @@ def getHunts(data):
 @socketio.on('questionsCall')
 def getHunts(data):
     questionsList = []
+    print(data['index'])
     try:
         sql = models.db.session.query(
             models.Questions.question,

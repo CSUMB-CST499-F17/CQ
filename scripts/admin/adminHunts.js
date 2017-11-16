@@ -36,7 +36,8 @@ export class AdminHunts extends React.Component {
     }
     showQuestions(index){
         console.log(index);
-        Socket.emit('questionsCall', index);
+        Socket.emit('questionsCall', {'index':index});
+        
         
         Socket.on('getQuestions', (data) => {
             this.setState({

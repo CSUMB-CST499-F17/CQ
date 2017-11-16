@@ -53414,7 +53414,7 @@
 	            var _this3 = this;
 
 	            console.log(index);
-	            _Socket.Socket.emit('questionsCall', index);
+	            _Socket.Socket.emit('questionsCall', { 'index': index });
 
 	            _Socket.Socket.on('getQuestions', function (data) {
 	                _this3.setState({
