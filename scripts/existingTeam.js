@@ -25,7 +25,6 @@ export class ExistingTeam extends React.Component {
             this.props.setProps('id', data['id']);
             this.props.setProps('name', data['name']);
             this.props.setProps('loggedIn', data['loggedIn']);
-            document.getElementById("team_name").value = "";
             document.getElementById("access").value = "";
             document.getElementById("errorMessage").value = "";
             
@@ -44,11 +43,6 @@ export class ExistingTeam extends React.Component {
                     document.getElementById("errorMessage").style.color="#f2e537";
                     document.getElementById("access").value = "";
                     break;
-                case "finished": 
-                    document.getElementById("errorMessage").innerHTML = "⚠ Scavenger Hunt Completed By This Team ⚠  <br/> ⚠ Please Create New Team or Explore Other Hunts! ⚠" ;
-                    document.getElementById("errorMessage").style.visibility = 'visible';
-                    document.getElementById("errorMessage").style.color="#f2e537";
-                    document.getElementById("access").value = "";
                 default:
                         break;
             } 
@@ -81,18 +75,15 @@ export class ExistingTeam extends React.Component {
     
     render() {
         return (
-            <div>
-                <div id='login'>
-                    <input type="text" id = "team_name" placeholder="Team Name" />
-                    <input type="password" id = "access" placeholder="Access Code" />
-                    <div id = "errorMessage" style={{visibility:'hidden'}}> Error Message Placeholder</div>
-                    <div className='buttons'>
-                        <button className="btn" onClick={this.validateCredentials}>Enter!</button>
-                        <button className="btn" onClick={this.props.cancel}>Cancel</button>
-                    </div>
+            <div id='login'>
+                <input type="text" id = "team_name" placeholder="Team Name" />
+                <input type="password" id = "access" placeholder="Access Code" />
+                <div id = "errorMessage" style={{visibility:'hidden'}}> Error Message Placeholder</div>
+                <div className='buttons'>
+                    <button className="btn" onClick={this.validateCredentials}>Enter!</button>
+                    <button className="btn" onClick={this.props.cancel}>Cancel</button>
                 </div>
             </div>
-
         );
     }
 }

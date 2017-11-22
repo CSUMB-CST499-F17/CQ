@@ -17,6 +17,9 @@ body {
 header, h1{
     color:white;
     font-size: 36px;
+    text-shadow:2px 2px 1px rgba(116,204,207,1);
+    font-weight:bold;
+    font-variant:small-caps;
 }
 h4{
     color:white;
@@ -42,7 +45,7 @@ p{
     text-align: center;
     text-decoration: none;
     font-size: 16px;
-    margin: 4px 4px;
+    margin: 2px 4px;
     cursor: pointer;
 }
 
@@ -71,7 +74,7 @@ p{
     display: inline-block;
     color: #0d3551;
     font-size: 16px;
-    margin: 4px 2px;
+    margin: 2px 2px;
 }
 #errorMessage{
     font-size: 16px;
@@ -146,7 +149,7 @@ p{
     margin:15px;
 }
 
-/* Complete */ 
+/* Complete */
 #team, #score, #time, #err{
     color: white;
     font-size:32px;
@@ -165,7 +168,29 @@ p{
     margin:15px;
 }
 
-/* Logos */ 
+.modal-content{
+    padding:30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1; /* Sit on top */
+    display:flex;
+    justify-content: center;
+    /*overflow: auto;*/
+    background-color: rgba(190, 190, 190, .95);
+    font-size: 24px;
+    color: #ffffff;
+    width: 85%;
+    border-radius: 22px;
+    text-align: center;
+}
+#modal-text{
+    padding-top:5px;
+    color: navy;
+}
+
+/* Logos */
 #logo-big{
     width:700px;
 }
@@ -230,6 +255,12 @@ p{
     padding:20px 20px 0px 20px;
     width:100%;
 }
+#edit-form{
+    display: flex;
+    justify-content: center;
+    padding:20px 20px 0px 20px;
+    width:100%;
+}
 .create-item{
     margin:5px;
     justify-content: center;
@@ -237,20 +268,40 @@ p{
     z-index:100;
 }
 #play-container{
+    position:relative;
     margin:20px;
     width:60%;
     justify-content: center;
     margin:auto;
     color:white;
-    padding-top:30px;
+}
+#background {
+    position: absolute;
+    top: -100;
+    bottom:0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    margin:auto;
+    overflow: hidden;
+    font-size:350px;
+    font-weight:bold;
+    color: rgba(190, 190, 190, .35);
+    width:100%;
+    /*vertical-align:middle;*/
+}
+#playGameInput{
+    padding-top:50px;
 }
 #play-form{
     justify-content: center;
     margin:auto;
     text-align: center;
+    margin-bottom:40px;
+    padding-top:50px;
 }
 #hints, #play-question, #answer{
-    margin:15 0 15 0;
+    margin:10 0 15 0;
 }
 #hints{
     width:100%;
@@ -296,7 +347,8 @@ p{
     max-height:400px;
     max-width:100%;
     width:100%;
-    background-color: red;
+    margin: auto;
+
 }
 #userList:hover{
 overflow-y:scroll;
@@ -304,6 +356,30 @@ overflow-y:scroll;
 #leaderboard-table2{
     width:100%;
     justify-content: center;
+    background-color:white;
+    color: #0d3551;
+}
+
+#admin-table{
+    width:60%;
+    margin: auto;
+}
+#admin-table, th, td {
+   border: 1px solid #3E6F96;
+}
+#admin-table, tr:nth-child(even) {
+   background-color: #fffcdb;
+}
+#admin-table td {
+   font-weight: bold;
+   background-color: #74CCCF;
+   color:white;
+}
+#admin-table2{
+    margin: auto;
+    width:60%;
+    justify-content: center;
+    text-align: center;
     background-color:white;
     color: #0d3551;
 }
@@ -350,7 +426,7 @@ td{
   max-width: 100%;
   margin: 20px auto;
 }
-#confirm{
+.confirm-group{
     color:white;
     font-size:32px;
     margin:auto;
@@ -431,9 +507,9 @@ td{
   outline: none;
 }
 
-#stripe-form button:focus {
-  background: #555ABF;
-}
+/*#stripe-form button:focus {*/
+/*  background: #555ABF;*/
+/*}*/
 
 #stripe-form button:active {
   background: #43458B;
@@ -450,6 +526,9 @@ td{
 }
 
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+    .buttons{
+        padding: 5px;
+    }
     #header {
         font-size: 2.5em;
         margin: 10px;
@@ -465,8 +544,9 @@ td{
     .hunt-preview img{
         max-width:70%;
         max-height:45%;
-    }    
+    }
     #slideshow{
+	    margin-top:0px;
         height:350px;
         line-height: 300px;
     }
@@ -478,6 +558,13 @@ td{
         width:15%;
         float:left;
     }
+    #background {
+        top:40;
+        font-size:110px;
+    }
+    #hint1, #hint2{
+        font-size:14px;
+    }
     #intro{
         text-align:center;
         justify-content: center;
@@ -486,16 +573,18 @@ td{
         max-width: 100%;
     }
     #play-container{
-    margin:20px;
+    margin:0px;
     width:85%;
     justify-content: center;
     margin:auto;
     color:white;
-    padding-top:30px;
 }
     #play-question{
         font-size: 20px;
     }
+    #playGameInput{
+    padding-top:10px;
+}
     #logo-small-nav{
         width:40px;
         float:right;
@@ -531,5 +620,10 @@ td{
     /* Hide the link that should open and close the topnav on small screens */
     #topnav .icon {
         display: none;
+    }
+    .modal-content{
+        font-size:18px;
+        top: 90%;
+        width: 95%;
     }
 }

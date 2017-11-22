@@ -13,7 +13,7 @@ export class Play extends React.Component {
         this.state = { 
             hunt: {'id':0, 'name': "", 'image':"", 'start_text':""},
             questions: [{'question':"", 'answer':"",'hint1':"",'hint2':"",'hunts_id':0}],
-            user: {'id':0, 'email': "", 'team_name':"", 'hunts_id':0, 'progress':1, 'score':0, 'attempts':5}
+            user: {'id':0, 'email': "", 'team_name':"", 'hunts_id':0, 'progress':1, 'score':0, 'attempts':5, 'start_time': null, 'end_time':null}
         };
         this.pageName = 'play';
         this.hide = 'none';
@@ -97,7 +97,7 @@ export class Play extends React.Component {
                     <PlayGame changePage={this.props.changePage} hide={this.props.hide} changePlay={this.changePlay} setPlay={this.setPlay} setUser={this.setUser} state={this.state} logOutSetProps={this.props.logOutSetProps}/>
                 </div>
                 <div id = 'complete' style={{display:this.hide}}>
-                    <Complete changePage={this.props.changePage} hide={this.props.hide} setPlay={this.setPlay} setUser={this.setUser} state={this.state} logOutSetProps={this.props.logOutSetProps}/>
+                    <Complete changePage={this.props.changePage} hide={this.props.hide} setPlay={this.setPlay} setUser={this.setUser} state={this.state} setProps={this.props.setProps} logOutSetProps={this.props.logOutSetProps}/>
                 </div>
             </div>
         );

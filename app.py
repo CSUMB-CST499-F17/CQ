@@ -68,23 +68,23 @@ def validateCredentials(data):
             users = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'])
             for query in users:
                 if(check_password(query.leader_code, data['access'])):
-                    if query.progress == -1:
-                        return json.dumps({'id':query.id, 'loggedIn':'finished', 'name':query.team_name, "hunts_id":query.hunts_id})
+                    # if query.progress == -1:
+                    #     return json.dumps({'id':query.id, 'loggedIn':'finished', 'name':query.team_name, "hunts_id":query.hunts_id})
                     return json.dumps({'id':query.id, 'loggedIn':'teamLead', 'name':query.team_name, "hunts_id":query.hunts_id})
                 elif(check_password(query.member_code, data['access'])):
-                    if query.progress == -1:
-                        return json.dumps({'id':query.id, 'loggedIn':'finished', 'name':query.team_name, "hunts_id":query.hunts_id})
+                    # if query.progress == -1:
+                    #     return json.dumps({'id':query.id, 'loggedIn':'finished', 'name':query.team_name, "hunts_id":query.hunts_id})
                     return json.dumps({'id':query.id, 'loggedIn':'team', 'name':query.team_name, "hunts_id":query.hunts_id})
                     
             users = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.is_super == True)
             for query in users:    
                 if(check_password(query.password, data['access'])):
-                    return json.dumps({'id':query.id, 'loggedIn':'superAdmin', 'name':query.username, "hunts_id":query.hunts_id})
+                    return json.dumps({'id':query.id, 'loggedIn':'superAdmin', 'name':query.username})
                     
             users = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.is_super == False)
             for query in users:
                 if(check_password(query.password, data['access'])):
-                    return json.dumps({'id':query.id, 'loggedIn':'admin', 'name':query.username, "hunts_id":query.hunts_id})
+                    return json.dumps({'id':query.id, 'loggedIn':'admin', 'name':query.username})
             
             return json.dumps({'id':-1, 'loggedIn':'no', 'name':'guest'})
         except Exception as e: 
@@ -94,17 +94,35 @@ def validateCredentials(data):
 def updatePlay(data):
     socketio.emit('updatePlay', 'updatePlay');
 
+@socketio.on('adminHome')
+def updatePlay(data):
+    socketio.emit('updateAdminHome', 'updateAdmin');
+
 @socketio.on('loadUser')
 def getUser(data):
     userData = []
     try:
         users = models.db.session.query(models.Participants).filter(models.Participants.id == data)
-        for query in users:    
-            userData.append({'id':data, 'email': query.email, 'team_name':query.team_name, 'hunts_id':query.hunts_id, 'progress':query.progress, 'score':query.score, 'attempts':query.attempts, 'hints':query.hints, 'time': None, 'elapsed':None})
+        for query in users:  
+            if(query.progress == -1):
+                userData.append({'id':data, 'email': query.email, 'team_name':query.team_name, 'hunts_id':query.hunts_id, 'progress':query.progress, 'score':query.score, 'attempts':query.attempts, 'hints':query.hints, 'start_time':query.start_time.strftime("%Y-%m-%d %H:%M:%S"), 'end_time':query.end_time.strftime("%Y-%m-%d %H:%M:%S")})
+            else:
+                userData.append({'id':data, 'email': query.email, 'team_name':query.team_name, 'hunts_id':query.hunts_id, 'progress':query.progress, 'score':query.score, 'attempts':query.attempts, 'hints':query.hints, 'start_time':query.start_time.strftime("%Y-%m-%d %H:%M:%S"), 'end_time':query.end_time})
         return json.dumps(userData)
     except Exception as e: 
         print(e)
 
+@socketio.on('loadAdmin')
+def getUser(data):
+    adminData = []
+    try:
+        admins = models.db.session.query(models.Admins).filter(models.Admins.id == data)
+        for query in admins:  
+            adminData.append({'id':data, 'email': query.email, 'username':query.username, 'is_super':query.is_super})
+        return json.dumps(adminData)
+    except Exception as e: 
+        print(e)
+        
 @socketio.on('loadHunts')
 def getHunt(data):
     huntData = []
@@ -140,41 +158,40 @@ def updateProgress(data):
         #updates the score
         query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id']).update({models.Participants.score: data['score']})
         models.db.session.commit()
-        time = None
-        elapsed = None
+        
         query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id'])
         for row in query:
             if row.start_time != None and row.end_time != None:
-                elapsed = getTimeElapsed(str(row.end_time-row.start_time))
+                # elapsed = getTimeElapsed(str(row.end_time-row.start_time))
                 time = timeScore((row.end_time-row.start_time).total_seconds())
-                userData = {'email':user['email'], 'team_name':user['team_name'], 'hunts_id':user['hunts_id'], 'progress':data['progress'], 'score':data['score'] + time, 'attempts':data['attempts'], 'hints':data['hints'], 'time': time, 'elapsed':elapsed}
+                userData = {'email':user['email'], 'team_name':user['team_name'], 'hunts_id':user['hunts_id'], 'progress':data['progress'], 'score':data['score'] + time, 'attempts':data['attempts'], 'hints':data['hints'], 'start_time':user['start_time'], 'end_time':user['end_time'].strftime("%Y-%m-%d %H:%M:%S")}
                 query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id']).update({models.Participants.score: data['score']+time})
                 models.db.session.commit()
                 return json.dumps({'user':userData})
                 
-        userData = {'email':user['email'], 'team_name':user['team_name'], 'hunts_id':user['hunts_id'], 'progress':data['progress'], 'score':data['score'], 'attempts':data['attempts'], 'hints':data['hints'], 'time': time, 'elapsed':elapsed}
+        userData = {'email':user['email'], 'team_name':user['team_name'], 'hunts_id':user['hunts_id'], 'progress':data['progress'], 'score':data['score'], 'attempts':data['attempts'], 'hints':data['hints'], 'start_time':user['start_time'], 'end_time':user['end_time']}
         return json.dumps({'user':userData})
     except Exception as e: 
         print(e)
         
         
-def getTimeElapsed(time):
-    if "days" in time: #mulitple days
-        if len(time) == 24: #mulitple days over 10 hours
-                return time[0] + time[1] + "days, " + time[9] + "" + time[10] + " hours, " + time[12] + "" + time[13] + " minutes, " + time[15] + "" + time[16] + " seconds"
-        if len(time) == 23: #mulitple days over 10 hours
-            return time[0] + "days, " + time[8] + "" + time[9] + " hours, " + time[11] + "" + time[12] + " minutes, " + time[14] + "" + time[15] + " seconds"
-        else:#mulitple days under 10 hours
-            return time[0] + "days, " + time[8] + " hour(s), " + time[10] + "" + time[11] + " minutes, " + time[13] + "" + time[14] + " seconds"
-    if "day," in time: #one day
-        if len(time) == 22: #one day and over 10 hours
-            return time[0] + "day, " + time[7] + "" + time[8] + " hours, " + time[10] + "" + time[11] + " minutes, " + time[13] + "" + time[14] + " seconds"
-        else:#one day under 10 hours
-            return time[0] + "day, " + time[7] + " hour(s), " + time[9] + "" + time[10] + " minutes, " + time[12] + "" + time[13] + " seconds"
-    if len(time) == 15: #over 10 hours
-        return time[0] + time[1] + " hours, " + time[3] + "" + time[4] + " minutes, " + time[6] + "" + time[7] + " seconds"
-    else: #below 10 hours
-        return time[0] + " hour(s), " + time[2] + "" + time[3] + " minutes, " + time[5] + "" + time[6] + " seconds"
+# def getTimeElapsed(time):
+#     if "days" in time: #mulitple days
+#         if len(time) == 24: #mulitple days over 10 hours
+#                 return time[0] + time[1] + "days, " + time[9] + "" + time[10] + " hours, " + time[12] + "" + time[13] + " minutes, " + time[15] + "" + time[16] + " seconds"
+#         if len(time) == 23: #mulitple days over 10 hours
+#             return time[0] + "days, " + time[8] + "" + time[9] + " hours, " + time[11] + "" + time[12] + " minutes, " + time[14] + "" + time[15] + " seconds"
+#         else:#mulitple days under 10 hours
+#             return time[0] + "days, " + time[8] + " hour(s), " + time[10] + "" + time[11] + " minutes, " + time[13] + "" + time[14] + " seconds"
+#     if "day," in time: #one day
+#         if len(time) == 22: #one day and over 10 hours
+#             return time[0] + "day, " + time[7] + "" + time[8] + " hours, " + time[10] + "" + time[11] + " minutes, " + time[13] + "" + time[14] + " seconds"
+#         else:#one day under 10 hours
+#             return time[0] + "day, " + time[7] + " hour(s), " + time[9] + "" + time[10] + " minutes, " + time[12] + "" + time[13] + " seconds"
+#     if len(time) == 15: #over 10 hours
+#         return time[0] + time[1] + " hours, " + time[3] + "" + time[4] + " minutes, " + time[6] + "" + time[7] + " seconds"
+#     else: #below 10 hours
+#         return time[0] + " hour(s), " + time[2] + "" + time[3] + " minutes, " + time[5] + "" + time[6] + " seconds"
     
 def timeScore(total):
     print("in Timescore")
@@ -220,14 +237,15 @@ def updateLeaderboard(data):
             models.Participants.score,
             models.Participants.team_name,
             models.Participants.start_time,
-            models.Participants.end_time).filter(
+            models.Participants.end_time,
+            models.Participants.hunts_id).filter(
                 sqlalchemy.and_(
                     models.Participants.progress == -1,
                     models.Participants.end_time != None
                     )).order_by(models.Participants.score.desc())
 
         for row in sql:
-            leaderboardUser.append({'progress':row.progress, 'score':row.score,'team_name':row.team_name, 'start_time':row.start_time.strftime('%Y-%m-%d %H:%M:%S'),'end_time':row.end_time.strftime('%Y-%m-%d %H:%M:%S')})
+            leaderboardUser.append({'progress':row.progress, 'score':row.score,'team_name':row.team_name, 'start_time':row.start_time.strftime('%Y-%m-%d %H:%M:%S'),'end_time':row.end_time.strftime('%Y-%m-%d %H:%M:%S'),'hunts_id':row.hunts_id})
 
     except:
         print("Error: leaderboard query broke")
@@ -236,9 +254,9 @@ def updateLeaderboard(data):
     })
     print('Leaderboard data sent.')
 
-@socketio.on('start')
-def updateStart():
-    socketio.emit('updateStart');
+# @socketio.on('start')
+# def updateStart():
+#     socketio.emit('updateStart');
     
 @socketio.on('register')
 def updateRegister(data):
@@ -270,7 +288,7 @@ def checkUserInfo(data):
     print(userdata)
     if models.db.session.query(models.Participants).filter(models.Participants.email == userdata['email'], models.Participants.hunts_id == userdata['hunts_id']).count() > 0:
         return json.dumps({'condition':'reject','message':"Email address already registered for this hunt."})
-    elif models.db.session.query(models.Participants).filter(models.Participants.team_name == userdata['team_name']).count() > 0:
+    elif models.db.session.query(models.Participants).filter(models.Participants.team_name == userdata['team_name'], models.Participants.hunts_id == userdata['hunts_id']).count() > 0:
         return json.dumps({'condition':'reject','message':"Team name already registered for this hunt."})
     else:
         price = calculatePrice(userdata['discount_code'])
@@ -279,12 +297,12 @@ def checkUserInfo(data):
     
 def calculatePrice(discount_code):
     price = 50
-    total_percent = 100
+    discount_percent = 0
     try:
         discount_query = models.db.session.query(models.Discounts)
         for row in discount_query:
-            if check_password(row.code, discount_code) and r.uses > 0:
-                total_percent = discount_query.first().percent
+            if check_password(row.code, discount_code) and row.uses > 0:
+                discount_percent = discount_query.first().percent
                 discount_query.first().uses -= 1
                 models.db.session.commit()
                 break
@@ -293,7 +311,7 @@ def calculatePrice(discount_code):
         pass
     
     # price's base unit is one cent, so 100 = $1
-    price = price * (100 - total_percent)
+    price = price * (100 - discount_percent)
     
     return price
 
@@ -318,13 +336,13 @@ def checkout(data):
     random_number = random.randint(0,9999)
     member_code = hunt_name + "{:04d}".format(random_number)
     
-    participants = None
+    participant = None
     try:
-        participants = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None, None, 0, 0, 0, -1, False, hunt_id)
-        models.db.session.add(participants)  
+        participant = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None, None, 0, 0, 0, 0, False, hunt_id)
+        models.db.session.add(participant)  
         models.db.session.commit()
         
-        participants = models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name)
+        participant = models.db.session.query(models.Participants).filter(models.Participants.team_name == team_name).first()
     except:
         return json.dumps({'condition':'reject','message':'Could not connect to database.'})
     
@@ -337,21 +355,23 @@ def checkout(data):
                 source=token,
             )
         
-        participants.has_paid = True
+        participant.has_paid = True
         models.db.session.commit()
-
-        pass
     except stripe.error.CardError as e:
         body = e.json_body
         err  = body.get('error', {})
-        return json.dumps({'condition':'not_paid','leader_code':leader_code, 'member_code':member_code, 'error_code':err.get('code')})
+        models.db.session.delete(participant)
+        models.db.session.commit()
+        return json.dumps({'condition':'not_paid', 'error_code':err.get('code')})
     except stripe.error.StripeError as e:
-        return json.dumps({'condition':'not_paid','leader_code':leader_code, 'member_code':member_code, 'error_code':None})
+        models.db.session.delete(participant)
+        models.db.session.commit()
+        return json.dumps({'condition':'not_paid', 'error_code':None})
     
     # send email
     try:
         subject = "Coastal Quest Activation Code"
-        message = "Welcome to Coastal Quest Scavenger Hunts, {}! \nHere is your access code to play the hunt: \nTeam Leader: {} \nAnd here is a code to share with your teammates: \nTeam Members: {}. \nHave fun on your journey!".format(team_name,leader_code,member_code)
+        message = "Welcome to Coastal Quest Scavenger Hunts, {}! \nHere is your access code to play the hunt: \nTeam Leader: {}\nHave fun on your journey!".format(team_name,leader_code)
         email_client(client_email,subject,message)
     except:
         print("Error: Could not send email")
@@ -369,6 +389,93 @@ def email_client(client_email, subject, message):
     server.login(email_address, email_pass)
     server.sendmail(email_address, client_email, recp_message)
     server.quit()
+
+@socketio.on('admins')
+def getAdmin(data):
+    adminList = []
+    try:
+        sql = models.db.session.query(
+            models.Admins.email,
+            models.Admins.username,
+            models.Admins.is_super)
+
+        for row in sql:
+            adminList.append({'email':row.email, 'username':row.username, 'is_super':row.is_super})
+    except:
+        print("Error: admin query broke")
+
+    socketio.emit('getAdmin', {
+        'getAdmin': adminList
+    })
+
+@socketio.on('addAdmin')
+def addAdmin(data):
+    admin = models.Admins(data['email'], data['team_name'], data['access_code'], data['is_super'])
+    print (admin)
+    models.db.session.add(admin)
+    models.db.session.commit()
+
+@socketio.on('deleteAdminFace')
+def deleteAdmin(data):
+    try:
+        sql = models.db.session.query(
+            models.Admins.email,
+            models.Admins.username,
+            models.Admins.is_super).filter(
+                models.Admins.username == data['username']).delete()
+        models.db.session.commit()
+        socketio.emit('admins', {
+        })
+    except:
+        print("Error: admin query broke")
+        
+@socketio.on('adminHunts')
+def getHunts(data):
+    huntsList = []
+    try:
+        sql = models.db.session.query(
+            models.Hunts.name,
+            models.Hunts.h_type,
+            models.Hunts.desc,
+            models.Hunts.image,
+            models.Hunts.start_time,
+            models.Hunts.end_time,
+            models.Hunts.start_text
+            )
+
+        for row in sql:
+            huntsList.append({'name':row.name, 'h_type':row.h_type, 'desc':row.desc, 'image':row.image, 'start_time':row.start_time.strftime('%Y-%m-%d %H:%M:%S'), 'end_time':row.end_time.strftime('%Y-%m-%d %H:%M:%S'), 'start_text':row.start_text})
+    except:
+        print("Error: hunts Admin query broke")
+    socketio.emit('getHunts', {
+        'getHunts': huntsList
+    })
+    
+@socketio.on('questionsCall')
+def getHunts(data):
+    questionsList = []
+    print(data['index'])
+    try:
+        sql = models.db.session.query(
+            models.Questions.question,
+            models.Questions.answer,
+            models.Questions.image,
+            models.Questions.hint_A,
+            models.Questions.hint_B,
+            models.Questions.answer_text,
+            models.Questions.hunts_id
+            ).filter(
+                models.Questions.hunts_id == data['index'])
+
+        for row in sql:
+            questionsList.append({'question':row.question, 'answer':row.answer, 'image':row.image,'hint_A':row.hint_A, 'hint_B':row.hint_B, 'answer_text':row.answer_text, 'hunts_id':row.hunts_id})
+    except:
+        print("Error: questionsAdmin query broke")
+    print(questionsList)
+    socketio.emit('getQuestions', {
+        'getQuestions': questionsList
+    })
+
     
 def hash_password(password):
     salt = uuid.uuid4().hex + uuid.uuid4().hex

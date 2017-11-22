@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactBootstrap from 'react-bootstrap';
-// import { Socket } from './Socket';
+import { Socket } from '../Socket';
 import { Button } from 'react-bootstrap';
 import { InputGroup } from 'react-bootstrap';
 import { FormGroup } from 'react-bootstrap';
@@ -12,12 +12,22 @@ export class AdminCreate extends React.Component {
         super(props);
         
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.pageName = 'adminCreate';
+        this.addAdmin = this.addAdmin.bind(this);
     }
 
     handleSubmit(event) {
         event.preventDefault();
+        
     }
-
+    
+    addAdmin(){
+        Socket.emit('addAdmin', {'email':document.getElementById('create_email').value, 
+                                'team_name':document.getElementById('create_team_name').value,
+                                'access_code':document.getElementById('create_access_code').value,
+                                'is_super':document.getElementById('is_super').value});
+        this.props.changePage('admins')
+    }
     render() {
         return (
             <div>
@@ -28,25 +38,26 @@ export class AdminCreate extends React.Component {
                         <form id='create-form'>
                             <FormGroup>
                                 <InputGroup>
-                                    <FormControl id='create-item' type="text" placeholder="Email" /><br/>
-                                    <FormControl id='create-item' type="text" placeholder="Team Name" /><br/>
-                                    <FormControl id='create-item' type="text" placeholder="Access Code" /><br/>
-                                    <FormControl id='create-item' type="text" placeholder="Image URL" />
+                                    <FormControl id='create_email' type="text" placeholder="Email" /><br/>
+                                    <FormControl id='create_team_name' type="text" placeholder="Team Name" /><br/>
+                                    <FormControl id='create_access_code' type="text" placeholder="Access Code" /><br/>
+                                    <FormControl id='is_super' type="text" placeholder="Super Admin?(T/F)" />
                                 </InputGroup>
                             </FormGroup>
                         </form>
+                        <div className='buttons'>
+                            <form onSubmit = {this.handleSubmit}>
+                                <FormGroup>
+                                    <InputGroup>
+                                        <ButtonToolbar>
+                                            <Button id='add-admin' onClick={this.addAdmin}>Add Admin</Button>
+                                        </ButtonToolbar>
+                                    </InputGroup>
+                                </FormGroup>
+                            </form>
+                        </div>
                     </div>
-                <div className='buttons'>
-                    <form onSubmit = {this.handleSubmit}>
-                        <FormGroup>
-                            <InputGroup>
-                                <ButtonToolbar>
-                                    <Button id='add-admin'>Add Admin</Button>
-                                </ButtonToolbar>
-                            </InputGroup>
-                        </FormGroup>
-                    </form>
-                </div>
+                
             </div>
          
         );
