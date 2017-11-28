@@ -15,97 +15,33 @@ import { AdminEditHunt } from './admin/adminEditHunt';
 import { Admins } from './admin/admins';
 import { AdminCreate } from './admin/adminCreate';
 
-
+//navigation bar used in admin login
 import { NavBar } from './admin/nav-bar';
 
-
+//contains all pages rendered for scavenger hunt
 export class Content extends React.Component{
     constructor(props) {
         super(props);
-        this.state = { //essentially session vars
+        this.state = { //essentially session vars, default values
             id: -1,
-            name: 'guest', //team name or admin user name
-            loggedIn: 'no', //no,admin,superAdmin,team,teamLead
-            lastPage: 'home', //last page loaded, set this dynamically
-            hide:'none', //determines whether or not buttons and inputs are visible
-            select: -1
+            name: 'guest', //team name or admin user name default value
+            loggedIn: 'no', //no,admin,superAdmin,team,teamLead default value
+            lastPage: 'home', //last page loaded, set this dynamically default value
+            hide:'none', //determines whether or not buttons and inputs are visible during gameplay default value
+            select: -1 //value of the hunt that the user is viewing default value, resets to default when user returns to home
         };
-        this.images = ['boats','bust','canneryrow','crossedarms','lighthousewide','montereycanningcompany','sistercitypark','swanboat','whale'];
+        this.images = ['boats','bust','canneryrow','crossedarms','lighthousewide','montereycanningcompany','sistercitypark','swanboat','whale']; //images for slideshow on home
         // IMAGES THAT SHOW UP SIDEWAYS: 'diversmemorial','lady','lighthousenarrow','shareabench','twowhales', 'yesterdaysdream'
-        this.handle = this.handle.bind(this);
-        this.changePage = this.changePage.bind(this);
-        this.setProps = this.setProps.bind(this);
-        this.logOutSetProps = this.logOutSetProps.bind(this);
-        this.ready = this.ready.bind(this);
-        this.start = this.start.bind(this);
-        this.showSlides = this.showSlides.bind(this);
+        this.index = 0; //index for the image slideshow on home page
+        this.changePage = this.changePage.bind(this); //changes the visibility of classes, default of all classes is 'hide'
+        this.setProps = this.setProps.bind(this); //changes value of state variables to new values
+        this.logOutSetProps = this.logOutSetProps.bind(this); //sets state variables back to default values
+        this.ready = this.ready.bind(this); //connects to server to retrieve last saved session variable values
+        this.start = this.start.bind(this); //renders last page user was on if page is refreshed or closed //if no last page, home page renders
+        this.showSlides = this.showSlides.bind(this); //renders slideshow
     }
-    componentDidMount(){
-        try{ //get state from localstorage
-            var obj = JSON.parse(window.localStorage.state);
-            this.setState(obj, this.ready);
-        }catch(e){
-            Socket.emit('home', this.state, Socket.callback=this.start);
-        }
-    }
-    ready(){
-        Socket.emit('home', this.state, Socket.callback=this.start);
-    }
-    start(lastPage){
-        try{
-            if(lastPage.includes("home")){
-                this.showSlides();
-                document.getElementById("home").style.display = "block";
-            }
-            else{
-                this.changePage(lastPage);
-            }
-        }
-        catch(e){ //first connect, no last page?
-            console.log(e);
-        }
-    }
-    showSlides() {
-        var image = document.getElementById("ss-image");
-        if (this.index < this.images.length){
-            image.src="../static/image/gallery/"+this.images[this.index]+".jpg";
-            this.index+=1;
-        }
-        else{
-            this.index=0;
-        }
-        if(this.state.lastPage == 'home'){
-            setTimeout(this.showSlides, 7000); // Change image every 7 seconds
-        }
-    }
-    setProps(prop, value){
-        var obj  = {};
-        obj[prop] = value;
-        this.setState(obj);
-        // UNHIDE BEFORE BETA
-        if(this.state.loggedIn == 'teamLead' || this.state.loggedIn == 'superAdmin'){
-            this.setState({
-                hide:'block'
-            });
-        }
-        else{
-            this.setState({
-                hide:'none'
-            });
-        }
-    }
-    logOutSetProps(){
-        this.setState({
-            id: -1,
-            loggedIn: 'no',
-            name: 'guest',
-            hide:'none'  //UNHIDE BEFORE BETA
-        });
-        this.changePage('home');
-    }
-    handle(callback){
-        //handle returns from any page sockets
-    }
+    
+    //changes the visibility of classes, default of all classes is 'hide'
     changePage(location){
         try{
             Socket.emit(location, this.state);
@@ -125,6 +61,75 @@ export class Content extends React.Component{
             console.log(e);
         }
     }
+    componentDidMount(){
+        try{ //get state from localstorage
+            var obj = JSON.parse(window.localStorage.state);
+            this.setState(obj, this.ready);
+        }catch(e){
+            Socket.emit('home', this.state, Socket.callback=this.start);
+        }
+    }
+    //sets state variables back to default values
+    logOutSetProps(){
+        this.setState({
+            id: -1,
+            loggedIn: 'no',
+            name: 'guest',
+            hide:'none'  //UNHIDE BEFORE BETA
+        });
+        this.changePage('home');
+    }
+    //connects to server to retrieve last saved session variable values
+    ready(){
+        Socket.emit('home', this.state, Socket.callback=this.start);
+    }
+    //changes value of state variables to new values
+    setProps(prop, value){
+        var obj  = {};
+        obj[prop] = value;
+        this.setState(obj);
+        // UNHIDE BEFORE BETA
+        if(this.state.loggedIn == 'teamLead' || this.state.loggedIn == 'superAdmin'){
+            this.setState({
+                hide:'block'
+            });
+        }
+        else{
+            this.setState({
+                hide:'none'
+            });
+        }
+    }
+    //renders slideshow
+    showSlides() {
+        var image = document.getElementById("ss-image");
+        if (this.index < this.images.length){
+            image.src="../static/image/gallery/"+this.images[this.index]+".jpg";
+            this.index+=1;
+        }
+        else{
+            this.index=0;
+        }
+        if(this.state.lastPage == 'home'){
+            setTimeout(this.showSlides, 7000); // Change image every 7 seconds
+        }
+    }
+    //renders last page user was on if page is refreshed or closed //if no last page, home page renders
+    start(lastPage){
+        try{
+            if(lastPage.includes("home")){
+                this.showSlides();
+                document.getElementById("home").style.display = "block";
+            }
+            else{
+                this.changePage(lastPage);
+            }
+        }
+        catch(e){ //first connect, no last page?
+            console.log(e);
+        }
+    }
+    
     render(){
             return (
                 <div>
@@ -141,10 +146,10 @@ export class Content extends React.Component{
                         <Register changePage={this.changePage}/>
                     </div>
                      <div id = 'play' style={{display:'none'}}>
-                        <Play changePage={this.changePage} hide={this.state.hide} state={this.state} setProps={this.setProps} logOutSetProps={this.logOutSetProps} updateData={this.updateData}/>
+                        <Play changePage={this.changePage} state={this.state} setProps={this.setProps} logOutSetProps={this.logOutSetProps}/>
                     </div>
                     <div id = 'nav-bar' style={{display:'none'}}>
-                        <NavBar changePage={this.changePage} hide={this.state.hide} logOutSetProps={this.logOutSetProps}/>
+                        <NavBar changePage={this.changePage} state={this.state} logOutSetProps={this.logOutSetProps}/>
                     </div>
                     <div id = 'adminHome' style={{display:'none'}}>
                         <AdminHome changePage={this.changePage} state={this.state}/>

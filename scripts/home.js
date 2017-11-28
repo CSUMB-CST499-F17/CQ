@@ -1,19 +1,13 @@
 import * as React from 'react';
-import * as ReactBootstrap from 'react-bootstrap';
-import { Socket } from './Socket';
 import { ExistingTeam } from './existingTeam';
 
+//homepage of website, contains existingTeams class
 export class Home extends React.Component {
     constructor(props) {
         super(props);
-        this.pageName = 'home';
-        this.index = 0;
-        this.login = this.login.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.login = this.login.bind(this); //sets visibility of exisitingTeams class to 'block' and allows user to enter login credentials
     }
-    handleSubmit(event) {
-        event.preventDefault();
-    }
+    //sets visibility of exisitingTeams class to 'block' and allows user to enter login credentials
     login(){
         if (document.getElementById("existingTeam").style.display == "none"){
             document.getElementById("existingTeam").style.display = "block";
@@ -24,6 +18,7 @@ export class Home extends React.Component {
             document.getElementById("nav").style.display = "block";
         }
     }
+    
     render() {
         return (
             <div>
@@ -34,7 +29,6 @@ export class Home extends React.Component {
                    <div id="slideshow">
                         <div className='helper'></div><img id="ss-image" src="../static/image/gallery/boats.jpg"/>
                     </div>
-                
                     <div className='buttons'>
                         <div className ="tool">
                             <div id="nav">
@@ -42,7 +36,7 @@ export class Home extends React.Component {
                                 <button className="btn" onClick={this.login}>Log into Existing Team</button>
                             </div>
                             <div id = 'existingTeam' style={{display:'none'}}>
-                            	<ExistingTeam changePage={this.props.changePage} updateData={this.props.updateData} cancel={this.login} setProps={this.props.setProps} loggedIn={this.props.loggedIn} hunt={this.props.hunt} questions={this.props.questions} user={this.props.user}/>
+                            	<ExistingTeam changePage={this.props.changePage} cancel={this.login} setProps={this.props.setProps} loggedIn={this.props.loggedIn}/>
                             </div>
                         </div>
                     </div>
@@ -53,6 +47,3 @@ export class Home extends React.Component {
         );
     }
 }
-
-//<button className="btn" onClick={() => this.props.changePage('play')}>Temp Button to Play Page</button>
-//<button className="btn" onClick={() => this.props.changePage('adminHome')}>Temp Button to Admin Homepage</button>

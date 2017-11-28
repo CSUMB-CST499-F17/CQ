@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { Socket } from './Socket';
 
-import { LogoSmall } from './logo-small';
-
+//This class renders the final page of the game
 export class Complete extends React.Component {
     constructor(props) {
         super(props);
 
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.lb = this.lb.bind(this);
+        this.lb = this.lb.bind(this); //sends users to the leaderboard
     }
 
     handleSubmit(event) {
