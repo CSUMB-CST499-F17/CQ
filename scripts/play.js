@@ -10,19 +10,20 @@ import { PlayGame } from './playGame';
 export class Play extends React.Component {
     constructor(props) {
         super(props);
+        //default values for state variables
         this.state = { 
             hunt: {'id':0, 'name': "", 'image':"", 'start_text':""},
             questions: [{'question':"", 'answer':"",'hint1':"",'hint2':"",'hunts_id':0}],
             user: {'id':0, 'email': "", 'team_name':"", 'hunts_id':0, 'progress':1, 'score':0, 'attempts':5, 'start_time': null, 'end_time':null}
         };
-        this.pageName = 'play';
-        this.hide = 'none';
-        this.changePlay = this.changePlay.bind(this);
-        this.loadUser = this.loadUser.bind(this);
-        this.loadHunts = this.loadHunts.bind(this);
-        this.updatePlay = this.updatePlay.bind(this);
-        this.setUser = this.setUser.bind(this);
-        this.setPlay = this.setPlay.bind(this);
+        
+        this.hide = 'none'; //variable that determines which page (start, playGame, complete) is displayed
+        this.changePlay = this.changePlay.bind(this); //changes the value of pages visibility
+        this.loadHunts = this.loadHunts.bind(this); //retrieves hunt and question data from database via Socket to app.py
+        this.loadUser = this.loadUser.bind(this); //retrieves user data from database via Socket to app.py
+        this.setPlay = this.setPlay.bind(this); //sets this.state.user 
+        this.setUser = this.setUser.bind(this); //sets this.state.user with a callback function
+        this.updatePlay = this.updatePlay.bind(this); //sets visibility of page based on user progress
     }
 
     componentDidMount(){
@@ -30,26 +31,12 @@ export class Play extends React.Component {
             Socket.emit('loadUser', this.props.state.id, Socket.callback=this.loadUser);
         });
     }
-    
-    setUser(value,fx){
-        this.setState({
-            user: value
-        },fx); 
+    //changes the value of pages visibility
+    changePlay(current, next){
+        document.getElementById(next).style.display = 'block';
+        document.getElementById(current).style.display = 'none';
     }
-    setPlay(value){
-        this.setState({
-            user: value
-        }); 
-    }
-    
-    loadUser(data){
-        data = JSON.parse(data);
-        this.setState({
-            user: data[0]
-        });
-        Socket.emit('loadHunts', this.state.user.hunts_id, Socket.callback=this.loadHunts);
-    }
-    
+    //retrieves hunt and question data from database via Socket to app.py
     loadHunts(data){
         data = JSON.parse(data);
         this.setState({
@@ -58,7 +45,27 @@ export class Play extends React.Component {
         });
         this.updatePlay();
     }
-    
+    //retrieves user data from database via Socket to app.py
+    loadUser(data){
+        data = JSON.parse(data);
+        this.setState({
+            user: data[0]
+        });
+        Socket.emit('loadHunts', this.state.user.hunts_id, Socket.callback=this.loadHunts);
+    }
+    //sets this.state.user 
+    setPlay(value){
+        this.setState({
+            user: value
+        }); 
+    }
+    //sets this.state.user with a callback function
+    setUser(value,fx){
+        this.setState({
+            user: value
+        },fx); 
+    }
+    //sets visibility of page based on user progress
     updatePlay(){
         if(this.state.user.progress == 0){
             document.getElementById('complete').style.display = 'none';
@@ -76,12 +83,6 @@ export class Play extends React.Component {
             document.getElementById('playGame').style.display = 'none';
             document.getElementById('complete').style.display = 'block';
         }
-        //check if need to update then update or ignore
-        //load start, play, or finish page accordingly and fill with data stored in vars
-    }
-    changePlay(current, next){
-        document.getElementById(next).style.display = 'block';
-        document.getElementById(current).style.display = 'none';
     }
     
     render() {
