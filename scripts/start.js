@@ -1,43 +1,42 @@
 import * as React from 'react';
 import { Socket } from './Socket';
 
+//class that renders start page functionality for users just starting a scavnger hunt after registering
 export class Start extends React.Component {
     constructor(props) {
         super(props);
 
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handle = this.handle.bind(this);
-        this.start = this.start.bind(this);
-        this.show = this.show.bind(this);
+        this.handle = this.handle.bind(this); //retrieves user data and changes page display based on user progress
+        this.show = this.show.bind(this); //displays walkthrough/tutorial
+        this.start = this.start.bind(this); //updates user prop progress and chnages page to playGame page
     }
-    
-    handleSubmit(event) {
-        event.preventDefault();
-    }
-    
-    start(){
-        if(this.props.state.questions.length > 0){
-            Socket.emit('updateTime', {'user': this.props.state.user, 'start_time': "now", 'end_time':""});
-            Socket.emit('update', {'user': this.props.state.user, 'progress':1, 'score':this.props.state.questions.length * 25, 'attempts': 5, 'hints':0}, Socket.callback=this.handle);   
-        }
-        else{
-            this.props.changePlay('start', 'complete');
-        }
-    }
-    
+    //retrieves user data and changes page display based on user progress
     handle(callback){
         console.log(callback);
         var data = JSON.parse(callback);
         this.props.setPlay(data['user']);
         this.props.changePlay('start', 'playGame');
     }
-    
+    //displays walkthrough/tutorial
     show(){
         if(document.getElementById('modal').style.display == 'block'){
             document.getElementById('modal').style.display = 'none';
         }
         else{
             document.getElementById('modal').style.display = 'block';
+        }
+    }
+    //updates user prop progress and chnages page to playGame page
+    start(){
+        //checks if current hunt has questions
+        if(this.props.state.questions.length > 0){
+            //updates start time of game for user
+            Socket.emit('updateTime', {'user': this.props.state.user, 'start_time': "now", 'end_time':""});
+            //updates user prop progress and score
+            Socket.emit('update', {'user': this.props.state.user, 'progress':1, 'score':this.props.state.questions.length * 25, 'attempts': 5, 'hints':0}, Socket.callback=this.handle);   
+        }
+        else{ //current hunt has no questions, sends user to home
+            this.props.changePlay('start', 'home');
         }
     }
     
