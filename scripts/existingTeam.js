@@ -1,47 +1,42 @@
 import * as React from 'react';
 import { Socket } from './Socket';
 
-
+//class containing login functionality
 export class ExistingTeam extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            'access':"",
-            'team':""
-        };
-        this.pageName = 'existingTeam';
-        this.progress = 0;
-        this.user = [];
-        
+
         this.handle = this.handle.bind(this); //handles data recieved from validateCreentials
-        this.handleSubmit = this.handleSubmit.bind(this);
-        // this.loadGame = this.loadGame.bind(this); //if team name is team or teamLead, this determines what data gets sent to start.js or play.js
         this.validateCredentials = this.validateCredentials.bind(this); //checks team name and password with database in app.py
         
     }
-        handle(callback){
-        var data = JSON.parse(callback);
+    
+    //handles data recieved from validateCreentials
+    handle(callback){
+        var data = JSON.parse(callback);  //data = data from user if user was in database
         try{
+            //sets id, name, and loggedIn props, assigned in app.py
             this.props.setProps('id', data['id']);
             this.props.setProps('name', data['name']);
             this.props.setProps('loggedIn', data['loggedIn']);
-            document.getElementById("access").value = "";
-            document.getElementById("errorMessage").value = "";
             
+            //deletes access value after submission
+            document.getElementById("access").value = "";
+            
+            //checks value of loggedIn prop to determine status of user
             switch(data['loggedIn']) {
-                case "teamLead":
+                case "teamLead": //if teamLead or team, user goes to Play Page
                 case "team":
                     this.props.changePage('play');
                     break;
-                case "superAdmin":
+                case "superAdmin": //if superAdmin or admin, user goes to AdminHome Page
                 case "admin":
                     this.props.changePage('adminHome');
                     break;
-                case "no":
+                case "no": //if credentials aren't in database, user error message is shown
                     document.getElementById("errorMessage").innerHTML = "⚠ Invalid Team Name or Access Code ⚠";
                     document.getElementById("errorMessage").style.visibility = 'visible';
                     document.getElementById("errorMessage").style.color="#f2e537";
-                    document.getElementById("access").value = "";
                     break;
                 default:
                         break;
@@ -51,22 +46,16 @@ export class ExistingTeam extends React.Component {
             console.log(err);
         } 
     }
-    handleSubmit(event) {
-        event.preventDefault();
-    }
-
+    
+    //checks team name and password with database in app.py
     validateCredentials(){
-        this.setState({
-            team: document.getElementById("team_name").value,
-            access: document.getElementById("access").value
-        });
-        if(document.getElementById("team_name").value == "")
+        if(document.getElementById("team_name").value == "") //checks if team name input has empty value //gives error code if empty
         {
-            document.getElementById("errorMessage").innerHTML = "⚠ Please Enter valid Team Name and Access Code ⚠";
+            document.getElementById("errorMessage").innerHTML = "⚠ Please Enter valid Team Name and Access Code ⚠";  //error code 
             document.getElementById("errorMessage").style.visibility = 'visible';
             document.getElementById("errorMessage").style.color="#f2e537";
         }
-        else
+        else //checks if user is in database via server and if they are, retrives user data to be handled by handle(callback) function
         {
             document.getElementById("errorMessage").style.visibility = 'hidden';
             Socket.emit('validateCredentials',{'team_name':document.getElementById("team_name").value,'access':document.getElementById("access").value}, Socket.callback=this.handle);

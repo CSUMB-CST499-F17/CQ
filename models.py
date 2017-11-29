@@ -24,7 +24,7 @@ class Hunts(db.Model):
         self.start_desc = st
     
     def __repr__(self): 
-        return '<Hunt Data: {} {} {} {} {} {} {}>'.format(self.name, self.type, self.desc, self.image, self.start_time, self.end_time, self.start_desc)
+        return '<Hunt Data: {} {} {} {} {} {} {} {}>'.format(self.id, self.name, self.h_type, self.desc, self.image, self.start_time, self.end_time, self.start_text)
         
 class Questions(db.Model):
     id = db.Column(db.Integer, primary_key=True) # key
@@ -96,7 +96,7 @@ class Admins(db.Model):
         self.is_super = iss
     
     def __repr__(self): 
-        return '<Admin Data: {} {} {} {}>'.format(self.email, self.username, self.password , self.is_super)
+        return '<Admin Data: {} {} {} {}>'.format(self.email, self.username, self.password, self.is_super)
         
 class Discounts(db.Model):
     id = db.Column(db.Integer, primary_key=True) # key

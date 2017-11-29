@@ -1,13 +1,5 @@
 import * as React from 'react';
-import * as ReactBootstrap from 'react-bootstrap';
 import { Socket } from './Socket';
-
-import { Button } from 'react-bootstrap';
-import { InputGroup } from 'react-bootstrap';
-import { FormControl } from 'react-bootstrap';
-import { FormGroup } from 'react-bootstrap';
-import { ButtonToolbar } from 'react-bootstrap';
-import { ButtonGroup } from 'react-bootstrap';
 import { DropdownButton } from 'react-bootstrap';
 import { MenuItem } from 'react-bootstrap';
 import { LogoSmall } from './logo-small';
@@ -21,18 +13,33 @@ export class Explore extends React.Component {
             'types':[],
             'chosentype':''
         };
-        this.pageName = 'explore';
-        this.sort = this.sort.bind(this);
-        this.updateExplore = this.updateExplore.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.changePageWithId = this.changePageWithId.bind(this);
+        this.changePageWithId = this.changePageWithId.bind(this); //changes hunt displayed based on value of the hunt that the user is viewing
+        this.sort = this.sort.bind(this); //sorts the hunts in drop down based on type
+        this.updateExplore = this.updateExplore.bind(this); //callback function to changeType Socket //populates page with hunt information retrieved from database via app.py
     }
     
     componentDidMount() {
+        //updates explore page with hunt information
         Socket.on('updateExplore', (data) => {
             Socket.emit('changeType', this.state.chosentype.toLowerCase(), Socket.callback=this.updateExplore);
         });
     }
+    //changes hunt displayed based on value of the hunt that the user is viewing
+    changePageWithId(hid, page){
+        this.props.setProps('select',hid);
+        this.props.changePage(page);
+    }
+    //sorts the hunts in drop down based on type
+    sort(type){
+        var types = this.state.types;
+        var index = types.indexOf(type);
+        if (index !== -1) {
+            types[index] = this.state.chosentype;
+        }
+        this.setState({'types': types}); //updates types
+        Socket.emit('changeType', type.toLowerCase(), Socket.callback=this.updateExplore);
+    }
+    //callback function to changeType Socket //populates page with hunt information retrieved from database via app.py
     updateExplore(callback){
         var data = JSON.parse(callback);
         var d_types = data['types'];
@@ -49,24 +56,9 @@ export class Explore extends React.Component {
             if(d_types != choice)
                 types.push(d_types[i].charAt(0).toUpperCase() + d_types[i].slice(1)); //convert to array for mapping
         }
-        this.setState({'chosentype': choice, 'types': types , 'hunts': hunts}); 
+        this.setState({'chosentype': choice, 'types': types , 'hunts': hunts}); //updates choice
     }
-    sort(type){
-        var types = this.state.types;
-        var index = types.indexOf(type);
-        if (index !== -1) {
-            types[index] = this.state.chosentype;
-        }
-        this.setState({'types': types});
-        Socket.emit('changeType', type.toLowerCase(), Socket.callback=this.updateExplore);
-    }
-    changePageWithId(hid, page){
-        this.props.setProps('select',hid);
-        this.props.changePage(page);
-    }
-    handleSubmit(event) {
-        event.preventDefault();
-    }
+
     render() {
         let hunts = this.state.hunts.map((n, index) => 
             <div id={n[0]} key={n[0]} className="hunt-preview">

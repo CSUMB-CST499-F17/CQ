@@ -22,8 +22,8 @@ export class AdminHunts extends React.Component {
         this.updateHunts = this.updateHunts.bind(this);
         this.deleteHunt = this.deleteHunt.bind(this);
         
-        this.updateQuestion = this.showQuestions.bind(this);
-        this.deleteQuestion = this.showQuestions.bind(this);
+        this.updateQuestion = this.updateQuestion.bind(this);
+        this.deleteQuestion = this.deleteQuestion.bind(this);
         
         
     }
@@ -56,17 +56,41 @@ export class AdminHunts extends React.Component {
     
     updateHunts(index){
         console.log(index);
+        // put alert
+        
+        Socket.emit('updateHunts', {index});
     }
     
     deleteHunt(index){
         console.log(index);
+        // put alert
+        Socket.emit('deleteHunt', {index});
     }
     
-    updateQuestion(index){
-        console.log(index);
+    updateQuestion(index,questionToUpdate,answer,image,hint_A,hint_B,answer_text,hunts_id){
+    
+        var question = prompt('question',questionToUpdate);
+        var answer = prompt('answer',answer);
+        var image = prompt('image',image);
+        var hint_A = prompt('hint_A',hint_A);
+        var hint_B = prompt('hint_B',hint_B);
+        var answer_text = prompt('answer_text',answer_text);
+
+        if (question != null && question != "" && answer != null && answer != "" && hint_A != null && hint_A != "") {
+            alert(question,answer,image,hint_A,hint_B,answer_text,hunts_id);
+            Socket.emit('updateQuestion', {index,questionToUpdate,question,answer,image,hint_A,hint_B,answer_text,hunts_id});
+        }
+        else{
+            alert('not updated no blank entries for question, answer, or hint_A');
+        }
+       
+      
+        
     }
-    deleteQuestion(index){
-        console.log(index);
+    deleteQuestion(question){
+        
+        console.log(question);
+        Socket.emit('deleteQuestion', {question});
     }
 
     
@@ -107,7 +131,7 @@ export class AdminHunts extends React.Component {
                 </tr>
              ));
         }
-        console.log(this.state.getQuestions );
+        // console.log(this.state.getQuestions );
         
         if (this.state.getQuestions != null) {
             questions = this.state.getQuestions.map(
@@ -132,11 +156,19 @@ export class AdminHunts extends React.Component {
                 <td>{n.answer}</td>
                 <td>{n.image}</td>
                 <td>{n.hint_A}</td>
-                <td>{n.start_B}</td>
+                <td>{n.hint_B}</td>
                 <td>{n.answer_text}</td>
                 <td>{n.hunts_id}</td>
-                <td><Button onClick={() => this.updateQuestion( index)}>Update</Button></td>
-                <td><Button onClick={() => this.deleteQuestion(index)}>Delete</Button></td>
+                <td><Button onClick={() => this.updateQuestion(index,
+                                                               n.question,
+                                                               n.answer,
+                                                               n.image,
+                                                               n.hint_A,
+                                                               n.hint_B,
+                                                               n.answer_text,
+                                                               n.hunts_id,
+                                                               )}>Update</Button></td>
+                <td><Button onClick={() => this.deleteQuestion(n.question)}>Delete</Button></td>
                 </tr>
              ));
         }
