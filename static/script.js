@@ -51109,6 +51109,13 @@
 	                        React.createElement(
 	                            _reactBootstrap.Button,
 	                            { onClick: function onClick() {
+	                                    return _this3.changePage('explore');
+	                                } },
+	                            'Back'
+	                        ),
+	                        React.createElement(
+	                            _reactBootstrap.Button,
+	                            { onClick: function onClick() {
 	                                    return _this3.changePage('home');
 	                                } },
 	                            'Home'
@@ -51294,7 +51301,7 @@
 	        }
 	    }, {
 	        key: 'handleExit',
-	        value: function handleExit(event) {
+	        value: function handleExit(nextPage) {
 	            document.getElementById('stripe-form').style.display = 'block';
 	            document.getElementById('stripe-confirm').style.display = 'none';
 	            document.getElementById('stripe-process').style.display = 'none';
@@ -51313,7 +51320,7 @@
 	                this.hunts.pop();
 	            }
 
-	            this.props.changePage('home');
+	            this.props.changePage(nextPage);
 	        }
 	    }, {
 	        key: 'handleCallback',
@@ -51403,6 +51410,8 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var _this3 = this;
+
 	            var hunts = this.hunts.map(function (n, index) {
 	                return React.createElement(
 	                    'option',
@@ -51643,7 +51652,16 @@
 	                    { className: 'buttons', id: 'home-button' },
 	                    React.createElement(
 	                        'button',
-	                        { className: 'btn', onClick: this.handleExit },
+	                        { className: 'btn', onClick: function onClick() {
+	                                return _this3.handleExit('explore');
+	                            } },
+	                        'Back'
+	                    ),
+	                    React.createElement(
+	                        'button',
+	                        { className: 'btn', onClick: function onClick() {
+	                                return _this3.handleExit('home');
+	                            } },
 	                        'Home'
 	                    )
 	                )
