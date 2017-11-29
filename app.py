@@ -210,9 +210,8 @@ def updateProgress(data):
         query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id'])
         for row in query:
             if row.start_time != None and row.end_time != None:
-                # elapsed = getTimeElapsed(str(row.end_time-row.start_time))
                 time = timeScore((row.end_time-row.start_time).total_seconds())
-                userData = {'email':user['email'], 'team_name':user['team_name'], 'hunts_id':user['hunts_id'], 'progress':data['progress'], 'score':data['score'] + time, 'attempts':data['attempts'], 'hints':data['hints'], 'start_time':user['start_time'], 'end_time':user['end_time'].strftime("%Y-%m-%d %H:%M:%S")}
+                userData = {'email':user['email'], 'team_name':user['team_name'], 'hunts_id':user['hunts_id'], 'progress':data['progress'], 'score':data['score'] + time, 'attempts':data['attempts'], 'hints':data['hints'], 'start_time':row.start_time.strftime("%Y-%m-%d %H:%M:%S"), 'end_time':row.end_time.strftime("%Y-%m-%d %H:%M:%S")}
                 query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id']).update({models.Participants.score: data['score']+time})
                 models.db.session.commit()
                 return json.dumps({'user':userData})
@@ -225,6 +224,7 @@ def updateProgress(data):
 def timeScore(total):
     print("in Timescore")
     hours = total / 60 / 60;
+    print hours
     if(hours <= 2):
         score = 500
     else:
