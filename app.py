@@ -469,7 +469,6 @@ def deleteQuestion(data):
 def updateQuestion(data):
     try:
         sql = models.db.session.query(
-            models.Questions.id,
             models.Questions.question,
             models.Questions.answer,
             models.Questions.image,
@@ -479,7 +478,6 @@ def updateQuestion(data):
             models.Questions.hunts_id
             ).filter(
                 models.Questions.question == data['questionToUpdate']).update({
-                    "id":data['index'],
                     "question": data['question'],
                     "answer": data['answer'],
                     "image": data['image'],
@@ -521,9 +519,9 @@ def getHunts(data):
 @socketio.on('questionsCall')
 def getHunts(data):
     questionsList = []
-    # print(data['index'])
     try:
         sql = models.db.session.query(
+            models.Questions.id,
             models.Questions.question,
             models.Questions.answer,
             models.Questions.image,
@@ -532,10 +530,10 @@ def getHunts(data):
             models.Questions.answer_text,
             models.Questions.hunts_id
             ).filter(
-                models.Questions.hunts_id == data['index'])
+                models.Questions.hunts_id == data['index']).order_by(models.Questions.id)
 
         for row in sql:
-            questionsList.append({'question':row.question, 'answer':row.answer, 'image':row.image,'hint_A':row.hint_A, 'hint_B':row.hint_B, 'answer_text':row.answer_text, 'hunts_id':row.hunts_id})
+            questionsList.append({'id':row.id,'question':row.question, 'answer':row.answer, 'image':row.image,'hint_A':row.hint_A, 'hint_B':row.hint_B, 'answer_text':row.answer_text, 'hunts_id':row.hunts_id})
     except:
         print("Error: questionsAdmin query broke")
     # print(questionsList)
