@@ -53469,6 +53469,7 @@
 	        value: function updateHunts(index) {
 	            console.log(index);
 	            // put alert
+
 	            _Socket.Socket.emit('updateHunts', { index: index });
 	        }
 	    }, {
@@ -53480,16 +53481,27 @@
 	        }
 	    }, {
 	        key: 'updateQuestion',
-	        value: function updateQuestion(index) {
-	            console.log(index);
-	            _Socket.Socket.emit('updateQuestion', { index: index });
+	        value: function updateQuestion(questionToUpdate, answer, image, hint_A, hint_B, answer_text, hunts_id) {
+
+	            var question = prompt('question', questionToUpdate);
+	            var answer = prompt('answer', answer);
+	            var image = prompt('image', image);
+	            var hint_A = prompt('hint_A', hint_A);
+	            var hint_B = prompt('hint_B', hint_B);
+	            var answer_text = prompt('answer_text', answer_text);
+
+	            if (question != null && question != "" && answer != null && answer != "" && hint_A != null && hint_A != "") {
+	                alert(question, answer, image, hint_A, hint_B, answer_text, hunts_id);
+	                _Socket.Socket.emit('updateQuestion', { questionToUpdate: questionToUpdate, question: question, answer: answer, image: image, hint_A: hint_A, hint_B: hint_B, answer_text: answer_text, hunts_id: hunts_id });
+	            } else {
+	                alert('not updated no blank entries for question, answer, or hint_A');
+	            }
 	        }
 	    }, {
 	        key: 'deleteQuestion',
 	        value: function deleteQuestion(question) {
 
 	            console.log(question);
-
 	            _Socket.Socket.emit('deleteQuestion', { question: question });
 	        }
 	    }, {
@@ -53715,7 +53727,7 @@
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.start_B
+	                            n.hint_B
 	                        ),
 	                        React.createElement(
 	                            'td',
@@ -53733,7 +53745,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this4.updateQuestion(index);
+	                                        return _this4.updateQuestion(n.question, n.answer, n.image, n.hint_A, n.hint_B, n.answer_text, n.hunts_id);
 	                                    } },
 	                                'Update'
 	                            )

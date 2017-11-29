@@ -412,8 +412,6 @@ def deleteAdmin(data):
 
 @socketio.on('deleteQuestion')
 def deleteQuestion(data):
-    # print(data)
-    # huntsList = []
     try:
         sql = models.db.session.query(
             models.Questions.question,
@@ -425,14 +423,42 @@ def deleteQuestion(data):
             models.Questions.hunts_id
             ).filter(
                 models.Questions.question == data['question']).delete()
-        # for row in sql:
-        #     huntsList.append({'question':row.question })
-        # print(huntsList)
         models.db.session.commit()
         socketio.emit('getQuestions', {
         })
     except:
         print("Error: deleteQuestion query broke")
+
+@socketio.on('updateQuestion')
+def updateQuestion(data):
+    questionsList = []
+    try:
+        sql = models.db.session.query(
+            models.Questions.question,
+            models.Questions.answer,
+            models.Questions.image,
+            models.Questions.hint_A,
+            models.Questions.hint_B,
+            models.Questions.answer_text,
+            models.Questions.hunts_id
+            ).filter(
+                models.Questions.question == data['questionToUpdate'])
+        
+        # for row in sql:
+        #     questionsList.append({
+        #     'question':row.data['question'],
+        #     'answer':row.data['answer'],
+        #     'image':row.data['image'],
+        #     'hint_A':row.data['hint_A'],
+        #     'hint_B':row.data['hint_B'],
+        #     'answer_text':row.data['answer_text'],
+        #     'hunts_id':row.data['hunts_id']})
+        
+        models.db.session.commit()
+        socketio.emit('getQuestions', {
+        })
+    except:
+        print("Error: updateQuestion query broke")
         
 @socketio.on('adminHunts')
 def getHunts(data):

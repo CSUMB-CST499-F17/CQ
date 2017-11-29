@@ -57,6 +57,7 @@ export class AdminHunts extends React.Component {
     updateHunts(index){
         console.log(index);
         // put alert
+        
         Socket.emit('updateHunts', {index});
     }
     
@@ -66,15 +67,29 @@ export class AdminHunts extends React.Component {
         Socket.emit('deleteHunt', {index});
     }
     
-    updateQuestion(index){
-        console.log(index);
-        Socket.emit('updateQuestion', {index});
+    updateQuestion(questionToUpdate,answer,image,hint_A,hint_B,answer_text,hunts_id){
+    
+        var question = prompt('question',questionToUpdate);
+        var answer = prompt('answer',answer);
+        var image = prompt('image',image);
+        var hint_A = prompt('hint_A',hint_A);
+        var hint_B = prompt('hint_B',hint_B);
+        var answer_text = prompt('answer_text',answer_text);
+
+        if (question != null && question != "" && answer != null && answer != "" && hint_A != null && hint_A != "") {
+            alert(question,answer,image,hint_A,hint_B,answer_text,hunts_id);
+            Socket.emit('updateQuestion', {questionToUpdate,question,answer,image,hint_A,hint_B,answer_text,hunts_id});
+        }
+        else{
+            alert('not updated no blank entries for question, answer, or hint_A');
+        }
+       
+      
+        
     }
     deleteQuestion(question){
         
         console.log(question);
-        
-        
         Socket.emit('deleteQuestion', {question});
     }
 
@@ -141,10 +156,17 @@ export class AdminHunts extends React.Component {
                 <td>{n.answer}</td>
                 <td>{n.image}</td>
                 <td>{n.hint_A}</td>
-                <td>{n.start_B}</td>
+                <td>{n.hint_B}</td>
                 <td>{n.answer_text}</td>
                 <td>{n.hunts_id}</td>
-                <td><Button onClick={() => this.updateQuestion(index)}>Update</Button></td>
+                <td><Button onClick={() => this.updateQuestion(n.question,
+                                                               n.answer,
+                                                               n.image,
+                                                               n.hint_A,
+                                                               n.hint_B,
+                                                               n.answer_text,
+                                                               n.hunts_id,
+                                                               )}>Update</Button></td>
                 <td><Button onClick={() => this.deleteQuestion(n.question)}>Delete</Button></td>
                 </tr>
              ));
