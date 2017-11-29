@@ -152,6 +152,8 @@ def getUser(data):
         for query in users:  
             if(query.progress == -1):
                 userData.append({'id':data, 'email': query.email, 'team_name':query.team_name, 'hunts_id':query.hunts_id, 'progress':query.progress, 'score':query.score, 'attempts':query.attempts, 'hints':query.hints, 'start_time':query.start_time.strftime("%Y-%m-%d %H:%M:%S"), 'end_time':query.end_time.strftime("%Y-%m-%d %H:%M:%S")})
+            elif(query.progress == 0):
+                userData.append({'id':data, 'email': query.email, 'team_name':query.team_name, 'hunts_id':query.hunts_id, 'progress':query.progress, 'score':query.score, 'attempts':query.attempts, 'hints':query.hints, 'start_time':'', 'end_time':''})
             else:
                 userData.append({'id':data, 'email': query.email, 'team_name':query.team_name, 'hunts_id':query.hunts_id, 'progress':query.progress, 'score':query.score, 'attempts':query.attempts, 'hints':query.hints, 'start_time':query.start_time.strftime("%Y-%m-%d %H:%M:%S"), 'end_time':query.end_time})
         return json.dumps(userData)
