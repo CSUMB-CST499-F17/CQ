@@ -128,7 +128,7 @@ export class Register extends React.Component {
         document.getElementById('stripe-form').style.display = 'block';
     }
     
-    handleExit(event) {
+    handleExit(nextPage) {
         document.getElementById('stripe-form').style.display = 'block';
         document.getElementById('stripe-confirm').style.display = 'none';
         document.getElementById('stripe-process').style.display = 'none';
@@ -147,7 +147,7 @@ export class Register extends React.Component {
             this.hunts.pop();
         }
         
-        this.props.changePage('home');
+        this.props.changePage(nextPage);
     }
     
     handleCallback(callback){
@@ -317,7 +317,8 @@ export class Register extends React.Component {
                     <div style={{textAlign:'center'}} id="form-outcome" style={{visibility:'hidden'}}>center</div>
                 </div>
                 <div className='buttons' id="home-button">
-                    <button className='btn' onClick={this.handleExit}>Home</button>
+                    <button className='btn' onClick={()=> this.handleExit('explore')}>Back</button>
+                    <button className='btn' onClick={()=> this.handleExit('home')}>Home</button>
                 </div>
             </div>
          
