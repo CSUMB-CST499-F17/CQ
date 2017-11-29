@@ -22,8 +22,8 @@ export class AdminHunts extends React.Component {
         this.updateHunts = this.updateHunts.bind(this);
         this.deleteHunt = this.deleteHunt.bind(this);
         
-        this.updateQuestion = this.showQuestions.bind(this);
-        this.deleteQuestion = this.showQuestions.bind(this);
+        this.updateQuestion = this.updateQuestion.bind(this);
+        this.deleteQuestion = this.deleteQuestion.bind(this);
         
         
     }
@@ -56,17 +56,26 @@ export class AdminHunts extends React.Component {
     
     updateHunts(index){
         console.log(index);
+        // put alert
+        Socket.emit('updateHunts', {index});
     }
     
     deleteHunt(index){
         console.log(index);
+        // put alert
+        Socket.emit('deleteHunt', {index});
     }
     
     updateQuestion(index){
         console.log(index);
+        Socket.emit('updateQuestion', {index});
     }
-    deleteQuestion(index){
-        console.log(index);
+    deleteQuestion(question){
+        
+        console.log(question);
+        
+        
+        Socket.emit('deleteQuestion', {question});
     }
 
     
@@ -107,7 +116,7 @@ export class AdminHunts extends React.Component {
                 </tr>
              ));
         }
-        console.log(this.state.getQuestions );
+        // console.log(this.state.getQuestions );
         
         if (this.state.getQuestions != null) {
             questions = this.state.getQuestions.map(
@@ -135,8 +144,8 @@ export class AdminHunts extends React.Component {
                 <td>{n.start_B}</td>
                 <td>{n.answer_text}</td>
                 <td>{n.hunts_id}</td>
-                <td><Button onClick={() => this.updateQuestion( index)}>Update</Button></td>
-                <td><Button onClick={() => this.deleteQuestion(index)}>Delete</Button></td>
+                <td><Button onClick={() => this.updateQuestion(index)}>Update</Button></td>
+                <td><Button onClick={() => this.deleteQuestion(n.question)}>Delete</Button></td>
                 </tr>
              ));
         }

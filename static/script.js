@@ -22240,6 +22240,10 @@
 	//pages
 
 
+	//navigation bar used in admin login
+
+
+	//contains all pages rendered for scavenger hunt
 	var Content = exports.Content = function (_React$Component) {
 	    _inherits(Content, _React$Component);
 
@@ -22248,105 +22252,30 @@
 
 	        var _this = _possibleConstructorReturn(this, (Content.__proto__ || Object.getPrototypeOf(Content)).call(this, props));
 
-	        _this.state = { //essentially session vars
+	        _this.state = { //essentially session vars, default values
 	            id: -1,
-	            name: 'guest', //team name or admin user name
-	            loggedIn: 'no', //no,admin,superAdmin,team,teamLead
-	            lastPage: 'home', //last page loaded, set this dynamically
-	            hide: 'none', //determines whether or not buttons and inputs are visible
-	            select: -1
+	            name: 'guest', //team name or admin user name default value
+	            loggedIn: 'no', //no,admin,superAdmin,team,teamLead default value
+	            lastPage: 'home', //last page loaded, set this dynamically default value
+	            hide: 'none', //determines whether or not buttons and inputs are visible during gameplay default value
+	            select: -1 //value of the hunt that the user is viewing default value, resets to default when user returns to home
 	        };
-	        _this.images = ['boats', 'bust', 'canneryrow', 'crossedarms', 'lighthousewide', 'montereycanningcompany', 'sistercitypark', 'swanboat', 'whale'];
+	        _this.images = ['boats', 'bust', 'canneryrow', 'crossedarms', 'lighthousewide', 'montereycanningcompany', 'sistercitypark', 'swanboat', 'whale']; //images for slideshow on home
 	        // IMAGES THAT SHOW UP SIDEWAYS: 'diversmemorial','lady','lighthousenarrow','shareabench','twowhales', 'yesterdaysdream'
-	        _this.handle = _this.handle.bind(_this);
-	        _this.changePage = _this.changePage.bind(_this);
-	        _this.setProps = _this.setProps.bind(_this);
-	        _this.logOutSetProps = _this.logOutSetProps.bind(_this);
-	        _this.ready = _this.ready.bind(_this);
-	        _this.start = _this.start.bind(_this);
-	        _this.showSlides = _this.showSlides.bind(_this);
+	        _this.index = 0; //index for the image slideshow on home page
+	        _this.changePage = _this.changePage.bind(_this); //changes the visibility of classes, default of all classes is 'hide'
+	        _this.setProps = _this.setProps.bind(_this); //changes value of state variables to new values
+	        _this.logOutSetProps = _this.logOutSetProps.bind(_this); //sets state variables back to default values
+	        _this.ready = _this.ready.bind(_this); //connects to server to retrieve last saved session variable values
+	        _this.start = _this.start.bind(_this); //renders last page user was on if page is refreshed or closed //if no last page, home page renders
+	        _this.showSlides = _this.showSlides.bind(_this); //renders slideshow
 	        return _this;
 	    }
 
+	    //changes the visibility of classes, default of all classes is 'hide'
+
+
 	    _createClass(Content, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            try {
-	                //get state from localstorage
-	                var obj = JSON.parse(window.localStorage.state);
-	                this.setState(obj, this.ready);
-	            } catch (e) {
-	                _Socket.Socket.emit('home', this.state, _Socket.Socket.callback = this.start);
-	            }
-	        }
-	    }, {
-	        key: 'ready',
-	        value: function ready() {
-	            _Socket.Socket.emit('home', this.state, _Socket.Socket.callback = this.start);
-	        }
-	    }, {
-	        key: 'start',
-	        value: function start(lastPage) {
-	            try {
-	                if (lastPage.includes("home")) {
-	                    this.showSlides();
-	                    document.getElementById("home").style.display = "block";
-	                } else {
-	                    this.changePage(lastPage);
-	                }
-	            } catch (e) {
-	                //first connect, no last page?
-	                console.log(e);
-	            }
-	        }
-	    }, {
-	        key: 'showSlides',
-	        value: function showSlides() {
-	            var image = document.getElementById("ss-image");
-	            if (this.index < this.images.length) {
-	                image.src = "../static/image/gallery/" + this.images[this.index] + ".jpg";
-	                this.index += 1;
-	            } else {
-	                this.index = 0;
-	            }
-	            if (this.state.lastPage == 'home') {
-	                setTimeout(this.showSlides, 7000); // Change image every 7 seconds
-	            }
-	        }
-	    }, {
-	        key: 'setProps',
-	        value: function setProps(prop, value) {
-	            var obj = {};
-	            obj[prop] = value;
-	            this.setState(obj);
-	            // UNHIDE BEFORE BETA
-	            if (this.state.loggedIn == 'teamLead' || this.state.loggedIn == 'superAdmin') {
-	                this.setState({
-	                    hide: 'block'
-	                });
-	            } else {
-	                this.setState({
-	                    hide: 'none'
-	                });
-	            }
-	        }
-	    }, {
-	        key: 'logOutSetProps',
-	        value: function logOutSetProps() {
-	            this.setState({
-	                id: -1,
-	                loggedIn: 'no',
-	                name: 'guest',
-	                hide: 'none' //UNHIDE BEFORE BETA
-	            });
-	            this.changePage('home');
-	        }
-	    }, {
-	        key: 'handle',
-	        value: function handle(callback) {
-	            //handle returns from any page sockets
-	        }
-	    }, {
 	        key: 'changePage',
 	        value: function changePage(location) {
 	            try {
@@ -22365,6 +22294,89 @@
 	                this.state.lastPage = location;
 	                window.localStorage.setItem('state', JSON.stringify(this.state));
 	            } catch (e) {
+	                console.log(e);
+	            }
+	        }
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            try {
+	                //get state from localstorage
+	                var obj = JSON.parse(window.localStorage.state);
+	                this.setState(obj, this.ready);
+	            } catch (e) {
+	                _Socket.Socket.emit('home', this.state, _Socket.Socket.callback = this.start);
+	            }
+	        }
+	        //sets state variables back to default values
+
+	    }, {
+	        key: 'logOutSetProps',
+	        value: function logOutSetProps() {
+	            this.setState({
+	                id: -1,
+	                loggedIn: 'no',
+	                name: 'guest',
+	                hide: 'none' //UNHIDE BEFORE BETA
+	            });
+	            this.changePage('home');
+	        }
+	        //connects to server to retrieve last saved session variable values
+
+	    }, {
+	        key: 'ready',
+	        value: function ready() {
+	            _Socket.Socket.emit('home', this.state, _Socket.Socket.callback = this.start);
+	        }
+	        //changes value of state variables to new values
+
+	    }, {
+	        key: 'setProps',
+	        value: function setProps(prop, value) {
+	            var obj = {};
+	            obj[prop] = value;
+	            this.setState(obj);
+	            // UNHIDE BEFORE BETA
+	            if (this.state.loggedIn == 'teamLead' || this.state.loggedIn == 'superAdmin') {
+	                this.setState({
+	                    hide: 'block'
+	                });
+	            } else {
+	                this.setState({
+	                    hide: 'none'
+	                });
+	            }
+	        }
+	        //renders slideshow
+
+	    }, {
+	        key: 'showSlides',
+	        value: function showSlides() {
+	            var image = document.getElementById("ss-image");
+	            if (this.index < this.images.length) {
+	                image.src = "../static/image/gallery/" + this.images[this.index] + ".jpg";
+	                this.index += 1;
+	            } else {
+	                this.index = 0;
+	            }
+	            if (this.state.lastPage == 'home') {
+	                setTimeout(this.showSlides, 7000); // Change image every 7 seconds
+	            }
+	        }
+	        //renders last page user was on if page is refreshed or closed //if no last page, home page renders
+
+	    }, {
+	        key: 'start',
+	        value: function start(lastPage) {
+	            try {
+	                if (lastPage.includes("home")) {
+	                    this.showSlides();
+	                    document.getElementById("home").style.display = "block";
+	                } else {
+	                    this.changePage(lastPage);
+	                }
+	            } catch (e) {
+	                //first connect, no last page?
 	                console.log(e);
 	            }
 	        }
@@ -22397,12 +22409,12 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'play', style: { display: 'none' } },
-	                    React.createElement(_play.Play, { changePage: this.changePage, hide: this.state.hide, state: this.state, setProps: this.setProps, logOutSetProps: this.logOutSetProps, updateData: this.updateData })
+	                    React.createElement(_play.Play, { changePage: this.changePage, state: this.state, setProps: this.setProps, logOutSetProps: this.logOutSetProps })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'nav-bar', style: { display: 'none' } },
-	                    React.createElement(_navBar.NavBar, { changePage: this.changePage, hide: this.state.hide, logOutSetProps: this.logOutSetProps })
+	                    React.createElement(_navBar.NavBar, { changePage: this.changePage, state: this.state, logOutSetProps: this.logOutSetProps })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -31002,12 +31014,6 @@
 
 	var React = _interopRequireWildcard(_react);
 
-	var _reactBootstrap = __webpack_require__(240);
-
-	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
-
-	var _Socket = __webpack_require__(185);
-
 	var _existingTeam = __webpack_require__(494);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -31018,6 +31024,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	//homepage of website, contains existingTeams class
 	var Home = exports.Home = function (_React$Component) {
 	    _inherits(Home, _React$Component);
 
@@ -31026,19 +31033,13 @@
 
 	        var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
 
-	        _this.pageName = 'home';
-	        _this.index = 0;
-	        _this.login = _this.login.bind(_this);
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.login = _this.login.bind(_this); //sets visibility of exisitingTeams class to 'block' and allows user to enter login credentials
 	        return _this;
 	    }
+	    //sets visibility of exisitingTeams class to 'block' and allows user to enter login credentials
+
 
 	    _createClass(Home, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	    }, {
 	        key: 'login',
 	        value: function login() {
 	            if (document.getElementById("existingTeam").style.display == "none") {
@@ -31096,7 +31097,7 @@
 	                            React.createElement(
 	                                'div',
 	                                { id: 'existingTeam', style: { display: 'none' } },
-	                                React.createElement(_existingTeam.ExistingTeam, { changePage: this.props.changePage, updateData: this.props.updateData, cancel: this.login, setProps: this.props.setProps, loggedIn: this.props.loggedIn, hunt: this.props.hunt, questions: this.props.questions, user: this.props.user })
+	                                React.createElement(_existingTeam.ExistingTeam, { changePage: this.props.changePage, cancel: this.login, setProps: this.props.setProps, loggedIn: this.props.loggedIn })
 	                            )
 	                        )
 	                    )
@@ -31107,9 +31108,6 @@
 
 	    return Home;
 	}(React.Component);
-
-	//<button className="btn" onClick={() => this.props.changePage('play')}>Temp Button to Play Page</button>
-	//<button className="btn" onClick={() => this.props.changePage('adminHome')}>Temp Button to Admin Homepage</button>
 
 /***/ },
 /* 240 */
@@ -50822,6 +50820,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	//class containing login functionality
 	var ExistingTeam = exports.ExistingTeam = function (_React$Component) {
 	    _inherits(ExistingTeam, _React$Component);
 
@@ -50830,47 +50829,43 @@
 
 	        var _this = _possibleConstructorReturn(this, (ExistingTeam.__proto__ || Object.getPrototypeOf(ExistingTeam)).call(this, props));
 
-	        _this.state = {
-	            'access': "",
-	            'team': ""
-	        };
-	        _this.pageName = 'existingTeam';
-	        _this.progress = 0;
-	        _this.user = [];
-
 	        _this.handle = _this.handle.bind(_this); //handles data recieved from validateCreentials
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        // this.loadGame = this.loadGame.bind(this); //if team name is team or teamLead, this determines what data gets sent to start.js or play.js
 	        _this.validateCredentials = _this.validateCredentials.bind(_this); //checks team name and password with database in app.py
 
 	        return _this;
 	    }
 
+	    //handles data recieved from validateCreentials
+
+
 	    _createClass(ExistingTeam, [{
 	        key: 'handle',
 	        value: function handle(callback) {
-	            var data = JSON.parse(callback);
+	            var data = JSON.parse(callback); //data = data from user if user was in database
 	            try {
+	                //sets id, name, and loggedIn props, assigned in app.py
 	                this.props.setProps('id', data['id']);
 	                this.props.setProps('name', data['name']);
 	                this.props.setProps('loggedIn', data['loggedIn']);
-	                document.getElementById("access").value = "";
-	                document.getElementById("errorMessage").value = "";
 
+	                //deletes access value after submission
+	                document.getElementById("access").value = "";
+
+	                //checks value of loggedIn prop to determine status of user
 	                switch (data['loggedIn']) {
-	                    case "teamLead":
+	                    case "teamLead": //if teamLead or team, user goes to Play Page
 	                    case "team":
 	                        this.props.changePage('play');
 	                        break;
-	                    case "superAdmin":
+	                    case "superAdmin": //if superAdmin or admin, user goes to AdminHome Page
 	                    case "admin":
 	                        this.props.changePage('adminHome');
 	                        break;
 	                    case "no":
+	                        //if credentials aren't in database, user error message is shown
 	                        document.getElementById("errorMessage").innerHTML = "⚠ Invalid Team Name or Access Code ⚠";
 	                        document.getElementById("errorMessage").style.visibility = 'visible';
 	                        document.getElementById("errorMessage").style.color = "#f2e537";
-	                        document.getElementById("access").value = "";
 	                        break;
 	                    default:
 	                        break;
@@ -50879,26 +50874,22 @@
 	                console.log(err);
 	            }
 	        }
-	    }, {
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
+
+	        //checks team name and password with database in app.py
+
 	    }, {
 	        key: 'validateCredentials',
 	        value: function validateCredentials() {
-	            this.setState({
-	                team: document.getElementById("team_name").value,
-	                access: document.getElementById("access").value
-	            });
-	            if (document.getElementById("team_name").value == "") {
-	                document.getElementById("errorMessage").innerHTML = "⚠ Please Enter valid Team Name and Access Code ⚠";
-	                document.getElementById("errorMessage").style.visibility = 'visible';
-	                document.getElementById("errorMessage").style.color = "#f2e537";
-	            } else {
-	                document.getElementById("errorMessage").style.visibility = 'hidden';
-	                _Socket.Socket.emit('validateCredentials', { 'team_name': document.getElementById("team_name").value, 'access': document.getElementById("access").value }, _Socket.Socket.callback = this.handle);
-	            }
+	            if (document.getElementById("team_name").value == "") //checks if team name input has empty value //gives error code if empty
+	                {
+	                    document.getElementById("errorMessage").innerHTML = "⚠ Please Enter valid Team Name and Access Code ⚠"; //error code 
+	                    document.getElementById("errorMessage").style.visibility = 'visible';
+	                    document.getElementById("errorMessage").style.color = "#f2e537";
+	                } else //checks if user is in database via server and if they are, retrives user data to be handled by handle(callback) function
+	                {
+	                    document.getElementById("errorMessage").style.visibility = 'hidden';
+	                    _Socket.Socket.emit('validateCredentials', { 'team_name': document.getElementById("team_name").value, 'access': document.getElementById("access").value }, _Socket.Socket.callback = this.handle);
+	                }
 	        }
 	    }, {
 	        key: 'render',
@@ -50951,11 +50942,9 @@
 
 	var React = _interopRequireWildcard(_react);
 
-	var _reactBootstrap = __webpack_require__(240);
-
-	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
-
 	var _Socket = __webpack_require__(185);
+
+	var _reactBootstrap = __webpack_require__(240);
 
 	var _logoSmall = __webpack_require__(496);
 
@@ -50981,11 +50970,9 @@
 	            'types': [],
 	            'chosentype': ''
 	        };
-	        _this.pageName = 'explore';
-	        _this.sort = _this.sort.bind(_this);
-	        _this.updateExplore = _this.updateExplore.bind(_this);
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        _this.changePageWithId = _this.changePageWithId.bind(_this);
+	        _this.changePageWithId = _this.changePageWithId.bind(_this); //changes hunt displayed based on value of the hunt that the user is viewing
+	        _this.sort = _this.sort.bind(_this); //sorts the hunts in drop down based on type
+	        _this.updateExplore = _this.updateExplore.bind(_this); //callback function to changeType Socket //populates page with hunt information retrieved from database via app.py
 	        return _this;
 	    }
 
@@ -50994,10 +50981,34 @@
 	        value: function componentDidMount() {
 	            var _this2 = this;
 
+	            //updates explore page with hunt information
 	            _Socket.Socket.on('updateExplore', function (data) {
 	                _Socket.Socket.emit('changeType', _this2.state.chosentype.toLowerCase(), _Socket.Socket.callback = _this2.updateExplore);
 	            });
 	        }
+	        //changes hunt displayed based on value of the hunt that the user is viewing
+
+	    }, {
+	        key: 'changePageWithId',
+	        value: function changePageWithId(hid, page) {
+	            this.props.setProps('select', hid);
+	            this.props.changePage(page);
+	        }
+	        //sorts the hunts in drop down based on type
+
+	    }, {
+	        key: 'sort',
+	        value: function sort(type) {
+	            var types = this.state.types;
+	            var index = types.indexOf(type);
+	            if (index !== -1) {
+	                types[index] = this.state.chosentype;
+	            }
+	            this.setState({ 'types': types }); //updates types
+	            _Socket.Socket.emit('changeType', type.toLowerCase(), _Socket.Socket.callback = this.updateExplore);
+	        }
+	        //callback function to changeType Socket //populates page with hunt information retrieved from database via app.py
+
 	    }, {
 	        key: 'updateExplore',
 	        value: function updateExplore(callback) {
@@ -51013,29 +51024,7 @@
 	            for (i = 0; i < d_types.length; i++) {
 	                if (d_types != choice) types.push(d_types[i].charAt(0).toUpperCase() + d_types[i].slice(1)); //convert to array for mapping
 	            }
-	            this.setState({ 'chosentype': choice, 'types': types, 'hunts': hunts });
-	        }
-	    }, {
-	        key: 'sort',
-	        value: function sort(type) {
-	            var types = this.state.types;
-	            var index = types.indexOf(type);
-	            if (index !== -1) {
-	                types[index] = this.state.chosentype;
-	            }
-	            this.setState({ 'types': types });
-	            _Socket.Socket.emit('changeType', type.toLowerCase(), _Socket.Socket.callback = this.updateExplore);
-	        }
-	    }, {
-	        key: 'changePageWithId',
-	        value: function changePageWithId(hid, page) {
-	            this.props.setProps('select', hid);
-	            this.props.changePage(page);
-	        }
-	    }, {
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
+	            this.setState({ 'chosentype': choice, 'types': types, 'hunts': hunts }); //updates choice
 	        }
 	    }, {
 	        key: 'render',
@@ -52024,6 +52013,7 @@
 	    function Play(props) {
 	        _classCallCheck(this, Play);
 
+	        //default values for state variables
 	        var _this = _possibleConstructorReturn(this, (Play.__proto__ || Object.getPrototypeOf(Play)).call(this, props));
 
 	        _this.state = {
@@ -52031,14 +52021,14 @@
 	            questions: [{ 'question': "", 'answer': "", 'hint1': "", 'hint2': "", 'hunts_id': 0 }],
 	            user: { 'id': 0, 'email': "", 'team_name': "", 'hunts_id': 0, 'progress': 1, 'score': 0, 'attempts': 5, 'start_time': null, 'end_time': null }
 	        };
-	        _this.pageName = 'play';
-	        _this.hide = 'none';
-	        _this.changePlay = _this.changePlay.bind(_this);
-	        _this.loadUser = _this.loadUser.bind(_this);
-	        _this.loadHunts = _this.loadHunts.bind(_this);
-	        _this.updatePlay = _this.updatePlay.bind(_this);
-	        _this.setUser = _this.setUser.bind(_this);
-	        _this.setPlay = _this.setPlay.bind(_this);
+
+	        _this.hide = 'none'; //variable that determines which page (start, playGame, complete) is displayed
+	        _this.changePlay = _this.changePlay.bind(_this); //changes the value of pages visibility
+	        _this.loadHunts = _this.loadHunts.bind(_this); //retrieves hunt and question data from database via Socket to app.py
+	        _this.loadUser = _this.loadUser.bind(_this); //retrieves user data from database via Socket to app.py
+	        _this.setPlay = _this.setPlay.bind(_this); //sets this.state.user 
+	        _this.setUser = _this.setUser.bind(_this); //sets this.state.user with a callback function
+	        _this.updatePlay = _this.updatePlay.bind(_this); //sets visibility of page based on user progress
 	        return _this;
 	    }
 
@@ -52051,29 +52041,16 @@
 	                _Socket.Socket.emit('loadUser', _this2.props.state.id, _Socket.Socket.callback = _this2.loadUser);
 	            });
 	        }
+	        //changes the value of pages visibility
+
 	    }, {
-	        key: 'setUser',
-	        value: function setUser(value, fx) {
-	            this.setState({
-	                user: value
-	            }, fx);
+	        key: 'changePlay',
+	        value: function changePlay(current, next) {
+	            document.getElementById(next).style.display = 'block';
+	            document.getElementById(current).style.display = 'none';
 	        }
-	    }, {
-	        key: 'setPlay',
-	        value: function setPlay(value) {
-	            this.setState({
-	                user: value
-	            });
-	        }
-	    }, {
-	        key: 'loadUser',
-	        value: function loadUser(data) {
-	            data = JSON.parse(data);
-	            this.setState({
-	                user: data[0]
-	            });
-	            _Socket.Socket.emit('loadHunts', this.state.user.hunts_id, _Socket.Socket.callback = this.loadHunts);
-	        }
+	        //retrieves hunt and question data from database via Socket to app.py
+
 	    }, {
 	        key: 'loadHunts',
 	        value: function loadHunts(data) {
@@ -52084,6 +52061,37 @@
 	            });
 	            this.updatePlay();
 	        }
+	        //retrieves user data from database via Socket to app.py
+
+	    }, {
+	        key: 'loadUser',
+	        value: function loadUser(data) {
+	            data = JSON.parse(data);
+	            this.setState({
+	                user: data[0]
+	            });
+	            _Socket.Socket.emit('loadHunts', this.state.user.hunts_id, _Socket.Socket.callback = this.loadHunts);
+	        }
+	        //sets this.state.user 
+
+	    }, {
+	        key: 'setPlay',
+	        value: function setPlay(value) {
+	            this.setState({
+	                user: value
+	            });
+	        }
+	        //sets this.state.user with a callback function
+
+	    }, {
+	        key: 'setUser',
+	        value: function setUser(value, fx) {
+	            this.setState({
+	                user: value
+	            }, fx);
+	        }
+	        //sets visibility of page based on user progress
+
 	    }, {
 	        key: 'updatePlay',
 	        value: function updatePlay() {
@@ -52101,14 +52109,6 @@
 	                document.getElementById('playGame').style.display = 'none';
 	                document.getElementById('complete').style.display = 'block';
 	            }
-	            //check if need to update then update or ignore
-	            //load start, play, or finish page accordingly and fill with data stored in vars
-	        }
-	    }, {
-	        key: 'changePlay',
-	        value: function changePlay(current, next) {
-	            document.getElementById(next).style.display = 'block';
-	            document.getElementById(current).style.display = 'none';
 	        }
 	    }, {
 	        key: 'render',
@@ -52124,17 +52124,17 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'start', style: { display: this.hide } },
-	                    React.createElement(_start.Start, { changePage: this.props.changePage, hide: this.props.hide, changePlay: this.changePlay, setPlay: this.setPlay, setUser: this.setUser, state: this.state })
+	                    React.createElement(_start.Start, { changePage: this.props.changePage, hide: this.props.state.hide, changePlay: this.changePlay, setPlay: this.setPlay, setUser: this.setUser, state: this.state })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'playGame', style: { display: this.hide } },
-	                    React.createElement(_playGame.PlayGame, { changePage: this.props.changePage, hide: this.props.hide, changePlay: this.changePlay, setPlay: this.setPlay, setUser: this.setUser, state: this.state, logOutSetProps: this.props.logOutSetProps })
+	                    React.createElement(_playGame.PlayGame, { changePage: this.props.changePage, hide: this.props.state.hide, changePlay: this.changePlay, setPlay: this.setPlay, setUser: this.setUser, state: this.state, logOutSetProps: this.props.logOutSetProps })
 	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'complete', style: { display: this.hide } },
-	                    React.createElement(_complete.Complete, { changePage: this.props.changePage, hide: this.props.hide, setPlay: this.setPlay, setUser: this.setUser, state: this.state, setProps: this.props.setProps, logOutSetProps: this.props.logOutSetProps })
+	                    React.createElement(_complete.Complete, { changePage: this.props.changePage, hide: this.props.state.hide, setPlay: this.setPlay, setUser: this.setUser, state: this.state, setProps: this.props.setProps, logOutSetProps: this.props.logOutSetProps })
 	                )
 	            );
 	        }
@@ -52160,10 +52160,6 @@
 
 	var React = _interopRequireWildcard(_react);
 
-	var _Socket = __webpack_require__(185);
-
-	var _logoSmall = __webpack_require__(496);
-
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -52172,6 +52168,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	//This class renders the final page of the game
 	var Complete = exports.Complete = function (_React$Component) {
 	    _inherits(Complete, _React$Component);
 
@@ -52180,17 +52177,14 @@
 
 	        var _this = _possibleConstructorReturn(this, (Complete.__proto__ || Object.getPrototypeOf(Complete)).call(this, props));
 
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        _this.lb = _this.lb.bind(_this);
+	        _this.lb = _this.lb.bind(_this); //sends users to the leaderboard
 	        return _this;
 	    }
 
+	    //sends users to the leaderboard
+
+
 	    _createClass(Complete, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	    }, {
 	        key: 'lb',
 	        value: function lb() {
 	            this.props.setProps('select', this.props.state.user.hunts_id);
@@ -52206,6 +52200,7 @@
 	            var score = this.props.state.user.score;
 	            var results = React.createElement('div', { id: 'results' });
 
+	            //error message if hunt is empty
 	            if (this.props.state.questions.length == 0) {
 	                results = React.createElement(
 	                    'div',
@@ -52225,6 +52220,7 @@
 	                    )
 	                );
 	            } else {
+	                //calculates total time taken
 	                var start = new Date(this.props.state.user.start_time);
 	                var end = new Date(this.props.state.user.end_time);
 	                var time = (end - start) / 1000; // second/minutes/hours
@@ -52396,6 +52392,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	//class that renders start page functionality for users just starting a scavnger hunt after registering
 	var Start = exports.Start = function (_React$Component) {
 	    _inherits(Start, _React$Component);
 
@@ -52404,29 +52401,15 @@
 
 	        var _this = _possibleConstructorReturn(this, (Start.__proto__ || Object.getPrototypeOf(Start)).call(this, props));
 
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        _this.handle = _this.handle.bind(_this);
-	        _this.start = _this.start.bind(_this);
-	        _this.show = _this.show.bind(_this);
+	        _this.handle = _this.handle.bind(_this); //retrieves user data and changes page display based on user progress
+	        _this.show = _this.show.bind(_this); //displays walkthrough/tutorial
+	        _this.start = _this.start.bind(_this); //updates user prop progress and chnages page to playGame page
 	        return _this;
 	    }
+	    //retrieves user data and changes page display based on user progress
+
 
 	    _createClass(Start, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	    }, {
-	        key: 'start',
-	        value: function start() {
-	            if (this.props.state.questions.length > 0) {
-	                _Socket.Socket.emit('updateTime', { 'user': this.props.state.user, 'start_time': "now", 'end_time': "" });
-	                _Socket.Socket.emit('update', { 'user': this.props.state.user, 'progress': 1, 'score': this.props.state.questions.length * 25, 'attempts': 5, 'hints': 0 }, _Socket.Socket.callback = this.handle);
-	            } else {
-	                this.props.changePlay('start', 'complete');
-	            }
-	        }
-	    }, {
 	        key: 'handle',
 	        value: function handle(callback) {
 	            console.log(callback);
@@ -52434,6 +52417,8 @@
 	            this.props.setPlay(data['user']);
 	            this.props.changePlay('start', 'playGame');
 	        }
+	        //displays walkthrough/tutorial
+
 	    }, {
 	        key: 'show',
 	        value: function show() {
@@ -52441,6 +52426,22 @@
 	                document.getElementById('modal').style.display = 'none';
 	            } else {
 	                document.getElementById('modal').style.display = 'block';
+	            }
+	        }
+	        //updates user prop progress and chnages page to playGame page
+
+	    }, {
+	        key: 'start',
+	        value: function start() {
+	            //checks if current hunt has questions
+	            if (this.props.state.questions.length > 0) {
+	                //updates start time of game for user
+	                _Socket.Socket.emit('updateTime', { 'user': this.props.state.user, 'start_time': "now", 'end_time': "" });
+	                //updates user prop progress and score
+	                _Socket.Socket.emit('update', { 'user': this.props.state.user, 'progress': 1, 'score': this.props.state.questions.length * 25, 'attempts': 5, 'hints': 0 }, _Socket.Socket.callback = this.handle);
+	            } else {
+	                //current hunt has no questions, sends user to home
+	                this.props.changePlay('start', 'home');
 	            }
 	        }
 	    }, {
@@ -52656,69 +52657,83 @@
 	        var _this = _possibleConstructorReturn(this, (PlayGame.__proto__ || Object.getPrototypeOf(PlayGame)).call(this, props));
 
 	        _this.state = {
-	            'attempts': []
+	            'attempts': [] //array of incorrect attempts
 	        };
-	        _this.hide = 'none';
-	        _this.checkAnswer = _this.checkAnswer.bind(_this);
-	        _this.completed = _this.completed.bind(_this);
-	        _this.emit0 = _this.emit0.bind(_this);
-	        _this.emit1 = _this.emit1.bind(_this);
-	        _this.handleComplete = _this.handleComplete.bind(_this);
-	        _this.nextQuestion = _this.nextQuestion.bind(_this);
-	        _this.skip = _this.skip.bind(_this);
-	        _this.showHint = _this.showHint.bind(_this);
-	        _this.done0 = _this.done0.bind(_this);
-	        _this.done1 = _this.done1.bind(_this);
-	        _this.skipComplete = _this.skipComplete.bind(_this);
-	        _this.end = _this.end.bind(_this);
+	        _this.hide = 'none'; //hides hint button by default
+	        _this.checkAnswer = _this.checkAnswer.bind(_this); //checks user input to answer data //displays buttons and text accordingly
+	        _this.completed = _this.completed.bind(_this); //updates user at the end of the game
+	        _this.done0 = _this.done0.bind(_this); //calls emit0
+	        _this.done1 = _this.done1.bind(_this); //calls emit1
+	        _this.emit0 = _this.emit0.bind(_this); //updates user on current progress
+	        _this.emit1 = _this.emit1.bind(_this); //updates user on current progress + 1
+	        _this.end = _this.end.bind(_this); //changes page to complete page
+	        _this.handleComplete = _this.handleComplete.bind(_this); //handles completed function data and updates user prop
+	        _this.nextQuestion = _this.nextQuestion.bind(_this); //handles next Question button
+	        _this.showHint = _this.showHint.bind(_this); //reveals hint one at a time, reducing total points avaible by 5
+	        _this.skip = _this.skip.bind(_this); //skips current question, reducing total score by total points alloted by current question
+	        _this.skipComplete = _this.skipComplete.bind(_this); //handles skip on last question
 	        return _this;
 	    }
+
+	    //checks user input to answer data //displays buttons and text accordingly
+
 
 	    _createClass(PlayGame, [{
 	        key: 'checkAnswer',
 	        value: function checkAnswer() {
-	            var result = document.getElementById('result');
+	            var result = document.getElementById('result'); //retreives user input
+	            //checks if user input matches answer
 	            if (document.getElementById('answer').value.toLowerCase() == this.props.state.questions[this.props.state.user.progress - 1]['answer'].toLowerCase()) {
-	                result.style.display = 'block';
-	                result.textContent = 'Correct';
-	                result.style.color = "#9bf442";
+	                result.style.display = 'block'; //shows result
+	                result.textContent = 'Correct'; //displays correct message
+	                result.style.color = "#9bf442"; //changes message to color green
+
+	                //checks if next question is last question //changes Next Question button content to Last Question
 	                if (this.props.state.user.progress == this.props.state.questions.length) {
-	                    document.getElementById('next').textContent = "Last Question";
+	                    document.getElementById('next').textContent = "Last Question"; //shows buttons
 	                }
+	                //checks if current question is last question //changes Last Question button content to Complete
 	                if (this.props.state.user.progress == this.props.state.questions.length - 1 || this.props.state.user.progress == this.props.state.questions.length && this.props.state.questions.length == 1) {
-	                    document.getElementById('complete-button').style.display = "block";
-	                    document.getElementById('skip').style.display = "none";
+	                    document.getElementById('complete-button').style.display = "block"; //shows complete button
+	                    document.getElementById('skip').style.display = "none"; //hides skip button
 	                }
+	                //checks if next question is less than the total amount of questions - 1
 	                if (this.props.state.user.progress < this.props.state.questions.length - 1) {
-	                    document.getElementById('next').style.display = "block";
+	                    document.getElementById('next').style.display = "block"; //shows next button
 	                }
-	                document.getElementById('answer-submit').style.display = "none";
-	                document.getElementById('hint-submit').style.display = "none";
-	                document.getElementById('result').style.display = "block";
-	                var emptyArray = [];
+	                document.getElementById('answer-submit').style.display = "none"; //hides answer input
+	                document.getElementById('hint-submit').style.display = "none"; //hides hint button
+
+	                //resets attempts to empty array
 	                this.setState({
-	                    'attempts': emptyArray
+	                    'attempts': []
 	                }, this.emit1);
 	            } else {
+	                //user input does not match answer
+	                //checks that input is not empty
 	                if (document.getElementById('answer').value != "") {
+	                    //adds incorrect answer to attempts array
 	                    var newArray = this.state.attempts.slice();
 	                    newArray.push(" " + document.getElementById('answer').value);
 	                    this.setState({
 	                        'attempts': newArray
 	                    });
-	                    result.style.display = 'block';
+	                    result.style.display = 'block'; //displays incorrect message as well as attemots array
 	                    result.innerHTML = 'Incorrect <br/> Attempts: ' + newArray;
-	                    result.style.color = "red";
-	                    document.getElementById('answer').value = "";
-	                    document.getElementById('skip').style.display = "block";
-	                    document.getElementById('result').style.display = "block";
+	                    result.style.color = "red"; //changes color of result message to red
+
+	                    document.getElementById('answer').value = ""; //resets answer input to blank string
+	                    document.getElementById('skip').style.display = "block"; //shows skip button
+	                    //checks if user has more than zero attempts left
 	                    if (this.props.state.user.attempts > 0 && this.props.state.user.score > 0) {
 	                        var userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - 5, 'attempts': this.props.state.user.attempts - 1, 'progress': this.props.state.user.progress };
-	                        this.props.setUser(userData, this.done0);
+	                        this.props.setUser(userData, this.done0); //updates user
 	                    }
 	                }
 	            }
 	        }
+	        //updates user at the end of the game
+
 	    }, {
 	        key: 'completed',
 	        value: function completed() {
@@ -52729,6 +52744,22 @@
 	                console.log(err);
 	            }
 	        }
+	        //calls emit0
+
+	    }, {
+	        key: 'done0',
+	        value: function done0() {
+	            this.emit0();
+	        }
+	        //calls emit1
+
+	    }, {
+	        key: 'done1',
+	        value: function done1() {
+	            this.emit1();
+	        }
+	        //updates user on current progress
+
 	    }, {
 	        key: 'emit0',
 	        value: function emit0() {
@@ -52738,6 +52769,8 @@
 	                console.log(err);
 	            }
 	        }
+	        //updates user on current progress + 1
+
 	    }, {
 	        key: 'emit1',
 	        value: function emit1() {
@@ -52747,49 +52780,57 @@
 	                console.log(err);
 	            }
 	        }
+	        //changes page to complete page
+
+	    }, {
+	        key: 'end',
+	        value: function end() {
+	            this.props.changePlay('playGame', 'complete');
+	        }
+	        //handles completed function data and updates user prop
+
 	    }, {
 	        key: 'handleComplete',
 	        value: function handleComplete(callback) {
 	            var data = JSON.parse(callback);
 	            this.props.setUser(data['user'], this.end);
 	        }
-	    }, {
-	        key: 'end',
-	        value: function end() {
-	            this.props.changePlay('playGame', 'complete');
-	        }
+	        //handles next Question button
+
 	    }, {
 	        key: 'nextQuestion',
 	        value: function nextQuestion() {
-	            document.getElementById('hint1').style.display = "none";
+	            //on progression to next question:
+	            document.getElementById('hint1').style.display = "none"; //hints hidden
 	            document.getElementById('hint2').style.display = "none";
-	            document.getElementById('next').style.display = "none";
-	            document.getElementById('result').style.display = "none";
-	            document.getElementById('skip').style.display = "none";
-	            document.getElementById('answer').value = "";
-	            document.getElementById('answer-submit').style.display = "block";
-	            // if(this.props.state.questions[(this.props.state.user.progress)]['hint1'] != ""){
-	            //     //checks to see if there is a second hint, if not, the button disappears
-	            //     document.getElementById('hint-submit').style.display = "block";
-	            // }
+	            document.getElementById('next').style.display = "none"; //next question button hidden
+	            document.getElementById('result').style.display = "none"; //result from previous question hidden
+	            document.getElementById('skip').style.display = "none"; //skip button hidden
+	            document.getElementById('answer').value = ""; //value of answer input set to blank string
+	            document.getElementById('answer-submit').style.display = "block"; //displays answer input bar
+
+	            //update user props
 	            var userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score, 'attempts': 5, 'hints': 0, 'progress': this.props.state.user.progress + 1 };
 	            this.props.setUser(userData, this.done0);
 	        }
-
-	        //reveals the hint on hint button ciick
+	        //reveals hint one at a time, reducing total points avaible by 5
 
 	    }, {
 	        key: 'showHint',
 	        value: function showHint() {
 	            var userData = {};
+	            //checks that hint1 is not blank and is not currently displayed
 	            if (this.props.state.questions[this.props.state.user.progress - 1]['hint1'] != "" && document.getElementById('hint1').style.display == "none") {
 	                //checks to see if there is a first hint, if not, the button disappears
 	                document.getElementById('hint1').style.display = "block";
+	                //checks that both score and attempt amount is greater than 0
 	                if (this.props.state.user.attempts > 0 && this.props.state.user.score > 0) {
+	                    //updates user props with -1 attempt and -5 score
 	                    userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - 5, 'attempts': this.props.state.user.attempts - 1, 'hints': this.props.state.user.hints + 1, 'progress': this.props.state.user.progress };
-	                    this.props.setUser(userData, this.done0);
+	                    this.props.setUser(userData, this.done0); //updates props for current question
 	                }
 	                //condition when the button is clicked once
+	                //hides button once clicked if hint2 is blank string
 	                if (this.props.state.questions[this.props.state.user.progress - 1]['hint2'] == "") {
 	                    //checks to see if there is a second hint, if not, the button disappears
 	                    document.getElementById('hint-submit').style.display = "none";
@@ -52797,61 +52838,52 @@
 	            }
 	            //condition if the button is clicked twice and there is a second hint
 	            else if (this.props.state.questions[this.props.state.user.progress - 1]['hint2'] != "" && document.getElementById('hint2').style.display == "none") {
-	                    document.getElementById('hint2').style.display = "block";
-	                    document.getElementById('hint-submit').style.display = "none";
+	                    document.getElementById('hint2').style.display = "block"; //displays second hint
+	                    document.getElementById('hint-submit').style.display = "none"; //hides hint button
+	                    //checks that both score and attempt amount is greater than 0
 	                    if (this.props.state.user.attempts > 0 && this.props.state.user.score > 0) {
+	                        //updates user props with -1 attempt and -5 score
 	                        userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - 5, 'attempts': this.props.state.user.attempts - 1, 'hints': this.props.state.user.hints + 1, 'progress': this.props.state.user.progress };
 	                        this.props.setUser(userData, this.done0);
 	                    }
 	                }
 	        }
-	    }, {
-	        key: 'done0',
-	        value: function done0() {
-	            this.emit0();
-	        }
-	    }, {
-	        key: 'done1',
-	        value: function done1() {
-	            this.emit1();
-	        }
+	        //handles skip on last question
+
 	    }, {
 	        key: 'skipComplete',
 	        value: function skipComplete() {
 	            this.completed();
 	        }
+	        //skips current question, reducing total score by total points alloted by current question
+
 	    }, {
 	        key: 'skip',
 	        value: function skip() {
 	            var userData;
+	            //checks if user is on last question
 	            if (this.props.state.user.progress == this.props.state.questions.length - 1) {
-	                document.getElementById('skip').style.display = "none";
-	                document.getElementById('answer-submit').style.display = "none";
-	                document.getElementById('complete-button').style.display = "block";
+	                document.getElementById('skip').style.display = "none"; //hides skip button
+	                document.getElementById('answer-submit').style.display = "none"; //hides answer input bar
+	                document.getElementById('complete-button').style.display = "block"; //hides complete button
+	                //updates user props score
 	                userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - this.props.state.user.attempts * 5, 'attempts': 5, 'hints': 0, 'progress': this.props.state.user.progress };
-
 	                this.props.setUser(userData, this.skipComplete);
-	                this.skipComplete;
 	            } else {
-	                document.getElementById('hint1').style.display = "none";
+	                //user is not on the last question
+	                document.getElementById('hint1').style.display = "none"; //hides hints
 	                document.getElementById('hint2').style.display = "none";
-	                document.getElementById('next').style.display = "none";
-	                document.getElementById('result').style.display = "none";
-	                document.getElementById('skip').style.display = "none";
-	                document.getElementById('answer').value = "";
-	                document.getElementById('answer-submit').style.display = "block";
-	                // if(this.props.state.questions[(this.props.state.user.progress + 1)]['hint1'] == ""){
-	                //     //checks to see if there is a second hint, if not, the button disappears
-	                //     document.getElementById('hint-submit').style.display = "none";
-	                // }
-	                // else{
-	                //     document.getElementById('hint-submit').style.display = "block";
-	                // }
-	                // document.getElementById('hint-submit').style.display = "block";
+	                document.getElementById('next').style.display = "none"; //hides next button
+	                document.getElementById('result').style.display = "none"; //hides current question result
+	                document.getElementById('skip').style.display = "none"; //hides skip button
+	                document.getElementById('answer').value = ""; //sets value of answer input bar to blank string
+	                document.getElementById('answer-submit').style.display = "block"; //displays answer input bar
+	                //sets value of this.state.attempts to empty array
 	                var emptyArray = [];
 	                this.setState({
 	                    'attempts': emptyArray
 	                });
+	                //updates user prop score and progress
 	                userData = { 'id': this.props.state.user.id, 'email': this.props.state.user.email, 'hints': 0, 'team_name': this.props.state.user.team_name, 'hunts_id': this.props.state.user.hunts_id, 'score': this.props.state.user.score - this.props.state.user.attempts * 5, 'attempts': 5, 'progress': this.props.state.user.progress + 1 };
 	                this.props.setUser(userData, this.done0);
 	            }
@@ -52862,6 +52894,7 @@
 	            var _this2 = this;
 
 	            this.hide = 'none';
+	            //default values
 	            var index = 0;
 	            var name = '';
 	            var question = '';
@@ -52869,6 +52902,7 @@
 	            var hint2 = '';
 	            var points = 0;
 	            var num = '';
+	            //updates game if user has played during a previous login
 	            try {
 	                index = this.props.state.user.progress - 1;
 	                name = this.props.state.hunt.name;
@@ -52877,15 +52911,19 @@
 	                hint1 = this.props.state.questions[index]['hint1'];
 	                hint2 = this.props.state.questions[index]['hint2'];
 	                points = this.props.state.user.attempts * 5;
+
+	                //checks if user has already used a hint on a previous login
 	                if (this.props.state.questions[index]['hint1'] != "" && this.props.state.user.hints == 0) {
-	                    this.hide = 'block';
+	                    this.hide = 'block'; //shows used hint
 	                } else {
+	                    //checks if user has already used a hint on a previous login and that user has a second hint to use, displaying hint and hint button
 	                    if (this.props.state.questions[index]['hint1'] != "" && this.props.state.user.hints == 1) {
 	                        document.getElementById('hint1').style.display = "block";
 	                        if (this.props.state.questions[index]['hint2'] != "") {
 	                            this.hide = 'block';
 	                        }
 	                    } else {
+	                        //checks if user has used max amount of hints and displays all hints for current question
 	                        if (this.props.state.questions[index]['hint2'] != "" && this.props.state.user.hints == 2) {
 	                            document.getElementById('hint1').style.display = "block";
 	                            document.getElementById('hint2').style.display = "block";
@@ -53391,8 +53429,8 @@
 	        _this.updateHunts = _this.updateHunts.bind(_this);
 	        _this.deleteHunt = _this.deleteHunt.bind(_this);
 
-	        _this.updateQuestion = _this.showQuestions.bind(_this);
-	        _this.deleteQuestion = _this.showQuestions.bind(_this);
+	        _this.updateQuestion = _this.updateQuestion.bind(_this);
+	        _this.deleteQuestion = _this.deleteQuestion.bind(_this);
 
 	        return _this;
 	    }
@@ -53430,21 +53468,29 @@
 	        key: 'updateHunts',
 	        value: function updateHunts(index) {
 	            console.log(index);
+	            // put alert
+	            _Socket.Socket.emit('updateHunts', { index: index });
 	        }
 	    }, {
 	        key: 'deleteHunt',
 	        value: function deleteHunt(index) {
 	            console.log(index);
+	            // put alert
+	            _Socket.Socket.emit('deleteHunt', { index: index });
 	        }
 	    }, {
 	        key: 'updateQuestion',
 	        value: function updateQuestion(index) {
 	            console.log(index);
+	            _Socket.Socket.emit('updateQuestion', { index: index });
 	        }
 	    }, {
 	        key: 'deleteQuestion',
-	        value: function deleteQuestion(index) {
-	            console.log(index);
+	        value: function deleteQuestion(question) {
+
+	            console.log(question);
+
+	            _Socket.Socket.emit('deleteQuestion', { question: question });
 	        }
 	    }, {
 	        key: 'render',
@@ -53587,7 +53633,7 @@
 	                    );
 	                }));
 	            }
-	            console.log(this.state.getQuestions);
+	            // console.log(this.state.getQuestions );
 
 	            if (this.state.getQuestions != null) {
 	                questions = this.state.getQuestions.map(function (n, index) {
@@ -53698,7 +53744,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this4.deleteQuestion(index);
+	                                        return _this4.deleteQuestion(n.question);
 	                                    } },
 	                                'Delete'
 	                            )
@@ -74543,8 +74589,6 @@
 
 	var React = _interopRequireWildcard(_react);
 
-	var _Socket = __webpack_require__(185);
-
 	var _logoSmall = __webpack_require__(496);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -74561,22 +74605,10 @@
 	    function NavBar(props) {
 	        _classCallCheck(this, NavBar);
 
-	        var _this = _possibleConstructorReturn(this, (NavBar.__proto__ || Object.getPrototypeOf(NavBar)).call(this, props));
-
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        _this.logout;
-	        return _this;
+	        return _possibleConstructorReturn(this, (NavBar.__proto__ || Object.getPrototypeOf(NavBar)).call(this, props));
 	    }
 
 	    _createClass(NavBar, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	    }, {
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {}
-	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _this2 = this;
@@ -74610,7 +74642,7 @@
 	                    ),
 	                    React.createElement(
 	                        'a',
-	                        { style: { display: this.props.hide }, onClick: function onClick() {
+	                        { style: { display: this.props.state.hide }, onClick: function onClick() {
 	                                return _this2.props.changePage('admins');
 	                            } },
 	                        'Settings'

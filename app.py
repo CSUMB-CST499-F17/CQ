@@ -409,6 +409,30 @@ def deleteAdmin(data):
         })
     except:
         print("Error: admin query broke")
+
+@socketio.on('deleteQuestion')
+def deleteQuestion(data):
+    # print(data)
+    # huntsList = []
+    try:
+        sql = models.db.session.query(
+            models.Questions.question,
+            models.Questions.answer,
+            models.Questions.image,
+            models.Questions.hint_A,
+            models.Questions.hint_B,
+            models.Questions.answer_text,
+            models.Questions.hunts_id
+            ).filter(
+                models.Questions.question == data['question']).delete()
+        # for row in sql:
+        #     huntsList.append({'question':row.question })
+        # print(huntsList)
+        models.db.session.commit()
+        socketio.emit('getQuestions', {
+        })
+    except:
+        print("Error: deleteQuestion query broke")
         
 @socketio.on('adminHunts')
 def getHunts(data):
@@ -427,7 +451,7 @@ def getHunts(data):
         for row in sql:
             huntsList.append({'name':row.name, 'h_type':row.h_type, 'desc':row.desc, 'image':row.image, 'start_time':row.start_time.strftime('%Y-%m-%d %H:%M:%S'), 'end_time':row.end_time.strftime('%Y-%m-%d %H:%M:%S'), 'start_text':row.start_text})
     except:
-        print("Error: hunts Admin query broke")
+        print("Error: Hunts Admin query broke")
     socketio.emit('getHunts', {
         'getHunts': huntsList
     })
@@ -435,7 +459,7 @@ def getHunts(data):
 @socketio.on('questionsCall')
 def getHunts(data):
     questionsList = []
-    print(data['index'])
+    # print(data['index'])
     try:
         sql = models.db.session.query(
             models.Questions.question,
@@ -452,7 +476,7 @@ def getHunts(data):
             questionsList.append({'question':row.question, 'answer':row.answer, 'image':row.image,'hint_A':row.hint_A, 'hint_B':row.hint_B, 'answer_text':row.answer_text, 'hunts_id':row.hunts_id})
     except:
         print("Error: questionsAdmin query broke")
-    print(questionsList)
+    # print(questionsList)
     socketio.emit('getQuestions', {
         'getQuestions': questionsList
     })
