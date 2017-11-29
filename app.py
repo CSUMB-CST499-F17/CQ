@@ -2,12 +2,11 @@ import flask, flask_socketio, flask_sqlalchemy, stripe, sqlalchemy
 import os, time, datetime, smtplib, re, random, hashlib, uuid, json
 import models
 
-#GLOBAL VARS
+#Global variables
 x = 1
-questionNum = 0
-teams = []
+announceTime = datetime.datetime.now()
 
-#REACT, FLASK, AND DB STUFF
+#Application setup
 app = flask.Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
@@ -15,13 +14,60 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 socketio = flask_socketio.SocketIO(app)
 db = flask_sqlalchemy.SQLAlchemy(app)
 
-#FUNCTIONS
+#Function definitions
+def setAnnounceTime():
+	global announceTime
+	announceHour = 16 # in UTC, corresponds to 8AM PST/9AM PDT
+	announceMinute = 0
+	announceTime = datetime.datetime.now()
+	if announceTime.hour >= announceHour and announceTime.minute >= announceMinute:
+		announceTime = announceTime + datetime.timedelta(days=1)
+	announceTime = announceTime.replace(hour=announceHour, minute=announceMinute, second=0, microsecond=0)
+	
+setAnnounceTime()
+
+def announceWinner():
+    finished_hunts = models.db.session.query(models.Hunts).filter(models.Hunts.end_time < datetime.datetime.now())
+    
+    for hunt in finished_hunts:
+    #    if not hunt.ended:
+        players = models.db.session.query(models.Participants).filter(models.Participants.progress == -1).order_by(models.Participants.score.desc()) #check out this line
+        winner = players.first()
+        winner_message = "Congratulations team {}, you are the winner!\n\n You won the hunt {} with a score of {}. Your prize is a brand new car!".format(winner.team_name, hunt.name, winner.score)
+        email_client(winner.email, "Coastal Quest - Winner!", winner_message)
+        for player in players:
+            player_message = "Hello team {},\n\nThe scavenger hunt {} has ended. Congratulations to team {}, who finished the hunt with a score of {}!\nWe hope to see you again on one of our open hunts:\n[open hunt names]".format(player.team_name, hunt.name, winner.team_name, winner.score)
+            email_client(player.email, "Coastal Quest - Hunt Over", player_message)
+
+def hashPassword(password):
+    salt = uuid.uuid4().hex + uuid.uuid4().hex
+    return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
+
+def checkPassword(hashed_password, user_password):
+    password, salt = hashed_password.split(':')
+    return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
+    
+def email_client(client_email, subject, message):
+    recp_message  = 'Subject: {}\n\n{}'.format(subject, message)
+    email_address = "coastalquest1337@gmail.com"
+    email_pass = "CoastalQuestsAreFun"
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(email_address, email_pass)
+    server.sendmail(email_address, client_email, recp_message)
+    server.quit()
+
 @app.route('/')
 def hello():
     return flask.render_template('index.html')
 
 @socketio.on('home')
 def updateHome(data):
+    global announceTime
+    if (datetime.datetime.now() - announceTime).total_seconds() > 0:
+        #announceWinner()
+        print("winners announced")
+        setAnnounceTime()
     loggedIn = data['loggedIn'].lower()
     lastPage = data['lastPage']
     superAdminPages = ['admins', 'adminCreate']
@@ -67,23 +113,23 @@ def validateCredentials(data):
         try:  
             users = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'])
             for query in users:
-                if(check_password(query.leader_code, data['access'])):
+                if(checkPassword(query.leader_code, data['access'])):
                     # if query.progress == -1:
                     #     return json.dumps({'id':query.id, 'loggedIn':'finished', 'name':query.team_name, "hunts_id":query.hunts_id})
                     return json.dumps({'id':query.id, 'loggedIn':'teamLead', 'name':query.team_name, "hunts_id":query.hunts_id})
-                elif(check_password(query.member_code, data['access'])):
+                elif(checkPassword(query.member_code, data['access'])):
                     # if query.progress == -1:
                     #     return json.dumps({'id':query.id, 'loggedIn':'finished', 'name':query.team_name, "hunts_id":query.hunts_id})
                     return json.dumps({'id':query.id, 'loggedIn':'team', 'name':query.team_name, "hunts_id":query.hunts_id})
                     
             users = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.is_super == True)
             for query in users:    
-                if(check_password(query.password, data['access'])):
+                if(checkPassword(query.password, data['access'])):
                     return json.dumps({'id':query.id, 'loggedIn':'superAdmin', 'name':query.username})
                     
             users = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.is_super == False)
             for query in users:
-                if(check_password(query.password, data['access'])):
+                if(checkPassword(query.password, data['access'])):
                     return json.dumps({'id':query.id, 'loggedIn':'admin', 'name':query.username})
             
             return json.dumps({'id':-1, 'loggedIn':'no', 'name':'guest'})
@@ -282,7 +328,7 @@ def calculatePrice(discount_code):
     try:
         discount_query = models.db.session.query(models.Discounts)
         for row in discount_query:
-            if check_password(row.code, discount_code) and row.uses > 0:
+            if checkPassword(row.code, discount_code) and row.uses > 0:
                 discount_percent = discount_query.first().percent
                 discount_query.first().uses -= 1
                 models.db.session.commit()
@@ -319,7 +365,7 @@ def checkout(data):
     
     participant = None
     try:
-        participant = models.Participants(client_email, team_name, userdata['image'], hash_password(leader_code), hash_password(member_code), None, None, 0, 0, 0, 0, False, hunt_id)
+        participant = models.Participants(client_email, team_name, userdata['image'], hashPassword(leader_code), hashPassword(member_code), None, None, 0, 0, 0, 0, False, hunt_id)
         models.db.session.add(participant)  
         models.db.session.commit()
         
@@ -360,16 +406,6 @@ def checkout(data):
     
     # send access code back to JS app
     return json.dumps({'condition':'confirm','leader_code':leader_code, 'member_code':member_code})
-    
-def email_client(client_email, subject, message):
-    recp_message  = 'Subject: {}\n\n{}'.format(subject, message)
-    email_address = "coastalquest1337@gmail.com"
-    email_pass = "CoastalQuestsAreFun"
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(email_address, email_pass)
-    server.sendmail(email_address, client_email, recp_message)
-    server.quit()
 
 @socketio.on('admins')
 def getAdmin(data):
@@ -409,7 +445,7 @@ def deleteAdmin(data):
         })
     except:
         print("Error: admin query broke")
-
+        
 @socketio.on('deleteQuestion')
 def deleteQuestion(data):
     try:
@@ -507,15 +543,6 @@ def getHunts(data):
         'getQuestions': questionsList
     })
 
-    
-def hash_password(password):
-    salt = uuid.uuid4().hex + uuid.uuid4().hex
-    return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
-
-def check_password(hashed_password, user_password):
-    password, salt = hashed_password.split(':')
-    return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
-
 if __name__ == '__main__':
     socketio.run(
             app,
@@ -524,3 +551,4 @@ if __name__ == '__main__':
             debug=True,
             use_reloader=False
             )
+            
