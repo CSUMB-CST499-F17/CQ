@@ -53481,7 +53481,7 @@
 	        }
 	    }, {
 	        key: 'updateQuestion',
-	        value: function updateQuestion(questionToUpdate, answer, image, hint_A, hint_B, answer_text, hunts_id) {
+	        value: function updateQuestion(index, questionToUpdate, answer, image, hint_A, hint_B, answer_text, hunts_id) {
 
 	            var question = prompt('question', questionToUpdate);
 	            var answer = prompt('answer', answer);
@@ -53492,7 +53492,7 @@
 
 	            if (question != null && question != "" && answer != null && answer != "" && hint_A != null && hint_A != "") {
 	                alert(question, answer, image, hint_A, hint_B, answer_text, hunts_id);
-	                _Socket.Socket.emit('updateQuestion', { questionToUpdate: questionToUpdate, question: question, answer: answer, image: image, hint_A: hint_A, hint_B: hint_B, answer_text: answer_text, hunts_id: hunts_id });
+	                _Socket.Socket.emit('updateQuestion', { index: index, questionToUpdate: questionToUpdate, question: question, answer: answer, image: image, hint_A: hint_A, hint_B: hint_B, answer_text: answer_text, hunts_id: hunts_id });
 	            } else {
 	                alert('not updated no blank entries for question, answer, or hint_A');
 	            }
@@ -53745,7 +53745,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this4.updateQuestion(n.question, n.answer, n.image, n.hint_A, n.hint_B, n.answer_text, n.hunts_id);
+	                                        return _this4.updateQuestion(index, n.question, n.answer, n.image, n.hint_A, n.hint_B, n.answer_text, n.hunts_id);
 	                                    } },
 	                                'Update'
 	                            )

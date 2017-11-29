@@ -431,9 +431,9 @@ def deleteQuestion(data):
 
 @socketio.on('updateQuestion')
 def updateQuestion(data):
-    questionsList = []
     try:
         sql = models.db.session.query(
+            models.Questions.id,
             models.Questions.question,
             models.Questions.answer,
             models.Questions.image,
@@ -442,18 +442,18 @@ def updateQuestion(data):
             models.Questions.answer_text,
             models.Questions.hunts_id
             ).filter(
-                models.Questions.question == data['questionToUpdate'])
-        
-        # for row in sql:
-        #     questionsList.append({
-        #     'question':row.data['question'],
-        #     'answer':row.data['answer'],
-        #     'image':row.data['image'],
-        #     'hint_A':row.data['hint_A'],
-        #     'hint_B':row.data['hint_B'],
-        #     'answer_text':row.data['answer_text'],
-        #     'hunts_id':row.data['hunts_id']})
-        
+                models.Questions.question == data['questionToUpdate']).update({
+                    "id":data['index'],
+                    "question": data['question'],
+                    "answer": data['answer'],
+                    "image": data['image'],
+                    "hint_A": data['hint_A'],
+                    "hint_B": data['hint_B'],
+                    "answer_text": data['answer_text'],
+                    "hunts_id": data['hunts_id']
+                })
+                
+                
         models.db.session.commit()
         socketio.emit('getQuestions', {
         })

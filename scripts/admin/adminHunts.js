@@ -67,7 +67,7 @@ export class AdminHunts extends React.Component {
         Socket.emit('deleteHunt', {index});
     }
     
-    updateQuestion(questionToUpdate,answer,image,hint_A,hint_B,answer_text,hunts_id){
+    updateQuestion(index,questionToUpdate,answer,image,hint_A,hint_B,answer_text,hunts_id){
     
         var question = prompt('question',questionToUpdate);
         var answer = prompt('answer',answer);
@@ -78,7 +78,7 @@ export class AdminHunts extends React.Component {
 
         if (question != null && question != "" && answer != null && answer != "" && hint_A != null && hint_A != "") {
             alert(question,answer,image,hint_A,hint_B,answer_text,hunts_id);
-            Socket.emit('updateQuestion', {questionToUpdate,question,answer,image,hint_A,hint_B,answer_text,hunts_id});
+            Socket.emit('updateQuestion', {index,questionToUpdate,question,answer,image,hint_A,hint_B,answer_text,hunts_id});
         }
         else{
             alert('not updated no blank entries for question, answer, or hint_A');
@@ -159,7 +159,8 @@ export class AdminHunts extends React.Component {
                 <td>{n.hint_B}</td>
                 <td>{n.answer_text}</td>
                 <td>{n.hunts_id}</td>
-                <td><Button onClick={() => this.updateQuestion(n.question,
+                <td><Button onClick={() => this.updateQuestion(index,
+                                                               n.question,
                                                                n.answer,
                                                                n.image,
                                                                n.hint_A,
