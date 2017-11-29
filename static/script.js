@@ -31015,19 +31015,23 @@
 	    }, {
 	        key: 'updateExplore',
 	        value: function updateExplore(callback) {
-	            var data = JSON.parse(callback);
-	            var d_types = data['types'];
-	            var d_hunts = data['hunts'];
-	            var choice = data['choice'].charAt(0).toUpperCase() + data['choice'].slice(1);
-	            var types = [];
-	            var hunts = [];
-	            for (var i = 0; i < d_hunts.length; i++) {
-	                hunts.push([d_hunts[i].id, d_hunts[i].name, d_hunts[i].h_type, d_hunts[i].desc, d_hunts[i].image, d_hunts[i].start_time, d_hunts[i].end_time, d_hunts[i].start_text]); //convert to array for mapping
+	            if (callback == 'empty') {
+	                console.log('NO HUNTS');
+	            } else {
+	                var data = JSON.parse(callback);
+	                var d_types = data['types'];
+	                var d_hunts = data['hunts'];
+	                var choice = data['choice'].charAt(0).toUpperCase() + data['choice'].slice(1);
+	                var types = [];
+	                var hunts = [];
+	                for (var i = 0; i < d_hunts.length; i++) {
+	                    hunts.push([d_hunts[i].id, d_hunts[i].name, d_hunts[i].h_type, d_hunts[i].desc, d_hunts[i].image, d_hunts[i].start_time, d_hunts[i].end_time, d_hunts[i].start_text]); //convert to array for mapping
+	                }
+	                for (i = 0; i < d_types.length; i++) {
+	                    if (d_types != choice) types.push(d_types[i].charAt(0).toUpperCase() + d_types[i].slice(1)); //convert to array for mapping
+	                }
+	                this.setState({ 'chosentype': choice, 'types': types, 'hunts': hunts }); //updates choice
 	            }
-	            for (i = 0; i < d_types.length; i++) {
-	                if (d_types != choice) types.push(d_types[i].charAt(0).toUpperCase() + d_types[i].slice(1)); //convert to array for mapping
-	            }
-	            this.setState({ 'chosentype': choice, 'types': types, 'hunts': hunts }); //updates choice
 	        }
 	    }, {
 	        key: 'render',
