@@ -528,31 +528,21 @@ def deleteQuestion(data):
 
 @socketio.on('updateQuestion')
 def updateQuestion(data):
+    print(data)
     try:
-        sql = models.db.session.query(
-            models.Questions.question,
-            models.Questions.answer,
-            models.Questions.image,
-            models.Questions.hint_A,
-            models.Questions.hint_B,
-            models.Questions.answer_text,
-            models.Questions.hunts_id
-            ).filter(
-                models.Questions.question == data['questionToUpdate']).update({
-                    "question": data['question'],
-                    "answer": data['answer'],
-                    "image": data['image'],
-                    "hint_A": data['hint_A'],
-                    "hint_B": data['hint_B'],
-                    "answer_text": data['answer_text'],
-                    "hunts_id": data['hunts_id']
-                })
-
-
-        models.db.session.commit()
-        getQuestions('data')
-    except:
-        print("Error: updateQuestion query broke")
+        question = data
+        #updates the progress
+        query = models.db.session.query(models.Questions).filter(models.Questions.question == question['questionTU']).update({
+        models.Questions.question: question['question'],
+        models.Questions.answer: question['answer'],
+        models.Questions.image: question['image'],
+        models.Questions.hint_A: question['hint_A'],
+        models.Questions.hint_B: question['hint_B'],
+        models.Questions.answer_text: question['answer_text'],
+        models.Questions.hunts_id: question['hunts_id']})
+        models.db.session.commit() 
+    except Exception as e: 
+        print(e)
 
 @socketio.on('adminHunts')
 def getHunts(data):

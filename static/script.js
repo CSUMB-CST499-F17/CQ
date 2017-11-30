@@ -53518,20 +53518,30 @@
 	        }
 	    }, {
 	        key: 'updateQuestion',
-	        value: function updateQuestion(questionToUpdate, answer, image, hint_A, hint_B, answer_text, hunts_id) {
-
-	            var question = prompt('question', questionToUpdate);
-	            var answer = prompt('answer', answer);
-	            var image = prompt('image', image);
-	            var hint_A = prompt('hint_A', hint_A);
-	            var hint_B = prompt('hint_B', hint_B);
-	            var answer_text = prompt('answer_text', answer_text);
-
-	            if (question != null && question != "" && answer != null && answer != "" && hint_A != null && hint_A != "") {
-	                alert(question, answer, image, hint_A, hint_B, answer_text, hunts_id);
-	                _Socket.Socket.emit('updateQuestion', { questionToUpdate: questionToUpdate, question: question, answer: answer, image: image, hint_A: hint_A, hint_B: hint_B, answer_text: answer_text, hunts_id: hunts_id });
+	        value: function updateQuestion(index) {
+	            var questionToUpdate = this.state.getQuestions[index].question;
+	            if (confirm("Would you like to make the following changes to question " + (index + 1) + "?\n\n" + "Question: " + document.getElementById("qQuestion").value + "\nAnswer: " + document.getElementById("qAnswer").value + "\nImage: " + document.getElementById("qImage").value + "\nHint A: " + document.getElementById("qHint_A").value + "\nHint B: " + document.getElementById("qHint_B").value + "\nAnswer_text: " + document.getElementById("qAnswer_text").value + "\nHunt Id: " + document.getElementById("qHunts_id").value)) {
+	                console.log("Yes");
+	                var data = {
+	                    'questionTU': this.state.getQuestions[index].question,
+	                    'question': document.getElementById("qQuestion").value,
+	                    'answer': document.getElementById("qAnswer").value,
+	                    'image': document.getElementById("qImage").value,
+	                    'hint_A': document.getElementById("qHint_A").value,
+	                    'hint_B': document.getElementById("qHint_B").value,
+	                    'answer_text': document.getElementById("qAnswer_text").value,
+	                    'hunts_id': document.getElementById("qHunts_id").value
+	                };
+	                console.log(data);
+	                _Socket.Socket.emit('updateQuestion', data);
 	            } else {
-	                alert('not updated no blank entries for question, answer, or hint_A');
+	                document.getElementById("qQuestion").value = this.state.getQuestions[index].question;
+	                document.getElementById("qAnswer").value = this.state.getQuestions[index].answer;
+	                document.getElementById("qImage").value = this.state.getQuestions[index].image;
+	                document.getElementById("qHint_A").value = this.state.getQuestions[index].hint_A;
+	                document.getElementById("qHint_B").value = this.state.getQuestions[index].hint_B;
+	                document.getElementById("qAnswer_text").value = this.state.getQuestions[index].answer_text;
+	                document.getElementById("qHunts_id").value = this.state.getQuestions[index].hunts_id;
 	            }
 	        }
 	    }, {
@@ -53853,7 +53863,7 @@
 	                            null,
 	                            React.createElement(
 	                                'textarea',
-	                                { id: 'w', cols: '15' },
+	                                { id: 'qQuestion', cols: '15' },
 	                                n.question
 	                            )
 	                        ),
@@ -53862,7 +53872,7 @@
 	                            null,
 	                            React.createElement(
 	                                'textarea',
-	                                { id: 'w', cols: '15' },
+	                                { id: 'qAnswer', cols: '15' },
 	                                n.answer
 	                            )
 	                        ),
@@ -53871,7 +53881,7 @@
 	                            null,
 	                            React.createElement(
 	                                'textarea',
-	                                { id: 'w', cols: '3' },
+	                                { id: 'qImage', cols: '3' },
 	                                n.image
 	                            )
 	                        ),
@@ -53880,7 +53890,7 @@
 	                            null,
 	                            React.createElement(
 	                                'textarea',
-	                                { id: 'w', cols: '10' },
+	                                { id: 'qHint_A', cols: '10' },
 	                                n.hint_A
 	                            )
 	                        ),
@@ -53889,7 +53899,7 @@
 	                            null,
 	                            React.createElement(
 	                                'textarea',
-	                                { id: 'w', cols: '10' },
+	                                { id: 'qHint_B', cols: '10' },
 	                                n.hint_B
 	                            )
 	                        ),
@@ -53898,14 +53908,14 @@
 	                            null,
 	                            React.createElement(
 	                                'textarea',
-	                                { id: 'w', cols: '8' },
+	                                { id: 'qAnswer_text', cols: '8' },
 	                                n.answer_text
 	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            React.createElement('input', { type: 'text', value: n.hunts_id, size: '1' })
+	                            React.createElement('input', { id: 'qHunts_id', type: 'text', value: n.hunts_id, size: '1' })
 	                        ),
 	                        React.createElement(
 	                            'td',
@@ -53913,7 +53923,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this4.updateQuestion(n.question, n.answer, n.image, n.hint_A, n.hint_B, n.answer_text, n.hunts_id);
+	                                        return _this4.updateQuestion(index);
 	                                    } },
 	                                'Update'
 	                            )
