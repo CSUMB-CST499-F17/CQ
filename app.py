@@ -447,6 +447,10 @@ def checkout(data):
 
 @socketio.on('admins')
 def getAdmin(data):
+    socketio.emit('callbackUpdateAdmin', 'callbackUpdateAdmin')
+
+@socketio.on('loadAllAdmins')
+def loadAllAdmins(data):
     adminList = []
     try:
         sql = models.db.session.query(
@@ -456,12 +460,10 @@ def getAdmin(data):
 
         for row in sql:
             adminList.append({'email':row.email, 'username':row.username, 'is_super':row.is_super})
+        return json.dumps({'id':data,'adminList':adminList})
     except:
         print("Error: admin query broke")
 
-    socketio.emit('getAdmin', {
-        'getAdmin': adminList
-    })
 
 @socketio.on('addAdmin')
 def addAdmin(data):
@@ -482,8 +484,29 @@ def deleteAdmin(data):
         socketio.emit('admins', {
         })
     except:
-        print("Error: admin query broke")
-        
+        print("Error: delete admin query broke")
+
+@socketio.on('updateAdmin')
+def updateAdmin(data):
+    print(data)
+    try:
+        sql = models.db.session.query(
+            models.Admins.email,
+            models.Admins.username,
+            models.Admins.is_super).filter(
+                models.Admins.username == data['usernameToFind']).update({
+                    "email": data['email'],
+                    "username": data['username'],
+                    "is_super": data['is_super'],
+                    })
+        models.db.session.commit()
+        getAdmin()
+    except:
+        print("Error: update admin query broke")
+
+
+
+
 @socketio.on('deleteQuestion')
 def deleteQuestion(data):
     try:
@@ -524,14 +547,14 @@ def updateQuestion(data):
                     "answer_text": data['answer_text'],
                     "hunts_id": data['hunts_id']
                 })
-                
-                
+
+
         models.db.session.commit()
         socketio.emit('getQuestions', {
         })
     except:
         print("Error: updateQuestion query broke")
-        
+
 @socketio.on('adminHunts')
 def getHunts(data):
     huntsList = []
@@ -554,7 +577,7 @@ def getHunts(data):
     socketio.emit('getHunts', {
         'getHunts': huntsList
     })
-    
+
 @socketio.on('questionsCall')
 def getHunts(data):
     questionsList = []

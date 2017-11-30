@@ -22124,7 +22124,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'admins', style: { display: 'none' } },
-	                    React.createElement(_admins.Admins, { changePage: this.changePage })
+	                    React.createElement(_admins.Admins, { changePage: this.changePage, state: this.state })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -73052,6 +73052,8 @@
 	        _this.pageName = 'admins';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        _this.deleteAdmin = _this.deleteAdmin.bind(_this);
+	        _this.updateAdmin = _this.updateAdmin.bind(_this);
+	        _this.loadAdmins = _this.loadAdmins.bind(_this);
 	        return _this;
 	    }
 
@@ -73065,16 +73067,19 @@
 	        value: function componentDidMount() {
 	            var _this2 = this;
 
-	            _Socket.Socket.on('getAdmin', function (data) {
-	                _this2.setState({
-	                    'getAdmin': data['getAdmin']
-	                });
+	            // Socket.on('getAdmin', (data) => {
+	            //     this.setState({
+	            //         'getAdmin': data['getAdmin']
+	            //     });
+	            // });
+	            _Socket.Socket.on('callbackUpdateAdmin', function (data) {
+
+	                _Socket.Socket.emit('loadAllAdmins', _this2.props.state.id, _Socket.Socket.callback = _this2.loadAdmins);
 	            });
 	        }
 	    }, {
 	        key: 'deleteAdmin',
 	        value: function deleteAdmin(index, username) {
-	            console.log("pressed");
 	            var txt;
 	            if (this.state.getAdmin[index].is_super == true && confirm("Super Admin can't be deleted?") == true) {
 	                txt = "can't delete super admin!";
@@ -73088,13 +73093,36 @@
 	            document.getElementById("deleted").innerHTML = txt;
 	        }
 	    }, {
+	        key: 'loadAdmins',
+	        value: function loadAdmins(callback) {
+	            var data = JSON.parse(callback);
+	            this.setState({
+	                'getAdmin': data['adminList']
+	            });
+	        }
+	    }, {
+	        key: 'updateAdmin',
+	        value: function updateAdmin(index, usernameToFind, email, is_super) {
+	            var txt;
+	            var email = prompt('email', email);
+	            var username = prompt('username', usernameToFind);
+	            var is_super = prompt('super(T/F)', is_super);
+	            if (this.state.getAdmin[index].is_super == true && confirm("Super Admin can't be deleted?") == true) {
+	                txt = "can't update super admin you don't have super admin privileges!";
+	            }
+	            if (this.state.getAdmin[index].is_super == false && confirm("Are you sure you would like to update your admin profile?") == true) {
+	                _Socket.Socket.emit('updateAdmin', { index: index, usernameToFind: usernameToFind, username: username, email: email, is_super: is_super });
+	            } else {
+	                txt = "not updated!";
+	            }
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _this3 = this;
 
 	            var admins = '';
 
-	            // console.log(this.state.getAdmin);
 	            if (this.state.getAdmin != null) {
 	                admins = this.state.getAdmin.map(function (n, index) {
 	                    return React.createElement(
@@ -73109,6 +73137,22 @@
 	                            'td',
 	                            null,
 	                            n.username
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            n.is_super
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            React.createElement(
+	                                _reactBootstrap.Button,
+	                                { onClick: function onClick() {
+	                                        return _this3.updateAdmin(index, n.username, n.email, n.is_super);
+	                                    } },
+	                                'Update'
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
@@ -73168,7 +73212,17 @@
 	                                React.createElement(
 	                                    'td',
 	                                    null,
-	                                    ' '
+	                                    'Super'
+	                                ),
+	                                React.createElement(
+	                                    'td',
+	                                    null,
+	                                    'Update'
+	                                ),
+	                                React.createElement(
+	                                    'td',
+	                                    null,
+	                                    'Delete'
 	                                )
 	                            )
 	                        )

@@ -163,7 +163,7 @@ export class Content extends React.Component{
                         <AdminCreateHunt changePage={this.changePage}/>
                     </div>
                     <div id = 'admins' style={{display:'none'}}>
-                        <Admins changePage={this.changePage}/>
+                        <Admins changePage={this.changePage} state={this.state}/>
                     </div>
                     <div id = 'adminCreate' style={{display:'none'}}>
                         <AdminCreate changePage={this.changePage}/>
