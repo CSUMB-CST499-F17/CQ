@@ -97,15 +97,31 @@ def changeType(data):
         choice = 'walking'
     hunts = [];
     types = [];
+    index = 0;
+    count = 0;
     try:
         t_list = models.db.session.query(models.Hunts.h_type).distinct()
         for row in t_list:
             types.append(row.h_type)
-        h_list = models.db.session.query(models.Hunts).filter(sqlalchemy.and_(models.Hunts.h_type == choice,sqlalchemy.and_(models.Hunts.start_time <= datetime.datetime.now(),models.Hunts.end_time >= datetime.datetime.now()))).order_by(models.Hunts.id.desc()); #default type
-        #h_list = models.db.session.query(models.Hunts).filter(models.Hunts.h_type == choice); #default type
-        for row in h_list:
-            hunts.append({'id':row.id,'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time.strftime('%A %B %-d %-I:%M %p'),'end_time':row.end_time.strftime('%A %B %-d %-I:%M %p'),'start_text':row.start_text })
-        return json.dumps({'choice':choice,'hunts':hunts,'types':types})
+        for typ in types: #remove types with no ongoing hunts from list
+            count = 0
+            h_list = models.db.session.query(models.Hunts).filter(sqlalchemy.and_(models.Hunts.h_type == choice,sqlalchemy.and_(models.Hunts.start_time <= datetime.datetime.now(),models.Hunts.end_time >= datetime.datetime.now()))).order_by(models.Hunts.id.desc()); #default type
+            for row in h_list:
+                count += 1
+            if count == 0: #theres at least one hunt in this type
+                types.pop(types.index(typ))
+        while True:
+            h_list = models.db.session.query(models.Hunts).filter(sqlalchemy.and_(models.Hunts.h_type == choice,sqlalchemy.and_(models.Hunts.start_time <= datetime.datetime.now(),models.Hunts.end_time >= datetime.datetime.now()))).order_by(models.Hunts.id.desc()); #default type
+            for row in h_list:
+                hunts.append({'id':row.id,'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time.strftime('%A %B %-d %-I:%M %p'),'end_time':row.end_time.strftime('%A %B %-d %-I:%M %p'),'start_text':row.start_text })
+            if len(hunts) == 0:
+                if index == len(types):
+                    return("empty")
+                else:
+                    choice = types[index];
+                    index += 1;
+            else:
+                return json.dumps({'choice':choice,'hunts':hunts,'types':types})
     except Exception as e: 
         print(e)
 
