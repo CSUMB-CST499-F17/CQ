@@ -21908,13 +21908,11 @@
 
 	var _adminCreateHunt = __webpack_require__(506);
 
-	var _adminEditHunt = __webpack_require__(646);
+	var _admins = __webpack_require__(646);
 
-	var _admins = __webpack_require__(647);
+	var _adminCreate = __webpack_require__(647);
 
-	var _adminCreate = __webpack_require__(648);
-
-	var _navBar = __webpack_require__(649);
+	var _navBar = __webpack_require__(648);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -22122,11 +22120,6 @@
 	                    'div',
 	                    { id: 'adminCreateHunt', style: { display: 'none' } },
 	                    React.createElement(_adminCreateHunt.AdminCreateHunt, { changePage: this.changePage })
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'adminEditHunt', style: { display: 'none' } },
-	                    React.createElement(_adminEditHunt.AdminEditHunt, { changePage: this.changePage })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -53171,10 +53164,30 @@
 	    }, {
 	        key: 'updateHunts',
 	        value: function updateHunts(index) {
-	            console.log(index);
-	            // put alert
-
-	            _Socket.Socket.emit('updateHunts', { index: index });
+	            var name = this.state.getHunts[index].name;
+	            if (confirm("Would you like to make the following changes to the " + name + " hunt ?\n\n" + "Name: " + document.getElementById("Hname").value + "\nType: " + document.getElementById("Htype").value + "\nImage: " + document.getElementById("Himage").value + "\nDescription: " + document.getElementById("Hdesc").value + "\nStart Time: " + document.getElementById("Hstart_time").value + "\nEnd Time: " + document.getElementById("Hend_time").value + "\nStart Text: " + document.getElementById("Hstart_text").value)) {
+	                console.log("Yes");
+	                var data = {
+	                    'id': this.state.getHunts[index].id,
+	                    'name': document.getElementById("Hname").value,
+	                    'type': document.getElementById("Htype").value,
+	                    'image': document.getElementById("Himage").value,
+	                    'desc': document.getElementById("Hdesc").value,
+	                    'start_time': document.getElementById("Hstart_time").value,
+	                    'end_time': document.getElementById("Hend_time").value,
+	                    'start_text': document.getElementById("Hstart_text").value
+	                };
+	                console.log(data);
+	                _Socket.Socket.emit('updateHunt', data);
+	            } else {
+	                document.getElementById("Hname").value = this.state.getHunts[index].name;
+	                document.getElementById("Htype").value = this.state.getHunts[index].h_type;
+	                document.getElementById("Himage").value = this.state.getHunts[index].image;
+	                document.getElementById("Hdesc").value = this.state.getHunts[index].desc;
+	                document.getElementById("Hstart_time").value = this.state.getHunts[index].start_time;
+	                document.getElementById("Hend_time").value = this.state.getHunts[index].end_time;
+	                document.getElementById("Hstart_text").value = this.state.getHunts[index].start_text;
+	            }
 	        }
 	    }, {
 	        key: 'deleteHunt',
@@ -53224,52 +53237,95 @@
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Name'
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Name'
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Hunt type'
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Hunt Type'
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Description'
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Description'
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Image'
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Image'
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Start time'
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Start time'
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'End time '
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'End time'
+	                            ),
+	                            ' '
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Start text'
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Start text'
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Show Questions'
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Show Questions'
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Update Hunts '
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Update Hunts'
+	                            ),
+	                            ' '
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Delete Questions Before Hunts '
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Delete Questions Before Hunts'
+	                            ),
+	                            ' '
 	                        )
 	                    );
 	                });
@@ -53281,37 +53337,65 @@
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.name
+	                            React.createElement(
+	                                'textarea',
+	                                { id: 'Hname', cols: '10' },
+	                                n.name
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.h_type
+	                            React.createElement(
+	                                'textarea',
+	                                { id: 'Htype', cols: '5', rows: '1' },
+	                                n.h_type
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.desc
+	                            React.createElement(
+	                                'textarea',
+	                                { id: 'Hdesc', cols: '15' },
+	                                n.desc
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.image
+	                            React.createElement(
+	                                'textarea',
+	                                { id: 'Himage', cols: '15' },
+	                                n.image
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.start_time
+	                            React.createElement(
+	                                'textarea',
+	                                { id: 'Hstart_time', cols: '17', rows: '1' },
+	                                n.start_time
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.end_time
+	                            React.createElement(
+	                                'textarea',
+	                                { id: 'Hend_time', cols: '17', rows: '1' },
+	                                n.end_time
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.start_text
+	                            React.createElement(
+	                                'textarea',
+	                                { id: 'Hstart_text', cols: '15' },
+	                                n.start_text
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
@@ -53330,7 +53414,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this4.props.changePage('adminEditHunt');
+	                                        return _this4.updateHunts(index);
 	                                    } },
 	                                'Update'
 	                            )
@@ -53359,47 +53443,83 @@
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Question'
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Question'
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Answer'
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Answer'
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Image'
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Image'
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Hint 1'
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Hint 1'
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Hint 2'
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Hint 2'
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Answer Text'
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Answer Text'
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Hunts Id'
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Hunts Id'
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Update Questions'
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Update Questions'
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            'Delete Questions'
+	                            React.createElement(
+	                                'b',
+	                                null,
+	                                'Delete Questions'
+	                            )
 	                        )
 	                    );
 	                });
@@ -53411,37 +53531,61 @@
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.question
+	                            React.createElement(
+	                                'textarea',
+	                                { id: 'w', cols: '15' },
+	                                n.question
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.answer
+	                            React.createElement(
+	                                'textarea',
+	                                { id: 'w', cols: '15' },
+	                                n.answer
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.image
+	                            React.createElement(
+	                                'textarea',
+	                                { id: 'w', cols: '3' },
+	                                n.image
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.hint_A
+	                            React.createElement(
+	                                'textarea',
+	                                { id: 'w', cols: '10' },
+	                                n.hint_A
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.hint_B
+	                            React.createElement(
+	                                'textarea',
+	                                { id: 'w', cols: '10' },
+	                                n.hint_B
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.answer_text
+	                            React.createElement(
+	                                'textarea',
+	                                { id: 'w', cols: '8' },
+	                                n.answer_text
+	                            )
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            n.hunts_id
+	                            React.createElement('input', { type: 'text', value: n.hunts_id, size: '1' })
 	                        ),
 	                        React.createElement(
 	                            'td',
@@ -72868,196 +73012,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.AdminEditHunt = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var React = _interopRequireWildcard(_react);
-
-	var _reactBootstrap = __webpack_require__(242);
-
-	var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	// import { Socket } from './Socket';
-
-
-	var AdminEditHunt = exports.AdminEditHunt = function (_React$Component) {
-	    _inherits(AdminEditHunt, _React$Component);
-
-	    function AdminEditHunt(props) {
-	        _classCallCheck(this, AdminEditHunt);
-
-	        var _this = _possibleConstructorReturn(this, (AdminEditHunt.__proto__ || Object.getPrototypeOf(AdminEditHunt)).call(this, props));
-
-	        _this.state = {
-	            'count': 0,
-	            'limit': 25
-	        };
-
-	        _this.addQuestion = _this.addQuestion.bind(_this);
-	        _this.printQuestion = _this.printQuestion.bind(_this);
-	        _this.handleSubmit = _this.handleSubmit.bind(_this);
-	        return _this;
-	    }
-
-	    _createClass(AdminEditHunt, [{
-	        key: 'handleSubmit',
-	        value: function handleSubmit(event) {
-	            event.preventDefault();
-	        }
-	    }, {
-	        key: 'addQuestion',
-	        value: function addQuestion() {
-	            // Get the quiz form element
-	            var question = document.getElementById('questionEdit');
-
-	            // Good to do error checking, make sure we managed to get something
-	            if (question) {
-	                if (this.state.count < this.state.limit) {
-	                    // Edit a new <p> element
-	                    var newP = document.createElement('div');
-	                    newP.innerHTML = 'Question ' + (this.state.count + 1);
-
-	                    // Edit the new text box
-	                    var newInput = document.createElement('input');
-	                    newInput.type = 'text';
-	                    newInput.id = 'Q' + this.state.count + 'desc';
-	                    newInput.placeholder = "Question";
-	                    var newInput2 = document.createElement('input');
-	                    newInput2.type = 'text';
-	                    newInput2.id = 'Q' + this.state.count + 'hint1';
-	                    newInput2.placeholder = "Hint One";
-	                    var newInput3 = document.createElement('input');
-	                    newInput3.type = 'text';
-	                    newInput3.id = 'Q' + this.state.count + 'hint2';
-	                    newInput3.placeholder = "Hint One";
-
-	                    // Good practice to do error checking
-	                    if (newInput && newP) {
-	                        // Add the new elements to the form
-	                        question.appendChild(newP);
-	                        question.appendChild(newInput);
-	                        question.appendChild(newInput2);
-	                        question.appendChild(newInput3);
-	                        // Increment the count
-	                        this.state.count++;
-	                    }
-	                } else {
-	                    alert('Question limit reached');
-	                }
-	            }
-	        }
-	    }, {
-	        key: 'printQuestion',
-	        value: function printQuestion() {
-	            var i;
-	            for (i = 0; i < this.state.count; i++) {
-	                window.alert(document.getElementById("Q" + i + "desc").value + " , " + document.getElementById("Q" + i + "hint1").value + " , " + document.getElementById("Q" + i + "hint2").value);
-	            }
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var _this2 = this;
-
-	            return React.createElement(
-	                'div',
-	                null,
-	                React.createElement(
-	                    'div',
-	                    { id: 'header' },
-	                    React.createElement(
-	                        'header',
-	                        null,
-	                        'Edit Hunt (Looks like Create Hunt Page for know until database is in place)'
-	                    )
-	                ),
-	                React.createElement(
-	                    'div',
-	                    { id: 'intro' },
-	                    React.createElement(
-	                        'form',
-	                        { id: 'edit-form' },
-	                        React.createElement(
-	                            _reactBootstrap.FormGroup,
-	                            null,
-	                            React.createElement(
-	                                _reactBootstrap.InputGroup,
-	                                null,
-	                                React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Game Name' }),
-	                                React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Start Date' }),
-	                                React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'End Date' }),
-	                                React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Image URL' }),
-	                                React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Description' }),
-	                                React.createElement('input', { id: 'edit-item', type: 'text', placeholder: 'Hunt Type' }),
-	                                React.createElement(
-	                                    'div',
-	                                    { id: 'questionEdit', action: '', method: 'POST' },
-	                                    React.createElement(
-	                                        _reactBootstrap.Button,
-	                                        { onClick: function onClick() {
-	                                                return _this2.addQuestion();
-	                                            } },
-	                                        'Add question'
-	                                    ),
-	                                    React.createElement('div', null)
-	                                ),
-	                                React.createElement(
-	                                    _reactBootstrap.Button,
-	                                    { onClick: function onClick() {
-	                                            return _this2.printQuestion();
-	                                        } },
-	                                    'Temp Print question(Checks to make sure values are being passed)'
-	                                ),
-	                                React.createElement(
-	                                    'div',
-	                                    { className: 'buttons' },
-	                                    React.createElement(
-	                                        _reactBootstrap.ButtonToolbar,
-	                                        null,
-	                                        React.createElement(
-	                                            _reactBootstrap.Button,
-	                                            { id: 'edit-item' },
-	                                            'Save'
-	                                        ),
-	                                        React.createElement(
-	                                            _reactBootstrap.Button,
-	                                            { onClick: function onClick() {
-	                                                    return _this2.props.changePage('adminHunts');
-	                                                } },
-	                                            'Cancel'
-	                                        )
-	                                    )
-	                                )
-	                            )
-	                        )
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-
-	    return AdminEditHunt;
-	}(React.Component);
-
-/***/ },
-/* 647 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
 	exports.Admins = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -73260,7 +73214,7 @@
 	}(React.Component);
 
 /***/ },
-/* 648 */
+/* 647 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -73389,7 +73343,7 @@
 	}(React.Component);
 
 /***/ },
-/* 649 */
+/* 648 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

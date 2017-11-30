@@ -11,7 +11,6 @@ import { AdminHome } from './admin/adminHome';
 import { AdminLeaderboard } from './admin/adminLeaderboard';
 import { AdminHunts } from './admin/adminHunts';
 import { AdminCreateHunt } from './admin/adminCreateHunt';
-import { AdminEditHunt } from './admin/adminEditHunt';
 import { Admins } from './admin/admins';
 import { AdminCreate } from './admin/adminCreate';
 
@@ -162,9 +161,6 @@ export class Content extends React.Component{
                     </div>
                     <div id = 'adminCreateHunt' style={{display:'none'}}>
                         <AdminCreateHunt changePage={this.changePage}/>
-                    </div>
-                    <div id = 'adminEditHunt' style={{display:'none'}}>
-                        <AdminEditHunt changePage={this.changePage}/>
                     </div>
                     <div id = 'admins' style={{display:'none'}}>
                         <Admins changePage={this.changePage}/>

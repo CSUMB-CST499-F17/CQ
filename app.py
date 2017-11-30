@@ -101,7 +101,8 @@ def changeType(data):
         t_list = models.db.session.query(models.Hunts.h_type).distinct()
         for row in t_list:
             types.append(row.h_type)
-        h_list = models.db.session.query(models.Hunts).filter(models.Hunts.h_type == choice); #default type
+        h_list = models.db.session.query(models.Hunts).filter(sqlalchemy.and_(models.Hunts.h_type == choice,sqlalchemy.and_(models.Hunts.start_time <= datetime.datetime.now(),models.Hunts.end_time >= datetime.datetime.now()))).order_by(models.Hunts.id.desc()); #default type
+        #h_list = models.db.session.query(models.Hunts).filter(models.Hunts.h_type == choice); #default type
         for row in h_list:
             hunts.append({'id':row.id,'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time.strftime('%A %B %-d %-I:%M %p'),'end_time':row.end_time.strftime('%A %B %-d %-I:%M %p'),'start_text':row.start_text })
         return json.dumps({'choice':choice,'hunts':hunts,'types':types})
@@ -255,6 +256,28 @@ def updateTime(data):
         
         except Exception as e: 
             print(e)
+            
+@socketio.on('updateHunt')
+def updateProgress(data):
+    try:
+        hunt = data
+        #updates the progress
+        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.name: hunt['name']})
+        models.db.session.commit()
+        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.h_type: hunt['type']})
+        models.db.session.commit()
+        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.image: hunt['image']})
+        models.db.session.commit()
+        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.desc: hunt['desc']})
+        models.db.session.commit()
+        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.start_time: hunt['start_time']})
+        models.db.session.commit()
+        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.end_time: hunt['end_time']})
+        models.db.session.commit()
+        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.start_text: hunt['start_text']})
+        models.db.session.commit() 
+    except Exception as e: 
+        print(e)
 
 @socketio.on('leaderboard')
 def updateLeaderboard(data):
@@ -283,9 +306,6 @@ def updateLeaderboard(data):
     })
     print('Leaderboard data sent.')
 
-# @socketio.on('start')
-# def updateStart():
-#     socketio.emit('updateStart');
     
 @socketio.on('register')
 def updateRegister(data):
@@ -501,6 +521,7 @@ def getHunts(data):
     huntsList = []
     try:
         sql = models.db.session.query(
+            models.Hunts.id,
             models.Hunts.name,
             models.Hunts.h_type,
             models.Hunts.desc,
@@ -508,10 +529,10 @@ def getHunts(data):
             models.Hunts.start_time,
             models.Hunts.end_time,
             models.Hunts.start_text
-            )
+            ).order_by(models.Hunts.id)
 
         for row in sql:
-            huntsList.append({'name':row.name, 'h_type':row.h_type, 'desc':row.desc, 'image':row.image, 'start_time':row.start_time.strftime('%Y-%m-%d %H:%M:%S'), 'end_time':row.end_time.strftime('%Y-%m-%d %H:%M:%S'), 'start_text':row.start_text})
+            huntsList.append({'id':row.id, 'name':row.name, 'h_type':row.h_type, 'desc':row.desc, 'image':row.image, 'start_time':row.start_time.strftime('%Y-%m-%d %H:%M:%S'), 'end_time':row.end_time.strftime('%Y-%m-%d %H:%M:%S'), 'start_text':row.start_text})
     except:
         print("Error: Hunts Admin query broke")
     socketio.emit('getHunts', {

@@ -55,10 +55,39 @@ export class AdminHunts extends React.Component {
     }
     
     updateHunts(index){
-        console.log(index);
-        // put alert
-        
-        Socket.emit('updateHunts', {index});
+        var name =this.state.getHunts[index].name;
+        if(confirm("Would you like to make the following changes to the " + name + " hunt ?\n\n" + 
+        "Name: " + document.getElementById("Hname").value +
+        "\nType: " + document.getElementById("Htype").value + 
+        "\nImage: " + document.getElementById("Himage").value + 
+        "\nDescription: " + document.getElementById("Hdesc").value+
+        "\nStart Time: " + document.getElementById("Hstart_time").value + 
+        "\nEnd Time: " + document.getElementById("Hend_time").value + 
+        "\nStart Text: " + document.getElementById("Hstart_text").value
+        )){
+            console.log("Yes");
+            var data = {
+            'id': this.state.getHunts[index].id,
+            'name': document.getElementById("Hname").value,
+            'type': document.getElementById("Htype").value,
+            'image': document.getElementById("Himage").value, 
+            'desc': document.getElementById("Hdesc").value,
+            'start_time': document.getElementById("Hstart_time").value,
+            'end_time': document.getElementById("Hend_time").value,
+            'start_text': document.getElementById("Hstart_text").value
+            };
+            console.log(data);
+            Socket.emit('updateHunt', data);
+        }
+        else{
+            document.getElementById("Hname").value = this.state.getHunts[index].name;
+            document.getElementById("Htype").value = this.state.getHunts[index].h_type;
+            document.getElementById("Himage").value = this.state.getHunts[index].image;
+            document.getElementById("Hdesc").value = this.state.getHunts[index].desc;
+            document.getElementById("Hstart_time").value = this.state.getHunts[index].start_time;
+            document.getElementById("Hend_time").value = this.state.getHunts[index].end_time;
+            document.getElementById("Hstart_text").value = this.state.getHunts[index].start_text;
+        }
     }
     
     deleteHunt(index){
@@ -102,31 +131,31 @@ export class AdminHunts extends React.Component {
             hunts = this.state.getHunts.map(
                 (n, index) =>
                 <tr key={0}>
-                <td>Name</td>
-                <td>Hunt type</td>
-                <td>Description</td>
-                <td>Image</td>
-                <td>Start time</td>
-                <td>End time </td>
-                <td>Start text</td>
-                <td>Show Questions</td>
-                <td>Update Hunts </td>
-                <td>Delete Questions Before Hunts </td>
+                <td><b>Name</b></td>
+                <td><b>Hunt Type</b></td>
+                <td><b>Description</b></td>
+                <td><b>Image</b></td>
+                <td><b>Start time</b></td>
+                <td><b>End time</b> </td>
+                <td><b>Start text</b></td>
+                <td><b>Show Questions</b></td>
+                <td><b>Update Hunts</b> </td>
+                <td><b>Delete Questions Before Hunts</b> </td>
                 </tr>
              );
             
             hunts.push(this.state.getHunts.map(
                 (n, index) =>
                 <tr key={index}>
-                <td>{n.name}</td>
-                <td>{n.h_type}</td>
-                <td>{n.desc}</td>
-                <td>{n.image}</td>
-                <td>{n.start_time}</td>
-                <td>{n.end_time}</td>
-                <td>{n.start_text}</td>
-                <td><Button onClick={() => this.showQuestions( index)}>Questions</Button></td>
-                <td><Button onClick={() => this.props.changePage('adminEditHunt')}>Update</Button></td>
+                <td><textarea id="Hname" cols='10'>{n.name}</textarea></td>
+                <td><textarea id="Htype" cols='5' rows='1'>{n.h_type}</textarea></td>
+                <td><textarea id="Hdesc" cols='15'>{n.desc}</textarea></td>
+                <td><textarea id="Himage" cols='15'>{n.image}</textarea></td>
+                <td><textarea id="Hstart_time" cols='17' rows='1'>{n.start_time}</textarea></td>
+                <td><textarea id="Hend_time" cols='17' rows='1'>{n.end_time}</textarea></td>
+                <td><textarea id="Hstart_text" cols='15'>{n.start_text}</textarea></td>
+                <td><Button onClick={() => this.showQuestions(index)}>Questions</Button></td>
+                <td><Button onClick={() => this.updateHunts(index)}>Update</Button></td>
                 <td><Button onClick={() => this.deleteHunt(index, n.name)}>Delete</Button></td>
                 </tr>
              ));
@@ -137,36 +166,35 @@ export class AdminHunts extends React.Component {
             questions = this.state.getQuestions.map(
                 (n, index) =>
                 <tr key={0}>
-                <td>Question</td>
-                <td>Answer</td>
-                <td>Image</td>
-                <td>Hint 1</td>
-                <td>Hint 2</td>
-                <td>Answer Text</td>
-                <td>Hunts Id</td>
-                <td>Update Questions</td>
-                <td>Delete Questions</td>
+                <td><b>Question</b></td>
+                <td><b>Answer</b></td>
+                <td><b>Image</b></td>
+                <td><b>Hint 1</b></td>
+                <td><b>Hint 2</b></td>
+                <td><b>Answer Text</b></td>
+                <td><b>Hunts Id</b></td>
+                <td><b>Update Questions</b></td>
+                <td><b>Delete Questions</b></td>
                 </tr>
              );
             
             questions.push(this.state.getQuestions.map(
                 (n, index) =>
                 <tr key={n.id}>
-                <td>{n.question}</td>
-                <td>{n.answer}</td>
-                <td>{n.image}</td>
-                <td>{n.hint_A}</td>
-                <td>{n.hint_B}</td>
-                <td>{n.answer_text}</td>
-                <td>{n.hunts_id}</td>
+                <td><textarea id="w" cols='15'>{n.question}</textarea></td>
+                <td><textarea id="w" cols='15'>{n.answer}</textarea></td>
+                <td><textarea id="w" cols='3'>{n.image}</textarea></td>
+                <td><textarea id="w" cols='10'>{n.hint_A}</textarea></td>
+                <td><textarea id="w" cols='10'>{n.hint_B}</textarea></td>
+                <td><textarea id="w" cols='8'>{n.answer_text}</textarea></td>
+                <td><input type="text" value = {n.hunts_id} size="1"/></td>
                 <td><Button onClick={() => this.updateQuestion(n.question,
                                                                n.answer,
                                                                n.image,
                                                                n.hint_A,
                                                                n.hint_B,
                                                                n.answer_text,
-                                                               n.hunts_id,
-                                                               )}>Update</Button></td>
+                                                               n.hunts_id)}>Update</Button></td>
                 <td><Button onClick={() => this.deleteQuestion(n.question)}>Delete</Button></td>
                 </tr>
              ));

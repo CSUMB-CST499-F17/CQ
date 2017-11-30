@@ -348,11 +348,10 @@ p{
     max-width:100%;
     width:100%;
     margin: auto;
+    overflow-y:scroll;
 
 }
-#userList:hover{
-overflow-y:scroll;
-}
+
 #leaderboard-table2{
     width:100%;
     justify-content: center;
@@ -377,11 +376,12 @@ overflow-y:scroll;
 }
 #admin-table2{
     margin: auto;
-    width:60%;
+    width:80%;
     justify-content: center;
     text-align: center;
     background-color:white;
     color: #0d3551;
+    margin-bottom:50px;
 }
 td{
     width:25%;
