@@ -500,7 +500,7 @@ def updateAdmin(data):
                     "is_super": data['is_super'],
                     })
         models.db.session.commit()
-        getAdmin()
+        getAdmin('data')
     except:
         print("Error: update admin query broke")
 
@@ -550,8 +550,7 @@ def updateQuestion(data):
 
 
         models.db.session.commit()
-        socketio.emit('getQuestions', {
-        })
+        getQuestions('data')
     except:
         print("Error: updateQuestion query broke")
 
@@ -579,7 +578,7 @@ def getHunts(data):
     })
 
 @socketio.on('questionsCall')
-def getHunts(data):
+def getQuestions(data):
     questionsList = []
     try:
         sql = models.db.session.query(
