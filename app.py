@@ -56,6 +56,29 @@ def email_client(client_email, subject, message):
     server.login(email_address, email_pass)
     server.sendmail(email_address, client_email, recp_message)
     server.quit()
+    
+def end_hunt(hunt_id):
+    users = models.db.session.query(models.Participants).filter(sqlalchemy.and_(models.Participants.hunts_id == hunt_id,models.Participants.end_time == None)) #get all users from this hunt who havent finished
+    hunt = models.db.session.query(models.Hunts).filter_by(id=hunt_id).first()
+    questions = models.db.session.query(models.Questions).filter_by(hunts_id=hunt_id)
+    questionList = []
+    for question in questions:
+        questionList.append(question.id)
+    for user in users:
+        if user.start_time == None:
+            self = models.db.session.query(models.Participants).filter_by(id=user.id).first()
+            self.start_time = hunt.end_time
+            self.end_time = hunt.end_time
+            self.score = 0
+            self.progress = -1
+            models.db.session.commit()
+        else:
+            self = models.db.session.query(models.Participants).filter_by(id=user.id).first()
+            unanswered = len(questionList) - self.progress
+            self.end_time = hunt.end_time
+            self.score = self.score - (unanswered * 25) - ((5 - self.attempts) * 5) #please someone check my math
+            self.progress = -1
+            models.db.session.commit()
 
 @app.route('/')
 def hello():
