@@ -90,10 +90,15 @@ export class AdminHunts extends React.Component {
         }
     }
     
-    deleteHunt(index){
-        console.log(index);
+    deleteHunt(hunts_id){
+        // console.log(index);
         // put alert
-        Socket.emit('deleteHunt', {index});
+        
+        hunts_id++;
+        if(confirm("Will delete all Participants and Questions in hunt " + (hunts_id+1) +"!\n\n" ))
+        {
+            Socket.emit('deleteHunt', {hunts_id});
+        }
     }
     
     updateQuestion(index){
@@ -175,7 +180,7 @@ export class AdminHunts extends React.Component {
                 <td><textarea id="Hstart_text" cols='15'>{n.start_text}</textarea></td>
                 <td><Button onClick={() => this.showQuestions(index)}>Questions</Button></td>
                 <td><Button onClick={() => this.updateHunts(index)}>Update</Button></td>
-                <td><Button onClick={() => this.deleteHunt(index, n.name)}>Delete</Button></td>
+                <td><Button onClick={() => this.deleteHunt(index)}>Delete</Button></td>
                 </tr>
              ));
         }
