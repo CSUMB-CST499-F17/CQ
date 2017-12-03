@@ -112,6 +112,7 @@ export class AdminHunts extends React.Component {
     
     updateQuestion(id,question,answer,image,hint_A,hint_B,answer_text,hunts_id){
         var ids = document.getElementsByClassName(id);
+        console.log(ids.length);
         var q = document.getElementsByName("q");
         var a = document.getElementsByName("a");
         var i = document.getElementsByName("i");
@@ -119,20 +120,23 @@ export class AdminHunts extends React.Component {
         var h2 = document.getElementsByName("h2");
         var at = document.getElementsByName("at");
 
-        console.log(h2.length);
         for(var m = 0; m < ids.length; m++){
+            console.log(ids[m].value);
             for(var j = 0; j < q.length; j++){
-                if(ids[m].value == q[j].value){
+                if(ids[m].value == q[j].value && q[j].value != ''){
                     q = q[j].value;
                     a = a[j].value;
                     i = i[j].value;
                     h1 = h1[j].value;
                     h2 = h2[j].value;
                     at = at[j].value;
-                    j = ids.length;
+                    m = ids.length;
+                    j = q.length;
                 }
             }
         }
+        
+        
         if(confirm("Would you like to make the following changes to this Question?\n\n" + 
         "Question: " + q +
         "\nAnswer: " + a + 

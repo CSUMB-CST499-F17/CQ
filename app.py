@@ -232,6 +232,28 @@ def updateTime(data):
         except Exception as e: 
             print(e)
             
+@socketio.on('updateQuestion')
+def updateQuestion(data):
+    try:
+        question = data
+        
+        #updates the progress
+        query = models.db.session.query(models.Questions).filter(models.Questions.id == question['id']).update({models.Questions.question: question['question']})
+        models.db.session.commit()
+        query = models.db.session.query(models.Questions).filter(models.Questions.id == question['id']).update({models.Questions.answer: question['answer']})
+        models.db.session.commit()
+        query = models.db.session.query(models.Questions).filter(models.Questions.id == question['id']).update({models.Questions.image: question['image']})
+        models.db.session.commit()
+        query = models.db.session.query(models.Questions).filter(models.Questions.id == question['id']).update({models.Questions.hint_A: question['h1']})
+        models.db.session.commit()
+        query = models.db.session.query(models.Questions).filter(models.Questions.id == question['id']).update({models.Questions.hint_B: question['h2']})
+        models.db.session.commit()
+        query = models.db.session.query(models.Questions).filter(models.Questions.id == question['id']).update({models.Questions.answer_text: question['answer_text']})
+        models.db.session.commit()
+    except Exception as e: 
+        print(e)
+        print("Error: updateQuestion query broke")
+        
 @socketio.on('updateHunt')
 def updateHunt(data):
     try:
