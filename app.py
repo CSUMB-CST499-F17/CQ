@@ -4,7 +4,9 @@ import models
 
 #Global variables
 x = 1
-announceTime = datetime.datetime.now()
+announceHour = 16 # in UTC, corresponds to 8AM PST/9AM PDT
+announceMinute = 0
+announceTime = datetime.datetime.now().replace(hour=announceHour, minute=announceMinute)
 
 #Application setup
 app = flask.Flask(__name__)
@@ -15,48 +17,6 @@ socketio = flask_socketio.SocketIO(app)
 db = flask_sqlalchemy.SQLAlchemy(app)
 
 #Function definitions
-def setAnnounceTime():
-	global announceTime
-	announceHour = 16 # in UTC, corresponds to 8AM PST/9AM PDT
-	announceMinute = 0
-	announceTime = datetime.datetime.now()
-	if announceTime.hour >= announceHour and announceTime.minute >= announceMinute:
-		announceTime = announceTime + datetime.timedelta(days=1)
-	announceTime = announceTime.replace(hour=announceHour, minute=announceMinute, second=0, microsecond=0)
-	
-setAnnounceTime()
-
-def announceWinner():
-    finished_hunts = models.db.session.query(models.Hunts).filter(models.Hunts.end_time < datetime.datetime.now())
-    
-    for hunt in finished_hunts:
-    #    if not hunt.ended:
-        players = models.db.session.query(models.Participants).filter(models.Participants.progress == -1).order_by(models.Participants.score.desc()) #check out this line
-        winner = players.first()
-        winner_message = "Congratulations team {}, you are the winner!\n\n You won the hunt {} with a score of {}. Your prize is a brand new car!".format(winner.team_name, hunt.name, winner.score)
-        email_client(winner.email, "Coastal Quest - Winner!", winner_message)
-        for player in players:
-            player_message = "Hello team {},\n\nThe scavenger hunt {} has ended. Congratulations to team {}, who finished the hunt with a score of {}!\nWe hope to see you again on one of our open hunts:\n[open hunt names]".format(player.team_name, hunt.name, winner.team_name, winner.score)
-            email_client(player.email, "Coastal Quest - Hunt Over", player_message)
-
-def hashPassword(password):
-    salt = uuid.uuid4().hex + uuid.uuid4().hex
-    return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
-
-def checkPassword(hashed_password, user_password):
-    password, salt = hashed_password.split(':')
-    return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
-    
-def email_client(client_email, subject, message):
-    recp_message  = 'Subject: {}\n\n{}'.format(subject, message)
-    email_address = "coastalquest1337@gmail.com"
-    email_pass = "CoastalQuestsAreFun"
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(email_address, email_pass)
-    server.sendmail(email_address, client_email, recp_message)
-    server.quit()
-
 @app.route('/')
 def hello():
     return flask.render_template('index.html')
@@ -65,8 +25,7 @@ def hello():
 def updateHome(data):
     global announceTime
     if (datetime.datetime.now() - announceTime).total_seconds() > 0:
-        #announceWinner()
-        print("winners announced")
+        announceWinner()
         setAnnounceTime()
     loggedIn = data['loggedIn'].lower()
     lastPage = data['lastPage']
@@ -449,7 +408,7 @@ def checkout(data):
     try:
         subject = "Coastal Quest Activation Code"
         message = "Welcome to Coastal Quest Scavenger Hunts, {}! \nHere is your access code to play the hunt: \nTeam Leader: {}\nHave fun on your journey!".format(team_name,leader_code)
-        email_client(client_email,subject,message)
+        emailClient(client_email,subject,message)
     except:
         print("Error: Could not send email")
         pass
@@ -512,7 +471,7 @@ def updateAdmin(data):
                     "is_super": data['is_super'],
                     })
         models.db.session.commit()
-        getAdmin()
+        getAdmin('data')
     except:
         print("Error: update admin query broke")
 
@@ -534,29 +493,66 @@ def deleteQuestion(data):
         })
     except:
         print("Error: deleteQuestion query broke")
-
-@socketio.on('updateQuestion')
-def updateQuestion(data):
-    try:
-        question = data
         
-        #updates the progress
-        query = models.db.session.query(models.Questions).filter(models.Questions.id == question['id']).update({models.Questions.question: question['question']})
-        models.db.session.commit()
-        query = models.db.session.query(models.Questions).filter(models.Questions.id == question['id']).update({models.Questions.answer: question['answer']})
-        models.db.session.commit()
-        query = models.db.session.query(models.Questions).filter(models.Questions.id == question['id']).update({models.Questions.image: question['image']})
-        models.db.session.commit()
-        query = models.db.session.query(models.Questions).filter(models.Questions.id == question['id']).update({models.Questions.hint_A: question['h1']})
-        models.db.session.commit()
-        query = models.db.session.query(models.Questions).filter(models.Questions.id == question['id']).update({models.Questions.hint_B: question['h2']})
-        models.db.session.commit()
-        query = models.db.session.query(models.Questions).filter(models.Questions.id == question['id']).update({models.Questions.answer_text: question['answer_text']})
+@socketio.on('deleteHunt')
+def deleteHunt(data):
+    print('******')
+    print(data)
+    print('******')
+    try:
+        sql = models.db.session.query(
+            models.Questions.question,
+            models.Questions.answer,
+            models.Questions.image,
+            models.Questions.hint_A,
+            models.Questions.hint_B,
+            models.Questions.answer_text,
+            models.Questions.hunts_id
+            ).filter(
+                models.Questions.hunts_id == data['hunts_id']).delete()
+        sql = models.db.session.query(
+            models.Participants.progress,
+            models.Participants.score,
+            models.Participants.team_name,
+            models.Participants.start_time,
+            models.Participants.end_time,
+            models.Participants.hunts_id
+            ).filter(
+                models.Participants.hunts_id == data['hunts_id']).delete()
+        sql = models.db.session.query(
+            models.Hunts.id,
+            models.Hunts.name,
+            models.Hunts.h_type,
+            models.Hunts.desc,
+            models.Hunts.image,
+            models.Hunts.start_time,
+            models.Hunts.end_time,
+            models.Hunts.start_text
+            ).filter(
+                models.Hunts.id == data['hunts_id']).delete()
         models.db.session.commit()
     except Exception as e: 
         print(e)
-        print("Error: updateQuestion query broke")
+    getHunt(1)
         
+@socketio.on('updateQuestion')
+def updateQuestion(data):
+    print(data)
+    try:
+        question = data
+        #updates the progress
+        query = models.db.session.query(models.Questions).filter(models.Questions.question == question['questionTU']).update({
+        models.Questions.question: question['question'],
+        models.Questions.answer: question['answer'],
+        models.Questions.image: question['image'],
+        models.Questions.hint_A: question['hint_A'],
+        models.Questions.hint_B: question['hint_B'],
+        models.Questions.answer_text: question['answer_text'],
+        models.Questions.hunts_id: question['hunts_id']})
+        models.db.session.commit() 
+    except Exception as e: 
+        print(e)
+>>>>>>> f000c54cc12d1d2657e2683994eae3c5a3938fc8
 
 @socketio.on('adminHunts')
 def getHunts(data):
@@ -605,6 +601,66 @@ def getQuestions(data):
     socketio.emit('getQuestions', {
         'getQuestions': questionsList
     })
+    
+def setAnnounceTime():
+	announceTime = datetime.datetime.now()
+	if announceTime.hour >= announceHour and announceTime.minute >= announceMinute:
+		announceTime = announceTime + datetime.timedelta(days=1)
+	announceTime = announceTime.replace(hour=announceHour, minute=announceMinute, second=0, microsecond=0)
+	
+def endHunt(hunt_id):
+    users = models.db.session.query(models.Participants).filter(sqlalchemy.and_(models.Participants.hunts_id == hunt_id,models.Participants.end_time == None)) #get all users from this hunt who havent finished
+    hunt = models.db.session.query(models.Hunts).filter_by(id=hunt_id).first()
+    questions = models.db.session.query(models.Questions).filter_by(hunts_id=hunt_id)
+    questionList = []
+    for question in questions:
+        questionList.append(question.id)
+    for user in users:
+        if user.start_time == None:
+            self = models.db.session.query(models.Participants).filter_by(id=user.id).first()
+            self.start_time = hunt.end_time
+            self.end_time = hunt.end_time
+            self.score = 0
+            self.progress = -1
+            models.db.session.commit()
+        else:
+            self = models.db.session.query(models.Participants).filter_by(id=user.id).first()
+            unanswered = len(questionList) - self.progress
+            self.end_time = hunt.end_time
+            self.score = self.score - (unanswered * 25) - ((5 - self.attempts) * 5) #please someone check my math
+            self.progress = -1
+            models.db.session.commit()
+	
+def announceWinner():
+    hunts_to_announce = models.db.session.query(models.Hunts).filter(models.Hunts.end_time < datetime.datetime.now()) # models.Hunts.ended != False
+    
+    for hunt in hunts_to_announce:
+        endHunt(hunt.id)
+        players = models.db.session.query(models.Participants).filter(models.Participants.progress == -1).order_by(models.Participants.score.desc()) #check out this line
+        winner = players.first()
+        winner_message = "Congratulations team {}, you are the winner!\n\n You won the hunt {} with a score of {}. Your prize is a brand new car!".format(winner.team_name, hunt.name, winner.score)
+        #emailClient(winner.email, "Coastal Quest - Winner!", winner_message)
+        for player in players:
+            player_message = "Hello team {},\n\nThe scavenger hunt {} has ended. Congratulations to team {}, who finished the hunt with a score of {}!\nWe hope to see you again on one of our open hunts:\n[open hunt names]".format(player.team_name, hunt.name, winner.team_name, winner.score)
+            #emailClient(player.email, "Coastal Quest - Hunt Over", player_message)
+    
+def emailClient(client_email, subject, message):
+    recp_message  = 'Subject: {}\n\n{}'.format(subject, message)
+    email_address = "coastalquest1337@gmail.com"
+    email_pass = "CoastalQuestsAreFun"
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(email_address, email_pass)
+    server.sendmail(email_address, client_email, recp_message)
+    server.quit()
+    
+def hashPassword(password):
+    salt = uuid.uuid4().hex + uuid.uuid4().hex
+    return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
+
+def checkPassword(hashed_password, user_password):
+    password, salt = hashed_password.split(':')
+    return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
 
 if __name__ == '__main__':
     socketio.run(
