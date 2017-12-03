@@ -262,10 +262,10 @@ p{
     width:100%;
 }
 .create-item{
-    margin:5px;
-    justify-content: center;
-    position:absolute;
-    z-index:100;
+    /*margin:5px;*/
+    /*justify-content: center;*/
+    /*position:absolute;*/
+    /*z-index:100;*/
 }
 #play-container{
     position:relative;
@@ -351,6 +351,13 @@ p{
     overflow-y:scroll;
 
 }
+#userList2{
+    max-height:700px;
+    max-width:100%;
+    width:100%;
+    margin: auto;
+
+}
 
 #leaderboard-table2{
     width:100%;
@@ -385,7 +392,7 @@ p{
 }
 td{
     width:25%;
-    padding:10px;
+    padding:5px;
 }
 
  /* Add a black background color to the top navigation */

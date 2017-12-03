@@ -1,12 +1,9 @@
 import * as React from 'react';
-import * as ReactBootstrap from 'react-bootstrap';
 import { Socket } from '../Socket';
 import { Button } from 'react-bootstrap';
 import { InputGroup } from 'react-bootstrap';
-import { FormControl } from 'react-bootstrap';
 import { FormGroup } from 'react-bootstrap';
 import { ButtonToolbar } from 'react-bootstrap';
-import { ButtonGroup } from 'react-bootstrap';
 
 export class AdminHunts extends React.Component {
         constructor(props) {
@@ -54,39 +51,51 @@ export class AdminHunts extends React.Component {
         
     }
     
-    updateHunts(index){
-        var name =this.state.getHunts[index].name;
-        if(confirm("Would you like to make the following changes to the " + name + " hunt ?\n\n" + 
-        "Name: " + document.getElementById("Hname").value +
-        "\nType: " + document.getElementById("Htype").value + 
-        "\nImage: " + document.getElementById("Himage").value + 
-        "\nDescription: " + document.getElementById("Hdesc").value+
-        "\nStart Time: " + document.getElementById("Hstart_time").value + 
-        "\nEnd Time: " + document.getElementById("Hend_time").value + 
-        "\nStart Text: " + document.getElementById("Hstart_text").value
-        )){
-            console.log("Yes");
-            var data = {
-            'id': this.state.getHunts[index].id,
-            'name': document.getElementById("Hname").value,
-            'type': document.getElementById("Htype").value,
-            'image': document.getElementById("Himage").value, 
-            'desc': document.getElementById("Hdesc").value,
-            'start_time': document.getElementById("Hstart_time").value,
-            'end_time': document.getElementById("Hend_time").value,
-            'start_text': document.getElementById("Hstart_text").value
-            };
-            console.log(data);
-            Socket.emit('updateHunt', data);
+    updateHunts(id){
+        var ids = document.getElementsByClassName(id);
+        var n = document.getElementsByName("n");
+        var t = document.getElementsByName("t");
+        var u = document.getElementsByName("u");
+        var d = document.getElementsByName("d");
+        var s = document.getElementsByName("s");
+        var e = document.getElementsByName("e");
+        var st = document.getElementsByName("st");
+
+        for(var m = 0; m < ids.length; m++){
+            for(var j = 0; j < n.length; j++){
+                if(ids[m].value == n[j].value){
+                    n = n[j].value;
+                    t = t[j].value;
+                    u = u[j].value;
+                    d = d[j].value;
+                    s = s[j].value;
+                    e = e[j].value;
+                    st = st[j].value;
+                    j = ids.length;
+                }
+            }
         }
-        else{
-            document.getElementById("Hname").value = this.state.getHunts[index].name;
-            document.getElementById("Htype").value = this.state.getHunts[index].h_type;
-            document.getElementById("Himage").value = this.state.getHunts[index].image;
-            document.getElementById("Hdesc").value = this.state.getHunts[index].desc;
-            document.getElementById("Hstart_time").value = this.state.getHunts[index].start_time;
-            document.getElementById("Hend_time").value = this.state.getHunts[index].end_time;
-            document.getElementById("Hstart_text").value = this.state.getHunts[index].start_text;
+        
+        if(confirm("Would you like to make the following changes to the " + n + " hunt ?\n\n" + 
+        "Name: " + n +
+        "\nType: " + t + 
+        "\nImage: " + u + 
+        "\nDescription: " + d+
+        "\nStart Time: " + s + 
+        "\nEnd Time: " + e+ 
+        "\nStart Text: " + st
+        )){
+            var data = {
+            'id': id,
+            'name': n,
+            'type': t,
+            'image': u, 
+            'desc': d,
+            'start_time': s,
+            'end_time': e,
+            'start_text': st
+            };
+            Socket.emit('updateHunt', data);
         }
     }
     
@@ -96,26 +105,55 @@ export class AdminHunts extends React.Component {
         Socket.emit('deleteHunt', {index});
     }
     
-    updateQuestion(questionToUpdate,answer,image,hint_A,hint_B,answer_text,hunts_id){
-    
-        var question = prompt('question',questionToUpdate);
-        var answer = prompt('answer',answer);
-        var image = prompt('image',image);
-        var hint_A = prompt('hint_A',hint_A);
-        var hint_B = prompt('hint_B',hint_B);
-        var answer_text = prompt('answer_text',answer_text);
+    updateQuestion(id,question,answer,image,hint_A,hint_B,answer_text,hunts_id){
+        var ids = document.getElementsByClassName(id);
+        var q = document.getElementsByName("q");
+        var a = document.getElementsByName("a");
+        var i = document.getElementsByName("i");
+        var h1 = document.getElementsByName("h1");
+        var h2 = document.getElementsByName("h2");
+        var at = document.getElementsByName("at");
 
-        if (question != null && question != "" && answer != null && answer != "" && hint_A != null && hint_A != "") {
-            alert(question,answer,image,hint_A,hint_B,answer_text,hunts_id);
-            Socket.emit('updateQuestion', {questionToUpdate,question,answer,image,hint_A,hint_B,answer_text,hunts_id});
+        console.log(h2.length);
+        for(var m = 0; m < ids.length; m++){
+            for(var j = 0; j < q.length; j++){
+                if(ids[m].value == q[j].value){
+                    q = q[j].value;
+                    a = a[j].value;
+                    i = i[j].value;
+                    h1 = h1[j].value;
+                    h2 = h2[j].value;
+                    at = at[j].value;
+                    j = ids.length;
+                }
+            }
         }
-        else{
-            alert('not updated no blank entries for question, answer, or hint_A');
+        if(confirm("Would you like to make the following changes to this Question?\n\n" + 
+        "Question: " + q +
+        "\nAnswer: " + a + 
+        "\nImage: " + i + 
+        "\nHint One: " + h1 + 
+        "\nHint One: " + h2 + 
+        "\nAnswer Text: " + at
+        )){
+            if (question != null && question != "" && answer != null && answer != "") {
+                var data = {
+                    'id': id,
+                    'question': q,
+                    'answer': a,
+                    'image': i, 
+                    'h1': h1,
+                    'h2': h2,
+                    'answer_text': at
+                };
+                Socket.emit('updateQuestion', data);
+            }
+            else{
+                alert('not updated no blank entries for question, answer, or hint_A');
+            }
         }
-       
-      
-        
     }
+    
     deleteQuestion(question){
         
         console.log(question);
@@ -128,39 +166,23 @@ export class AdminHunts extends React.Component {
         var questions = '';
         
         if (this.state.getHunts != null) {
+            
             hunts = this.state.getHunts.map(
                 (n, index) =>
-                <tr key={0}>
-                <td><b>Name</b></td>
-                <td><b>Hunt Type</b></td>
-                <td><b>Description</b></td>
-                <td><b>Image</b></td>
-                <td><b>Start time</b></td>
-                <td><b>End time</b> </td>
-                <td><b>Start text</b></td>
-                <td><b>Show Questions</b></td>
-                <td><b>Update Hunts</b> </td>
-                <td><b>Delete Questions Before Hunts</b> </td>
-                </tr>
-             );
-            
-            hunts.push(this.state.getHunts.map(
-                (n, index) =>
                 <tr key={index}>
-                <td><textarea id="Hname" cols='10'>{n.name}</textarea></td>
-                <td><textarea id="Htype" cols='5' rows='1'>{n.h_type}</textarea></td>
-                <td><textarea id="Hdesc" cols='15'>{n.desc}</textarea></td>
-                <td><textarea id="Himage" cols='15'>{n.image}</textarea></td>
-                <td><textarea id="Hstart_time" cols='17' rows='1'>{n.start_time}</textarea></td>
-                <td><textarea id="Hend_time" cols='17' rows='1'>{n.end_time}</textarea></td>
-                <td><textarea id="Hstart_text" cols='15'>{n.start_text}</textarea></td>
+                <td><textarea className={n.id} name='n' cols='10' defaultValue={n.name}></textarea></td>
+                <td><textarea className={n.id} name='t' cols='5' rows='1' defaultValue={n.h_type}></textarea></td>
+                <td><textarea className={n.id} name='d' cols='15' defaultValue={n.desc}></textarea></td>
+                <td><textarea className={n.id} name='u' cols='15' defaultValue={n.image}></textarea></td>
+                <td><textarea className={n.id} name='s' cols='17' rows='1'defaultValue={n.start_time}></textarea></td>
+                <td><textarea className={n.id} name='e' cols='17' rows='1' defaultValue={n.end_time}></textarea></td>
+                <td><textarea className={n.id} name='st' cols='15'defaultValue={n.start_text}></textarea></td>
                 <td><Button onClick={() => this.showQuestions(index)}>Questions</Button></td>
-                <td><Button onClick={() => this.updateHunts(index)}>Update</Button></td>
+                <td><Button onClick={() => this.updateHunts(n.id)}>Update</Button></td>
                 <td><Button onClick={() => this.deleteHunt(index, n.name)}>Delete</Button></td>
                 </tr>
-             ));
+             );
         }
-        // console.log(this.state.getQuestions );
         
         if (this.state.getQuestions != null) {
             questions = this.state.getQuestions.map(
@@ -179,16 +201,17 @@ export class AdminHunts extends React.Component {
              );
             
             questions.push(this.state.getQuestions.map(
-                (n, index) =>
-                <tr key={n.id}>
-                <td><textarea id="w" cols='15'>{n.question}</textarea></td>
-                <td><textarea id="w" cols='15'>{n.answer}</textarea></td>
-                <td><textarea id="w" cols='3'>{n.image}</textarea></td>
-                <td><textarea id="w" cols='10'>{n.hint_A}</textarea></td>
-                <td><textarea id="w" cols='10'>{n.hint_B}</textarea></td>
-                <td><textarea id="w" cols='8'>{n.answer_text}</textarea></td>
-                <td><input type="text" value = {n.hunts_id} size="1"/></td>
-                <td><Button onClick={() => this.updateQuestion(n.question,
+                (n, index) =>               
+                <tr key={n.id} id={n.id}>
+                <td><textarea className={n.id} name='q' cols='15' defaultValue={n.question}></textarea></td>
+                <td><textarea className={n.id} name='a' cols='15' defaultValue={n.answer}></textarea></td>
+                <td><textarea className={n.id} name='i' cols='3' defaultValue={n.image}></textarea></td>
+                <td><textarea className={n.id} name='h1' cols='10' defaultValue={n.hint_A}></textarea></td>
+                <td><textarea className={n.id} name='h2' cols='10' defaultValue={n.hint_B}></textarea></td>
+                <td><textarea className={n.id} name='at' cols='8'defaultValue={n.answer_text}></textarea></td>
+                <td>{n.hunts_id}</td>
+                <td><Button onClick={() => this.updateQuestion(n.id,
+                                                               n.question,
                                                                n.answer,
                                                                n.image,
                                                                n.hint_A,
@@ -199,7 +222,6 @@ export class AdminHunts extends React.Component {
                 </tr>
              ));
         }
-        
         return (
             <div>
                 <div id = 'header'>
@@ -211,6 +233,18 @@ export class AdminHunts extends React.Component {
                 <div id="userList">
                     <table id="admin-table2">
                         <tbody>
+                            <tr>
+                                <td><b>Name</b></td>
+                                <td><b>Hunt Type</b></td>
+                                <td><b>Description</b></td>
+                                <td><b>Image</b></td>
+                                <td><b>Start time</b></td>
+                                <td><b>End time</b> </td>
+                                <td><b>Start text</b></td>
+                                <td><b>Show Questions</b></td>
+                                <td><b>Update Hunts</b> </td>
+                                <td><b>Delete Questions Before Hunts</b> </td>
+                            </tr>
                             {hunts}
                         </tbody>
 
