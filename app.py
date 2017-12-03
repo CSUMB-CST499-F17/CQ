@@ -535,24 +535,27 @@ def deleteHunt(data):
         print(e)
     getHunt(1)
         
-@socketio.on('updateQuestion')
-def updateQuestion(data):
-    print(data)
+@socketio.on('updateHunt')
+def updateHunt(data):
     try:
-        question = data
+        hunt = data
         #updates the progress
-        query = models.db.session.query(models.Questions).filter(models.Questions.question == question['questionTU']).update({
-        models.Questions.question: question['question'],
-        models.Questions.answer: question['answer'],
-        models.Questions.image: question['image'],
-        models.Questions.hint_A: question['hint_A'],
-        models.Questions.hint_B: question['hint_B'],
-        models.Questions.answer_text: question['answer_text'],
-        models.Questions.hunts_id: question['hunts_id']})
+        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.name: hunt['name']})
+        models.db.session.commit()
+        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.h_type: hunt['type']})
+        models.db.session.commit()
+        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.image: hunt['image']})
+        models.db.session.commit()
+        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.desc: hunt['desc']})
+        models.db.session.commit()
+        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.start_time: hunt['start_time']})
+        models.db.session.commit()
+        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.end_time: hunt['end_time']})
+        models.db.session.commit()
+        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.start_text: hunt['start_text']})
         models.db.session.commit() 
     except Exception as e: 
         print(e)
->>>>>>> f000c54cc12d1d2657e2683994eae3c5a3938fc8
 
 @socketio.on('adminHunts')
 def getHunts(data):

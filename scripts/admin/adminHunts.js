@@ -110,7 +110,6 @@ export class AdminHunts extends React.Component {
         }
     }
     
-<<<<<<< HEAD
     updateQuestion(id,question,answer,image,hint_A,hint_B,answer_text,hunts_id){
         var ids = document.getElementsByClassName(id);
         var q = document.getElementsByName("q");
@@ -184,13 +183,8 @@ export class AdminHunts extends React.Component {
                 <td><textarea className={n.id} name='e' cols='17' rows='1' defaultValue={n.end_time}></textarea></td>
                 <td><textarea className={n.id} name='st' cols='15'defaultValue={n.start_text}></textarea></td>
                 <td><Button onClick={() => this.showQuestions(index)}>Questions</Button></td>
-<<<<<<< HEAD
                 <td><Button onClick={() => this.updateHunts(n.id)}>Update</Button></td>
                 <td><Button onClick={() => this.deleteHunt(index, n.name)}>Delete</Button></td>
-=======
-                <td><Button onClick={() => this.updateHunts(index)}>Update</Button></td>
-                <td><Button onClick={() => this.deleteHunt(index)}>Delete</Button></td>
->>>>>>> f000c54cc12d1d2657e2683994eae3c5a3938fc8
                 </tr>
              );
         }
@@ -212,7 +206,6 @@ export class AdminHunts extends React.Component {
              );
             
             questions.push(this.state.getQuestions.map(
-<<<<<<< HEAD
                 (n, index) =>               
                 <tr key={n.id} id={n.id}>
                 <td><textarea className={n.id} name='q' cols='15' defaultValue={n.question}></textarea></td>
@@ -230,18 +223,6 @@ export class AdminHunts extends React.Component {
                                                                n.hint_B,
                                                                n.answer_text,
                                                                n.hunts_id)}>Update</Button></td>
-=======
-                (n, index) =>
-                <tr key={n.id}>
-                <td><textarea id="qQuestion" cols='15'>{n.question}</textarea></td>
-                <td><textarea id="qAnswer" cols='15'>{n.answer}</textarea></td>
-                <td><textarea id="qImage" cols='3'>{n.image}</textarea></td>
-                <td><textarea id="qHint_A" cols='10'>{n.hint_A}</textarea></td>
-                <td><textarea id="qHint_B" cols='10'>{n.hint_B}</textarea></td>
-                <td><textarea id="qAnswer_text" cols='8'>{n.answer_text}</textarea></td>
-                <td><input id = "qHunts_id" type="text" value = {n.hunts_id} size="1"/></td>
-                <td><Button onClick={() => this.updateQuestion(index)}>Update</Button></td>
->>>>>>> f000c54cc12d1d2657e2683994eae3c5a3938fc8
                 <td><Button onClick={() => this.deleteQuestion(n.question)}>Delete</Button></td>
                 </tr>
              ));
