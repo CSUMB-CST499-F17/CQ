@@ -66,28 +66,28 @@ export class AdminCreateHunt extends React.Component {
             for(var z = 0; z < q.length; z++){
                 this.state.questions[z]= q[z].value;
                 this.state.answers[z]= a[z].value;
-                this.state.answer_text[z]= at[z].value;
                 this.state.hint1[z]= h1[z].value;
                 this.state.hint2[z]= h2[z].value;
                 this.state.images[z] = i[z].value;
+                this.state.answer_text[z]= at[z].value;
             }
-            	Socket.emit('createHunt',{
-                    'name':n,
-                    'sDate':s,
-                    'eDate':e,
-                    'url':u,
-                    'type':t,
-                    'desc':d,
-                    'st':st,
+            // 	Socket.emit('createHunt',{
+            //         'name':n,
+            //         'sDate':s,
+            //         'eDate':e,
+            //         'url':u,
+            //         'type':t,
+            //         'desc':d,
+            //         'st':st,
                     
-                    'question':this.state.questions,
-                    'answer':this.state.answers,
-                    'answer_text':this.state.answer_text,
-                    'hint1':this.state.hint1,
-                    'hint2':this.state.hint2,
-                    'image':this.state.images
-            	});
-            	this.props.changePage('adminHunts')
+            //         'question':this.state.questions,
+            //         'answer':this.state.answers,
+            //         'answer_text':this.state.answer_text,
+            //         'hint1':this.state.hint1,
+            //         'hint2':this.state.hint2,
+            //         'image':this.state.images
+            // 	});
+            // 	this.props.changePage('adminHunts')
         }
         else{
             alert("Please check that all requirements are filled");
@@ -207,7 +207,6 @@ export class AdminCreateHunt extends React.Component {
                             <tr>
                                 <td><b>Name</b></td>
                                 <td><b>Hunt Type</b></td>
-                                <td><b>Description</b></td>
                                 <td><b>Image</b></td>
                                 <td><b>Start time</b></td>
                                 <td><b>End time</b> </td>
