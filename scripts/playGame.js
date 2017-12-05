@@ -39,14 +39,14 @@ export class PlayGame extends React.Component {
             //checks if current question is last question //changes Last Question button content to Complete
             if(this.props.state.user.progress == this.props.state.questions.length - 1 || (this.props.state.user.progress == this.props.state.questions.length && this.props.state.questions.length == 1)){
                 document.getElementById('complete-button').style.display = "block"; //shows complete button
-                document.getElementById('skip').style.display = "none"; //hides skip button
             }
             //checks if next question is less than the total amount of questions - 1
             if(this.props.state.user.progress < this.props.state.questions.length - 1){
                 document.getElementById('next').style.display = "block"; //shows next button
             }
             document.getElementById('answer-submit').style.display = "none"; //hides answer input
-            document.getElementById('hint-submit').style.display = "none"; //hides hint button
+            // document.getElementById('hint-submit').style.display = "none"; //hides hint button
+            document.getElementById('skip').style.display = "none"; //hides skip button
             
             //resets attempts to empty array
             this.setState({
@@ -70,7 +70,7 @@ export class PlayGame extends React.Component {
                 document.getElementById('skip').style.display = "block"; //shows skip button
                 //checks if user has more than zero attempts left
                 if(this.props.state.user.attempts > 0 && this.props.state.user.score > 0){
-                    var userData = {'id':this.props.state.user.id, 'email':this.props.state.user.email, 'team_name':this.props.state.user.team_name, 'hunts_id':this.props.state.user.hunts_id, 'score':(this.props.state.user.score - 5), 'attempts':(this.props.state.user.attempts - 1), 'progress':this.props.state.user.progress};
+                    var userData = {'id':this.props.state.user.id, 'email':this.props.state.user.email, 'hints':this.props.state.user.hints,'team_name':this.props.state.user.team_name, 'hunts_id':this.props.state.user.hunts_id, 'score':(this.props.state.user.score - 5), 'attempts':(this.props.state.user.attempts - 1), 'progress':this.props.state.user.progress};
                     this.props.setUser(userData, this.done0); //updates user
                 }
             }
@@ -179,7 +179,7 @@ export class PlayGame extends React.Component {
     skip(){
         var userData;
         //checks if user is on last question
-        if(this.props.state.user.progress == (this.props.state.questions.length - 1)){
+        if(this.props.state.user.progress == (this.props.state.questions.length)){
             document.getElementById('skip').style.display = "none"; //hides skip button
             document.getElementById('answer-submit').style.display = "none"; //hides answer input bar
             document.getElementById('complete-button').style.display = "block"; //hides complete button
@@ -229,6 +229,7 @@ export class PlayGame extends React.Component {
             //checks if user has already used a hint on a previous login
             if(this.props.state.questions[index]['hint1'] != "" && this.props.state.user.hints == 0){
                 this.hide = 'block'; //shows used hint
+                console.log(true);
             }
             else{ //checks if user has already used a hint on a previous login and that user has a second hint to use, displaying hint and hint button
                 if(this.props.state.questions[index]['hint1'] != "" && this.props.state.user.hints == 1){

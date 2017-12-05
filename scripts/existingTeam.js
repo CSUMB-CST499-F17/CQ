@@ -27,10 +27,12 @@ export class ExistingTeam extends React.Component {
             switch(data['loggedIn']) {
                 case "teamLead": //if teamLead or team, user goes to Play Page
                 case "team":
+                    document.getElementById("team_name").value == ""
                     this.props.changePage('play');
                     break;
                 case "superAdmin": //if superAdmin or admin, user goes to AdminHome Page
                 case "admin":
+                    document.getElementById("team_name").value == ""
                     this.props.changePage('adminHome');
                     break;
                 case "no": //if credentials aren't in database, user error message is shown
