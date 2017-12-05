@@ -4,7 +4,7 @@ import models
 
 #Global variables
 x = 1
-announceHour = 16 # in UTC, corresponds to 8AM PST/9AM PDT
+announceHour = 12 # in UTC, corresponds to 4AM PST
 announceMinute = 0
 announceTime = datetime.datetime.now().replace(hour=announceHour, minute=announceMinute)
 
@@ -23,9 +23,10 @@ def hello():
 
 @socketio.on('home')
 def updateHome(data):
+    #checks for hunts that have ended on a day-long timer defined as announceHour and announceMinute above
     global announceTime
     if (datetime.datetime.now() - announceTime).total_seconds() > 0:
-        announceWinner()
+        endHunts()
         setAnnounceTime()
     loggedIn = data['loggedIn'].lower()
     lastPage = data['lastPage']
@@ -632,8 +633,18 @@ def setAnnounceTime():
 	if announceTime.hour >= announceHour and announceTime.minute >= announceMinute:
 		announceTime = announceTime + datetime.timedelta(days=1)
 	announceTime = announceTime.replace(hour=announceHour, minute=announceMinute, second=0, microsecond=0)
+	print("Next announcement - {}").format(announceTime)
 	
-def endHunt(hunt_id):
+def endHunts():
+    print("{} - End hunts").format(datetime.datetime.now())
+    ending_hunts = models.db.session.query(models.Hunts).filter(models.Hunts.end_time < datetime.datetime.now()) #, models.Hunts.ended != False)
+    
+    for hunt in ending_hunts:
+        scoreHunt(hunt.id)
+        announceWinner(hunt.id)
+        #hunt.ended = True
+	
+def scoreHunt(hunt_id):
     users = models.db.session.query(models.Participants).filter(sqlalchemy.and_(models.Participants.hunts_id == hunt_id,models.Participants.end_time == None)) #get all users from this hunt who havent finished
     hunt = models.db.session.query(models.Hunts).filter_by(id=hunt_id).first()
     questions = models.db.session.query(models.Questions).filter_by(hunts_id=hunt_id)
@@ -655,13 +666,12 @@ def endHunt(hunt_id):
             self.score = self.score - (unanswered * 25) - ((5 - self.attempts) * 5) #please someone check my math
             self.progress = -1
             models.db.session.commit()
-	
-def announceWinner():
-    hunts_to_announce = models.db.session.query(models.Hunts).filter(models.Hunts.end_time < datetime.datetime.now()) # models.Hunts.ended != False
     
-    for hunt in hunts_to_announce:
-        endHunt(hunt.id)
-        players = models.db.session.query(models.Participants).filter(models.Participants.progress == -1).order_by(models.Participants.score.desc()) #check out this line
+	
+def announceWinner(hunt_id):
+    hunt = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt_id).first() # models.Hunts.ended != False
+    players = models.db.session.query(models.Participants).filter(models.Participants.progress == -1, models.Participants.hunts_id == hunt_id).order_by(models.Participants.score.desc())
+    if players.count() > 0:
         winner = players.first()
         winner_message = "Congratulations team {}, you are the winner!\n\n You won the hunt {} with a score of {}. Your prize is a brand new car!".format(winner.team_name, hunt.name, winner.score)
         #emailClient(winner.email, "Coastal Quest - Winner!", winner_message)
