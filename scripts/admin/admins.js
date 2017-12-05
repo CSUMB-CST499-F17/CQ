@@ -84,7 +84,7 @@ export class Admins extends React.Component {
                 <tr key={index}>
                 <td>{n.email}</td>
                 <td>{n.username}</td>
-                <td>{n.is_super}</td>
+                <td>{n.is_super.toString()}</td>
                 <td><Button onClick={() => this.updateAdmin(index, n.username,n.email, n.is_super)}>Update</Button></td>
                 <td><Button onClick={() => this.deleteAdmin(index, n.username)}>Delete</Button></td>
                 </tr>
@@ -100,20 +100,18 @@ export class Admins extends React.Component {
                     <p id="deleted"></p><br/>
                 </div>
                 <div id="userList">
-                        <table id="admin-table">
-                                    <tbody>
-                                        <tr>
-                                            <td>Email</td><td>Username</td><td>Super</td><td>Update</td><td>Delete</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                        <table id="admin-table2">
+                    <table id="admin-table2">
                         <tbody>
+                            <tr>
+                                <td>Email</td>
+                                <td>Username</td>
+                                <td>Super</td>
+                                <td>Update</td>
+                                <td>Delete</td>
+                            </tr>
                             {admins}
                         </tbody>
-
                     </table>
-
                 </div>
                 <div className='buttons'>
                     <form onSubmit = {this.handleSubmit}>
