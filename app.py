@@ -640,9 +640,9 @@ def endHunts():
     ending_hunts = models.db.session.query(models.Hunts).filter(models.Hunts.end_time < datetime.datetime.now()) #, models.Hunts.ended != False)
     
     for hunt in ending_hunts:
-        scoreHunt(hunt.id)
-        announceWinner(hunt.id)
-        #hunt.ended = True
+        if (datetime.datetime.now() - announceTime).total_seconds() > 86400:
+            scoreHunt(hunt.id)
+            announceWinner(hunt.id)
 	
 def scoreHunt(hunt_id):
     users = models.db.session.query(models.Participants).filter(sqlalchemy.and_(models.Participants.hunts_id == hunt_id,models.Participants.end_time == None)) #get all users from this hunt who havent finished
