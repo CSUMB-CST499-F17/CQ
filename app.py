@@ -673,11 +673,8 @@ def announceWinner(hunt_id):
     players = models.db.session.query(models.Participants).filter(models.Participants.progress == -1, models.Participants.hunts_id == hunt_id).order_by(models.Participants.score.desc())
     if players.count() > 0:
         winner = players.first()
-        winner_message = "Congratulations team {}, you are the winner!\n\n You won the hunt {} with a score of {}. Your prize is a brand new car!".format(winner.team_name, hunt.name, winner.score)
-        #emailClient(winner.email, "Coastal Quest - Winner!", winner_message)
-        for player in players:
-            player_message = "Hello team {},\n\nThe scavenger hunt {} has ended. Congratulations to team {}, who finished the hunt with a score of {}!\nWe hope to see you again on one of our open hunts:\n[open hunt names]".format(player.team_name, hunt.name, winner.team_name, winner.score)
-            #emailClient(player.email, "Coastal Quest - Hunt Over", player_message)
+        winner_message = "Congratulations team {}, you are the winner! You won the hunt {} with a score of {}. Thank you for playing!\n\n-------------\nCoastal Quest".format(winner.team_name, hunt.name, winner.score)
+        emailClient(winner.email, "Coastal Quest - Winner!", winner_message)
     
 def emailClient(client_email, subject, message):
     recp_message  = 'Subject: {}\n\n{}'.format(subject, message)
