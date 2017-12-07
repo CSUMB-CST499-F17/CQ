@@ -76,7 +76,7 @@ p{
     font-size: 16px;
     margin: 2px 2px;
 }
-#errorMessage{
+#errorMessage, #showHide{
     font-size: 16px;
 }
 
@@ -548,6 +548,9 @@ td{
         width:150px;
     } 
     #errorMessage{
+        font-size: 12px;
+    }
+    #showHide{
         font-size: 12px;
     }
     .buttons{

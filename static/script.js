@@ -30827,7 +30827,7 @@
 
 	        _this.handle = _this.handle.bind(_this); //handles data recieved from validateCreentials
 	        _this.validateCredentials = _this.validateCredentials.bind(_this); //checks team name and password with database in app.py
-
+	        _this.check = _this.check.bind(_this);
 	        return _this;
 	    }
 
@@ -30890,6 +30890,17 @@
 	                }
 	        }
 	    }, {
+	        key: 'check',
+	        value: function check() {
+	            if (document.getElementById('show').checked == true) {
+	                //show password
+	                document.getElementById('access').type = 'text';
+	            } else {
+	                //hide password
+	                document.getElementById('access').type = 'password';
+	            }
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return React.createElement(
@@ -30897,6 +30908,13 @@
 	                { id: 'login' },
 	                React.createElement('input', { type: 'text', id: 'team_name', placeholder: 'Team Name' }),
 	                React.createElement('input', { type: 'password', id: 'access', placeholder: 'Access Code' }),
+	                React.createElement(
+	                    'div',
+	                    { id: 'showHide' },
+	                    ' ',
+	                    React.createElement('input', { type: 'checkbox', id: 'show', onChange: this.check }),
+	                    ' Show Password'
+	                ),
 	                React.createElement(
 	                    'div',
 	                    { id: 'errorMessage', style: { visibility: 'hidden' } },

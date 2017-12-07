@@ -8,7 +8,7 @@ export class ExistingTeam extends React.Component {
 
         this.handle = this.handle.bind(this); //handles data recieved from validateCreentials
         this.validateCredentials = this.validateCredentials.bind(this); //checks team name and password with database in app.py
-        
+        this.check = this.check.bind(this);
     }
     
     //handles data recieved from validateCreentials
@@ -63,12 +63,20 @@ export class ExistingTeam extends React.Component {
             Socket.emit('validateCredentials',{'team_name':document.getElementById("team_name").value,'access':document.getElementById("access").value}, Socket.callback=this.handle);
         }
     }
-    
+    check(){
+        if(document.getElementById('show').checked == true){ //show password
+            document.getElementById('access').type = 'text';
+        }
+        else{ //hide password
+            document.getElementById('access').type = 'password';
+        }
+    }
     render() {
         return (
             <div id='login'>
                 <input type="text" id = "team_name" placeholder="Team Name" />
                 <input type="password" id = "access" placeholder="Access Code" />
+                <div id = "showHide"> <input type="checkbox" id = "show" onChange={this.check}/> Show Password</div>
                 <div id = "errorMessage" style={{visibility:'hidden'}}> Error Message Placeholder</div>
                 <div className='buttons'>
                     <button className="btn" onClick={this.validateCredentials}>Enter!</button>
