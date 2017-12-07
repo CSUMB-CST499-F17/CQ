@@ -53,35 +53,33 @@ def updateExplore(data):
 @socketio.on('changeType')
 def changeType(data):
     choice = data;
-    if data == '':
+    if data == '': #default to walking if no choice aka first time visiting page
         choice = 'walking'
-    hunts = [];
-    types = [];
-    index = 0;
-    count = 0;
+    hunts = []
+    types = []
+    filtered = []
+    index = 0
     try:
         t_list = models.db.session.query(models.Hunts.h_type).distinct()
         for row in t_list:
             types.append(row.h_type)
-        for typ in types: #remove types with no ongoing hunts from list
-            count = 0
-            h_list = models.db.session.query(models.Hunts).filter(sqlalchemy.and_(models.Hunts.h_type == choice,sqlalchemy.and_(models.Hunts.start_time <= datetime.datetime.now(),models.Hunts.end_time >= datetime.datetime.now()))).order_by(models.Hunts.id.desc()); #default type
+        for typ in types: 
+            h_list = models.db.session.query(models.Hunts).filter(sqlalchemy.and_(models.Hunts.h_type == typ,sqlalchemy.and_(models.Hunts.start_time <= datetime.datetime.now(),models.Hunts.end_time >= datetime.datetime.now()))); #gets hunts where type is choice and today is between start and end date 
             for row in h_list:
-                count += 1
-            if count == 0: #theres at least one hunt in this type
-                types.pop(types.index(typ))
+                if typ not in filtered:
+                    filtered.append(typ)
         while True:
-            h_list = models.db.session.query(models.Hunts).filter(sqlalchemy.and_(models.Hunts.h_type == choice,sqlalchemy.and_(models.Hunts.start_time <= datetime.datetime.now(),models.Hunts.end_time >= datetime.datetime.now()))).order_by(models.Hunts.id.desc()); #default type
+            h_list = models.db.session.query(models.Hunts).filter(sqlalchemy.and_(models.Hunts.h_type == choice,sqlalchemy.and_(models.Hunts.start_time <= datetime.datetime.now(),models.Hunts.end_time >= datetime.datetime.now()))); #gets hunts where type is choice today is between start and end date
             for row in h_list:
-                hunts.append({'id':row.id,'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time.strftime('%A %B %-d %-I:%M %p'),'end_time':row.end_time.strftime('%A %B %-d %-I:%M %p'),'start_text':row.start_text })
-            if len(hunts) == 0:
-                if index == len(types):
+                hunts.append({'id':row.id,'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time.strftime('%A %B %-d'),'end_time':row.end_time.strftime('%A %B %-d'),'start_text':row.start_text })
+            if len(hunts) == 0: #no hunts of choice found
+                if index == len(filtered): #no available types with hunts in them
                     return("empty")
                 else:
-                    choice = types[index];
-                    index += 1;
+                    choice = filtered[index]
+                    index += 1
             else:
-                return json.dumps({'choice':choice,'hunts':hunts,'types':types})
+                return json.dumps({'choice':choice,'hunts':hunts,'types':filtered})
     except Exception as e: 
         print(e)
 
@@ -258,19 +256,23 @@ def updateQuestion(data):
 @socketio.on('updateHunt')
 def updateHunt(data):
     try:
+        start = datetime.datetime.strptime(hunt['start_time'], '%m/%d/%Y')
+        end = datetime.datetime.strptime(hunt['end_time'], '%m/%d/%Y')
+        start = start.replace(hour=12)
+        end = end.replace(hour=12)
         hunt = data
         #updates the progress
         query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.name: hunt['name']})
         models.db.session.commit()
-        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.h_type: hunt['type']})
+        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.h_type: hunt['type'].lower()})
         models.db.session.commit()
         query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.image: hunt['image']})
         models.db.session.commit()
         query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.desc: hunt['desc']})
         models.db.session.commit()
-        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.start_time: hunt['start_time']})
+        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.start_time: start})
         models.db.session.commit()
-        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.end_time: hunt['end_time']})
+        query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.end_time: end})
         models.db.session.commit()
         query = models.db.session.query(models.Hunts).filter(models.Hunts.id == hunt['id']).update({models.Hunts.start_text: hunt['start_text']})
         models.db.session.commit() 
@@ -321,7 +323,9 @@ def createHunt(data):
     try:
         start = datetime.datetime.strptime(data['sDate'], '%m/%d/%Y')
         end = datetime.datetime.strptime(data['eDate'], '%m/%d/%Y')
-        hunts = models.Hunts(data['name'], data['type'], data['desc'], data['url'], start, end, data['st'])
+        start = start.replace(hour=12)
+        end = end.replace(hour=12)
+        hunts = models.Hunts(data['name'], data['type'].lower(), data['desc'], data['url'], start, end, data['st'])
         models.db.session.add(hunts)  
         models.db.session.commit()
         try:
@@ -596,7 +600,7 @@ def getHunts(data):
             ).order_by(models.Hunts.id)
 
         for row in sql:
-            huntsList.append({'id':row.id, 'name':row.name, 'h_type':row.h_type, 'desc':row.desc, 'image':row.image, 'start_time':row.start_time.strftime('%m/%d/%Y %H:%M:%S'), 'end_time':row.end_time.strftime('%m/%d/%Y %H:%M:%S'), 'start_text':row.start_text})
+            huntsList.append({'id':row.id, 'name':row.name, 'h_type':row.h_type, 'desc':row.desc, 'image':row.image, 'start_time':row.start_time.strftime('%m/%d/%Y'), 'end_time':row.end_time.strftime('%m/%d/%Y'), 'start_text':row.start_text})
     except:
         print("Error: Hunts Admin query broke")
     socketio.emit('getHunts', {

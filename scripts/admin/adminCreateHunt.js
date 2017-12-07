@@ -76,7 +76,7 @@ export class AdminCreateHunt extends React.Component {
                     'sDate':s,
                     'eDate':e,
                     'url':u,
-                    'type':t,
+                    'type':t.toLowerCase(),
                     'desc':d,
                     'st':st,
                     

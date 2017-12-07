@@ -53178,7 +53178,7 @@
 	                for (var j = 0; j < n.length; j++) {
 	                    if (ids[m].value == n[j].value) {
 	                        n = n[j].value;
-	                        t = t[j].value;
+	                        t = t[j].value.toLowerCase();
 	                        u = u[j].value;
 	                        d = d[j].value;
 	                        s = s[j].value;
@@ -53303,12 +53303,12 @@
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            React.createElement('textarea', { className: n.id, name: 's', cols: '17', rows: '1', defaultValue: n.start_time })
+	                            React.createElement('textarea', { className: n.id, name: 's', cols: '6', rows: '1', defaultValue: n.start_time })
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            React.createElement('textarea', { className: n.id, name: 'e', cols: '17', rows: '1', defaultValue: n.end_time })
+	                            React.createElement('textarea', { className: n.id, name: 'e', cols: '6', rows: '1', defaultValue: n.end_time })
 	                        ),
 	                        React.createElement(
 	                            'td',
@@ -53572,7 +53572,7 @@
 	                                    React.createElement(
 	                                        'b',
 	                                        null,
-	                                        'Start time'
+	                                        'Start Date'
 	                                    )
 	                                ),
 	                                React.createElement(
@@ -53581,7 +53581,7 @@
 	                                    React.createElement(
 	                                        'b',
 	                                        null,
-	                                        'End time'
+	                                        'End Date'
 	                                    ),
 	                                    ' '
 	                                ),
@@ -53591,7 +53591,7 @@
 	                                    React.createElement(
 	                                        'b',
 	                                        null,
-	                                        'Start text'
+	                                        'Start Text'
 	                                    )
 	                                ),
 	                                React.createElement(
@@ -53793,7 +53793,7 @@
 	                    'sDate': s,
 	                    'eDate': e,
 	                    'url': u,
-	                    'type': t,
+	                    'type': t.toLowerCase(),
 	                    'desc': d,
 	                    'st': st,
 

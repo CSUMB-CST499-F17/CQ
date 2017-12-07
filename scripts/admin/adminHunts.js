@@ -65,7 +65,7 @@ export class AdminHunts extends React.Component {
             for(var j = 0; j < n.length; j++){
                 if(ids[m].value == n[j].value){
                     n = n[j].value;
-                    t = t[j].value;
+                    t = t[j].value.toLowerCase();
                     u = u[j].value;
                     d = d[j].value;
                     s = s[j].value;
@@ -183,8 +183,8 @@ export class AdminHunts extends React.Component {
                 <td><textarea className={n.id} name='t' cols='5' rows='1' defaultValue={n.h_type}></textarea></td>
                 <td><textarea className={n.id} name='d' cols='15' defaultValue={n.desc}></textarea></td>
                 <td><textarea className={n.id} name='u' cols='15' defaultValue={n.image}></textarea></td>
-                <td><textarea className={n.id} name='s' cols='17' rows='1'defaultValue={n.start_time}></textarea></td>
-                <td><textarea className={n.id} name='e' cols='17' rows='1' defaultValue={n.end_time}></textarea></td>
+                <td><textarea className={n.id} name='s' cols='6' rows='1'defaultValue={n.start_time}></textarea></td>
+                <td><textarea className={n.id} name='e' cols='6' rows='1' defaultValue={n.end_time}></textarea></td>
                 <td><textarea className={n.id} name='st' cols='15'defaultValue={n.start_text}></textarea></td>
                 <td><Button onClick={() => this.showQuestions(index)}>Questions</Button></td>
                 <td><Button onClick={() => this.updateHunts(n.id)}>Update</Button></td>
@@ -247,9 +247,9 @@ export class AdminHunts extends React.Component {
                                 <td><b>Hunt Type</b></td>
                                 <td><b>Description</b></td>
                                 <td><b>Image</b></td>
-                                <td><b>Start time</b></td>
-                                <td><b>End time</b> </td>
-                                <td><b>Start text</b></td>
+                                <td><b>Start Date</b></td>
+                                <td><b>End Date</b> </td>
+                                <td><b>Start Text</b></td>
                                 <td><b>Show Questions</b></td>
                                 <td><b>Update Hunts</b> </td>
                                 <td><b>Delete Questions Before Hunts</b> </td>
