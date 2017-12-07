@@ -252,7 +252,7 @@ export class AdminHunts extends React.Component {
                                 <td><b>Start Text</b></td>
                                 <td><b>Show Questions</b></td>
                                 <td><b>Update Hunts</b> </td>
-                                <td><b>Delete Questions Before Hunts</b> </td>
+                                <td><b>Deletes Questions and Participants in the hunt</b> </td>
                             </tr>
                             {hunts}
                         </tbody>

@@ -523,9 +523,6 @@ def deleteQuestion(data):
         
 @socketio.on('deleteHunt')
 def deleteHunt(data):
-    print('******')
-    print(data)
-    print('******')
     try:
         sql = models.db.session.query(
             models.Questions.question,
