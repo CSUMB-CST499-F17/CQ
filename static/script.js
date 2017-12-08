@@ -53140,6 +53140,9 @@
 	        };
 	        _this.pageName = 'adminHunts';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.handle = _this.handle.bind(_this);
+	        _this.handleDelete = _this.handleDelete.bind(_this);
+	        _this.handleDeleteQ = _this.handleDeleteQ.bind(_this);
 	        _this.componentDidMount = _this.componentDidMount.bind(_this);
 	        _this.showQuestions = _this.showQuestions.bind(_this);
 	        _this.updateHunts = _this.updateHunts.bind(_this);
@@ -53172,7 +53175,7 @@
 	        value: function showQuestions(index) {
 	            var _this3 = this;
 
-	            _Socket.Socket.emit('questionsCall', { 'index': index + 1 });
+	            _Socket.Socket.emit('questionsCall', { 'index': index });
 
 	            _Socket.Socket.on('getQuestions', function (data) {
 	                _this3.setState({
@@ -53218,19 +53221,29 @@
 	                    'end_time': e,
 	                    'start_text': st
 	                };
-	                _Socket.Socket.emit('updateHunt', data);
+	                _Socket.Socket.emit('updateHunt', data, _Socket.Socket.callback = this.handle);
 	            }
 	        }
 	    }, {
 	        key: 'deleteHunt',
-	        value: function deleteHunt(hunts_id) {
-	            // console.log(index);
-	            // put alert
-
-	            hunts_id++;
-	            if (confirm("Will delete all Participants and Questions in hunt " + (hunts_id + 1) + "!\n\n")) {
-	                _Socket.Socket.emit('deleteHunt', { hunts_id: hunts_id });
+	        value: function deleteHunt(hunts_id, name) {
+	            this.setState({
+	                'getQuestions': null
+	            });
+	            if (confirm("Will delete all Participants and Questions in hunt " + name + "!\n\n")) {
+	                _Socket.Socket.emit('deleteHunt', hunts_id, _Socket.Socket.callback = this.handleDelete);
 	            }
+	        }
+	    }, {
+	        key: 'handle',
+	        value: function handle(callback) {
+	            alert("Update Complete");
+	        }
+	    }, {
+	        key: 'handleDelete',
+	        value: function handleDelete(callback) {
+	            alert("Delete Complete");
+	            _Socket.Socket.emit('adminHunts', "Hunt");
 	        }
 	    }, {
 	        key: 'updateQuestion',
@@ -53279,15 +53292,27 @@
 	        }
 	    }, {
 	        key: 'deleteQuestion',
-	        value: function deleteQuestion(question) {
+	        value: function deleteQuestion(id) {
+	            _Socket.Socket.emit('deleteQuestion', id, _Socket.Socket.callback = this.handleDeleteQ);
+	        }
+	    }, {
+	        key: 'handleDeleteQ',
+	        value: function handleDeleteQ(callback) {
+	            var _this4 = this;
 
-	            console.log(question);
-	            _Socket.Socket.emit('deleteQuestion', { question: question });
+	            alert("Delete Complete");
+	            _Socket.Socket.emit('questionsCall', { 'index': callback });
+
+	            _Socket.Socket.on('getQuestions', function (data) {
+	                _this4.setState({
+	                    'getQuestions': data['getQuestions']
+	                });
+	            });
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this4 = this;
+	            var _this5 = this;
 
 	            var hunts = '';
 	            var questions = '';
@@ -53339,7 +53364,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this4.showQuestions(index);
+	                                        return _this5.showQuestions(n.id);
 	                                    } },
 	                                'Questions'
 	                            )
@@ -53350,7 +53375,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this4.updateHunts(n.id);
+	                                        return _this5.updateHunts(n.id);
 	                                    } },
 	                                'Update'
 	                            )
@@ -53361,7 +53386,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this4.deleteHunt(index, n.name);
+	                                        return _this5.deleteHunt(n.id, n.name);
 	                                    } },
 	                                'Delete'
 	                            )
@@ -53374,7 +53399,7 @@
 	                questions = this.state.getQuestions.map(function (n, index) {
 	                    return React.createElement(
 	                        'tr',
-	                        { key: 0 },
+	                        { key: 0, id: 'titles' },
 	                        React.createElement(
 	                            'td',
 	                            null,
@@ -53504,7 +53529,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this4.updateQuestion(n.id, n.question, n.answer, n.image, n.hint_A, n.hint_B, n.answer_text, n.hunts_id);
+	                                        return _this5.updateQuestion(n.id, n.question, n.answer, n.image, n.hint_A, n.hint_B, n.answer_text, n.hunts_id);
 	                                    } },
 	                                'Update'
 	                            )
@@ -53515,7 +53540,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this4.deleteQuestion(n.question);
+	                                        return _this5.deleteQuestion(n.id);
 	                                    } },
 	                                'Delete'
 	                            )
@@ -53664,7 +53689,7 @@
 	                                    React.createElement(
 	                                        _reactBootstrap.Button,
 	                                        { onClick: function onClick() {
-	                                                return _this4.props.changePage('adminCreateHunt');
+	                                                return _this5.props.changePage('adminCreateHunt');
 	                                            } },
 	                                        'Create Hunt'
 	                                    )

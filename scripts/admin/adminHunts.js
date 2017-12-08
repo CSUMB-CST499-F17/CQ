@@ -14,6 +14,9 @@ export class AdminHunts extends React.Component {
         };
         this.pageName = 'adminHunts';
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handle = this.handle.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleDeleteQ = this.handleDeleteQ.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.showQuestions = this.showQuestions.bind(this);
         this.updateHunts = this.updateHunts.bind(this);
@@ -38,8 +41,7 @@ export class AdminHunts extends React.Component {
         
     }
     showQuestions(index){
-        
-        Socket.emit('questionsCall', {'index':index+1});
+        Socket.emit('questionsCall', {'index':index});
         
         
         Socket.on('getQuestions', (data) => {
@@ -47,8 +49,6 @@ export class AdminHunts extends React.Component {
                 'getQuestions': data['getQuestions']
             });
         });
-        
-        
     }
     
     updateHunts(id){
@@ -95,19 +95,25 @@ export class AdminHunts extends React.Component {
             'end_time': e,
             'start_text': st
             };
-            Socket.emit('updateHunt', data);
+            Socket.emit('updateHunt', data, Socket.callback=this.handle);
         }
     }
     
-    deleteHunt(hunts_id){
-        // console.log(index);
-        // put alert
-        
-        hunts_id++;
-        if(confirm("Will delete all Participants and Questions in hunt " + (hunts_id+1) +"!\n\n" ))
+    deleteHunt(hunts_id, name){
+        this.setState({
+            'getQuestions': null
+        });
+        if(confirm("Will delete all Participants and Questions in hunt " + (name) +"!\n\n" ))
         {
-            Socket.emit('deleteHunt', {hunts_id});
+            Socket.emit('deleteHunt', hunts_id, Socket.callback=this.handleDelete);
         }
+    }
+    handle(callback){
+        alert("Update Complete");
+    }
+    handleDelete(callback){
+        alert("Delete Complete");
+        Socket.emit('adminHunts', "Hunt");
     }
     
     updateQuestion(id,question,answer,image,hint_A,hint_B,answer_text,hunts_id){
@@ -163,10 +169,20 @@ export class AdminHunts extends React.Component {
         }
     }
     
-    deleteQuestion(question){
+    deleteQuestion(id){
+        Socket.emit('deleteQuestion', id, Socket.callback=this.handleDeleteQ);
+    }
+    
+    handleDeleteQ(callback){
+        alert("Delete Complete");
+        Socket.emit('questionsCall', {'index':callback});
         
-        console.log(question);
-        Socket.emit('deleteQuestion', {question});
+        
+        Socket.on('getQuestions', (data) => {
+            this.setState({
+                'getQuestions': data['getQuestions']
+            });
+        });
     }
 
     
@@ -186,9 +202,9 @@ export class AdminHunts extends React.Component {
                 <td><textarea className={n.id} name='s' cols='6' rows='1'defaultValue={n.start_time}></textarea></td>
                 <td><textarea className={n.id} name='e' cols='6' rows='1' defaultValue={n.end_time}></textarea></td>
                 <td><textarea className={n.id} name='st' cols='15'defaultValue={n.start_text}></textarea></td>
-                <td><Button onClick={() => this.showQuestions(index)}>Questions</Button></td>
+                <td><Button onClick={() => this.showQuestions(n.id)}>Questions</Button></td>
                 <td><Button onClick={() => this.updateHunts(n.id)}>Update</Button></td>
-                <td><Button onClick={() => this.deleteHunt(index, n.name)}>Delete</Button></td>
+                <td><Button onClick={() => this.deleteHunt(n.id, n.name)}>Delete</Button></td>
                 </tr>
              );
         }
@@ -196,7 +212,7 @@ export class AdminHunts extends React.Component {
         if (this.state.getQuestions != null) {
             questions = this.state.getQuestions.map(
                 (n, index) =>
-                <tr key={0}>
+                <tr key={0} id = "titles">
                 <td><b>Question</b></td>
                 <td><b>Answer</b></td>
                 <td><b>Image</b></td>
@@ -227,7 +243,7 @@ export class AdminHunts extends React.Component {
                                                                n.hint_B,
                                                                n.answer_text,
                                                                n.hunts_id)}>Update</Button></td>
-                <td><Button onClick={() => this.deleteQuestion(n.question)}>Delete</Button></td>
+                <td><Button onClick={() => this.deleteQuestion(n.id)}>Delete</Button></td>
                 </tr>
              ));
         }

@@ -69,7 +69,8 @@ p{
 	justify-content: center;
 	margin:auto;
 }
-#login input{
+
+#login input:not([type='checkbox']){
     text-align: center;
     display: inline-block;
     color: #0d3551;

@@ -514,10 +514,9 @@ def deleteQuestion(data):
             models.Questions.answer_text,
             models.Questions.hunts_id
             ).filter(
-                models.Questions.question == data['question']).delete()
+                models.Questions.id == data).delete()
         models.db.session.commit()
-        socketio.emit('getQuestions', {
-        })
+        return data
     except:
         print("Error: deleteQuestion query broke")
         
@@ -536,7 +535,7 @@ def deleteHunt(data):
             models.Questions.answer_text,
             models.Questions.hunts_id
             ).filter(
-                models.Questions.hunts_id == data['hunts_id']).delete()
+                models.Questions.hunts_id == data).delete()
         sql = models.db.session.query(
             models.Participants.progress,
             models.Participants.score,
@@ -545,7 +544,7 @@ def deleteHunt(data):
             models.Participants.end_time,
             models.Participants.hunts_id
             ).filter(
-                models.Participants.hunts_id == data['hunts_id']).delete()
+                models.Participants.hunts_id == data).delete()
         sql = models.db.session.query(
             models.Hunts.id,
             models.Hunts.name,
@@ -556,7 +555,7 @@ def deleteHunt(data):
             models.Hunts.end_time,
             models.Hunts.start_text
             ).filter(
-                models.Hunts.id == data['hunts_id']).delete()
+                models.Hunts.id == data).delete()
         models.db.session.commit()
     except Exception as e: 
         print(e)
