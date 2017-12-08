@@ -154,7 +154,7 @@ export class Content extends React.Component{
                         <AdminHome changePage={this.changePage} state={this.state}/>
                     </div>
                     <div id = 'adminLeaderboard' style={{display:'none'}}>
-                        <AdminLeaderboard changePage={this.changePage}/>
+                        <AdminLeaderboard changePage={this.changePage} setProps={this.setProps} state={this.state}/>
                     </div>
                     <div id = 'adminHunts' style={{display:'none'}}>
                         <AdminHunts changePage={this.changePage}/>

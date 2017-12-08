@@ -22422,7 +22422,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'adminLeaderboard', style: { display: 'none' } },
-	                    React.createElement(_adminLeaderboard.AdminLeaderboard, { changePage: this.changePage })
+	                    React.createElement(_adminLeaderboard.AdminLeaderboard, { changePage: this.changePage, setProps: this.setProps, state: this.state })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -51280,25 +51280,22 @@
 
 	            var approvedUsers = [];
 	            var userlist = '';
+	            console.log(this.state.userlist);
 	            for (var i = 0; i < this.state.userlist.length; i++) {
-	                var start = new Date(this.state.userlist[i].start_time);
-	                var end = new Date(this.state.userlist[i].end_time);
-	                var team_name = this.state.userlist[i].team_name;
-	                var score = this.state.userlist[i].score;
+	                var user = this.state.userlist[i];
 
-	                var time = (end - start) / 1000; // second/minutes/hours
+	                var time = user.time.substring().split(':');
+	                var team_name = user.team_name;
+	                var score = user.score;
 
-	                // calculate (and subtract) whole days
-	                var days = Math.floor(time / 86400);
-	                time -= days * 86400;
-	                // calculate (and subtract) whole hours
-	                var hours = Math.floor(time / 3600) % 24;
-	                time -= hours * 3600;
-	                // calculate (and subtract) whole minutes
-	                var minutes = Math.floor(time / 60) % 60;
-	                time -= minutes * 60;
-	                // what's left is seconds
-	                var seconds = time % 60;
+	                // whole days
+	                var days = time[0];
+	                // whole hours
+	                var hours = time[1];
+	                //  whole minutes
+	                var minutes = time[2];
+	                //  seconds
+	                var seconds = time[3];
 
 	                console.log("selected: " + this.props.state.select + ", mine: " + this.state.userlist[i].hunts_id + " render me?");
 	                console.log(this.props.state.select == this.state.userlist[i].hunts_id);
@@ -52256,6 +52253,7 @@
 	                );
 	            } else {
 	                //calculates total time taken
+	                console.log(this.props.state.user);
 	                var start = new Date(this.props.state.user.start_time);
 	                var end = new Date(this.props.state.user.end_time);
 	                var time = (end - start) / 1000; // second/minutes/hours
@@ -53228,6 +53226,7 @@
 	        _this.pageName = 'adminLeaderboard';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        _this.componentDidMount = _this.componentDidMount.bind(_this);
+	        _this.changePage = _this.changePage.bind(_this);
 	        return _this;
 	    }
 
@@ -53235,6 +53234,12 @@
 	        key: 'handleSubmit',
 	        value: function handleSubmit(event) {
 	            event.preventDefault();
+	        }
+	    }, {
+	        key: 'changePage',
+	        value: function changePage(page) {
+	            this.props.setProps('select', -1);
+	            this.props.changePage(page);
 	        }
 	    }, {
 	        key: 'componentDidMount',
@@ -53250,32 +53255,34 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var approvedUsers = [];
 	            var userlist = '';
+
 	            for (var i = 0; i < this.state.userlist.length; i++) {
-	                var start = new Date(this.state.userlist[i].start_time);
-	                var end = new Date(this.state.userlist[i].end_time);
-	                var team_name = this.state.userlist[i].team_name;
-	                var score = this.state.userlist[i].score;
-
-	                var time = (end - start) / 1000; // second/minutes/hours
-
-	                // calculate (and subtract) whole days
-	                var days = Math.floor(time / 86400);
-	                time -= days * 86400;
-	                // calculate (and subtract) whole hours
-	                var hours = Math.floor(time / 3600) % 24;
-	                time -= hours * 3600;
-	                // calculate (and subtract) whole minutes
-	                var minutes = Math.floor(time / 60) % 60;
-	                time -= minutes * 60;
-	                // what's left is seconds
-	                var seconds = time % 60;
+	                var user = this.state.userlist[i];
+	                var time = user.time.substring().split(':');
+	                var team_name = user.team_name;
+	                var score = user.score;
+	                // whole days
+	                var days = time[0];
+	                // whole hours
+	                var hours = time[1];
+	                //  whole minutes
+	                var minutes = time[2];
+	                //  seconds
+	                var seconds = time[3];
 
 	                this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
-	            }
 
-	            if (this.state.userlistPlusTime != null) {
-	                userlist = this.state.userlistPlusTime.map(function (n, index) {
+	                // console.log("selected: " + this.props.state.select + ", mine: " + this.state.userlist[i].hunts_id + " render me?");
+	                // console.log(this.props.state.select == this.state.userlist[i].hunts_id);
+	                if (this.props.state.select == this.state.userlist[i].hunts_id) {
+	                    //no filter, all winners
+	                    approvedUsers.push([team_name, score, days, hours, minutes, seconds]);
+	                }
+	            }
+	            if (approvedUsers.length > 0) {
+	                userlist = approvedUsers.map(function (n, index) {
 	                    return React.createElement(
 	                        'tr',
 	                        { key: index },
