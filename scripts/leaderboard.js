@@ -39,25 +39,22 @@ export class Leaderboard extends React.Component {
     render() {
         var approvedUsers = [];
         let userlist='';
+        console.log(this.state.userlist);
         for(var i = 0; i < this.state.userlist.length; i++) {
-            var start = new Date(this.state.userlist[i].start_time);
-            var end = new Date(this.state.userlist[i].end_time);
-            var team_name = this.state.userlist[i].team_name;
-            var score = this.state.userlist[i].score;
+            var user = this.state.userlist[i];
             
-            var time = (end-start) /1000;  // second/minutes/hours
-        
-            // calculate (and subtract) whole days
-            var days = Math.floor(time / 86400);
-            time -= days * 86400;
-            // calculate (and subtract) whole hours
-            var hours = Math.floor(time / 3600) % 24;
-            time -= hours * 3600;
-            // calculate (and subtract) whole minutes
-            var minutes = Math.floor(time / 60) % 60;
-            time -= minutes * 60;
-            // what's left is seconds
-            var seconds = time % 60;
+            var time = user.time.substring().split(':');
+            var team_name = user.team_name;
+            var score = user.score;
+            
+            // whole days
+            var days = time[0];
+            // whole hours
+            var hours = time[1];
+            //  whole minutes
+            var minutes = time[2];
+            //  seconds
+            var seconds = time[3];
             
             console.log("selected: " + this.props.state.select + ", mine: " + this.state.userlist[i].hunts_id + " render me?");
             console.log(this.props.state.select == this.state.userlist[i].hunts_id);

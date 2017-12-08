@@ -297,8 +297,15 @@ def updateLeaderboard(data):
                     )).order_by(models.Participants.score.desc())
 
         for row in sql:
-            leaderboardUser.append({'progress':row.progress, 'score':row.score,'team_name':row.team_name, 'start_time':row.start_time.strftime('%Y-%m-%d %H:%M:%S'),'end_time':row.end_time.strftime('%Y-%m-%d %H:%M:%S'),'hunts_id':row.hunts_id})
-
+            timedif = row.end_time - row.start_time
+            if 'day' in str(timedif): #if days, format d:h:m:s
+                time = str(timedif).split('.')[0].split(' ')[0] + ':' + str(timedif).split('.')[0].split(' ')[2] 
+            else: #if no days, add filler 0 days for js handling
+                time = '0:' + str(timedif).split('.')[0]
+            leaderboardUser.append({'progress':row.progress, 'score':row.score,'team_name':row.team_name, 'time':time,'hunts_id':row.hunts_id})
+            
+ 
+        
     except:
         print("Error: leaderboard query broke")
     socketio.emit('users', {
@@ -522,9 +529,6 @@ def deleteQuestion(data):
         
 @socketio.on('deleteHunt')
 def deleteHunt(data):
-    print('******')
-    print(data)
-    print('******')
     try:
         sql = models.db.session.query(
             models.Questions.question,
@@ -636,10 +640,10 @@ def setAnnounceTime():
 	if announceTime.hour >= announceHour and announceTime.minute >= announceMinute:
 		announceTime = announceTime + datetime.timedelta(days=1)
 	announceTime = announceTime.replace(hour=announceHour, minute=announceMinute, second=0, microsecond=0)
-	print("Next announcement - {}").format(announceTime)
+# 	print("Next announcement - {}").format(announceTime)
 	
 def endHunts():
-    print("{} - End hunts").format(datetime.datetime.now())
+    # print("{} - End hunts").format(datetime.datetime.now())
     ending_hunts = models.db.session.query(models.Hunts).filter(models.Hunts.end_time < datetime.datetime.now()) #, models.Hunts.ended != False)
     
     for hunt in ending_hunts:

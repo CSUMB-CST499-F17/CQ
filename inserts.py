@@ -61,6 +61,23 @@ participant = models.Participants(
 models.db.session.add(participant)
 models.db.session.commit()
 
+participant = models.Participants(
+    "coastalquest1338@gmail.com", #email
+    "CQ", #teamname
+    "static/image/logo-small.png", #image
+    "c298b26b0e6f8e3f9dffcd4353af986497e156d8bb0dbb8f3e5902cd47af7886:cfa8971c37934b37b7788b5f093ac2b329db29b695524fa9b6a453af051d3e76", #leader code
+    "5280af3d3ba3cfdd9492b383817da19417c09eb37a311a4fe083fc6bef81a5b7:e47918d8fd1c4e42a728c1f493c2496ecc1606a0b1bb4c999ac489d6e744f253", #member code
+    None, #start time
+    None, #end time
+    0, #progress
+    0, #attempts
+    0, #hints
+    0, #score
+    True, #hasPaid
+    1) #hunt id
+models.db.session.add(participant)
+models.db.session.commit()
+
 questions = models.Questions(
     "What is your team name?", #Question
     "CQ", #Answer
