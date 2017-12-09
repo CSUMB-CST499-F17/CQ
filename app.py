@@ -197,9 +197,7 @@ def updateProgress(data):
         print(e)
     
 def timeScore(total):
-    print("in Timescore")
     hours = total / 60 / 60;
-    print hours
     if(hours <= 2):
         score = 500
     else:
@@ -210,10 +208,8 @@ def timeScore(total):
 
 @socketio.on('updateTime')
 def updateTime(data):
-    print("In updateTime")
     user = data['user']
     if(data['start_time'] != ""):
-        print("Start Time")
         try:
             #updates end_time
             query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id']).update({models.Participants.start_time: datetime.datetime.now()})
@@ -222,7 +218,6 @@ def updateTime(data):
         except Exception as e: 
             print(e)
     if(data['end_time'] != ""):
-        print("End Time")
         try:
             #updates end_time
             query = models.db.session.query(models.Participants).filter(models.Participants.email == user['email'], models.Participants.team_name == user['team_name'], models.Participants.hunts_id == user['hunts_id']).update({models.Participants.end_time: datetime.datetime.now()})
@@ -250,8 +245,8 @@ def updateQuestion(data):
         query = models.db.session.query(models.Questions).filter(models.Questions.id == question['id']).update({models.Questions.answer_text: question['answer_text']})
         models.db.session.commit()
     except Exception as e: 
-        print(e)
         print("Error: updateQuestion query broke")
+        print(e)
         
 @socketio.on('updateHunt')
 def updateHunt(data):
@@ -311,7 +306,6 @@ def updateLeaderboard(data):
     socketio.emit('users', {
         'userlist': leaderboardUser
     })
-    print('Leaderboard data sent.')
 
     
 @socketio.on('register')
@@ -339,7 +333,6 @@ def createHunt(data):
             hunt = models.db.session.query(models.Hunts).filter(models.Hunts.name == data['name'], models.Hunts.h_type == data['type'])
             for row in hunt:
                 id = row.id
-                print id
             try:
                 for x in range(0, len(data['question'])):
                     questions = models.Questions(data['question'][x], data['answer'][x], data['image'][x], data['hint1'][x], data['hint2'][x], data['answer_text'][x], id)
@@ -355,14 +348,12 @@ def createHunt(data):
 @socketio.on('checkUserInfo')
 def checkUserInfo(data):
     userdata = data['userdata']
-    print(userdata)
     if models.db.session.query(models.Participants).filter(models.Participants.email == userdata['email'], models.Participants.hunts_id == userdata['hunts_id']).count() > 0:
         return json.dumps({'condition':'reject','message':"Email address already registered for this hunt."})
     elif models.db.session.query(models.Participants).filter(models.Participants.team_name == userdata['team_name'], models.Participants.hunts_id == userdata['hunts_id']).count() > 0:
         return json.dumps({'condition':'reject','message':"Team name already registered for this hunt."})
     else:
         price = calculatePrice(userdata['discount_code'])
-        print(price)
         return json.dumps({'condition':'accept','price':price})
     
 def calculatePrice(discount_code):
@@ -473,7 +464,6 @@ def loadAllAdmins(data):
 @socketio.on('addAdmin')
 def addAdmin(data):
     admin = models.Admins(data['email'], data['team_name'], data['access_code'], data['is_super'])
-    print (admin)
     models.db.session.add(admin)
     models.db.session.commit()
 
@@ -493,7 +483,6 @@ def deleteAdmin(data):
 
 @socketio.on('updateAdmin')
 def updateAdmin(data):
-    print(data)
     try:
         sql = models.db.session.query(
             models.Admins.email,
@@ -630,7 +619,6 @@ def getQuestions(data):
             questionsList.append({'id':row.id,'question':row.question, 'answer':row.answer, 'image':row.image,'hint_A':row.hint_A, 'hint_B':row.hint_B, 'answer_text':row.answer_text, 'hunts_id':row.hunts_id})
     except:
         print("Error: questionsAdmin query broke")
-    # print(questionsList)
     socketio.emit('getQuestions', {
         'getQuestions': questionsList
     })
@@ -640,14 +628,13 @@ def setAnnounceTime():
 	if announceTime.hour >= announceHour and announceTime.minute >= announceMinute:
 		announceTime = announceTime + datetime.timedelta(days=1)
 	announceTime = announceTime.replace(hour=announceHour, minute=announceMinute, second=0, microsecond=0)
-# 	print("Next announcement - {}").format(announceTime)
 	
 def endHunts():
-    # print("{} - End hunts").format(datetime.datetime.now())
     ending_hunts = models.db.session.query(models.Hunts).filter(models.Hunts.end_time < datetime.datetime.now()) #, models.Hunts.ended != False)
     
     for hunt in ending_hunts:
-        if (datetime.datetime.now() - announceTime).total_seconds() > 86400:
+        seconds = (datetime.datetime.now() - hunt.end_time).total_seconds()
+        if seconds < 86400 and seconds > 0:
             scoreHunt(hunt.id)
             announceWinner(hunt.id)
 	
@@ -659,7 +646,7 @@ def scoreHunt(hunt_id):
     for question in questions:
         questionList.append(question.id)
     for user in users:
-        if user.start_time == None:
+        if user.start_time == None or user.progress==0:
             self = models.db.session.query(models.Participants).filter_by(id=user.id).first()
             self.start_time = hunt.end_time
             self.end_time = hunt.end_time
@@ -668,9 +655,9 @@ def scoreHunt(hunt_id):
             models.db.session.commit()
         else:
             self = models.db.session.query(models.Participants).filter_by(id=user.id).first()
-            unanswered = len(questionList) - self.progress
+            unanswered = len(questionList) - self.progress + 1
             self.end_time = hunt.end_time
-            self.score = self.score - (unanswered * 25) - ((5 - self.attempts) * 5) #please someone check my math
+            self.score = self.score - (unanswered * 25)
             self.progress = -1
             models.db.session.commit()
     
