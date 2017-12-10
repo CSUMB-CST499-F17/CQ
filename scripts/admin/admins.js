@@ -19,6 +19,8 @@ export class Admins extends React.Component {
         this.pageName = 'admins';
         this.handleSubmit = this.handleSubmit.bind(this);
         this.deleteAdmin = this.deleteAdmin.bind(this);
+        this.updateAdmin = this.updateAdmin.bind(this);
+        this.loadAdmins = this.loadAdmins.bind(this);
     }
 
     handleSubmit(event) {
@@ -26,14 +28,17 @@ export class Admins extends React.Component {
 
     }
     componentDidMount(){
-        Socket.on('getAdmin', (data) => {
-            this.setState({
-                'getAdmin': data['getAdmin']
-            });
+        // Socket.on('getAdmin', (data) => {
+        //     this.setState({
+        //         'getAdmin': data['getAdmin']
+        //     });
+        // });
+        Socket.on('callbackUpdateAdmin', (data) => {
+            
+            Socket.emit('loadAllAdmins', this.props.state.id, Socket.callback = this.loadAdmins);
         });
     }
     deleteAdmin(index, username){
-        console.log("pressed");
         var txt;
         if(this.state.getAdmin[index].is_super == true && confirm("Super Admin can't be deleted?") == true){
             txt = "can't delete super admin!";
@@ -47,19 +52,40 @@ export class Admins extends React.Component {
         }
         document.getElementById("deleted").innerHTML = txt;
     }
-
-
-
+    loadAdmins(callback){
+        var data = JSON.parse(callback);
+        this.setState({
+            'getAdmin': data['adminList']
+        }); 
+    }
+    
+    updateAdmin(index, usernameToFind, email,is_super){
+        var txt;
+        var email = prompt('email', email);
+        var username = prompt('username', usernameToFind);
+        var is_super = prompt('super(T/F)',is_super);
+        if(this.state.getAdmin[index].is_super == true && confirm("Super Admin can't be deleted?") == true){
+            txt = "can't update super admin you don't have super admin privileges!";
+        }
+        if(this.state.getAdmin[index].is_super == false && confirm("Are you sure you would like to update your admin profile?") == true){
+            Socket.emit('updateAdmin', {index,usernameToFind,username,email,is_super});
+        }
+        else {
+            txt = "not updated!";
+        }
+    }
+    
     render() {
         var admins = '';
-
-        // console.log(this.state.getAdmin);
+        
         if (this.state.getAdmin != null) {
             admins = this.state.getAdmin.map(
                 (n, index) =>
                 <tr key={index}>
                 <td>{n.email}</td>
                 <td>{n.username}</td>
+                <td>{n.is_super.toString()}</td>
+                <td><Button onClick={() => this.updateAdmin(index, n.username,n.email, n.is_super)}>Update</Button></td>
                 <td><Button onClick={() => this.deleteAdmin(index, n.username)}>Delete</Button></td>
                 </tr>
              );
@@ -74,20 +100,18 @@ export class Admins extends React.Component {
                     <p id="deleted"></p><br/>
                 </div>
                 <div id="userList">
-                        <table id="admin-table">
-                                    <tbody>
-                                        <tr>
-                                            <td>Email</td><td>Username</td><td> </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                        <table id="admin-table2">
+                    <table id="admin-table2">
                         <tbody>
+                            <tr>
+                                <td>Email</td>
+                                <td>Username</td>
+                                <td>Super</td>
+                                <td>Update</td>
+                                <td>Delete</td>
+                            </tr>
                             {admins}
                         </tbody>
-
                     </table>
-
                 </div>
                 <div className='buttons'>
                     <form onSubmit = {this.handleSubmit}>

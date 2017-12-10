@@ -128,7 +128,7 @@ export class Register extends React.Component {
         document.getElementById('stripe-form').style.display = 'block';
     }
     
-    handleExit(event) {
+    handleExit(nextPage) {
         document.getElementById('stripe-form').style.display = 'block';
         document.getElementById('stripe-confirm').style.display = 'none';
         document.getElementById('stripe-process').style.display = 'none';
@@ -147,7 +147,7 @@ export class Register extends React.Component {
             this.hunts.pop();
         }
         
-        this.props.changePage('home');
+        this.props.changePage(nextPage);
     }
     
     handleCallback(callback){
@@ -294,13 +294,11 @@ export class Register extends React.Component {
                     <div id = 'stripe-success' style={{display:'none'}} >
                         <div className="confirm-group">
                             <div id="success-text" style={{display:'block'}}>
-                                <div>Thank you for your purchase!<br/>An email was sent to your provided email address with the following information:</div>
-                                <div>
-                                    <span><b>Here is your access code to login and play:</b> </span>
+                                <div>Thank you for your purchase!<br/><b>Your access code: </b>
                                     <span id="leader-code-slot"></span><br/>
-                                    <span>Return to the home page and log in with your team name and access code in the 'Login to Existing Team' section.</span>
+                                    <span>Return to the home page and log in to begin.</span>
                                 </div>
-                                <button className="btn" onClick={this.handleExit}>Accept</button>
+                                <button className="btn" onClick={()=> this.handleExit('home')}>Accept</button>
                             </div>
                             <div id = 'failure-text' style={{display:'none'}}>
                                 <div>We're sorry, your payment did not go through. <br/>Please return to the previous screen to try again.</div>
@@ -317,7 +315,8 @@ export class Register extends React.Component {
                     <div style={{textAlign:'center'}} id="form-outcome" style={{visibility:'hidden'}}>center</div>
                 </div>
                 <div className='buttons' id="home-button">
-                    <button className='btn' onClick={this.handleExit}>Home</button>
+                    <button className='btn' onClick={()=> this.handleExit('explore')}>Back</button>
+                    <button className='btn' onClick={()=> this.handleExit('home')}>Home</button>
                 </div>
             </div>
          

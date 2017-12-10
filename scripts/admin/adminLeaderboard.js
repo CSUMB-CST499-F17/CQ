@@ -21,11 +21,16 @@ export class AdminLeaderboard extends React.Component {
         this.pageName = 'adminLeaderboard';
         this.handleSubmit = this.handleSubmit.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.changePage = this.changePage.bind(this);
     }
 
     handleSubmit(event) {
         event.preventDefault();
 
+    }
+    changePage(page){
+        this.props.setProps('select',-1);
+        this.props.changePage(page);
     }
     componentDidMount(){
         Socket.on('users', (data) => {
@@ -36,35 +41,33 @@ export class AdminLeaderboard extends React.Component {
     }
 
     render() {
+        var approvedUsers = [];
         let userlist='';
-        for(var i = 0; i < this.state.userlist.length; i++) {
-            var start = new Date(this.state.userlist[i].start_time);
-            var end = new Date(this.state.userlist[i].end_time);
-            var team_name = this.state.userlist[i].team_name;
-            var score = this.state.userlist[i].score;
-            
-            var time = (end-start) /1000;  // second/minutes/hours
         
-            // calculate (and subtract) whole days
-            var days = Math.floor(time / 86400);
-            time -= days * 86400;
-            // calculate (and subtract) whole hours
-            var hours = Math.floor(time / 3600) % 24;
-            time -= hours * 3600;
-            // calculate (and subtract) whole minutes
-            var minutes = Math.floor(time / 60) % 60;
-            time -= minutes * 60;
-            // what's left is seconds
-            var seconds = time % 60;
+        for(var i = 0; i < this.state.userlist.length; i++) {
+            var user = this.state.userlist[i];
+            var time = user.time.substring().split(':');
+            var team_name = user.team_name;
+            var score = user.score;
+            // whole days
+            var days = time[0];
+            // whole hours
+            var hours = time[1];
+            //  whole minutes
+            var minutes = time[2];
+            //  seconds
+            var seconds = time[3];
             
             this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
             
-            
+            // console.log("selected: " + this.props.state.select + ", mine: " + this.state.userlist[i].hunts_id + " render me?");
+            // console.log(this.props.state.select == this.state.userlist[i].hunts_id);
+            if(this.props.state.select == this.state.userlist[i].hunts_id) { //no filter, all winners
+                approvedUsers.push([team_name, score, days, hours, minutes, seconds]);
+            }
         }
-
-        
-        if (this.state.userlistPlusTime != null) {
-            userlist = this.state.userlistPlusTime.map(
+        if (approvedUsers.length > 0){
+            userlist = approvedUsers.map(
                 (n, index) =>
                 <tr key={index}><td>{index+1}</td> <td>{n[0]}</td><td>{n[1]}</td>
                 <td>{n[2] != 0 ? <div>{n[2]} d<br/></div> : <div/>}
@@ -72,7 +75,7 @@ export class AdminLeaderboard extends React.Component {
                     {n[4] != 0 ? <div>{n[4]} m<br/></div> : <div/>}
                     {n[5] != 0 ? <div>{n[5]} s<br/></div> : <div/>}
                 </td></tr>
-             );
+            );
         }
         
         return (
