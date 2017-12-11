@@ -13,6 +13,7 @@ export class ExistingTeam extends React.Component {
     
     //handles data recieved from validateCreentials
     handle(callback){
+        console.log(callback);
         var data = JSON.parse(callback);  //data = data from user if user was in database
         try{
             //sets id, name, and loggedIn props, assigned in app.py

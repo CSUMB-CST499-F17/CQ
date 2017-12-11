@@ -85,31 +85,27 @@ def changeType(data):
 
 @socketio.on('validateCredentials')
 def validateCredentials(data):
-        try:  
-            users = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'])
-            for query in users:
-                if(checkPassword(query.leader_code, data['access'])):
-                    # if query.progress == -1:
-                    #     return json.dumps({'id':query.id, 'loggedIn':'finished', 'name':query.team_name, "hunts_id":query.hunts_id})
-                    return json.dumps({'id':query.id, 'loggedIn':'teamLead', 'name':query.team_name, "hunts_id":query.hunts_id})
-                elif(checkPassword(query.member_code, data['access'])):
-                    # if query.progress == -1:
-                    #     return json.dumps({'id':query.id, 'loggedIn':'finished', 'name':query.team_name, "hunts_id":query.hunts_id})
-                    return json.dumps({'id':query.id, 'loggedIn':'team', 'name':query.team_name, "hunts_id":query.hunts_id})
-                    
-            users = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.is_super == True)
-            for query in users:    
-                if(checkPassword(query.password, data['access'])):
-                    return json.dumps({'id':query.id, 'loggedIn':'superAdmin', 'name':query.username})
-                    
-            users = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.is_super == False)
-            for query in users:
-                if(checkPassword(query.password, data['access'])):
-                    return json.dumps({'id':query.id, 'loggedIn':'admin', 'name':query.username})
-            
-            return json.dumps({'id':-1, 'loggedIn':'no', 'name':'guest'})
-        except Exception as e: 
-            print(e)
+    try:  
+        users = models.db.session.query(models.Participants).filter(models.Participants.team_name == data['team_name'])
+        for query in users:
+            if(checkPassword(query.leader_code, data['access'])):
+                return json.dumps({'id':query.id, 'loggedIn':'teamLead', 'name':query.team_name, "hunts_id":query.hunts_id})
+            elif(checkPassword(query.member_code, data['access'])):
+                return json.dumps({'id':query.id, 'loggedIn':'team', 'name':query.team_name, "hunts_id":query.hunts_id})
+                
+        users = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.is_super == True)
+        for query in users:    
+            if(checkPassword(query.password, data['access'])):
+                return json.dumps({'id':query.id, 'loggedIn':'superAdmin', 'name':query.username})
+                
+        users = models.db.session.query(models.Admins).filter(models.Admins.username == data['team_name'], models.Admins.is_super == False)
+        for query in users:
+            if(checkPassword(query.password, data['access'])):
+                return json.dumps({'id':query.id, 'loggedIn':'admin', 'name':query.username})
+        
+        return json.dumps({'id':-1, 'loggedIn':'no', 'name':'guest'})
+    except Exception as e: 
+        print(e)
      
 @socketio.on('play')
 def updatePlay(data):
@@ -463,7 +459,7 @@ def loadAllAdmins(data):
 
 @socketio.on('addAdmin')
 def addAdmin(data):
-    admin = models.Admins(data['email'], data['team_name'], data['access_code'], data['is_super'])
+    admin = models.Admins(data['email'], data['team_name'], hashPassword(data['access_code']), data['is_super'])
     models.db.session.add(admin)
     models.db.session.commit()
 

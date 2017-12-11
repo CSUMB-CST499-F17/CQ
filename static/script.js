@@ -30837,6 +30837,7 @@
 	    _createClass(ExistingTeam, [{
 	        key: 'handle',
 	        value: function handle(callback) {
+	            console.log(callback);
 	            var data = JSON.parse(callback); //data = data from user if user was in database
 	            try {
 	                //sets id, name, and loggedIn props, assigned in app.py
