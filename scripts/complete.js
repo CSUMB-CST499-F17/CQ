@@ -26,7 +26,6 @@ export class Complete extends React.Component {
         }
         else{
             //calculates total time taken
-            console.log(this.props.state.user)
             var start = new Date(this.props.state.user.start_time);
             var end = new Date(this.props.state.user.end_time);
             var time = (end-start) /1000;  // second/minutes/hours

@@ -56,8 +56,6 @@ export class Leaderboard extends React.Component {
             //  seconds
             var seconds = time[3];
             
-            console.log("selected: " + this.props.state.select + ", mine: " + this.state.userlist[i].hunts_id + " render me?");
-            console.log(this.props.state.select == this.state.userlist[i].hunts_id);
             if(this.props.state.select == this.state.userlist[i].hunts_id) { //no filter, all winners
                 approvedUsers.push([team_name, score, days, hours, minutes, seconds]);
             }

@@ -30837,7 +30837,6 @@
 	    _createClass(ExistingTeam, [{
 	        key: 'handle',
 	        value: function handle(callback) {
-	            console.log(callback);
 	            var data = JSON.parse(callback); //data = data from user if user was in database
 	            try {
 	                //sets id, name, and loggedIn props, assigned in app.py
@@ -50982,8 +50981,6 @@
 	                //  seconds
 	                var seconds = time[3];
 
-	                console.log("selected: " + this.props.state.select + ", mine: " + this.state.userlist[i].hunts_id + " render me?");
-	                console.log(this.props.state.select == this.state.userlist[i].hunts_id);
 	                if (this.props.state.select == this.state.userlist[i].hunts_id) {
 	                    //no filter, all winners
 	                    approvedUsers.push([team_name, score, days, hours, minutes, seconds]);
@@ -51930,7 +51927,6 @@
 	                );
 	            } else {
 	                //calculates total time taken
-	                console.log(this.props.state.user);
 	                var start = new Date(this.props.state.user.start_time);
 	                var end = new Date(this.props.state.user.end_time);
 	                var time = (end - start) / 1000; // second/minutes/hours
@@ -52448,7 +52444,6 @@
 	        key: 'completed',
 	        value: function completed() {
 	            try {
-	                console.log(this.props.state.user);
 	                _Socket.Socket.emit('updateTime', { 'user': this.props.state.user, 'start_time': "", 'end_time': 'now' });
 	                _Socket.Socket.emit('update', { 'user': this.props.state.user, 'progress': -1, 'score': this.props.state.user.score, 'attempts': 5, 'hints': 0 }, _Socket.Socket.callback = this.handleComplete);
 	            } catch (err) {
@@ -52503,7 +52498,6 @@
 	    }, {
 	        key: 'handleComplete',
 	        value: function handleComplete(callback) {
-	            console.log(callback);
 	            var data = JSON.parse(callback);
 	            this.props.setUser(data['user'], this.end);
 	        }
@@ -52951,8 +52945,6 @@
 
 	                this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
 
-	                // console.log("selected: " + this.props.state.select + ", mine: " + this.state.userlist[i].hunts_id + " render me?");
-	                // console.log(this.props.state.select == this.state.userlist[i].hunts_id);
 	                if (this.props.state.select == this.state.userlist[i].hunts_id) {
 	                    //no filter, all winners
 	                    approvedUsers.push([team_name, score, days, hours, minutes, seconds]);
@@ -53249,7 +53241,6 @@
 	        key: 'updateQuestion',
 	        value: function updateQuestion(id, question, answer, image, hint_A, hint_B, answer_text, hunts_id) {
 	            var ids = document.getElementsByClassName(id);
-	            console.log(ids.length);
 	            var q = document.getElementsByName("q");
 	            var a = document.getElementsByName("a");
 	            var i = document.getElementsByName("i");
@@ -53258,7 +53249,6 @@
 	            var at = document.getElementsByName("at");
 
 	            for (var m = 0; m < ids.length; m++) {
-	                console.log(ids[m].value);
 	                for (var j = 0; j < q.length; j++) {
 	                    if (ids[m].value == q[j].value && q[j].value != '') {
 	                        q = q[j].value;
@@ -73333,11 +73323,6 @@
 	        value: function componentDidMount() {
 	            var _this2 = this;
 
-	            // Socket.on('getAdmin', (data) => {
-	            //     this.setState({
-	            //         'getAdmin': data['getAdmin']
-	            //     });
-	            // });
 	            _Socket.Socket.on('callbackUpdateAdmin', function (data) {
 
 	                _Socket.Socket.emit('loadAllAdmins', _this2.props.state.id, _Socket.Socket.callback = _this2.loadAdmins);
@@ -73368,18 +73353,32 @@
 	        }
 	    }, {
 	        key: 'updateAdmin',
-	        value: function updateAdmin(index, usernameToFind, email, is_super) {
-	            var txt;
-	            var email = prompt('email', email);
-	            var username = prompt('username', usernameToFind);
-	            var is_super = prompt('super(T/F)', is_super);
-	            if (this.state.getAdmin[index].is_super == true && confirm("Super Admin can't be deleted?") == true) {
-	                txt = "can't update super admin you don't have super admin privileges!";
+	        value: function updateAdmin(id, username, email, is_super) {
+	            var email1 = prompt('email', email);
+	            var username1 = prompt('username', username);
+	            var is_super1 = prompt('super(True/False)', is_super);
+	            if (email1 == null) {
+	                email1 = email;
 	            }
-	            if (this.state.getAdmin[index].is_super == false && confirm("Are you sure you would like to update your admin profile?") == true) {
-	                _Socket.Socket.emit('updateAdmin', { index: index, usernameToFind: usernameToFind, username: username, email: email, is_super: is_super });
+	            if (username1 == null) {
+	                username1 = username;
+	            }
+	            if (is_super1 == null) {
+	                is_super1 = is_super;
+	            }
+
+	            var admin = {
+	                'id': id,
+	                'username': username1,
+	                'email': email1,
+	                'is_super': is_super1
+	            };
+	            var confirmTxt = "Are you sure you would like to make the following changes to " + username + "?" + "\nEmail: " + email1 + "\nUsername: " + username1 + "\nIs Super: " + is_super1;
+	            if (confirm(confirmTxt) == true) {
+	                _Socket.Socket.emit('updateAdmin', admin);
+	                alert("Admin Updated!");
 	            } else {
-	                txt = "not updated!";
+	                alert("Admin Not Updated");
 	            }
 	        }
 	    }, {
@@ -73415,7 +73414,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this3.updateAdmin(index, n.username, n.email, n.is_super);
+	                                        return _this3.updateAdmin(n.id, n.username, n.email, n.is_super);
 	                                    } },
 	                                'Update'
 	                            )
@@ -73426,7 +73425,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this3.deleteAdmin(index, n.username);
+	                                        return _this3.deleteAdmin(n.id, n.username);
 	                                    } },
 	                                'Delete'
 	                            )

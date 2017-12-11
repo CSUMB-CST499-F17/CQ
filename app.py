@@ -446,13 +446,14 @@ def loadAllAdmins(data):
     adminList = []
     try:
         sql = models.db.session.query(
+            models.Admins.id,
             models.Admins.email,
             models.Admins.username,
             models.Admins.is_super)
 
         for row in sql:
-            adminList.append({'email':row.email, 'username':row.username, 'is_super':row.is_super})
-        return json.dumps({'id':data,'adminList':adminList})
+            adminList.append({'id':row.id,'email':row.email, 'username':row.username, 'is_super':row.is_super})
+        return json.dumps({'adminList':adminList})
     except:
         print("Error: admin query broke")
 
@@ -465,6 +466,7 @@ def addAdmin(data):
 
 @socketio.on('deleteAdminFace')
 def deleteAdmin(data):
+    print data
     try:
         sql = models.db.session.query(
             models.Admins.email,
@@ -480,15 +482,11 @@ def deleteAdmin(data):
 @socketio.on('updateAdmin')
 def updateAdmin(data):
     try:
-        sql = models.db.session.query(
-            models.Admins.email,
-            models.Admins.username,
-            models.Admins.is_super).filter(
-                models.Admins.username == data['usernameToFind']).update({
-                    "email": data['email'],
-                    "username": data['username'],
-                    "is_super": data['is_super'],
-                    })
+        sql = models.db.session.query(models.Admins).filter(models.Admins.id == data['id']).update({models.Admins.email: data['email']})
+        models.db.session.commit()
+        sql = models.db.session.query(models.Admins).filter(models.Admins.id == data['id']).update({models.Admins.username: data['username']})
+        models.db.session.commit()
+        sql = models.db.session.query(models.Admins).filter(models.Admins.id == data['id']).update({models.Admins.is_super: data['is_super']})
         models.db.session.commit()
         getAdmin('data')
     except:
