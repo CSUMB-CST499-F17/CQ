@@ -39,7 +39,6 @@ export class Leaderboard extends React.Component {
     render() {
         var approvedUsers = [];
         let userlist='';
-        console.log(this.state.userlist);
         for(var i = 0; i < this.state.userlist.length; i++) {
             var user = this.state.userlist[i];
             

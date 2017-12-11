@@ -21963,6 +21963,7 @@
 	    _createClass(Content, [{
 	        key: 'changePage',
 	        value: function changePage(location) {
+	            console.log(location);
 	            try {
 	                _Socket.Socket.emit(location, this.state);
 	                if (location.indexOf('admin') != -1) {
@@ -50964,7 +50965,6 @@
 
 	            var approvedUsers = [];
 	            var userlist = '';
-	            console.log(this.state.userlist);
 	            for (var i = 0; i < this.state.userlist.length; i++) {
 	                var user = this.state.userlist[i];
 
@@ -51752,6 +51752,7 @@
 	    }, {
 	        key: 'changePlay',
 	        value: function changePlay(current, next) {
+	            _Socket.Socket.emit(next, this.state);
 	            document.getElementById(next).style.display = 'block';
 	            document.getElementById(current).style.display = 'none';
 	        }
@@ -51810,10 +51811,8 @@
 	                document.getElementById('complete').style.display = 'none';
 	                document.getElementById('playGame').style.display = 'block';
 	            } else if (this.state.user.progress == -1) {
-
-	                document.getElementById('start').style.display = 'none';
 	                document.getElementById('playGame').style.display = 'none';
-	                document.getElementById('complete').style.display = 'block';
+	                this.changePlay('start', 'complete');
 	            }
 	        }
 	    }, {
@@ -51866,6 +51865,8 @@
 
 	var React = _interopRequireWildcard(_react);
 
+	var _Socket = __webpack_require__(185);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51883,14 +51884,36 @@
 
 	        var _this = _possibleConstructorReturn(this, (Complete.__proto__ || Object.getPrototypeOf(Complete)).call(this, props));
 
+	        _this.state = {
+	            time: ''
+	        };
+
 	        _this.lb = _this.lb.bind(_this); //sends users to the leaderboard
+	        _this.setTime = _this.setTime.bind(_this);
 	        return _this;
 	    }
 
-	    //sends users to the leaderboard
-
-
 	    _createClass(Complete, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _this2 = this;
+
+	            _Socket.Socket.on('updateComplete', function (data) {
+	                _Socket.Socket.emit('getTime', _this2.props.state.user.id, _Socket.Socket.callback = _this2.setTime);
+	            });
+	        }
+	    }, {
+	        key: 'setTime',
+	        value: function setTime(data) {
+	            data = JSON.parse(data);
+	            this.setState({
+	                time: data
+	            });
+	        }
+
+	        //sends users to the leaderboard
+
+	    }, {
 	        key: 'lb',
 	        value: function lb() {
 	            this.props.setProps('select', this.props.state.user.hunts_id);
@@ -51899,7 +51922,7 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
+	            var _this3 = this;
 
 	            var title = this.props.state.hunt.name;
 	            var team = this.props.state.user.team_name;
@@ -51927,20 +51950,16 @@
 	                );
 	            } else {
 	                //calculates total time taken
-	                var start = new Date(this.props.state.user.start_time);
-	                var end = new Date(this.props.state.user.end_time);
-	                var time = (end - start) / 1000; // second/minutes/hours
-	                // calculate (and subtract) whole days
-	                var days = Math.floor(time / 86400);
-	                time -= days * 86400;
-	                // calculate (and subtract) whole hours
-	                var hours = Math.floor(time / 3600) % 24;
-	                time -= hours * 3600;
-	                // calculate (and subtract) whole minutes
-	                var minutes = Math.floor(time / 60) % 60;
-	                time -= minutes * 60;
-	                // what's left is seconds
-	                var seconds = time % 60;
+	                var time = this.state.time.substring().split(':');
+
+	                // whole days
+	                var days = time[0];
+	                // whole hours
+	                var hours = time[1];
+	                //  whole minutes
+	                var minutes = time[2];
+	                //  seconds
+	                var seconds = time[3];
 	                results = React.createElement(
 	                    'div',
 	                    { id: 'results' },
@@ -52052,14 +52071,14 @@
 	                    React.createElement(
 	                        'button',
 	                        { className: 'btn', onClick: function onClick() {
-	                                return _this2.lb();
+	                                return _this3.lb();
 	                            } },
 	                        'Leaderboard'
 	                    ),
 	                    React.createElement(
 	                        'button',
 	                        { className: 'btn', onClick: function onClick() {
-	                                return _this2.props.logOutSetProps();
+	                                return _this3.props.logOutSetProps();
 	                            } },
 	                        'Logout'
 	                    )

@@ -1,11 +1,30 @@
 import * as React from 'react';
+import { Socket } from './Socket';
+
 
 //This class renders the final page of the game
 export class Complete extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            time: ''
+        };
 
         this.lb = this.lb.bind(this); //sends users to the leaderboard
+        this.setTime = this.setTime.bind(this);
+    }
+    
+    componentDidMount(){
+        Socket.on('updateComplete', (data) => { 
+            Socket.emit('getTime', this.props.state.user.id, Socket.callback=this.setTime);
+        });
+    }
+    
+    setTime(data){
+        data = JSON.parse(data);
+        this.setState({
+            time: data
+        });
     }
     
     //sends users to the leaderboard
@@ -26,20 +45,16 @@ export class Complete extends React.Component {
         }
         else{
             //calculates total time taken
-            var start = new Date(this.props.state.user.start_time);
-            var end = new Date(this.props.state.user.end_time);
-            var time = (end-start) /1000;  // second/minutes/hours
-            // calculate (and subtract) whole days
-            var days = Math.floor(time / 86400);
-            time -= days * 86400;
-            // calculate (and subtract) whole hours
-            var hours = Math.floor(time / 3600) % 24;
-            time -= hours * 3600;
-            // calculate (and subtract) whole minutes
-            var minutes = Math.floor(time / 60) % 60;
-            time -= minutes * 60;
-            // what's left is seconds
-            var seconds = time % 60;
+            var time = this.state.time.substring().split(':');
+            
+            // whole days
+            var days = time[0];
+            // whole hours
+            var hours = time[1];
+            //  whole minutes
+            var minutes = time[2];
+            //  seconds
+            var seconds = time[3];
             results =  <div id = 'results'>
                             <h2 id = 'team'><span><b>Team Name: </b><br/> {team}</span></h2>
                             <h2 id = 'time'><span><b>Time Taken To Complete Hunt: </b><br/>
