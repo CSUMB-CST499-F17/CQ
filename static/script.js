@@ -53446,12 +53446,12 @@
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            React.createElement('textarea', { className: n.id, name: 's', cols: '6', rows: '1', defaultValue: n.start_time })
+	                            React.createElement('textarea', { className: n.id, name: 's', cols: '9', rows: '1', defaultValue: n.start_time })
 	                        ),
 	                        React.createElement(
 	                            'td',
 	                            null,
-	                            React.createElement('textarea', { className: n.id, name: 'e', cols: '6', rows: '1', defaultValue: n.end_time })
+	                            React.createElement('textarea', { className: n.id, name: 'e', cols: '9', rows: '1', defaultValue: n.end_time })
 	                        ),
 	                        React.createElement(
 	                            'td',

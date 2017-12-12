@@ -197,8 +197,8 @@ export class AdminHunts extends React.Component {
                 <td><textarea className={n.id} name='t' cols='5' rows='1' defaultValue={n.h_type}></textarea></td>
                 <td><textarea className={n.id} name='d' cols='15' defaultValue={n.desc}></textarea></td>
                 <td><textarea className={n.id} name='u' cols='15' defaultValue={n.image}></textarea></td>
-                <td><textarea className={n.id} name='s' cols='6' rows='1'defaultValue={n.start_time}></textarea></td>
-                <td><textarea className={n.id} name='e' cols='6' rows='1' defaultValue={n.end_time}></textarea></td>
+                <td><textarea className={n.id} name='s' cols='9' rows='1'defaultValue={n.start_time}></textarea></td>
+                <td><textarea className={n.id} name='e' cols='9' rows='1' defaultValue={n.end_time}></textarea></td>
                 <td><textarea className={n.id} name='st' cols='15'defaultValue={n.start_text}></textarea></td>
                 <td><Button onClick={() => this.showQuestions(n.id)}>Questions</Button></td>
                 <td><Button onClick={() => this.updateHunts(n.id)}>Update</Button></td>
