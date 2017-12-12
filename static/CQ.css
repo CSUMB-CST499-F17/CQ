@@ -360,7 +360,7 @@ p{
 
 }
 
-#leaderboard-table2{
+#leaderboard-table2, #hunt-table{
     width:100%;
     justify-content: center;
     background-color:white;
