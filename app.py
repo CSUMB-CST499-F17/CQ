@@ -503,12 +503,15 @@ def getAdmin(data):
 @socketio.on('loadAllAdmins')
 def loadAllAdmins(data):
     adminList = []
+    count = 0
     try:
         sql = models.db.session.query(models.Admins)
 
         for row in sql:
             adminList.append({'id':row.id,'email':row.email, 'username':row.username, 'is_super':row.is_super})
-        return json.dumps({'adminList':adminList})
+            if (row.is_super):
+                count+=1
+        return json.dumps({'adminList':adminList,'count':count})
     except:
         print("Error: admin query broke")
 

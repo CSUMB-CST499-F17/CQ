@@ -14,7 +14,8 @@ export class Admins extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            'getAdmin': []
+            'getAdmin': [],
+            'superCount': 0
         };
         this.pageName = 'admins';
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -36,21 +37,25 @@ export class Admins extends React.Component {
     }
     deleteAdmin(index, username){
 
-        if(confirm("Are you sure you would like to delete admin?") == true){
+        if(this.props.state.id != index && confirm("Are you sure you would like to delete admin?") == true){
+            alert("Admin Deleted");
             Socket.emit('deleteAdminFace', index, Socket.callback = this.handleDelete);
         }
+        else if (this.props.state.id == index){
+            alert("Cannot Delete Self");
+        }
         else {
-            alert("Admin Not Deleted!");
+            alert("Admin Not Deleted");
         }
     }
     handleDelete(callback){
-        alert("Admin Deleted!");
         Socket.emit('loadAllAdmins', this.props.state.id, Socket.callback = this.loadAdmins);
     }
     loadAdmins(callback){
         var data = JSON.parse(callback);
         this.setState({
-            'getAdmin': data['adminList']
+            'getAdmin': data['adminList'],
+            'superCount': data['count']
         }); 
     }
     
@@ -79,8 +84,20 @@ export class Admins extends React.Component {
         "\nUsername: " + username1 + 
         "\nIs Super: " + is_super1;
         if(confirm(confirmTxt) == true){
-            Socket.emit('updateAdmin', admin);
-            alert("Admin Updated!");
+            if (this.state.superCount <= 1 && (is_super == 'true' || is_super) && (is_super1 == 'false' || !is_super1)){
+                alert("Admin Not Updated: Must have at least one Super Admin");
+            }
+            else{
+                Socket.emit('updateAdmin', admin);
+                if (id == this.props.state.id && (is_super1 == 'false' || !is_super1)){
+                    this.handleDelete(0); //update super count
+                    this.props.logOutSetProps();
+                    alert("Admin Updated: You've been logged out due to permission changes.");
+                }
+                else{
+                    alert("Admin Updated");
+                }
+            }
         }
         else {
             alert("Admin Not Updated");

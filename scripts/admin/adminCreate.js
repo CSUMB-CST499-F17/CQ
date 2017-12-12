@@ -14,6 +14,7 @@ export class AdminCreate extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.pageName = 'adminCreate';
         this.addAdmin = this.addAdmin.bind(this);
+        this.check = this.check.bind(this);
     }
 
     handleSubmit(event) {
@@ -28,6 +29,14 @@ export class AdminCreate extends React.Component {
                                 'is_super':document.getElementById('is_super').value});
         this.props.changePage('admins')
     }
+    check(){
+        if(document.getElementById('show').checked == true){ //show password
+            document.getElementById('create_access_code').type = 'text';
+        }
+        else{ //hide password
+            document.getElementById('create_access_code').type = 'password';
+        }
+    }
     render() {
         return (
             <div>
@@ -39,9 +48,11 @@ export class AdminCreate extends React.Component {
                             <FormGroup>
                                 <InputGroup>
                                     <FormControl id='create_email' type="text" placeholder="Email" /><br/>
-                                    <FormControl id='create_team_name' type="text" placeholder="Team Name" /><br/>
-                                    <FormControl id='create_access_code' type="text" placeholder="Access Code" /><br/>
+                                    <FormControl id='create_team_name' type="text" placeholder="Username" /><br/>
+                                    <FormControl id='create_access_code' type="password" placeholder="Access Code" /><br/>
                                     <FormControl id='is_super' type="text" placeholder="Super Admin?(T/F)" />
+                                    
+                                    <input type="checkbox" id = "show" onChange={this.check}/> Show Password
                                 </InputGroup>
                             </FormGroup>
                         </form>
