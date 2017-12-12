@@ -42,6 +42,7 @@ export class Content extends React.Component{
     
     //changes the visibility of classes, default of all classes is 'hide'
     changePage(location){
+        console.log(location);
         try{
             Socket.emit(location, this.state);
             if(location.indexOf('admin') != -1){ //it is admin page

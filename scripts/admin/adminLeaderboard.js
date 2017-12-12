@@ -15,13 +15,17 @@ export class AdminLeaderboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            'userlist': [],
-            'userlistPlusTime': []
+            'filteredHunts': [],
+            'users': []
         };
         this.pageName = 'adminLeaderboard';
         this.handleSubmit = this.handleSubmit.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.changePage = this.changePage.bind(this);
+        this.showLeaderboard = this.showLeaderboard.bind(this);
+        this.filterHunts = this.filterHunts.bind(this);
+        this.handleHunts = this.handleHunts.bind(this);
+        this.handleUsers = this.handleUsers.bind(this);
     }
 
     handleSubmit(event) {
@@ -33,19 +37,30 @@ export class AdminLeaderboard extends React.Component {
         this.props.changePage(page);
     }
     componentDidMount(){
-        Socket.on('users', (data) => {
+        Socket.on('filteredHunts', (data) => {
             this.setState({
-                'userlist': data['userlist']
+                'filteredHunts': data
             });
         });
     }
-
-    render() {
-        var approvedUsers = [];
-        let userlist='';
+    filterHunts(str){
+        Socket.emit('filterHunts', {'str':str}, Socket.callback=this.handleHunts);
+    }
+    showLeaderboard(index){
+        Socket.emit('getLeaderboard', {'index':index}, Socket.callback=this.handleUsers);
+    }
+    handleHunts(callback){
+        var data = JSON.parse(callback);
+        this.setState({
+            'filteredHunts': data['hunts']
+        });
+    }
+    handleUsers(callback){
+        var data = JSON.parse(callback);
+        var users = [];
         
-        for(var i = 0; i < this.state.userlist.length; i++) {
-            var user = this.state.userlist[i];
+        for(var i = 0; i < data['users'].length; i++) {
+            var user = data['users'][i];
             var time = user.time.substring().split(':');
             var team_name = user.team_name;
             var score = user.score;
@@ -57,17 +72,38 @@ export class AdminLeaderboard extends React.Component {
             var minutes = time[2];
             //  seconds
             var seconds = time[3];
-            
-            this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
-            
-            // console.log("selected: " + this.props.state.select + ", mine: " + this.state.userlist[i].hunts_id + " render me?");
-            // console.log(this.props.state.select == this.state.userlist[i].hunts_id);
-            if(this.props.state.select == this.state.userlist[i].hunts_id) { //no filter, all winners
-                approvedUsers.push([team_name, score, days, hours, minutes, seconds]);
-            }
+
+            users[i] = [team_name, score, days, hours, minutes, seconds];
         }
-        if (approvedUsers.length > 0){
-            userlist = approvedUsers.map(
+        this.setState({
+            'users': users
+        });
+    }
+    render() {
+        var huntList = '';
+        let userlist = '';
+        huntList = this.state.filteredHunts.map(
+                (n, index) =>
+                <tr key={0}>
+                <td><b>Title</b></td>
+                <td><b>Start Date</b></td>
+                <td><b>End Date</b></td>
+                <td><b>Show Leaderboard</b></td>
+                </tr>
+             );
+            
+        huntList.push(this.state.filteredHunts.map(
+            (n, index) =>               
+            <tr key={index}>
+            <td>{n.name}</td>
+            <td>{n.start_time}</td>
+            <td>{n.end_time}</td>
+            <td><Button onClick={() => this.showLeaderboard(n.id)}>Leaderboard</Button></td>
+            </tr>
+         ));
+        
+        if (this.state.users.length > 0){
+            userlist = this.state.users.map(
                 (n, index) =>
                 <tr key={index}><td>{index+1}</td> <td>{n[0]}</td><td>{n[1]}</td>
                 <td>{n[2] != 0 ? <div>{n[2]} d<br/></div> : <div/>}
@@ -78,6 +114,7 @@ export class AdminLeaderboard extends React.Component {
             );
         }
         
+        
         return (
             <div>
                 <div id = 'header'>
@@ -86,25 +123,27 @@ export class AdminLeaderboard extends React.Component {
                 <div id='search'>
                     <div id='leaderboard-form'>
                           <input  id = "leaderboard-search1" className="form-control " placeholder="Search Hunts" size="5" />
-                          <button id = "leaderboard-search" className="btn">Search</button>
+                          <button id = "leaderboard-search" className="btn" onClick={() => this.filterHunts(document.getElementById('leaderboard-search1').value)}>Search</button>
+                    </div>
+                </div>
+                <div id='hunts'>
+                    <div id="huntList">
+                        <table id="hunt-table">
+                            <tbody>
+                                {huntList} 
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div id='leaderboards'>
-                            <table id="leaderboard-table">
-                                <tbody>
-                                    <tr>
-                                        <td>Rank</td><td>Team</td><td>Score</td><td>Time</td>
-                                    </tr>
-                                </tbody>
-                            </table> 
-                            <div id="userList">
-                            <table id="leaderboard-table2">
-                                <tbody>
-                                    {userlist} 
-                                </tbody>
-                            </table>
-                            </div>
-                        </div>
+                    <div id="userList">
+                        <table id="leaderboard-table2">
+                            <tbody>
+                                {userlist}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
         );

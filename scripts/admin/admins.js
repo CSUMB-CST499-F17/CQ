@@ -28,11 +28,6 @@ export class Admins extends React.Component {
 
     }
     componentDidMount(){
-        // Socket.on('getAdmin', (data) => {
-        //     this.setState({
-        //         'getAdmin': data['getAdmin']
-        //     });
-        // });
         Socket.on('callbackUpdateAdmin', (data) => {
             
             Socket.emit('loadAllAdmins', this.props.state.id, Socket.callback = this.loadAdmins);
@@ -59,19 +54,36 @@ export class Admins extends React.Component {
         }); 
     }
     
-    updateAdmin(index, usernameToFind, email,is_super){
-        var txt;
-        var email = prompt('email', email);
-        var username = prompt('username', usernameToFind);
-        var is_super = prompt('super(T/F)',is_super);
-        if(this.state.getAdmin[index].is_super == true && confirm("Super Admin can't be deleted?") == true){
-            txt = "can't update super admin you don't have super admin privileges!";
+    updateAdmin(id, username, email,is_super){
+        var email1 = prompt('email', email);
+        var username1 = prompt('username', username);
+        var is_super1 = prompt('super(True/False)',is_super);
+        if(email1 == null){
+            email1 = email; 
         }
-        if(this.state.getAdmin[index].is_super == false && confirm("Are you sure you would like to update your admin profile?") == true){
-            Socket.emit('updateAdmin', {index,usernameToFind,username,email,is_super});
+        if(username1 == null){
+            username1 = username; 
+        }
+        if(is_super1 == null){
+            is_super1 = is_super; 
+        }
+        
+        var admin = {
+            'id':id,
+            'username':username1,
+            'email':email1,
+            'is_super':is_super1
+        };
+        var confirmTxt = "Are you sure you would like to make the following changes to " + username + "?" + 
+        "\nEmail: " + email1 + 
+        "\nUsername: " + username1 + 
+        "\nIs Super: " + is_super1;
+        if(confirm(confirmTxt) == true){
+            Socket.emit('updateAdmin', admin);
+            alert("Admin Updated!");
         }
         else {
-            txt = "not updated!";
+            alert("Admin Not Updated");
         }
     }
     
@@ -85,8 +97,8 @@ export class Admins extends React.Component {
                 <td>{n.email}</td>
                 <td>{n.username}</td>
                 <td>{n.is_super.toString()}</td>
-                <td><Button onClick={() => this.updateAdmin(index, n.username,n.email, n.is_super)}>Update</Button></td>
-                <td><Button onClick={() => this.deleteAdmin(index, n.username)}>Delete</Button></td>
+                <td><Button onClick={() => this.updateAdmin(n.id, n.username,n.email, n.is_super)}>Update</Button></td>
+                <td><Button onClick={() => this.deleteAdmin(n.id, n.username)}>Delete</Button></td>
                 </tr>
              );
         }

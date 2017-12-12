@@ -21963,6 +21963,7 @@
 	    _createClass(Content, [{
 	        key: 'changePage',
 	        value: function changePage(location) {
+	            console.log(location);
 	            try {
 	                _Socket.Socket.emit(location, this.state);
 	                if (location.indexOf('admin') != -1) {
@@ -50964,7 +50965,6 @@
 
 	            var approvedUsers = [];
 	            var userlist = '';
-	            console.log(this.state.userlist);
 	            for (var i = 0; i < this.state.userlist.length; i++) {
 	                var user = this.state.userlist[i];
 
@@ -50981,8 +50981,6 @@
 	                //  seconds
 	                var seconds = time[3];
 
-	                console.log("selected: " + this.props.state.select + ", mine: " + this.state.userlist[i].hunts_id + " render me?");
-	                console.log(this.props.state.select == this.state.userlist[i].hunts_id);
 	                if (this.props.state.select == this.state.userlist[i].hunts_id) {
 	                    //no filter, all winners
 	                    approvedUsers.push([team_name, score, days, hours, minutes, seconds]);
@@ -51754,6 +51752,7 @@
 	    }, {
 	        key: 'changePlay',
 	        value: function changePlay(current, next) {
+	            _Socket.Socket.emit(next, this.state);
 	            document.getElementById(next).style.display = 'block';
 	            document.getElementById(current).style.display = 'none';
 	        }
@@ -51812,10 +51811,8 @@
 	                document.getElementById('complete').style.display = 'none';
 	                document.getElementById('playGame').style.display = 'block';
 	            } else if (this.state.user.progress == -1) {
-
-	                document.getElementById('start').style.display = 'none';
 	                document.getElementById('playGame').style.display = 'none';
-	                document.getElementById('complete').style.display = 'block';
+	                this.changePlay('start', 'complete');
 	            }
 	        }
 	    }, {
@@ -51868,6 +51865,8 @@
 
 	var React = _interopRequireWildcard(_react);
 
+	var _Socket = __webpack_require__(185);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51885,14 +51884,36 @@
 
 	        var _this = _possibleConstructorReturn(this, (Complete.__proto__ || Object.getPrototypeOf(Complete)).call(this, props));
 
+	        _this.state = {
+	            time: ''
+	        };
+
 	        _this.lb = _this.lb.bind(_this); //sends users to the leaderboard
+	        _this.setTime = _this.setTime.bind(_this);
 	        return _this;
 	    }
 
-	    //sends users to the leaderboard
-
-
 	    _createClass(Complete, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _this2 = this;
+
+	            _Socket.Socket.on('updateComplete', function (data) {
+	                _Socket.Socket.emit('getTime', _this2.props.state.user.id, _Socket.Socket.callback = _this2.setTime);
+	            });
+	        }
+	    }, {
+	        key: 'setTime',
+	        value: function setTime(data) {
+	            data = JSON.parse(data);
+	            this.setState({
+	                time: data
+	            });
+	        }
+
+	        //sends users to the leaderboard
+
+	    }, {
 	        key: 'lb',
 	        value: function lb() {
 	            this.props.setProps('select', this.props.state.user.hunts_id);
@@ -51901,7 +51922,7 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
+	            var _this3 = this;
 
 	            var title = this.props.state.hunt.name;
 	            var team = this.props.state.user.team_name;
@@ -51929,21 +51950,16 @@
 	                );
 	            } else {
 	                //calculates total time taken
-	                console.log(this.props.state.user);
-	                var start = new Date(this.props.state.user.start_time);
-	                var end = new Date(this.props.state.user.end_time);
-	                var time = (end - start) / 1000; // second/minutes/hours
-	                // calculate (and subtract) whole days
-	                var days = Math.floor(time / 86400);
-	                time -= days * 86400;
-	                // calculate (and subtract) whole hours
-	                var hours = Math.floor(time / 3600) % 24;
-	                time -= hours * 3600;
-	                // calculate (and subtract) whole minutes
-	                var minutes = Math.floor(time / 60) % 60;
-	                time -= minutes * 60;
-	                // what's left is seconds
-	                var seconds = time % 60;
+	                var time = this.state.time.substring().split(':');
+
+	                // whole days
+	                var days = time[0];
+	                // whole hours
+	                var hours = time[1];
+	                //  whole minutes
+	                var minutes = time[2];
+	                //  seconds
+	                var seconds = time[3];
 	                results = React.createElement(
 	                    'div',
 	                    { id: 'results' },
@@ -52055,14 +52071,14 @@
 	                    React.createElement(
 	                        'button',
 	                        { className: 'btn', onClick: function onClick() {
-	                                return _this2.lb();
+	                                return _this3.lb();
 	                            } },
 	                        'Leaderboard'
 	                    ),
 	                    React.createElement(
 	                        'button',
 	                        { className: 'btn', onClick: function onClick() {
-	                                return _this2.props.logOutSetProps();
+	                                return _this3.props.logOutSetProps();
 	                            } },
 	                        'Logout'
 	                    )
@@ -52447,7 +52463,6 @@
 	        key: 'completed',
 	        value: function completed() {
 	            try {
-	                console.log(this.props.state.user);
 	                _Socket.Socket.emit('updateTime', { 'user': this.props.state.user, 'start_time': "", 'end_time': 'now' });
 	                _Socket.Socket.emit('update', { 'user': this.props.state.user, 'progress': -1, 'score': this.props.state.user.score, 'attempts': 5, 'hints': 0 }, _Socket.Socket.callback = this.handleComplete);
 	            } catch (err) {
@@ -52502,7 +52517,6 @@
 	    }, {
 	        key: 'handleComplete',
 	        value: function handleComplete(callback) {
-	            console.log(callback);
 	            var data = JSON.parse(callback);
 	            this.props.setUser(data['user'], this.end);
 	        }
@@ -52896,13 +52910,17 @@
 	        var _this = _possibleConstructorReturn(this, (AdminLeaderboard.__proto__ || Object.getPrototypeOf(AdminLeaderboard)).call(this, props));
 
 	        _this.state = {
-	            'userlist': [],
-	            'userlistPlusTime': []
+	            'filteredHunts': [],
+	            'users': []
 	        };
 	        _this.pageName = 'adminLeaderboard';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        _this.componentDidMount = _this.componentDidMount.bind(_this);
 	        _this.changePage = _this.changePage.bind(_this);
+	        _this.showLeaderboard = _this.showLeaderboard.bind(_this);
+	        _this.filterHunts = _this.filterHunts.bind(_this);
+	        _this.handleHunts = _this.handleHunts.bind(_this);
+	        _this.handleUsers = _this.handleUsers.bind(_this);
 	        return _this;
 	    }
 
@@ -52922,20 +52940,38 @@
 	        value: function componentDidMount() {
 	            var _this2 = this;
 
-	            _Socket.Socket.on('users', function (data) {
+	            _Socket.Socket.on('filteredHunts', function (data) {
 	                _this2.setState({
-	                    'userlist': data['userlist']
+	                    'filteredHunts': data
 	                });
 	            });
 	        }
 	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var approvedUsers = [];
-	            var userlist = '';
+	        key: 'filterHunts',
+	        value: function filterHunts(str) {
+	            _Socket.Socket.emit('filterHunts', { 'str': str }, _Socket.Socket.callback = this.handleHunts);
+	        }
+	    }, {
+	        key: 'showLeaderboard',
+	        value: function showLeaderboard(index) {
+	            _Socket.Socket.emit('getLeaderboard', { 'index': index }, _Socket.Socket.callback = this.handleUsers);
+	        }
+	    }, {
+	        key: 'handleHunts',
+	        value: function handleHunts(callback) {
+	            var data = JSON.parse(callback);
+	            this.setState({
+	                'filteredHunts': data['hunts']
+	            });
+	        }
+	    }, {
+	        key: 'handleUsers',
+	        value: function handleUsers(callback) {
+	            var data = JSON.parse(callback);
+	            var users = [];
 
-	            for (var i = 0; i < this.state.userlist.length; i++) {
-	                var user = this.state.userlist[i];
+	            for (var i = 0; i < data['users'].length; i++) {
+	                var user = data['users'][i];
 	                var time = user.time.substring().split(':');
 	                var team_name = user.team_name;
 	                var score = user.score;
@@ -52948,17 +52984,97 @@
 	                //  seconds
 	                var seconds = time[3];
 
-	                this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
-
-	                // console.log("selected: " + this.props.state.select + ", mine: " + this.state.userlist[i].hunts_id + " render me?");
-	                // console.log(this.props.state.select == this.state.userlist[i].hunts_id);
-	                if (this.props.state.select == this.state.userlist[i].hunts_id) {
-	                    //no filter, all winners
-	                    approvedUsers.push([team_name, score, days, hours, minutes, seconds]);
-	                }
+	                users[i] = [team_name, score, days, hours, minutes, seconds];
 	            }
-	            if (approvedUsers.length > 0) {
-	                userlist = approvedUsers.map(function (n, index) {
+	            this.setState({
+	                'users': users
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this3 = this;
+
+	            var huntList = '';
+	            var userlist = '';
+	            huntList = this.state.filteredHunts.map(function (n, index) {
+	                return React.createElement(
+	                    'tr',
+	                    { key: 0 },
+	                    React.createElement(
+	                        'td',
+	                        null,
+	                        React.createElement(
+	                            'b',
+	                            null,
+	                            'Title'
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'td',
+	                        null,
+	                        React.createElement(
+	                            'b',
+	                            null,
+	                            'Start Date'
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'td',
+	                        null,
+	                        React.createElement(
+	                            'b',
+	                            null,
+	                            'End Date'
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'td',
+	                        null,
+	                        React.createElement(
+	                            'b',
+	                            null,
+	                            'Show Leaderboard'
+	                        )
+	                    )
+	                );
+	            });
+
+	            huntList.push(this.state.filteredHunts.map(function (n, index) {
+	                return React.createElement(
+	                    'tr',
+	                    { key: index },
+	                    React.createElement(
+	                        'td',
+	                        null,
+	                        n.name
+	                    ),
+	                    React.createElement(
+	                        'td',
+	                        null,
+	                        n.start_time
+	                    ),
+	                    React.createElement(
+	                        'td',
+	                        null,
+	                        n.end_time
+	                    ),
+	                    React.createElement(
+	                        'td',
+	                        null,
+	                        React.createElement(
+	                            _reactBootstrap.Button,
+	                            { onClick: function onClick() {
+	                                    return _this3.showLeaderboard(n.id);
+	                                } },
+	                            'Leaderboard'
+	                        )
+	                    )
+	                );
+	            }));
+
+	            if (this.state.users.length > 0) {
+	                userlist = this.state.users.map(function (n, index) {
 	                    return React.createElement(
 	                        'tr',
 	                        { key: index },
@@ -53035,46 +53151,33 @@
 	                        React.createElement('input', { id: 'leaderboard-search1', className: 'form-control ', placeholder: 'Search Hunts', size: '5' }),
 	                        React.createElement(
 	                            'button',
-	                            { id: 'leaderboard-search', className: 'btn' },
+	                            { id: 'leaderboard-search', className: 'btn', onClick: function onClick() {
+	                                    return _this3.filterHunts(document.getElementById('leaderboard-search1').value);
+	                                } },
 	                            'Search'
 	                        )
 	                    )
 	                ),
 	                React.createElement(
 	                    'div',
-	                    { id: 'leaderboards' },
+	                    { id: 'hunts' },
 	                    React.createElement(
-	                        'table',
-	                        { id: 'leaderboard-table' },
+	                        'div',
+	                        { id: 'huntList' },
 	                        React.createElement(
-	                            'tbody',
-	                            null,
+	                            'table',
+	                            { id: 'hunt-table' },
 	                            React.createElement(
-	                                'tr',
+	                                'tbody',
 	                                null,
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    'Rank'
-	                                ),
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    'Team'
-	                                ),
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    'Score'
-	                                ),
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    'Time'
-	                                )
+	                                huntList
 	                            )
 	                        )
-	                    ),
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'leaderboards' },
 	                    React.createElement(
 	                        'div',
 	                        { id: 'userList' },
@@ -53248,7 +53351,6 @@
 	        key: 'updateQuestion',
 	        value: function updateQuestion(id, question, answer, image, hint_A, hint_B, answer_text, hunts_id) {
 	            var ids = document.getElementsByClassName(id);
-	            console.log(ids.length);
 	            var q = document.getElementsByName("q");
 	            var a = document.getElementsByName("a");
 	            var i = document.getElementsByName("i");
@@ -53257,7 +53359,6 @@
 	            var at = document.getElementsByName("at");
 
 	            for (var m = 0; m < ids.length; m++) {
-	                console.log(ids[m].value);
 	                for (var j = 0; j < q.length; j++) {
 	                    if (ids[m].value == q[j].value && q[j].value != '') {
 	                        q = q[j].value;
@@ -73332,11 +73433,6 @@
 	        value: function componentDidMount() {
 	            var _this2 = this;
 
-	            // Socket.on('getAdmin', (data) => {
-	            //     this.setState({
-	            //         'getAdmin': data['getAdmin']
-	            //     });
-	            // });
 	            _Socket.Socket.on('callbackUpdateAdmin', function (data) {
 
 	                _Socket.Socket.emit('loadAllAdmins', _this2.props.state.id, _Socket.Socket.callback = _this2.loadAdmins);
@@ -73367,18 +73463,32 @@
 	        }
 	    }, {
 	        key: 'updateAdmin',
-	        value: function updateAdmin(index, usernameToFind, email, is_super) {
-	            var txt;
-	            var email = prompt('email', email);
-	            var username = prompt('username', usernameToFind);
-	            var is_super = prompt('super(T/F)', is_super);
-	            if (this.state.getAdmin[index].is_super == true && confirm("Super Admin can't be deleted?") == true) {
-	                txt = "can't update super admin you don't have super admin privileges!";
+	        value: function updateAdmin(id, username, email, is_super) {
+	            var email1 = prompt('email', email);
+	            var username1 = prompt('username', username);
+	            var is_super1 = prompt('super(True/False)', is_super);
+	            if (email1 == null) {
+	                email1 = email;
 	            }
-	            if (this.state.getAdmin[index].is_super == false && confirm("Are you sure you would like to update your admin profile?") == true) {
-	                _Socket.Socket.emit('updateAdmin', { index: index, usernameToFind: usernameToFind, username: username, email: email, is_super: is_super });
+	            if (username1 == null) {
+	                username1 = username;
+	            }
+	            if (is_super1 == null) {
+	                is_super1 = is_super;
+	            }
+
+	            var admin = {
+	                'id': id,
+	                'username': username1,
+	                'email': email1,
+	                'is_super': is_super1
+	            };
+	            var confirmTxt = "Are you sure you would like to make the following changes to " + username + "?" + "\nEmail: " + email1 + "\nUsername: " + username1 + "\nIs Super: " + is_super1;
+	            if (confirm(confirmTxt) == true) {
+	                _Socket.Socket.emit('updateAdmin', admin);
+	                alert("Admin Updated!");
 	            } else {
-	                txt = "not updated!";
+	                alert("Admin Not Updated");
 	            }
 	        }
 	    }, {
@@ -73414,7 +73524,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this3.updateAdmin(index, n.username, n.email, n.is_super);
+	                                        return _this3.updateAdmin(n.id, n.username, n.email, n.is_super);
 	                                    } },
 	                                'Update'
 	                            )
@@ -73425,7 +73535,7 @@
 	                            React.createElement(
 	                                _reactBootstrap.Button,
 	                                { onClick: function onClick() {
-	                                        return _this3.deleteAdmin(index, n.username);
+	                                        return _this3.deleteAdmin(n.id, n.username);
 	                                    } },
 	                                'Delete'
 	                            )

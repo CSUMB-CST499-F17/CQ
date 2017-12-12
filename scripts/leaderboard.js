@@ -39,7 +39,6 @@ export class Leaderboard extends React.Component {
     render() {
         var approvedUsers = [];
         let userlist='';
-        console.log(this.state.userlist);
         for(var i = 0; i < this.state.userlist.length; i++) {
             var user = this.state.userlist[i];
             
@@ -56,8 +55,6 @@ export class Leaderboard extends React.Component {
             //  seconds
             var seconds = time[3];
             
-            console.log("selected: " + this.props.state.select + ", mine: " + this.state.userlist[i].hunts_id + " render me?");
-            console.log(this.props.state.select == this.state.userlist[i].hunts_id);
             if(this.props.state.select == this.state.userlist[i].hunts_id) { //no filter, all winners
                 approvedUsers.push([team_name, score, days, hours, minutes, seconds]);
             }

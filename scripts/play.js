@@ -33,6 +33,7 @@ export class Play extends React.Component {
     }
     //changes the value of pages visibility
     changePlay(current, next){
+        Socket.emit(next, this.state);
         document.getElementById(next).style.display = 'block';
         document.getElementById(current).style.display = 'none';
     }
@@ -78,10 +79,8 @@ export class Play extends React.Component {
             document.getElementById('playGame').style.display = 'block';
         }
         else if(this.state.user.progress == -1){
-
-            document.getElementById('start').style.display = 'none';
             document.getElementById('playGame').style.display = 'none';
-            document.getElementById('complete').style.display = 'block';
+            this.changePlay('start', 'complete');
         }
     }
     

@@ -79,7 +79,6 @@ export class PlayGame extends React.Component {
     //updates user at the end of the game
     completed(){
         try{
-            console.log(this.props.state.user);
             Socket.emit('updateTime', {'user': this.props.state.user, 'start_time': "", 'end_time':'now'});
             Socket.emit('update', {'user': this.props.state.user, 'progress':-1, 'score':this.props.state.user.score, 'attempts': 5, 'hints':0}, Socket.callback=this.handleComplete);    
         }
@@ -119,7 +118,6 @@ export class PlayGame extends React.Component {
     }
     //handles completed function data and updates user prop
     handleComplete(callback){
-        console.log(callback);
         var data = JSON.parse(callback);
         this.props.setUser(data['user'], this.end);
     }
