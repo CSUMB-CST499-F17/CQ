@@ -294,14 +294,56 @@ def updateLeaderboard(data):
             else: #if no days, add filler 0 days for js handling
                 time = '0:' + str(timedif).split('.')[0]
             leaderboardUser.append({'progress':row.progress, 'score':row.score,'team_name':row.team_name, 'time':time,'hunts_id':row.hunts_id})
-            
- 
         
     except:
         print("Error: leaderboard query broke")
     socketio.emit('users', {
         'userlist': leaderboardUser
     })
+    
+@socketio.on('filterHunts') #get hunts that match search term
+def filterHunts(data):
+    searchterm = data['str']
+    hunts = []
+    try:
+        query = models.db.session.query(models.Hunts)
+        for row in query:
+            if searchterm.lower() in row.name.lower():
+                hunts.append({'id':row.id,'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time.strftime('%A %B %-d'),'end_time':row.end_time.strftime('%A %B %-d'),'start_text':row.start_text })
+            elif searchterm.lower() in row.h_type.lower():
+                hunts.append({'id':row.id,'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time.strftime('%A %B %-d'),'end_time':row.end_time.strftime('%A %B %-d'),'start_text':row.start_text })
+        return json.dumps({'hunts':hunts})
+    except Exception as e: 
+        print(e)
+
+@socketio.on('getLeaderboard')
+def getLeaderboard(data):
+    teams = []
+    try:
+        sql = models.db.session.query(
+            models.Participants.progress,
+            models.Participants.score,
+            models.Participants.team_name,
+            models.Participants.start_time,
+            models.Participants.end_time,
+            models.Participants.hunts_id).filter(
+                sqlalchemy.and_(
+                    models.Participants.hunts_id == data['index'],
+                    models.Participants.end_time != None
+                )).order_by(models.Participants.score.desc())
+            
+        for row in sql:
+            timedif = row.end_time - row.start_time
+            if 'day' in str(timedif): #if days, format d:h:m:s
+                time = str(timedif).split('.')[0].split(' ')[0] + ':' + str(timedif).split('.')[0].split(' ')[2] 
+            else: #if no days, add filler 0 days for js handling
+                time = '0:' + str(timedif).split('.')[0]
+            teams.append({'progress':row.progress, 'score':row.score,'team_name':row.team_name, 'time':time,'hunts_id':row.hunts_id})
+        
+    except:
+        print("Error: leaderboard query broke")
+    
+    return json.dumps({'users':teams})
 
 @socketio.on('complete')
 def complete(data):
@@ -309,7 +351,6 @@ def complete(data):
 
 @socketio.on('getTime')
 def getTime(data):
-    print data
     try:
         sql = models.db.session.query(models.Participants).filter(models.Participants.id == data)
         for row in sql:
@@ -318,7 +359,6 @@ def getTime(data):
                 time = str(timedif).split('.')[0].split(' ')[0] + ':' + str(timedif).split('.')[0].split(' ')[2] 
             else: #if no days, add filler 0 days for js handling
                 time = '0:' + str(timedif).split('.')[0]
-            print time
             return json.dumps(time)
     except:
         print("Error: can't getTime")
@@ -481,7 +521,6 @@ def addAdmin(data):
 
 @socketio.on('deleteAdminFace')
 def deleteAdmin(data):
-    print data
     try:
         sql = models.db.session.query(models.Admins).filter(models.Admins.id == data).delete()
         models.db.session.commit()

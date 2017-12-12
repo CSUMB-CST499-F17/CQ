@@ -52910,13 +52910,17 @@
 	        var _this = _possibleConstructorReturn(this, (AdminLeaderboard.__proto__ || Object.getPrototypeOf(AdminLeaderboard)).call(this, props));
 
 	        _this.state = {
-	            'userlist': [],
-	            'userlistPlusTime': []
+	            'filteredHunts': [],
+	            'users': []
 	        };
 	        _this.pageName = 'adminLeaderboard';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        _this.componentDidMount = _this.componentDidMount.bind(_this);
 	        _this.changePage = _this.changePage.bind(_this);
+	        _this.showLeaderboard = _this.showLeaderboard.bind(_this);
+	        _this.filterHunts = _this.filterHunts.bind(_this);
+	        _this.handleHunts = _this.handleHunts.bind(_this);
+	        _this.handleUsers = _this.handleUsers.bind(_this);
 	        return _this;
 	    }
 
@@ -52936,20 +52940,38 @@
 	        value: function componentDidMount() {
 	            var _this2 = this;
 
-	            _Socket.Socket.on('users', function (data) {
+	            _Socket.Socket.on('filteredHunts', function (data) {
 	                _this2.setState({
-	                    'userlist': data['userlist']
+	                    'filteredHunts': data
 	                });
 	            });
 	        }
 	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var approvedUsers = [];
-	            var userlist = '';
+	        key: 'filterHunts',
+	        value: function filterHunts(str) {
+	            _Socket.Socket.emit('filterHunts', { 'str': str }, _Socket.Socket.callback = this.handleHunts);
+	        }
+	    }, {
+	        key: 'showLeaderboard',
+	        value: function showLeaderboard(index) {
+	            _Socket.Socket.emit('getLeaderboard', { 'index': index }, _Socket.Socket.callback = this.handleUsers);
+	        }
+	    }, {
+	        key: 'handleHunts',
+	        value: function handleHunts(callback) {
+	            var data = JSON.parse(callback);
+	            this.setState({
+	                'filteredHunts': data['hunts']
+	            });
+	        }
+	    }, {
+	        key: 'handleUsers',
+	        value: function handleUsers(callback) {
+	            var data = JSON.parse(callback);
+	            var users = [];
 
-	            for (var i = 0; i < this.state.userlist.length; i++) {
-	                var user = this.state.userlist[i];
+	            for (var i = 0; i < data['users'].length; i++) {
+	                var user = data['users'][i];
 	                var time = user.time.substring().split(':');
 	                var team_name = user.team_name;
 	                var score = user.score;
@@ -52962,15 +52984,97 @@
 	                //  seconds
 	                var seconds = time[3];
 
-	                this.state.userlistPlusTime[i] = [team_name, score, days, hours, minutes, seconds];
-
-	                if (this.props.state.select == this.state.userlist[i].hunts_id) {
-	                    //no filter, all winners
-	                    approvedUsers.push([team_name, score, days, hours, minutes, seconds]);
-	                }
+	                users[i] = [team_name, score, days, hours, minutes, seconds];
 	            }
-	            if (approvedUsers.length > 0) {
-	                userlist = approvedUsers.map(function (n, index) {
+	            this.setState({
+	                'users': users
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this3 = this;
+
+	            var huntList = '';
+	            var userlist = '';
+	            huntList = this.state.filteredHunts.map(function (n, index) {
+	                return React.createElement(
+	                    'tr',
+	                    { key: 0 },
+	                    React.createElement(
+	                        'td',
+	                        null,
+	                        React.createElement(
+	                            'b',
+	                            null,
+	                            'Title'
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'td',
+	                        null,
+	                        React.createElement(
+	                            'b',
+	                            null,
+	                            'Start Date'
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'td',
+	                        null,
+	                        React.createElement(
+	                            'b',
+	                            null,
+	                            'End Date'
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'td',
+	                        null,
+	                        React.createElement(
+	                            'b',
+	                            null,
+	                            'Show Leaderboard'
+	                        )
+	                    )
+	                );
+	            });
+
+	            huntList.push(this.state.filteredHunts.map(function (n, index) {
+	                return React.createElement(
+	                    'tr',
+	                    { key: index },
+	                    React.createElement(
+	                        'td',
+	                        null,
+	                        n.name
+	                    ),
+	                    React.createElement(
+	                        'td',
+	                        null,
+	                        n.start_time
+	                    ),
+	                    React.createElement(
+	                        'td',
+	                        null,
+	                        n.end_time
+	                    ),
+	                    React.createElement(
+	                        'td',
+	                        null,
+	                        React.createElement(
+	                            _reactBootstrap.Button,
+	                            { onClick: function onClick() {
+	                                    return _this3.showLeaderboard(n.id);
+	                                } },
+	                            'Leaderboard'
+	                        )
+	                    )
+	                );
+	            }));
+
+	            if (this.state.users.length > 0) {
+	                userlist = this.state.users.map(function (n, index) {
 	                    return React.createElement(
 	                        'tr',
 	                        { key: index },
@@ -53047,46 +53151,33 @@
 	                        React.createElement('input', { id: 'leaderboard-search1', className: 'form-control ', placeholder: 'Search Hunts', size: '5' }),
 	                        React.createElement(
 	                            'button',
-	                            { id: 'leaderboard-search', className: 'btn' },
+	                            { id: 'leaderboard-search', className: 'btn', onClick: function onClick() {
+	                                    return _this3.filterHunts(document.getElementById('leaderboard-search1').value);
+	                                } },
 	                            'Search'
 	                        )
 	                    )
 	                ),
 	                React.createElement(
 	                    'div',
-	                    { id: 'leaderboards' },
+	                    { id: 'hunts' },
 	                    React.createElement(
-	                        'table',
-	                        { id: 'leaderboard-table' },
+	                        'div',
+	                        { id: 'huntList' },
 	                        React.createElement(
-	                            'tbody',
-	                            null,
+	                            'table',
+	                            { id: 'hunt-table' },
 	                            React.createElement(
-	                                'tr',
+	                                'tbody',
 	                                null,
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    'Rank'
-	                                ),
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    'Team'
-	                                ),
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    'Score'
-	                                ),
-	                                React.createElement(
-	                                    'td',
-	                                    null,
-	                                    'Time'
-	                                )
+	                                huntList
 	                            )
 	                        )
-	                    ),
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { id: 'leaderboards' },
 	                    React.createElement(
 	                        'div',
 	                        { id: 'userList' },
