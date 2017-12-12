@@ -22125,7 +22125,7 @@
 	                React.createElement(
 	                    'div',
 	                    { id: 'admins', style: { display: 'none' } },
-	                    React.createElement(_admins.Admins, { changePage: this.changePage, state: this.state })
+	                    React.createElement(_admins.Admins, { changePage: this.changePage, state: this.state, logOutSetProps: this.logOutSetProps })
 	                ),
 	                React.createElement(
 	                    'div',
@@ -73413,7 +73413,8 @@
 	        var _this = _possibleConstructorReturn(this, (Admins.__proto__ || Object.getPrototypeOf(Admins)).call(this, props));
 
 	        _this.state = {
-	            'getAdmin': []
+	            'getAdmin': [],
+	            'superCount': 0
 	        };
 	        _this.pageName = 'admins';
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
@@ -73443,16 +73444,18 @@
 	        key: 'deleteAdmin',
 	        value: function deleteAdmin(index, username) {
 
-	            if (confirm("Are you sure you would like to delete admin?") == true) {
+	            if (this.props.state.id != index && confirm("Are you sure you would like to delete admin?") == true) {
+	                alert("Admin Deleted");
 	                _Socket.Socket.emit('deleteAdminFace', index, _Socket.Socket.callback = this.handleDelete);
+	            } else if (this.props.state.id == index) {
+	                alert("Cannot Delete Self");
 	            } else {
-	                alert("Admin Not Deleted!");
+	                alert("Admin Not Deleted");
 	            }
 	        }
 	    }, {
 	        key: 'handleDelete',
 	        value: function handleDelete(callback) {
-	            alert("Admin Deleted!");
 	            _Socket.Socket.emit('loadAllAdmins', this.props.state.id, _Socket.Socket.callback = this.loadAdmins);
 	        }
 	    }, {
@@ -73460,7 +73463,8 @@
 	        value: function loadAdmins(callback) {
 	            var data = JSON.parse(callback);
 	            this.setState({
-	                'getAdmin': data['adminList']
+	                'getAdmin': data['adminList'],
+	                'superCount': data['count']
 	            });
 	        }
 	    }, {
@@ -73487,8 +73491,18 @@
 	            };
 	            var confirmTxt = "Are you sure you would like to make the following changes to " + username + "?" + "\nEmail: " + email1 + "\nUsername: " + username1 + "\nIs Super: " + is_super1;
 	            if (confirm(confirmTxt) == true) {
-	                _Socket.Socket.emit('updateAdmin', admin);
-	                alert("Admin Updated!");
+	                if (this.state.superCount <= 1 && (is_super == 'true' || is_super) && (is_super1 == 'false' || !is_super1)) {
+	                    alert("Admin Not Updated: Must have at least one Super Admin");
+	                } else {
+	                    _Socket.Socket.emit('updateAdmin', admin);
+	                    if (id == this.props.state.id && (is_super1 == 'false' || !is_super1)) {
+	                        // this.props.logOutSetProps();
+	                        // alert("Admin Updated: You've been logged out due to permission changes.");
+	                        this.handleDelete(0); //update super count
+	                    } else {
+	                        alert("Admin Updated");
+	                    }
+	                }
 	            } else {
 	                alert("Admin Not Updated");
 	            }
@@ -73682,6 +73696,7 @@
 	        _this.handleSubmit = _this.handleSubmit.bind(_this);
 	        _this.pageName = 'adminCreate';
 	        _this.addAdmin = _this.addAdmin.bind(_this);
+	        _this.check = _this.check.bind(_this);
 	        return _this;
 	    }
 
@@ -73698,6 +73713,17 @@
 	                'access_code': document.getElementById('create_access_code').value,
 	                'is_super': document.getElementById('is_super').value });
 	            this.props.changePage('admins');
+	        }
+	    }, {
+	        key: 'check',
+	        value: function check() {
+	            if (document.getElementById('show').checked == true) {
+	                //show password
+	                document.getElementById('create_access_code').type = 'text';
+	            } else {
+	                //hide password
+	                document.getElementById('create_access_code').type = 'password';
+	            }
 	        }
 	    }, {
 	        key: 'render',
@@ -73728,11 +73754,13 @@
 	                                null,
 	                                React.createElement(_reactBootstrap.FormControl, { id: 'create_email', type: 'text', placeholder: 'Email' }),
 	                                React.createElement('br', null),
-	                                React.createElement(_reactBootstrap.FormControl, { id: 'create_team_name', type: 'text', placeholder: 'Team Name' }),
+	                                React.createElement(_reactBootstrap.FormControl, { id: 'create_team_name', type: 'text', placeholder: 'Username' }),
 	                                React.createElement('br', null),
-	                                React.createElement(_reactBootstrap.FormControl, { id: 'create_access_code', type: 'text', placeholder: 'Access Code' }),
+	                                React.createElement(_reactBootstrap.FormControl, { id: 'create_access_code', type: 'password', placeholder: 'Access Code' }),
 	                                React.createElement('br', null),
-	                                React.createElement(_reactBootstrap.FormControl, { id: 'is_super', type: 'text', placeholder: 'Super Admin?(T/F)' })
+	                                React.createElement(_reactBootstrap.FormControl, { id: 'is_super', type: 'text', placeholder: 'Super Admin?(T/F)' }),
+	                                React.createElement('input', { type: 'checkbox', id: 'show', onChange: this.check }),
+	                                ' Show Password'
 	                            )
 	                        )
 	                    ),
