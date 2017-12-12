@@ -351,7 +351,6 @@ def complete(data):
 
 @socketio.on('getTime')
 def getTime(data):
-    print data
     try:
         sql = models.db.session.query(models.Participants).filter(models.Participants.id == data)
         for row in sql:
@@ -360,7 +359,6 @@ def getTime(data):
                 time = str(timedif).split('.')[0].split(' ')[0] + ':' + str(timedif).split('.')[0].split(' ')[2] 
             else: #if no days, add filler 0 days for js handling
                 time = '0:' + str(timedif).split('.')[0]
-            print time
             return json.dumps(time)
     except:
         print("Error: can't getTime")
@@ -527,7 +525,6 @@ def addAdmin(data):
 
 @socketio.on('deleteAdminFace')
 def deleteAdmin(data):
-    print data
     try:
         sql = models.db.session.query(
             models.Admins.email,
