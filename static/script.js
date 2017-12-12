@@ -53252,6 +53252,7 @@
 
 	        _this.updateQuestion = _this.updateQuestion.bind(_this);
 	        _this.deleteQuestion = _this.deleteQuestion.bind(_this);
+	        _this.change = _this.change.bind(_this);
 
 	        return _this;
 	    }
@@ -53408,6 +53409,14 @@
 	                    'getQuestions': data['getQuestions']
 	                });
 	            });
+	        }
+	    }, {
+	        key: 'change',
+	        value: function change() {
+	            this.setState({
+	                'getQuestions': null
+	            });
+	            this.props.changePage('adminCreateHunt');
 	        }
 	    }, {
 	        key: 'render',
@@ -53789,7 +53798,7 @@
 	                                    React.createElement(
 	                                        _reactBootstrap.Button,
 	                                        { onClick: function onClick() {
-	                                                return _this5.props.changePage('adminCreateHunt');
+	                                                return _this5.change();
 	                                            } },
 	                                        'Create Hunt'
 	                                    )
@@ -73496,9 +73505,9 @@
 	                } else {
 	                    _Socket.Socket.emit('updateAdmin', admin);
 	                    if (id == this.props.state.id && (is_super1 == 'false' || !is_super1)) {
-	                        // this.props.logOutSetProps();
-	                        // alert("Admin Updated: You've been logged out due to permission changes.");
 	                        this.handleDelete(0); //update super count
+	                        this.props.logOutSetProps();
+	                        alert("Admin Updated: You've been logged out due to permission changes.");
 	                    } else {
 	                        alert("Admin Updated");
 	                    }
