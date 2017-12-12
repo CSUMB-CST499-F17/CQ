@@ -24,6 +24,7 @@ export class AdminHunts extends React.Component {
         
         this.updateQuestion = this.updateQuestion.bind(this);
         this.deleteQuestion = this.deleteQuestion.bind(this);
+        this.change = this.change.bind(this);
         
         
     }
@@ -182,6 +183,12 @@ export class AdminHunts extends React.Component {
             });
         });
     }
+    change(){
+        this.setState({
+            'getQuestions': null
+        });
+        this.props.changePage('adminCreateHunt');
+    }
 
     
     render() {
@@ -280,7 +287,7 @@ export class AdminHunts extends React.Component {
                         <FormGroup>
                             <InputGroup>
                                 <ButtonToolbar>
-                                    <Button onClick={() => this.props.changePage('adminCreateHunt')}>Create Hunt</Button>
+                                    <Button onClick={() => this.change()}>Create Hunt</Button>
                                 </ButtonToolbar>
                             </InputGroup>
                         </FormGroup>
