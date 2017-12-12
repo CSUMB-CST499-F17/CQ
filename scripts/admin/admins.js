@@ -21,6 +21,7 @@ export class Admins extends React.Component {
         this.deleteAdmin = this.deleteAdmin.bind(this);
         this.updateAdmin = this.updateAdmin.bind(this);
         this.loadAdmins = this.loadAdmins.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     handleSubmit(event) {
@@ -34,18 +35,17 @@ export class Admins extends React.Component {
         });
     }
     deleteAdmin(index, username){
-        var txt;
-        if(this.state.getAdmin[index].is_super == true && confirm("Super Admin can't be deleted?") == true){
-            txt = "can't delete super admin!";
-        }
-        if(this.state.getAdmin[index].is_super == false && confirm("Are you sure you would like to delete admin?") == true){
-            txt = "deleted admin!";
-            Socket.emit('deleteAdminFace', {username});
+
+        if(confirm("Are you sure you would like to delete admin?") == true){
+            Socket.emit('deleteAdminFace', index, Socket.callback = this.handleDelete);
         }
         else {
-            txt = "not deleted!";
+            alert("Admin Not Deleted!");
         }
-        document.getElementById("deleted").innerHTML = txt;
+    }
+    handleDelete(callback){
+        alert("Admin Deleted!");
+        Socket.emit('loadAllAdmins', this.props.state.id, Socket.callback = this.loadAdmins);
     }
     loadAdmins(callback){
         var data = JSON.parse(callback);

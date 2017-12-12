@@ -73329,6 +73329,7 @@
 	        _this.deleteAdmin = _this.deleteAdmin.bind(_this);
 	        _this.updateAdmin = _this.updateAdmin.bind(_this);
 	        _this.loadAdmins = _this.loadAdmins.bind(_this);
+	        _this.handleDelete = _this.handleDelete.bind(_this);
 	        return _this;
 	    }
 
@@ -73350,17 +73351,18 @@
 	    }, {
 	        key: 'deleteAdmin',
 	        value: function deleteAdmin(index, username) {
-	            var txt;
-	            if (this.state.getAdmin[index].is_super == true && confirm("Super Admin can't be deleted?") == true) {
-	                txt = "can't delete super admin!";
-	            }
-	            if (this.state.getAdmin[index].is_super == false && confirm("Are you sure you would like to delete admin?") == true) {
-	                txt = "deleted admin!";
-	                _Socket.Socket.emit('deleteAdminFace', { username: username });
+
+	            if (confirm("Are you sure you would like to delete admin?") == true) {
+	                _Socket.Socket.emit('deleteAdminFace', index, _Socket.Socket.callback = this.handleDelete);
 	            } else {
-	                txt = "not deleted!";
+	                alert("Admin Not Deleted!");
 	            }
-	            document.getElementById("deleted").innerHTML = txt;
+	        }
+	    }, {
+	        key: 'handleDelete',
+	        value: function handleDelete(callback) {
+	            alert("Admin Deleted!");
+	            _Socket.Socket.emit('loadAllAdmins', this.props.state.id, _Socket.Socket.callback = this.loadAdmins);
 	        }
 	    }, {
 	        key: 'loadAdmins',

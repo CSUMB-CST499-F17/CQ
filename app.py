@@ -464,11 +464,7 @@ def getAdmin(data):
 def loadAllAdmins(data):
     adminList = []
     try:
-        sql = models.db.session.query(
-            models.Admins.id,
-            models.Admins.email,
-            models.Admins.username,
-            models.Admins.is_super)
+        sql = models.db.session.query(models.Admins)
 
         for row in sql:
             adminList.append({'id':row.id,'email':row.email, 'username':row.username, 'is_super':row.is_super})
@@ -487,14 +483,9 @@ def addAdmin(data):
 def deleteAdmin(data):
     print data
     try:
-        sql = models.db.session.query(
-            models.Admins.email,
-            models.Admins.username,
-            models.Admins.is_super).filter(
-                models.Admins.username == data['username']).delete()
+        sql = models.db.session.query(models.Admins).filter(models.Admins.id == data).delete()
         models.db.session.commit()
-        socketio.emit('admins', {
-        })
+        return "Nothing"
     except:
         print("Error: delete admin query broke")
 
