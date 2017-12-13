@@ -7,7 +7,7 @@ export class Complete extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            time: ''
+            time: 'x'
         };
 
         this.lb = this.lb.bind(this); //sends users to the leaderboard
@@ -21,10 +21,13 @@ export class Complete extends React.Component {
     }
     
     setTime(data){
-        data = JSON.parse(data);
-        this.setState({
-            time: data
-        });
+        console.log(this.state.time);
+        if(this.state.time == 'x'){
+            this.setState({
+                time: data
+            });
+        }
+        console.log(this.state.time);
     }
     
     //sends users to the leaderboard
@@ -65,6 +68,7 @@ export class Complete extends React.Component {
                             </span></h2>
                             <h2 id = 'score'><span><b>Final Score:</b><br/>{score}</span></h2>
                         </div>;
+            
         }
         return (
             <div>

@@ -25,6 +25,8 @@ export class PlayGame extends React.Component {
     
     //checks user input to answer data //displays buttons and text accordingly
     checkAnswer(){
+        console.log(this.props.state.user.progress);
+        console.log(this.props.state.questions.length);
         var result = document.getElementById('result'); //retreives user input
         //checks if user input matches answer
         if(document.getElementById('answer').value.toLowerCase() == this.props.state.questions[this.props.state.user.progress - 1]['answer'].toLowerCase()){
@@ -33,19 +35,19 @@ export class PlayGame extends React.Component {
             result.style.color="#9bf442"; //changes message to color green
             
             //checks if next question is last question //changes Next Question button content to Last Question
-            if(this.props.state.user.progress == this.props.state.questions.length){
+            if(this.props.state.user.progress == this.props.state.questions.length - 1){
                 document.getElementById('next').textContent = "Last Question"; //shows buttons
+                document.getElementById('next').style.display = "block"; //shows next button
             }
             //checks if current question is last question //changes Last Question button content to Complete
-            if(this.props.state.user.progress == this.props.state.questions.length - 1 || (this.props.state.user.progress == this.props.state.questions.length && this.props.state.questions.length == 1)){
+            if(this.props.state.user.progress == this.props.state.questions.length){
                 document.getElementById('complete-button').style.display = "block"; //shows complete button
             }
             //checks if next question is less than the total amount of questions - 1
-            if(this.props.state.user.progress < this.props.state.questions.length - 1){
+            if(this.props.state.user.progress < this.props.state.questions.length - 2){
                 document.getElementById('next').style.display = "block"; //shows next button
             }
             document.getElementById('answer-submit').style.display = "none"; //hides answer input
-            // document.getElementById('hint-submit').style.display = "none"; //hides hint button
             document.getElementById('skip').style.display = "none"; //hides skip button
             
             //resets attempts to empty array
