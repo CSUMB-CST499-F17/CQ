@@ -44,7 +44,7 @@ export class PlayGame extends React.Component {
                 document.getElementById('complete-button').style.display = "block"; //shows complete button
             }
             //checks if next question is less than the total amount of questions - 1
-            if(this.props.state.user.progress < this.props.state.questions.length - 2){
+            if(this.props.state.user.progress <= this.props.state.questions.length - 2){
                 document.getElementById('next').style.display = "block"; //shows next button
             }
             document.getElementById('answer-submit').style.display = "none"; //hides answer input
