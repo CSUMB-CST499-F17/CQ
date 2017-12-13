@@ -359,7 +359,7 @@ def getTime(data):
                 time = str(timedif).split('.')[0].split(' ')[0] + ':' + str(timedif).split('.')[0].split(' ')[2] 
             else: #if no days, add filler 0 days for js handling
                 time = '0:' + str(timedif).split('.')[0]
-            return json.dumps(time)
+            return (time)
     except:
         print("Error: can't getTime")
     
