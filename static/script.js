@@ -51908,7 +51908,7 @@
 	        key: 'setTime',
 	        value: function setTime(data) {
 	            console.log(this.state.time);
-	            if (this.state.time == 'x') {
+	            if (this.state.time == 'x' && data != undefined) {
 	                this.setState({
 	                    time: data
 	                });
@@ -51954,94 +51954,98 @@
 	                    )
 	                );
 	            } else {
-	                //calculates total time taken
-	                var time = this.state.time.substring().split(':');
+	                if (this.state.time == 'x') {
+	                    results = React.createElement('div', { id: 'results' });
+	                } else {
+	                    //calculates total time taken
+	                    var time = this.state.time.substring().split(':');
 
-	                // whole days
-	                var days = time[0];
-	                // whole hours
-	                var hours = time[1];
-	                //  whole minutes
-	                var minutes = time[2];
-	                //  seconds
-	                var seconds = time[3];
-	                results = React.createElement(
-	                    'div',
-	                    { id: 'results' },
-	                    React.createElement(
-	                        'h2',
-	                        { id: 'team' },
+	                    // whole days
+	                    var days = time[0];
+	                    // whole hours
+	                    var hours = time[1];
+	                    //  whole minutes
+	                    var minutes = time[2];
+	                    //  seconds
+	                    var seconds = time[3];
+	                    results = React.createElement(
+	                        'div',
+	                        { id: 'results' },
 	                        React.createElement(
-	                            'span',
-	                            null,
+	                            'h2',
+	                            { id: 'team' },
 	                            React.createElement(
-	                                'b',
+	                                'span',
 	                                null,
-	                                'Team Name: '
-	                            ),
-	                            React.createElement('br', null),
-	                            ' ',
-	                            team
-	                        )
-	                    ),
-	                    React.createElement(
-	                        'h2',
-	                        { id: 'time' },
+	                                React.createElement(
+	                                    'b',
+	                                    null,
+	                                    'Team Name: '
+	                                ),
+	                                React.createElement('br', null),
+	                                ' ',
+	                                team
+	                            )
+	                        ),
 	                        React.createElement(
-	                            'span',
-	                            null,
+	                            'h2',
+	                            { id: 'time' },
 	                            React.createElement(
-	                                'b',
-	                                null,
-	                                'Time Taken To Complete Hunt: '
-	                            ),
-	                            React.createElement('br', null),
-	                            days != 0 ? React.createElement(
 	                                'span',
 	                                null,
-	                                days,
-	                                ' day(s), ',
-	                                React.createElement('br', null)
-	                            ) : React.createElement('div', null),
-	                            hours != 0 ? React.createElement(
-	                                'span',
-	                                null,
-	                                hours,
-	                                ' hour(s), ',
-	                                React.createElement('br', null)
-	                            ) : React.createElement('div', null),
-	                            minutes != 0 ? React.createElement(
-	                                'span',
-	                                null,
-	                                minutes,
-	                                ' minute(s), ',
-	                                React.createElement('br', null)
-	                            ) : React.createElement('div', null),
-	                            seconds != 0 ? React.createElement(
-	                                'span',
-	                                null,
-	                                seconds,
-	                                ' second(s)',
-	                                React.createElement('br', null)
-	                            ) : React.createElement('div', null)
-	                        )
-	                    ),
-	                    React.createElement(
-	                        'h2',
-	                        { id: 'score' },
+	                                React.createElement(
+	                                    'b',
+	                                    null,
+	                                    'Time Taken To Complete Hunt: '
+	                                ),
+	                                React.createElement('br', null),
+	                                days != 0 ? React.createElement(
+	                                    'span',
+	                                    null,
+	                                    days,
+	                                    ' day(s), ',
+	                                    React.createElement('br', null)
+	                                ) : React.createElement('div', null),
+	                                hours != 0 ? React.createElement(
+	                                    'span',
+	                                    null,
+	                                    hours,
+	                                    ' hour(s), ',
+	                                    React.createElement('br', null)
+	                                ) : React.createElement('div', null),
+	                                minutes != 0 ? React.createElement(
+	                                    'span',
+	                                    null,
+	                                    minutes,
+	                                    ' minute(s), ',
+	                                    React.createElement('br', null)
+	                                ) : React.createElement('div', null),
+	                                seconds != 0 ? React.createElement(
+	                                    'span',
+	                                    null,
+	                                    seconds,
+	                                    ' second(s)',
+	                                    React.createElement('br', null)
+	                                ) : React.createElement('div', null)
+	                            )
+	                        ),
 	                        React.createElement(
-	                            'span',
-	                            null,
+	                            'h2',
+	                            { id: 'score' },
 	                            React.createElement(
-	                                'b',
+	                                'span',
 	                                null,
-	                                'Final Score:'
-	                            ),
-	                            React.createElement('br', null),
-	                            score
+	                                React.createElement(
+	                                    'b',
+	                                    null,
+	                                    'Final Score:'
+	                                ),
+	                                React.createElement('br', null),
+	                                score
+	                            )
 	                        )
-	                    )
-	                );
+	                    );
+	                }
 	            }
 	            return React.createElement(
 	                'div',
@@ -52430,7 +52434,7 @@
 	                    document.getElementById('complete-button').style.display = "block"; //shows complete button
 	                }
 	                //checks if next question is less than the total amount of questions - 1
-	                if (this.props.state.user.progress < this.props.state.questions.length - 2) {
+	                if (this.props.state.user.progress <= this.props.state.questions.length - 2) {
 	                    document.getElementById('next').style.display = "block"; //shows next button
 	                }
 	                document.getElementById('answer-submit').style.display = "none"; //hides answer input

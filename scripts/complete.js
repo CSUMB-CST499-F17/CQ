@@ -22,7 +22,7 @@ export class Complete extends React.Component {
     
     setTime(data){
         console.log(this.state.time);
-        if(this.state.time == 'x'){
+        if(this.state.time == 'x' && data != undefined){
             this.setState({
                 time: data
             });
@@ -47,28 +47,32 @@ export class Complete extends React.Component {
             results = <div id = 'results'><h2 id = 'err'><span><b>There are no questions in this hunt.</b></span></h2></div>;
         }
         else{
-            //calculates total time taken
-            var time = this.state.time.substring().split(':');
-            
-            // whole days
-            var days = time[0];
-            // whole hours
-            var hours = time[1];
-            //  whole minutes
-            var minutes = time[2];
-            //  seconds
-            var seconds = time[3];
-            results =  <div id = 'results'>
-                            <h2 id = 'team'><span><b>Team Name: </b><br/> {team}</span></h2>
-                            <h2 id = 'time'><span><b>Time Taken To Complete Hunt: </b><br/>
-                            {days != 0 ? <span>{days} day(s), <br/></span> : <div/>}
-                            {hours != 0 ? <span>{hours} hour(s), <br/></span> : <div/>}
-                            {minutes != 0 ? <span>{minutes} minute(s), <br/></span> : <div/>}
-                            {seconds != 0 ? <span>{seconds} second(s)<br/></span> : <div/>}
-                            </span></h2>
-                            <h2 id = 'score'><span><b>Final Score:</b><br/>{score}</span></h2>
-                        </div>;
-            
+            if(this.state.time == 'x'){
+                results =  <div id = 'results'></div>;
+            }
+            else{
+                //calculates total time taken
+                var time = this.state.time.substring().split(':');
+                
+                // whole days
+                var days = time[0];
+                // whole hours
+                var hours = time[1];
+                //  whole minutes
+                var minutes = time[2];
+                //  seconds
+                var seconds = time[3];
+                results =  <div id = 'results'>
+                                <h2 id = 'team'><span><b>Team Name: </b><br/> {team}</span></h2>
+                                <h2 id = 'time'><span><b>Time Taken To Complete Hunt: </b><br/>
+                                {days != 0 ? <span>{days} day(s), <br/></span> : <div/>}
+                                {hours != 0 ? <span>{hours} hour(s), <br/></span> : <div/>}
+                                {minutes != 0 ? <span>{minutes} minute(s), <br/></span> : <div/>}
+                                {seconds != 0 ? <span>{seconds} second(s)<br/></span> : <div/>}
+                                </span></h2>
+                                <h2 id = 'score'><span><b>Final Score:</b><br/>{score}</span></h2>
+                            </div>;
+            }
         }
         return (
             <div>
