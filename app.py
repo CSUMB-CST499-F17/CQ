@@ -69,7 +69,7 @@ def changeType(data):
                 if typ not in filtered:
                     filtered.append(typ)
         while True:
-            h_list = models.db.session.query(models.Hunts).filter(sqlalchemy.and_(models.Hunts.h_type == choice,sqlalchemy.and_(models.Hunts.start_time <= datetime.datetime.now(),models.Hunts.end_time >= datetime.datetime.now()))); #gets hunts where type is choice today is between start and end date
+            h_list = models.db.session.query(models.Hunts).filter(sqlalchemy.and_(models.Hunts.h_type == choice,sqlalchemy.and_(models.Hunts.start_time <= datetime.datetime.now(),models.Hunts.end_time >= datetime.datetime.now()))).order_by(models.Hunts.id); #gets hunts where type is choice today is between start and end date
             for row in h_list:
                 hunts.append({'id':row.id,'name':row.name,'h_type':row.h_type,'desc':row.desc,'image':row.image,'start_time':row.start_time.strftime('%A %B %-d'),'end_time':row.end_time.strftime('%A %B %-d'),'start_text':row.start_text })
             if len(hunts) == 0: #no hunts of choice found
@@ -367,7 +367,7 @@ def getTime(data):
 def updateRegister(data):
     ongoingHunts = [];
     try:
-        sql = models.db.session.query(models.Hunts.id,models.Hunts.name,models.Hunts.h_type).filter(sqlalchemy.and_(models.Hunts.start_time <= datetime.datetime.now(),models.Hunts.end_time >= datetime.datetime.now())).order_by(models.Hunts.id.desc())
+        sql = models.db.session.query(models.Hunts.id,models.Hunts.name,models.Hunts.h_type).filter(sqlalchemy.and_(models.Hunts.start_time <= datetime.datetime.now(),models.Hunts.end_time >= datetime.datetime.now())).order_by(models.Hunts.id.asc())
         for row in sql:
             ongoingHunts.append({'id':row.id,'name':row.name,'h_type':row.h_type})
         socketio.emit('updateRegister', ongoingHunts)
