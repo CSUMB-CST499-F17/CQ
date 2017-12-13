@@ -31029,6 +31029,7 @@
 	    }, {
 	        key: 'updateExplore',
 	        value: function updateExplore(callback) {
+	            this.setState({ 'count': 0 });
 	            if (callback == 'empty') {
 	                console.log('NO HUNTS');
 	            } else {
@@ -31062,11 +31063,11 @@
 	                        n[1]
 	                    ),
 	                    React.createElement('div', { className: 'arrow arrow-left', onClick: function onClick() {
-	                            return _this3.setState({ count: _this3.state.count == 0 ? _this3.state.hunts.length - 1 : _this3.state.count - 1 });
+	                            return _this3.setState({ 'count': _this3.state.count == 0 ? _this3.state.hunts.length - 1 : _this3.state.count - 1 });
 	                        } }),
 	                    React.createElement('img', { src: n[4] }),
 	                    React.createElement('div', { className: 'arrow arrow-right', onClick: function onClick() {
-	                            return _this3.setState({ count: _this3.state.count == _this3.state.hunts.length - 1 ? 0 : _this3.state.count + 1 });
+	                            return _this3.setState({ 'count': _this3.state.count == _this3.state.hunts.length - 1 ? 0 : _this3.state.count + 1 });
 	                        } }),
 	                    React.createElement(
 	                        'p',

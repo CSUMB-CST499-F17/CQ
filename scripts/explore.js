@@ -41,6 +41,7 @@ export class Explore extends React.Component {
     }
     //callback function to changeType Socket //populates page with hunt information retrieved from database via app.py
     updateExplore(callback){
+        this.setState({'count':0});
         if(callback == 'empty'){
             console.log('NO HUNTS');
         }
@@ -68,9 +69,9 @@ export class Explore extends React.Component {
         let hunts = this.state.hunts.map((n, index) => 
             <div id={n[0]} key={n[0]} className="hunt-preview">
                 <header>{n[1]}</header>
-                <div className="arrow arrow-left" onClick={() => this.setState(({count:(this.state.count == 0 ? this.state.hunts.length - 1 : this.state.count - 1)}))}></div>
+                <div className="arrow arrow-left" onClick={() => this.setState(({'count':(this.state.count == 0 ? this.state.hunts.length - 1 : this.state.count - 1)}))}></div>
                 <img src={n[4]}/>
-                <div className="arrow arrow-right" onClick={() => this.setState(({count:(this.state.count == this.state.hunts.length - 1 ? 0 : this.state.count + 1)}))}></div>
+                <div className="arrow arrow-right" onClick={() => this.setState(({'count':(this.state.count == this.state.hunts.length - 1 ? 0 : this.state.count + 1)}))}></div>
                 <p>{n[5]} to {n[6]}</p>
                 <p>{n[3]}</p>
                 <div id='buttons'>
